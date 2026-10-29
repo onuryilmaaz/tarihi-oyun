@@ -760,3 +760,13 @@ Kaynak belge: `MASTER_SPEC.md` (v1.3). Orijinal keşif çıktısı:
   3. Aşama 10 (yayın hazırlığı) başlar; önce TASK-0013 kapsamı onaya sunulur. Üretime çıkış ayrıca açık onay ister (§22).
 - **Onay kaydı:** Kullanıcı: "1- … ← → tuşlarıyla sekmeler arasında gezin bunu yapınca haritada da geziyor sağa sola 2- evet 3- evet 4- evet" (2026-10-29)
 - **Durum:** GEÇERLİ
+
+## DEC-0061 — Aşama 10 görev kartı (TASK-0013) onayı
+
+- **Tarih:** 2026-10-29
+- **Seçilen karar:**
+  1. 10a kayıt güvenilirliği → 10b hata yakalama → 10c sürüm/paket/kontrol listesi → 10d gizlilik notu sırası ve kapsamı onaylandı.
+  2. Sürüm numarası **0.9.0 "oynanabilir önizleme"**; 1.0 denge ve ertelenen özellikler sonrasına.
+  3. Test dağıtımı: şimdilik **yalnızca yerel paket (zip)**; dış barındırma/servis kararı yayına yaklaşınca ayrıca verilecek.
+- **Onay kaydı:** Kullanıcı: "1- evet 2- evet 3- a" (2026-10-29)
+- **Durum:** GEÇERLİ
