@@ -220,7 +220,38 @@
     #casusListesi .bos { color: var(--soluk); }
     .casus-satir { display: grid; gap: 6px; }
     .casus-satir select { width: 100%; }
-    #onay { position: fixed; inset: 0; display: grid; place-items: center; background: rgba(15, 12, 9, .5); z-index: 12; }
+    /* Ana menü, devlet seçimi, kayıt yuvaları (9a) */
+    #menuKatmani { position: fixed; inset: 0; z-index: 30; display: grid; place-items: center;
+      background: radial-gradient(ellipse at center, rgba(20, 16, 12, .55), rgba(12, 10, 8, .85)); backdrop-filter: blur(3px); }
+    .menu-kart { position: static; width: min(760px, calc(100% - 32px)); max-height: calc(100% - 48px); overflow: auto; padding: 26px 28px; }
+    .menu-logo { text-align: center; margin-bottom: 20px; }
+    .menu-logo span { font-family: "Cinzel", serif; letter-spacing: .4em; color: var(--vurgu); font-size: 12px; }
+    .menu-logo h1 { font-family: "Cinzel", serif; font-size: 34px; margin: 6px 0; letter-spacing: .03em; }
+    .menu-logo p { color: var(--soluk); font-family: "Cormorant Garamond", serif; font-style: italic; font-size: 19px; margin: 0; }
+    .menu-dugmeler { display: grid; gap: 10px; max-width: 320px; margin: 0 auto; }
+    .menu-dugmeler button { padding: 11px; font-size: 15px; display: flex; flex-direction: column; align-items: center; }
+    .menu-dugmeler small { color: var(--soluk); font-size: 11px; }
+    button.birincil { background: var(--vurgu); color: #1c1814; border-color: var(--vurgu); font-weight: 700; }
+    button.birincil small { color: #3b2f22 !important; }
+    .menu-h { font-family: "Cinzel", serif; font-size: 20px; margin: 0 0 12px; text-transform: none; letter-spacing: .02em; color: var(--metin); }
+    .menu-kart .satir { display: flex; gap: 8px; }
+    .menu-kart .satir input[type=text] { flex: 1; }
+    #devletListesi { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 8px; margin: 12px 0;
+      max-height: min(52vh, 520px); overflow: auto; padding-right: 4px; }
+    .devlet-kart { display: grid; grid-template-columns: 34px 1fr; gap: 10px; align-items: center; text-align: left; padding: 8px 10px; }
+    .devlet-kart .arma { float: none; width: 34px; height: 41px; margin: 0; }
+    .devlet-kart b { display: block; font-size: 13px; }
+    .devlet-kart small { display: block; color: var(--soluk); font-size: 11px; line-height: 1.35; }
+    .devlet-kart.secili { border-color: var(--vurgu); box-shadow: 0 0 0 2px rgba(226, 179, 86, .3); }
+    .zorluk-kolay { color: #9fcf7a; } .zorluk-orta { color: var(--uyari); } .zorluk-zor { color: var(--hata); }
+    .menu-alt { display: flex; justify-content: space-between; align-items: center; gap: 10px; margin-top: 10px; }
+    #kayitListesi { list-style: none; padding: 0; margin: 12px 0; display: grid; gap: 6px; max-height: 50vh; overflow: auto; }
+    #kayitListesi li { display: grid; grid-template-columns: 1fr auto; gap: 8px; align-items: center; border: 1px solid var(--cizgi); border-radius: 6px; padding: 8px 10px; }
+    #kayitListesi li small { display: block; color: var(--soluk); font-size: 11px; }
+    #kayitListesi .eylemler { display: flex; gap: 6px; }
+    #kayitListesi .bos { display: block; color: var(--soluk); border: 0; }
+    #kaynakMetni li { margin: 4px 0; }
+    #onay { position: fixed; inset: 0; display: grid; place-items: center; background: rgba(15, 12, 9, .5); z-index: 40; } /* menünün (30) de üstünde */
     #onay .panel { position: static; width: min(440px, calc(100% - 32px)); padding: 22px; text-align: center; }
     #onay h3 { font-family: "Cinzel", serif; margin: 0 0 8px; font-size: 18px; }
     #onay p { margin: 0 0 18px; }
@@ -327,9 +358,9 @@
     </div>
     <button id="ilerleBtn" title="Boşluk tuşu">Turu ilerlet</button>
     <div id="kayitlar">
-      <button id="kaydetBtn">Kaydet<small>manuel</small></button>
-      <button id="yukleManuel" disabled>Yükle<small>boş</small></button>
-      <button id="yukleOtomatik" disabled>Otomatik<small>boş</small></button>
+      <button id="kaydetBtn" title="Adlandırılmış kayıt">Kaydet<small>yuva seç</small></button>
+      <button id="yukleBtn" title="Kayıt yükle">Yükle<small>kayıtlar</small></button>
+      <button id="menuBtn" title="Oyun menüsü">☰<small>Menü</small></button>
     </div>
   </header>
 
@@ -489,6 +520,39 @@
       <div id="verasetAdaylar" class="aday-liste"></div>
       <p class="not">Seçiminiz bir sonraki turun başında uygulanır. Seçmeden turu ilerletirseniz divan en uygun adayı tahta çıkarır.</p>
       <div class="satir" style="justify-content:flex-end"><button id="verasetKapat">Sonra seç</button></div>
+    </div>
+  </div>
+
+  <div id="menuKatmani" hidden>
+    <div class="menu-kart panel" role="dialog" aria-modal="true" aria-labelledby="menuBaslik">
+      <section data-menu="ana">
+        <div class="menu-logo"><span>MCDLIII</span><h1 id="menuBaslik">Tarihî Strateji · 1453</h1><p>Konstantiniyye'nin arifesinde bir dünya. Bir devlet seçin, tarihi yeniden yazın.</p></div>
+        <div class="menu-dugmeler">
+          <button id="mDevam" class="birincil" hidden>Devam et<small id="mDevamBilgi"></small></button>
+          <button id="mYeni">Yeni oyun</button>
+          <button id="mYukle">Kayıt yükle</button>
+          <button id="mKaynak">Kaynaklar</button>
+          <button id="mKapat" hidden>Oyuna dön</button>
+        </div>
+      </section>
+      <section data-menu="devlet" hidden>
+        <h2 class="menu-h">Devlet seçin</h2>
+        <div class="satir"><input id="devletAra" type="text" placeholder="Devlet ara…" aria-label="Devlet ara" />
+          <select id="devletSirala" aria-label="Sırala"><option value="buyuk">Büyükten küçüğe</option><option value="ad">Ada göre</option><option value="tarihi">Önce tarihî hükümdarlar</option></select></div>
+        <div id="devletListesi" role="listbox" aria-label="Devletler"></div>
+        <div class="menu-alt"><button data-menu-git="ana">‹ Geri</button><span id="devletSecimBilgi" class="not"></span><button id="mBasla" class="birincil" disabled>Bu devletle başla</button></div>
+      </section>
+      <section data-menu="kayit" hidden>
+        <h2 class="menu-h" id="kayitBaslik">Kayıtlar</h2>
+        <div id="kayitYeni" class="satir"><input id="kayitAdi" type="text" maxlength="40" aria-label="Kayıt adı" /><button id="kayitYeniBtn" class="birincil">Yeni kayıt olarak kaydet</button></div>
+        <ul id="kayitListesi"></ul>
+        <div class="menu-alt"><button data-menu-git="geri">‹ Geri</button></div>
+      </section>
+      <section data-menu="kaynak" hidden>
+        <h2 class="menu-h">Kaynaklar ve lisanslar</h2>
+        <div id="kaynakMetni" class="not"></div>
+        <div class="menu-alt"><button data-menu-git="geri">‹ Geri</button></div>
+      </section>
     </div>
   </div>
 

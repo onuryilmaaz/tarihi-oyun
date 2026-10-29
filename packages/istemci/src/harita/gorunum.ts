@@ -474,9 +474,11 @@ export function haritaGorunumuKur(h: Harita, wikidata: Record<string, WdDevlet>,
     seciliOge: () => secim,
     secVeGit(s) {
       sec(s);
-      if (s?.tur === "sehir") {
-        const c = h.paket.sehirler[s.id];
-        g.cx = c.x; g.cy = c.y; g.z = Math.max(g.z, 40);
+      // Şehirde oraya, devlette başkentine (yoksa ilk şehrine) kaydır
+      const c = s?.tur === "sehir" ? h.paket.sehirler[s.id]
+        : s?.tur === "devlet" ? h.paket.sehirler.find((x) => x.d === s.id && x.b) ?? h.paket.sehirler.find((x) => x.d === s.id) : undefined;
+      if (c) {
+        g.cx = c.x; g.cy = c.y; g.z = Math.max(g.z, s?.tur === "sehir" ? 40 : 20);
         istek();
       }
     },

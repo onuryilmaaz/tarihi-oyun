@@ -1,5 +1,13 @@
 # CHANGELOG
 
+## 2026-10-29 — TASK-0012 / 9a: ana menü, devlet seçimi, kayıt yuvaları (Claude)
+
+- DEC-0055: Aşama 9 kartı onaylandı.
+- İstemci: açılış ana menüsü; 132 devletin seçilebildiği devlet seçimi (arma, hükümdar ya da "kurgusal hükümdar", arazi,
+  din, zorluk ipucu; arama, sıralama, çift tıkla başla); üst çubukta Kaydet / Yükle / ☰ Menü; adlandırılmış kayıt yuvaları
+  (`kayit-deposu.ts`: listele, sil), "Devam et" son kayıttan; Kaynaklar sayfası (ilk sürüm). Yeni oyun rastgele tohumla.
+- `docs/qa/ASAMA-9A-TEST.md`.
+
 ## 2026-10-29 — Oyunun kendi açılır liste penceresi; Aşama 9 taslağı (Claude)
 
 - DEC-0054: 8c kabul, Aşama 8 kapandı.

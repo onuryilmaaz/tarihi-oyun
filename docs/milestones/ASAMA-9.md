@@ -1,6 +1,6 @@
 # Aşama 9 — Tarihî içerik, UX ve optimizasyon
 
-**Durum:** Başlama onayı var (DEC-0054). Görev kartı `tasks/TASK-0012.md` onaylandı (DEC-0055); 9a sürüyor.
+**Durum:** Başlama onayı var (DEC-0054). Görev kartı `tasks/TASK-0012.md` onaylandı (DEC-0055); 9a kabul edildi (DEC-0056); 9b sürüyor.
 
 **Çıktılar (MASTER_SPEC §22):** Onaylı tarihî senaryolar, kaynaklandırma, mobil UI, erişilebilirlik, performans, denge ve oyun içi açıklamalar.
 

@@ -712,3 +712,14 @@ Kaynak belge: `MASTER_SPEC.md` (v1.3). Orijinal keşif çıktısı:
   4. Açılır liste tasarımı ve Aşama 9 taslağı commit + push edilir.
 - **Onay kaydı:** Kullanıcı: "1- evet 2- uygundur 3- önerin gayet iyi 4- evet" (2026-10-29)
 - **Durum:** GEÇERLİ
+
+## DEC-0056 — 9a kabulü ve 9b'ye geçiş
+
+- **Tarih:** 2026-10-29
+- **Seçilen karar:**
+  1. 9a (ana menü, devlet seçimi, kayıt yuvaları) kabul edildi; "kaydı sil" onay penceresinin menü arkasında açılması
+     düzeltildi (onay penceresi menü katmanının üstünde). Commit + push onaylandı.
+  2. 9b başlar: 1453 tahmini şehir nüfusları ve bölge verimi tablosu hazırlanıp onaya sunulur; ardından 50 yıllık
+     simülasyonla denge ayarı.
+- **Onay kaydı:** Kullanıcı: "1- kaydı sil diyince onay ekranı arkada açıldı gerisi sorunsuz 2- evet 3- evet" (2026-10-29)
+- **Durum:** GEÇERLİ

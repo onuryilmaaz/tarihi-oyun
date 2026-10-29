@@ -14,7 +14,7 @@ ozelSecimleriKur();
 import { haritaYukle } from "./harita/veri";
 import { haritaGorunumuKur, kacis, KONUMLAR, type Katmanlar, type WdDevlet } from "./harita/gorunum";
 import { SimIstemcisi, type Ozet, type RotaOnizleme } from "./sim-protokol";
-import { kayitOku, kayitYaz, type Yuva } from "./kayit-deposu";
+import { kayitlariListele, kayitOku, kayitSil, kayitYaz, type Yuva } from "./kayit-deposu";
 import { savasArayuzuKur } from "./savas-arayuzu";
 
 const $ = <T extends HTMLElement = HTMLElement>(id: string) => document.getElementById(id) as T;
@@ -722,7 +722,7 @@ async function baslat() {
       for (const o of y.sonuc?.yeniOlaylar ?? []) {
         if (o.tur === "emir-reddedildi") bildir(`Emir reddedildi: ${o.metin}`, "uyari");
       }
-      await kaydet("otomatik", true);
+      await kaydet("otomatik", "Otomatik kayıt", true);
     } catch (e) {
       bildir(`Tur hesaplanamadı: ${(e as Error).message}`, "hata");
     } finally {
@@ -803,48 +803,153 @@ async function baslat() {
   $("teklifRet").onclick = () => teklifCevapla(false);
   $("teklifSonra").onclick = () => { $("barisTeklifi").hidden = true; };
 
-  const yuvaEtiketiGuncelle = async () => {
-    for (const yuva of ["manuel", "otomatik"] as Yuva[]) {
-      const b = $<HTMLButtonElement>(yuva === "manuel" ? "yukleManuel" : "yukleOtomatik");
-      try {
-        const k = await kayitOku(yuva);
-        b.disabled = !k;
-        b.title = k ? `${k.devlet} · ${k.oyunTarihi}` : "Kayıt yok";
-        b.querySelector("small")!.textContent = k ? k.oyunTarihi : "boş";
-      } catch {
-        b.disabled = true;
-        b.title = "Tarayıcı deposuna erişilemiyor";
-      }
-    }
+  // --- Kayıt yuvaları, ana menü, devlet seçimi (TASK-0012/9a)
+  const sifirla = () => {
+    planli.clear(); bekleyenSavas.clear(); bekleyenTutum.clear(); gosterilenTeklifler.clear();
+    seciliOrdu = null; seciliDonanma = null; secilenAday = null;
+    for (const r of ozet.raporlar) gorulenRaporlar.add(r.id);
   };
-
-  const kaydet = async (yuva: Yuva, sessiz = false) => {
+  const kaydet = async (yuva: Yuva, ad: string, sessiz = false) => {
     try {
       const y = await sim.gonder({ tip: "kaydet" });
-      await kayitYaz(yuva, { metin: y.metin!, oyunTarihi: y.ozet.tarih, devlet: y.ozet.oyuncu.ad, zaman: Date.now() });
-      if (!sessiz) bildir(`Kaydedildi (${yuva === "manuel" ? "manuel" : "otomatik"}): ${y.ozet.tarih}`);
-      await yuvaEtiketiGuncelle();
+      await kayitYaz(yuva, { metin: y.metin!, oyunTarihi: y.ozet.tarih, devlet: y.ozet.oyuncu.ad, zaman: Date.now(), ad });
+      if (!sessiz) bildir(`Kaydedildi: ${ad} (${y.ozet.tarih})`);
     } catch (e) {
       bildir(`Kayıt yazılamadı: ${(e as Error).message}`, "hata");
     }
   };
-
   const yukle = async (yuva: Yuva) => {
-    if (mesgul) return;
+    if (mesgul) return false;
     try {
       const k = await kayitOku(yuva);
-      if (!k) return bildir("Bu yuvada kayıt yok.", "uyari");
+      if (!k) { bildir("Bu yuvada kayıt yok.", "uyari"); return false; }
       ozet = (await sim.gonder({ tip: "yukle", metin: k.metin, senaryo: senaryoKimligi })).ozet;
-      planli.clear();
-      bekleyenSavas.clear();
-      bekleyenTutum.clear();
-      for (const r of ozet.raporlar) gorulenRaporlar.add(r.id);
+      sifirla();
       arayuzuGuncelle();
-      bildir(`Yüklendi: ${ozet.tarih}`);
+      gorunum.secVeGit({ tur: "devlet", id: ozet.oyuncu.indeks });
+      bildir(`Yüklendi: ${k.ad ?? k.devlet} · ${ozet.tarih}`);
+      return true;
     } catch (e) {
       bildir(`Kayıt yüklenemedi: ${(e as Error).message}`, "hata");
+      return false;
     }
   };
+
+  let menuOyunda = false; // oyun başladıysa menü "Oyuna dön" gösterir
+  const menuGecmisi: string[] = [];
+  const menuGoster = (ad: string, geriEkle = true) => {
+    const simdiki = document.querySelector<HTMLElement>("#menuKatmani section:not([hidden])")?.dataset.menu;
+    if (geriEkle && simdiki && simdiki !== ad) menuGecmisi.push(simdiki);
+    document.querySelectorAll<HTMLElement>("#menuKatmani section").forEach((x) => { x.hidden = x.dataset.menu !== ad; });
+    $("menuKatmani").hidden = false;
+  };
+  const menuKapat = () => { $("menuKatmani").hidden = true; menuGecmisi.length = 0; };
+  $("menuKatmani").addEventListener("click", (e) => {
+    const g = (e.target as HTMLElement).closest<HTMLElement>("[data-menu-git]");
+    if (!g) return;
+    const hedef = g.dataset.menuGit === "geri" ? menuGecmisi.pop() ?? "ana" : g.dataset.menuGit!;
+    menuGoster(hedef, false);
+  });
+  const anaMenuyuHazirla = async () => {
+    $("mKapat").hidden = !menuOyunda;
+    try {
+      const son = (await kayitlariListele())[0];
+      $("mDevam").hidden = !son;
+      if (son) { $("mDevam").dataset.yuva = son.yuva; $("mDevamBilgi").textContent = `${son.kayit.ad ?? son.kayit.devlet} · ${son.kayit.oyunTarihi}`; }
+    } catch { $("mDevam").hidden = true; }
+  };
+  const zamanMetni = (t: number) => new Date(t).toLocaleString("tr-TR", { dateStyle: "short", timeStyle: "short" });
+  let kayitKipi: "kaydet" | "yukle" = "yukle";
+  const kayitlariCiz = async () => {
+    $("kayitBaslik").textContent = kayitKipi === "kaydet" ? "Oyunu kaydet" : "Kayıt yükle";
+    $("kayitYeni").hidden = kayitKipi !== "kaydet";
+    if (kayitKipi === "kaydet") $<HTMLInputElement>("kayitAdi").value = `${ozet.oyuncu.ad} · ${ozet.tarih}`;
+    let liste: Awaited<ReturnType<typeof kayitlariListele>> = [];
+    try { liste = await kayitlariListele(); } catch { bildir("Tarayıcı deposuna erişilemiyor.", "hata"); }
+    $("kayitListesi").innerHTML = liste.map(({ yuva, kayit }) => `<li><span><b>${kacis(kayit.ad ?? (yuva === "otomatik" ? "Otomatik kayıt" : "Kayıt"))}</b>
+        <small>${kacis(kayit.devlet)} · ${kacis(kayit.oyunTarihi)} · ${zamanMetni(kayit.zaman)}${yuva === "otomatik" ? " · her tur sonunda" : ""}</small></span>
+      <span class="eylemler">${kayitKipi === "kaydet" ? (yuva === "otomatik" ? "" : `<button data-kayit-yaz="${kacis(yuva)}">Üzerine yaz</button>`) : `<button class="birincil" data-kayit-yukle="${kacis(yuva)}">Yükle</button>`}
+        ${yuva === "otomatik" ? "" : `<button class="tehlike" data-kayit-sil="${kacis(yuva)}" title="Sil">✕</button>`}</span></li>`).join("")
+      || '<li class="bos">Henüz kayıt yok.</li>';
+  };
+  const kayitPenceresi = async (kip: "kaydet" | "yukle") => { kayitKipi = kip; await kayitlariCiz(); menuGoster("kayit"); };
+  $("kayitYeniBtn").onclick = async () => {
+    const ad = $<HTMLInputElement>("kayitAdi").value.trim() || `${ozet.oyuncu.ad} · ${ozet.tarih}`;
+    await kaydet(`kayit:${Date.now()}`, ad);
+    menuKapat();
+  };
+  $("kayitListesi").addEventListener("click", async (e) => {
+    const t = e.target as HTMLElement;
+    const yukleB = t.closest<HTMLElement>("[data-kayit-yukle]"), yazB = t.closest<HTMLElement>("[data-kayit-yaz]"), silB = t.closest<HTMLElement>("[data-kayit-sil]");
+    if (yukleB) {
+      if (menuOyunda && !await onayIste("Kayıt yükle", "Kaydedilmemiş ilerleme kaybolur. Bu kayıt yüklensin mi?", "Yükle")) return;
+      if (await yukle(yukleB.dataset.kayitYukle!)) { menuOyunda = true; menuKapat(); }
+    } else if (yazB) {
+      const k = await kayitOku(yazB.dataset.kayitYaz!);
+      if (!await onayIste("Üzerine yaz", `"${k?.ad ?? "Kayıt"}" üzerine bu oyun yazılsın mı?`, "Üzerine yaz", true)) return;
+      await kaydet(yazB.dataset.kayitYaz!, k?.ad ?? `${ozet.oyuncu.ad} · ${ozet.tarih}`);
+      menuKapat();
+    } else if (silB) {
+      const k = await kayitOku(silB.dataset.kayitSil!);
+      if (!await onayIste("Kaydı sil", `"${k?.ad ?? "Kayıt"}" kalıcı olarak silinsin mi?`, "Sil", true)) return;
+      await kayitSil(silB.dataset.kayitSil!);
+      await kayitlariCiz();
+    }
+  });
+
+  // Devlet seçimi: tablo (hükümdar, din) senaryodan; büyüklük arazi sayısından
+  const araziSayilari = senaryo.devletler.map((v) => senaryo.birimler.filter((b) => b.devlet === v.id).length);
+  let secilenDevlet: number | null = null;
+  const devletleriCiz = () => {
+    const ara = $<HTMLInputElement>("devletAra").value.trim().toLocaleLowerCase("tr-TR");
+    const sirala = $<HTMLSelectElement>("devletSirala").value;
+    const tablo = senaryo.hukumdarlar?.hukumdarlar ?? [];
+    const liste = senaryo.devletler.map((v, i) => ({ v, i, t: tablo.find((x) => x.devlet === v.id), n: araziSayilari[i] }))
+      .filter((x) => x.n > 0 && (!ara || x.v.ad.toLocaleLowerCase("tr-TR").includes(ara)))
+      .sort((a, b) => sirala === "ad" ? a.v.ad.localeCompare(b.v.ad, "tr") : sirala === "tarihi" ? Number(!!b.t) - Number(!!a.t) || b.n - a.n : b.n - a.n);
+    $("devletListesi").innerHTML = liste.map(({ v, i, t, n }) => {
+      const din = senaryo.nufus?.devletler[v.id]?.din ?? "bilinmiyor";
+      const zorluk = n >= 40 ? ["kolay", "Kolay"] : n >= 10 ? ["orta", "Orta"] : ["zor", "Zor"];
+      return `<button class="devlet-kart${secilenDevlet === i ? " secili" : ""}" data-devlet-sec="${i}" role="option" aria-selected="${secilenDevlet === i}">
+        <span class="arma">${armaSvg(gorunum.devletRengiHex(i), din, v.ad)}</span>
+        <span><b>${kacis(v.ad)}</b><small>${t ? kacis(t.ad) : '<span title="Tarihî verisi olmayan devlet">kurgusal hükümdar</span>'} · ${n} arazi · ${kacis(dinAdi(din))}</small>
+        <small class="zorluk-${zorluk[0]}">${zorluk[1]}</small></span></button>`;
+    }).join("") || '<p class="not">Eşleşen devlet yok.</p>';
+    $<HTMLButtonElement>("mBasla").disabled = secilenDevlet === null;
+    $("devletSecimBilgi").textContent = secilenDevlet === null ? "Bir devlet seçin." : senaryo.devletler[secilenDevlet].ad;
+  };
+  $("devletAra").addEventListener("input", devletleriCiz);
+  $("devletSirala").addEventListener("change", devletleriCiz);
+  $("devletListesi").addEventListener("click", (e) => {
+    const b = (e.target as HTMLElement).closest<HTMLElement>("[data-devlet-sec]");
+    if (b) { secilenDevlet = Number(b.dataset.devletSec); devletleriCiz(); }
+  });
+  $("devletListesi").addEventListener("dblclick", (e) => { if ((e.target as HTMLElement).closest("[data-devlet-sec]")) $("mBasla").click(); });
+  $("mBasla").onclick = async () => {
+    if (secilenDevlet === null) return;
+    if (menuOyunda && !await onayIste("Yeni oyun", "Kaydedilmemiş ilerleme kaybolur. Yeni oyun başlasın mı?", "Başla", true)) return;
+    const tohum = Number(parametreler.get("tohum")) || crypto.getRandomValues(new Uint32Array(1))[0];
+    ozet = (await sim.gonder({ tip: "yeniOyun", senaryo, tohum, oyuncu: senaryo.devletler[secilenDevlet].id })).ozet;
+    sifirla();
+    arayuzuGuncelle();
+    gorunum.secVeGit({ tur: "devlet", id: ozet.oyuncu.indeks });
+    menuOyunda = true;
+    menuKapat();
+    bildir(`${ozet.oyuncu.ad} ile yeni oyun: ${ozet.tarih}`);
+  };
+  $("mYeni").onclick = () => { secilenDevlet = ozet.oyuncu.indeks; devletleriCiz(); menuGoster("devlet"); };
+  $("mYukle").onclick = () => kayitPenceresi("yukle");
+  $("mDevam").onclick = async () => { if (await yukle($("mDevam").dataset.yuva!)) { menuOyunda = true; menuKapat(); } };
+  $("mKapat").onclick = menuKapat;
+  $("mKaynak").onclick = () => menuGoster("kaynak");
+  $("kaynakMetni").innerHTML = `<ul>
+    <li><b>Sınırlar:</b> OpenHistoricalMap (CC0) + agent tahmini; tahmin sınırları Ayar → Katmanlar'dan kesikli gösterilebilir.</li>
+    <li><b>Kıyı, nehir, göl:</b> Natural Earth (kamu malı).</li>
+    <li><b>Arazi zorluğu:</b> NOAA ETOPO 2022 (kamu malı).</li>
+    <li><b>Devlet kimlikleri:</b> Wikidata (CC0).</li>
+    <li><b>Hükümdarlar, ilişkiler, nüfus grupları, deniz bölgeleri:</b> agent'ın tarihî tahmini; hepsi taslaktır, ayrıntılı kaynaklandırma 9d'de.</li>
+    <li><b>Armalar:</b> oyunun ürettiği simgelerdir; tarihî arma iddiası taşımaz.</li></ul>`;
+  $("menuBtn").onclick = async () => { await anaMenuyuHazirla(); menuGoster("ana", false); };
 
   // --- Denetimler
   for (const b of document.querySelectorAll<HTMLButtonElement>("[data-sure]")) {
@@ -854,10 +959,10 @@ async function baslat() {
     };
   }
   $("ilerleBtn").onclick = turuIlerlet;
-  $("kaydetBtn").onclick = () => kaydet("manuel");
-  $("yukleManuel").onclick = () => yukle("manuel");
-  $("yukleOtomatik").onclick = () => yukle("otomatik");
+  $("kaydetBtn").onclick = () => kayitPenceresi("kaydet");
+  $("yukleBtn").onclick = () => kayitPenceresi("yukle");
   window.addEventListener("keydown", (e) => {
+    if (!$("menuKatmani").hidden) { if (e.key === "Escape" && menuOyunda && $("onay").hidden) menuKapat(); return; }
     if (e.key === "Escape" && !$("teknoloji").hidden && $("onay").hidden) { $("teknoloji").hidden = true; return; }
     if (e.code !== "Space" || !$("verasetPencere").hidden || !$("kesinti").hidden || !$("rapor").hidden || !$("onay").hidden || !$("baris").hidden || !$("teknoloji").hidden || !$("barisTeklifi").hidden) return;
     const etiket = (e.target as HTMLElement).tagName;
@@ -883,8 +988,10 @@ async function baslat() {
 
 
   arayuzuGuncelle();
-  await yuvaEtiketiGuncelle();
   $("yukleniyor").remove();
+  // Açılışta ana menü; ?devlet= ile doğrudan oyun (geliştirme/test kısayolu)
+  if (parametreler.get("devlet")) menuOyunda = true;
+  else { await anaMenuyuHazirla(); menuGoster("ana", false); }
 }
 
 baslat().catch((e) => {
