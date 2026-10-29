@@ -31,7 +31,7 @@ export type Emir =
   // Test: askerî kontrolü değiştir (gerçek işgal savaşla Aşama 4'te; AT-007 modelinin sınanması)
   | { tur: "testIsgal"; hedef: "birim" | "sehir"; indeks: number; devlet: number }
   // Serbest savaş ilanı (MASTER_SPEC §7.1); diplomatik sonuçlar Aşama 6'da
-  | { tur: "savasIlan"; devlet: number; hedef: number }
+  | { tur: "savasIlan"; devlet: number; hedef: number; gerekce?: string } // gerekçe: AI ilanında (6c)
   // Geri çekilme tutumu (DEC-0008)
   | { tur: "orduTutum"; ordu: number; tutum: Tutum }
   // devlet: yalnızca AI kararlarında (TASK-0009/6b); oyuncu emrinde boş bırakılır
@@ -48,7 +48,9 @@ export type Emir =
   // Diplomasi (TASK-0009/6a, DEC-0038); her zaman oyuncu devleti adına
   | { tur: "ittifakTeklif"; hedef: number }
   | { tur: "ittifakBoz"; hedef: number }
-  | { tur: "hediye"; hedef: number; miktar: number };
+  | { tur: "hediye"; hedef: number; miktar: number }
+  // AI barış teklifine cevap (TASK-0009/6c)
+  | { tur: "barisCevap"; teklif: number; kabul: boolean };
 
 export type Dogrulama = { gecerli: true } | { gecerli: false; neden: string };
 
@@ -90,7 +92,7 @@ export function emirDogrula(d: DunyaDurumu, e: Emir, b: Baglam = BOS_BAGLAM, kuy
       return barisDogrula(d, e);
     case "kusat": {
       const o = orduBul(d, e.ordu), s = d.sehirler[e.sehir];
-      if (!o || o.devlet !== d.ayarlar.oyuncu || !s) return { gecerli: false, neden: "Kendi ordunuzu ve hedef şehri seçin." };
+      if (!o || !s) return { gecerli: false, neden: "Kendi ordunuzu ve hedef şehri seçin." };
       if (!["abluka", "bekle", "saldiri"].includes(e.yontem)) return { gecerli: false, neden: "Kuşatma yöntemi geçersiz." };
       if (!savasta(d, o.devlet, s.kontrol)) return { gecerli: false, neden: "Şehrin kontrolünü elinde tutan devletle savaşta değilsiniz." };
       if (o.rota.length || o.cekiliyor || o.muharebe !== null || o.asker <= 0 || o.moral <= 0) return { gecerli: false, neden: "Kuşatma için ordu yürüyüş ve muharebe dışında, morali sıfırdan yüksek olmalı." };
@@ -103,7 +105,7 @@ export function emirDogrula(d: DunyaDurumu, e: Emir, b: Baglam = BOS_BAGLAM, kuy
     }
     case "kusatmaBirak": {
       const o = orduBul(d, e.ordu);
-      return o?.devlet === d.ayarlar.oyuncu && orduKusatmasi(d, o.id) ? { gecerli: true } : { gecerli: false, neden: "Ordu kuşatmada değil." };
+      return o && orduKusatmasi(d, o.id) ? { gecerli: true } : { gecerli: false, neden: "Ordu kuşatmada değil." };
     }
     case "insaat": {
       const s = d.sehirler[e.sehir];
@@ -116,6 +118,12 @@ export function emirDogrula(d: DunyaDurumu, e: Emir, b: Baglam = BOS_BAGLAM, kuy
       const para = kuyrukHaric ? d.devletler[s.devlet].hazine : kullanilabilirHazine(d, s.devlet);
       if (para < 0 || bedel > para) return { gecerli: false, neden: `Hazine yetersiz: ${para} kullanılabilir, ${bedel} gerekli. Borçlanma yoktur.` };
       return { gecerli: true };
+    }
+    case "barisCevap": {
+      const t = d.barisTeklifleri.find((x) => x.id === e.teklif);
+      if (!t) return { gecerli: false, neden: "Barış teklifi artık geçerli değil." };
+      if (!kuyrukHaric && d.emirKuyrugu.some((x) => x.tur === "barisCevap" && x.teklif === e.teklif)) return { gecerli: false, neden: "Bu teklife zaten cevap verdiniz." };
+      return e.kabul ? barisDogrula(d, t.talep, t.alan) : { gecerli: true };
     }
     case "ittifakTeklif":
     case "ittifakBoz":
@@ -256,8 +264,12 @@ export function orduyuDurdur(o: OrduDurumu): void {
 
 /** Emri doğrular ve kuyruğa ekler. Dünya durumunu (kuyruk dışında) değiştirmez. */
 export function emirVer(d: DunyaDurumu, e: Emir, b: Baglam = BOS_BAGLAM): Dogrulama {
-  if ((e.tur === "insaat" || e.tur === "arastir" || e.tur === "askerTopla") && e.devlet !== undefined && e.devlet !== d.ayarlar.oyuncu) {
-    return { gecerli: false, neden: "Yalnızca kendi devletiniz adına emir verebilirsiniz." };
+  // Oyuncu yalnızca kendi devleti ve kendi orduları adına emir verir; AI aynı doğrulamayı emirUygula ile kullanır (6b/6c)
+  const oyuncu = d.ayarlar.oyuncu;
+  if (((e.tur === "insaat" || e.tur === "arastir" || e.tur === "askerTopla") && e.devlet !== undefined && e.devlet !== oyuncu)
+    || (e.tur === "savasIlan" && e.devlet !== oyuncu)
+    || ("ordu" in e && orduBul(d, e.ordu) && orduBul(d, e.ordu)!.devlet !== oyuncu)) {
+    return { gecerli: false, neden: "Yalnızca kendi devletiniz ve ordularınız adına emir verebilirsiniz." };
   }
   const s = emirDogrula(d, e, b);
   if (s.gecerli) d.emirKuyrugu.push(e);
@@ -373,9 +385,22 @@ export function emirUygula(d: DunyaDurumu, e: Emir, b: Baglam = BOS_BAGLAM): voi
     }
     case "savasIlan":
       d.savaslar.push({ id: d.sonrakiSavasId++, saldiran: e.devlet, savunan: e.hedef, baslangic: d.gun });
-      olayEkle(d, { tur: "savas-ilani", devlet: e.devlet, metin: `${d.devletler[e.devlet].ad}, ${d.devletler[e.hedef].ad}'na savaş ilan etti.` });
+      {
+        // Savaş ilanı herkesin bildiği bir olaydır; oyuncuya ilan edilirse tur durur (DEC-0038/4)
+        const oyuncu = d.ayarlar.oyuncu;
+        const metin = `${d.devletler[e.devlet].ad}, ${d.devletler[e.hedef].ad}'na savaş ilan etti.${e.gerekce ? ` Gerekçe: ${e.gerekce}` : ""}`;
+        olayEkle(d, { tur: "savas-ilani", devlet: [e.devlet, e.hedef].includes(oyuncu) ? oyuncu : null, metin });
+        if (e.hedef === oyuncu && e.devlet !== oyuncu && !d.aktifKesinti) d.aktifKesinti = { gun: d.gun, neden: metin };
+      }
       savasIlaniSonuclari(d, b.ag, e.devlet, e.hedef);
       break;
+    case "barisCevap": {
+      const t = d.barisTeklifleri.find((x) => x.id === e.teklif)!;
+      d.barisTeklifleri = d.barisTeklifleri.filter((x) => x !== t);
+      if (e.kabul) barisiUygula(d, b, t.talep, t.alan);
+      else olayEkle(d, { tur: "baris-ret", devlet: d.ayarlar.oyuncu, metin: `${d.devletler[t.teklifEden].ad}'nın barış teklifini reddettiniz; savaş sürüyor.` });
+      break;
+    }
     case "ittifakTeklif": {
       const oyuncu = d.ayarlar.oyuncu, ad = d.devletler[e.hedef].ad;
       const c = ittifakDegerlendir(d, diplomasiOnHesap(d, b.ag), oyuncu, e.hedef);

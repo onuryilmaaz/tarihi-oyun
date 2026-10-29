@@ -58,6 +58,9 @@ export interface Kusatma {
 export interface IsgalHazirligi { birim: number; devlet: number; gun: number }
 export interface BarisTalebi { savas: number; birimler: number[]; sehirler: number[]; tazminat: number }
 export interface BarisKaydi extends BarisTalebi { gun: number; devlet: number; karsi: number }
+/** AI'dan oyuncuya barış teklifi (TASK-0009/6c); alan: talep edilen yerleri alacak taraf */
+export interface BarisTeklifi { id: number; savas: number; teklifEden: number; alan: number; talep: BarisTalebi; gun: number; gerekce: string }
+export interface Ateskes { a: number; b: number; bitis: number } // a < b
 
 /** Geri çekilme tutumu: muharebede moral bu eşiğin altına düşünce çekilir (DEC-0008, DEC-0027/3) */
 export type Tutum = "temkinli" | "dengeli" | "inatci";
@@ -164,6 +167,9 @@ export interface DunyaDurumu {
   saldirganlik: number[]; // devlet başına; ayda söner
   ittifaklar: Ittifak[];
   yzSayac: { insaat: number; arastirma: number; asker: number }; // yıllık dünya özeti (6b)
+  barisTeklifleri: BarisTeklifi[]; // 6c
+  sonrakiTeklifId: number;
+  ateskesler: Ateskes[];
   kusatmalar: Kusatma[];
   isgalHazirliklari: IsgalHazirligi[];
   barislar: BarisKaydi[];
@@ -199,7 +205,7 @@ export interface SenaryoVerisi {
 // 2: ordular ve şehir kontrolü (TASK-0006); 3: savaş, muharebe, moral, garnizon orduları (TASK-0007/4a)
 // 4: insan gücü ve asker toplama (TASK-0007/4b); şema 3 için eklemeli dönüşüm var.
 // 5: kuşatma, gerçek işgal ve barış (TASK-0007/4c); şema 3–4 için eklemeli dönüşüm var.
-export const SEMA_SURUMU = 9; // 6: şehir yatırımları (TASK-0008/5b); 7: teknoloji (5c); 8: diplomasi (TASK-0009/6a); 9: AI ekonomi (6b)
+export const SEMA_SURUMU = 10; // 10: AI savaş/barış (6c); 6: şehir yatırımları (TASK-0008/5b); 7: teknoloji (5c); 8: diplomasi (TASK-0009/6a); 9: AI ekonomi (6b)
 
 export function baslangicDurumu(s: SenaryoVerisi, secenek: { tohum: number; oyuncu?: string }): DunyaDurumu {
   const indeks = new Map(s.devletler.map((d, i) => [d.id, i]));
@@ -267,6 +273,9 @@ export function baslangicDurumu(s: SenaryoVerisi, secenek: { tohum: number; oyun
     }),
     saldirganlik: s.devletler.map(() => 0),
     yzSayac: { insaat: 0, arastirma: 0, asker: 0 },
+    barisTeklifleri: [],
+    sonrakiTeklifId: 1,
+    ateskesler: [],
     ittifaklar: (s.ittifaklar ?? []).map((r) => {
       const [a, b] = [bul(r.a), bul(r.b)].sort((x, y) => x - y);
       return { a, b, baslangic: tarihtenGun(s.baslangic) };
@@ -378,6 +387,11 @@ export function degismezler(d: DunyaDurumu): string[] {
       || d.devletler[a.devlet].teknolojiler.includes(a.teknoloji) || arastiran.has(`${a.devlet}:${a.teknoloji}`)) h.push(`araştırma ${i} geçersiz`);
     arastiran.add(`${a.devlet}:${a.teknoloji}`);
   });
+  for (const t of d.barisTeklifleri) {
+    const s = d.savaslar.find((v) => v.id === t.savas);
+    if (!s || ![s.saldiran, s.savunan].includes(t.teklifEden) || ![s.saldiran, s.savunan].includes(t.alan) || !tam(t.id) || t.id >= d.sonrakiTeklifId) h.push(`barış teklifi ${t.id} geçersiz`);
+  }
+  for (const a of d.ateskesler) if (!d.devletler[a.a] || !d.devletler[a.b] || a.a >= a.b || !tam(a.bitis)) h.push("ateşkes geçersiz");
   const y = d.yzSayac;
   if (!y || ![y.insaat, y.arastirma, y.asker].every((x) => tam(x) && x >= 0)) h.push("AI sayacı geçersiz");
   if (!Array.isArray(d.saldirganlik) || d.saldirganlik.length !== n || d.saldirganlik.some((x) => !tam(x) || x < 0)) h.push("saldırganlık geçersiz");

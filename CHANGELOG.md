@@ -1,5 +1,17 @@
 # CHANGELOG
 
+## 2026-10-29 — TASK-0009 / 6c: AI savaş ilanı, sefer, kuşatma, barış (Claude)
+
+- DEC-0040: 6b kabul edildi; garnizon tabanı 0.
+- `packages/sim/src/yz-savas.ts`: gerekçeli AI savaş ilanı (komşu, kötü ilişki, görünür bilgiye dayalı güç tahmini,
+  olasılık, ateşkes), sefer (kuşatma, başkent savunması, işgal, en yakın hedef), AI-AI barış ve oyuncuya barış teklifi.
+- Barış/kuşatma doğrulaması oyuncudan bağımsızlaştırıldı (`barisDogrula/barisiUygula(…, devlet)`); oyuncu yalnızca
+  kendi devleti/ordusu adına emir verir. `barisCevap` emri; ateşkes kaydı. Kayıt şeması 10.
+- Oyuncuya savaş ilanı ve barış teklifi turu durdurur; teklif penceresi (Kabul / Reddet / Sonra), Savaşlar listesinde
+  "Gelen teklifi cevapla". AI-AI savaş ve barışları dünya haberi olarak günlükte.
+- `packages/sim/test/yz-savas.test.ts` (6 test; toplam 129). 15 yıllık gerçek senaryo: yılda 0–4 yeni savaş,
+  toprak değişimi, 3 devlet yıkıldı; yıllık tur ~0,3–0,7 sn; değişmez hatası 0.
+
 ## 2026-10-29 — TASK-0009 / 6b: AI ekonomi ve ordu hazırlığı (Claude)
 
 - DEC-0039: 6a ve başlangıç ilişki tablosu kabul edildi. DEC-0040: 6b kabul; garnizon tabanı 2.000 → 0

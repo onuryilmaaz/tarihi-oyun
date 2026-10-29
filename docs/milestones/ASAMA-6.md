@@ -1,6 +1,6 @@
 # Aşama 6 — Diplomasi ve AI devletleri
 
-**Durum:** Başlama onayı var (DEC-0037). Görev kartı `tasks/TASK-0009.md` onaylandı (DEC-0038); 6a kabul edildi (DEC-0039); 6b kabul edildi (DEC-0040); 6c sürüyor.
+**Durum:** Başlama onayı var (DEC-0037). Görev kartı `tasks/TASK-0009.md` onaylandı (DEC-0038); 6a kabul edildi (DEC-0039); 6b kabul edildi (DEC-0040); 6c tamamlandı, kullanıcı testi bekliyor.
 
 **Çıktılar (MASTER_SPEC §22):** İlişkiler, savaş ilanı, ittifaklar, diplomasi haritası, AI'nin temel
 devlet yönetimi ve savaş/barış kararları.

@@ -152,7 +152,10 @@ async function baslat() {
       <dt>Aylık ordu maaşı</dt><dd>−${para(butce.aylikMaas)}<small class="not"> · ${para(butce.askerSayisi)} asker</small></dd>
       <dt>Aylık fark</dt><dd id="butceNet" class="${butce.aylikNet < 0 ? "eksi" : "artı"}">${butce.aylikNet > 0 ? "+" : ""}${para(butce.aylikNet)}</dd>`;
     $("savasListesi").innerHTML = ozet.savaslar.map((s) =>
-      `<li>${gorunum.devletRenkKutusu(s.karsi)}<span>${kacis(h.paket.devletler[s.karsi].ad)}<small>${s.saldiran ? "Siz ilan ettiniz" : "Size ilan etti"} · ${kacis(s.baslangic)}<br />Savaş skoru: ${s.skor}</small><button data-baris="${s.id}">Barış teklif et</button></span></li>`).join("")
+      `<li>${gorunum.devletRenkKutusu(s.karsi)}<span>${kacis(h.paket.devletler[s.karsi].ad)}<small>${s.saldiran ? "Siz ilan ettiniz" : "Size ilan etti"} · ${kacis(s.baslangic)}<br />Savaş skoru: ${s.skor}</small>${(() => {
+        const t = ozet.barisTeklifleri.find((x) => x.devlet === s.karsi);
+        return t ? `<button data-teklif="${t.id}">${t.cevap === null ? "Gelen teklifi cevapla" : "Cevabınız bekliyor"}</button>` : "";
+      })()}<button data-baris="${s.id}">Barış teklif et</button></span></li>`).join("")
       + [...bekleyenSavas].map((d) => `<li>${gorunum.devletRenkKutusu(d)}<span>${kacis(h.paket.devletler[d].ad)}<small>İlan edildi · bir sonraki turda başlar</small></span></li>`).join("")
       || '<li class="bos">Savaş yok. Bir devleti seçip savaş ilan edebilirsiniz.</li>';
     savasUI.guncelle();
@@ -482,6 +485,7 @@ async function baslat() {
       if (yeniRapor.length) raporGoster(yeniRapor[yeniRapor.length - 1]);
       $("sonTur").textContent = `Son tur: ${Math.round(y.sureMs ?? 0)} ms`;
       if (y.sonuc?.kesinti) kesintiGoster(ozet.tarih, y.sonuc.kesinti.neden);
+      else teklifGoster();
       for (const o of y.sonuc?.yeniOlaylar ?? []) {
         if (o.tur === "emir-reddedildi") bildir(`Emir reddedildi: ${o.metin}`, "uyari");
       }
@@ -501,7 +505,39 @@ async function baslat() {
     $("kesinti").hidden = false;
     $<HTMLButtonElement>("kesintiTamam").focus();
   };
-  $("kesintiTamam").onclick = () => { $("kesinti").hidden = true; };
+  $("kesintiTamam").onclick = () => { $("kesinti").hidden = true; teklifGoster(); };
+  // AI'dan gelen barış teklifi (TASK-0009/6c): oyunun kendi penceresi; bir kez kendiliğinden açılır
+  const gosterilenTeklifler = new Set<number>();
+  let acikTeklif: number | null = null;
+  const teklifGoster = (id?: number) => {
+    const t = id !== undefined ? ozet.barisTeklifleri.find((x) => x.id === id)
+      : ozet.barisTeklifleri.find((x) => x.cevap === null && !gosterilenTeklifler.has(x.id));
+    if (!t || !$("kesinti").hidden) return;
+    gosterilenTeklifler.add(t.id);
+    acikTeklif = t.id;
+    const ad = h.paket.devletler[t.devlet].ad;
+    const yerler = [...t.sehirler.map((i) => senaryo.sehirler[i].ad), ...t.birimler.map((i) => birimAdi(i))];
+    $("teklifBaslik").textContent = `${ad}: barış teklifi`;
+    $("teklifIcerik").innerHTML = `<p>${kacis(ad)} ${kacis(t.gerekce)}.</p>
+      <p><b>${yerler.length ? `${t.size ? "Size geçecek" : "Onlara geçecek"}: ` : "Toprak değişmez (karşılıksız barış)."}</b>${kacis(yerler.join(", "))}</p>
+      <p class="not">${t.cevap === null ? `Teklif ${t.kalanGun} gün daha geçerli.` : `Cevabınız: ${t.cevap ? "kabul" : "ret"} — bir sonraki tur başında uygulanır.`}</p>`;
+    for (const b of ["teklifKabul", "teklifRet"]) $<HTMLButtonElement>(b).disabled = t.cevap !== null;
+    $("barisTeklifi").hidden = false;
+  };
+  const teklifCevapla = async (kabul: boolean) => {
+    if (acikTeklif === null) return;
+    const ad = h.paket.devletler[ozet.barisTeklifleri.find((x) => x.id === acikTeklif)!.devlet].ad;
+    if (await emirGonder({ tur: "barisCevap", teklif: acikTeklif, kabul }, kabul ? `${ad} ile barış kabul edildi; bir sonraki tur başında uygulanır.` : `${ad}'nın teklifi reddedildi.`)) {
+      $("barisTeklifi").hidden = true;
+    }
+  };
+  $("savasListesi").addEventListener("click", (e) => {
+    const b = (e.target as HTMLElement).closest<HTMLElement>("[data-teklif]");
+    if (b) teklifGoster(Number(b.dataset.teklif));
+  });
+  $("teklifKabul").onclick = () => teklifCevapla(true);
+  $("teklifRet").onclick = () => teklifCevapla(false);
+  $("teklifSonra").onclick = () => { $("barisTeklifi").hidden = true; };
 
   const yuvaEtiketiGuncelle = async () => {
     for (const yuva of ["manuel", "otomatik"] as Yuva[]) {
@@ -559,7 +595,7 @@ async function baslat() {
   $("yukleOtomatik").onclick = () => yukle("otomatik");
   window.addEventListener("keydown", (e) => {
     if (e.key === "Escape" && !$("teknoloji").hidden && $("onay").hidden) { $("teknoloji").hidden = true; return; }
-    if (e.code !== "Space" || !$("kesinti").hidden || !$("rapor").hidden || !$("onay").hidden || !$("baris").hidden || !$("teknoloji").hidden) return;
+    if (e.code !== "Space" || !$("kesinti").hidden || !$("rapor").hidden || !$("onay").hidden || !$("baris").hidden || !$("teknoloji").hidden || !$("barisTeklifi").hidden) return;
     const etiket = (e.target as HTMLElement).tagName;
     if (etiket === "INPUT" || etiket === "SELECT" || etiket === "TEXTAREA") return;
     e.preventDefault();

@@ -139,7 +139,7 @@ export function savasIlaniSonuclari(d: DunyaDurumu, ag: HareketAgi | null, saldi
     if (m === d.ayarlar.oyuncu || p >= DENGE.CAGRI_ESIGI) {
       d.savaslar.push({ id: d.sonrakiSavasId++, saldiran, savunan: m, baslangic: d.gun });
       const metin = `${ad}, müttefiki ${savunanAd}'nın çağrısına uyarak ${saldiranAd} ile savaşa girdi.`;
-      olayEkle(d, { tur: "ittifak-cagri", devlet: m === d.ayarlar.oyuncu ? m : saldiran, metin });
+      olayEkle(d, { tur: "ittifak-cagri", devlet: [m, saldiran].includes(d.ayarlar.oyuncu) ? d.ayarlar.oyuncu : null, metin });
       if ([m, saldiran].includes(d.ayarlar.oyuncu) && !d.aktifKesinti) d.aktifKesinti = { gun: d.gun, neden: metin };
     } else {
       d.ittifaklar = d.ittifaklar.filter((i) => !(i.a === Math.min(m, savunan) && i.b === Math.max(m, savunan)));

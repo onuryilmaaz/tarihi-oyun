@@ -13,6 +13,7 @@ import { diplomasiOnHesap, iliski, komsuMu, type DiplomasiOnHesap } from "./dipl
 import { arastirmaEngeli, pazarGeliriSeviyeBasina, TEKNOLOJILER, toplamaBedelYuzde, yapiEnYuksek, type Alan } from "./teknoloji";
 import { insaatMaliyeti, sehirdeInsaatVar } from "./yatirim";
 import { gundenTarih } from "./takvim";
+import { barisKararlari, savasKarari } from "./yz-savas";
 
 /** Tehdit nedeni (herkesin bildiği bilgilerden) ya da null. */
 export function tehditNedeni(d: DunyaDurumu, on: DiplomasiOnHesap, devlet: number): string | null {
@@ -35,6 +36,9 @@ export function devletKarari(d: DunyaDurumu, b: Baglam, on: DiplomasiOnHesap, de
     emirUygula(d, e, b);
     return true;
   };
+  // 6c: önce süren savaşların barışı, sonra yeni savaş kararı (tehdit hesabı ilanı da görür)
+  barisKararlari(d, b, devlet);
+  savasKarari(d, b, on, devlet);
   const tehdit = tehditNedeni(d, on, devlet);
   const sehirler = d.sehirler.flatMap((s, i) => (s.devlet === devlet && s.kontrol === devlet ? [i] : []));
 

@@ -137,6 +137,10 @@
     .arti { color: #9fcf7a; } .eksi { color: var(--hata); }
     .hediye-satir { display: flex; gap: 6px; align-items: center; margin-top: 6px; }
     .hediye-satir input { width: 90px; }
+    #barisTeklifi { position: fixed; inset: 0; display: grid; place-items: center; background: rgba(15,12,9,.6); z-index: 11; }
+    #barisTeklifi .panel { position: static; width: min(520px, calc(100% - 32px)); max-height: calc(100% - 48px); overflow: auto; padding: 22px; }
+    #barisTeklifi h3 { font-family: "Cinzel", serif; margin: 0 0 8px; }
+    #barisTeklifi .satir { justify-content: flex-end; gap: 8px; margin-top: 10px; }
     #onay { position: fixed; inset: 0; display: grid; place-items: center; background: rgba(15, 12, 9, .5); z-index: 12; }
     #onay .panel { position: static; width: min(440px, calc(100% - 32px)); padding: 22px; text-align: center; }
     #onay h3 { font-family: "Cinzel", serif; margin: 0 0 8px; font-size: 18px; }
@@ -338,6 +342,15 @@
     <div><span style="background:#4f8f4a"></span>Müttefik</div>
     <div><span style="background:#a33a2f"></span>Savaştasınız</div>
     <div><span style="background:linear-gradient(90deg,#c98a7e,#d8cdb5,#9cc08f)"></span>Tarafsız: size bakışı (kötü → iyi)</div>
+  </div>
+
+  <div id="barisTeklifi" hidden>
+    <div class="panel" role="dialog" aria-modal="true" aria-labelledby="teklifBaslik">
+      <h3 id="teklifBaslik">Barış teklifi</h3>
+      <div id="teklifIcerik"></div>
+      <p class="not">Cevabınız bir sonraki turun başında uygulanır. Kabul ederseniz savaş biter; reddederseniz sürer.</p>
+      <div class="satir"><button id="teklifSonra">Sonra karar ver</button><button id="teklifRet" class="tehlike">Reddet</button><button id="teklifKabul">Kabul et</button></div>
+    </div>
   </div>
 
   <div id="teknoloji" hidden>

@@ -3,7 +3,7 @@ import { readFileSync } from "node:fs";
 import { join } from "node:path";
 import { describe, expect, it } from "vitest";
 import {
-  agHazirla, baslangicDurumu, degismezler, durumOzeti, emirVer, gorunurYabanciOrdular, kaydet, muharebeGunu,
+  agHazirla, baslangicDurumu, degismezler, durumOzeti, emirleriUygula, emirVer, gunIlerlet, gorunurYabanciOrdular, kaydet, muharebeGunu,
   turSuresiAyarla, turuIlerlet, yukle, type Baglam, type DunyaDurumu, type SenaryoVerisi, type Tutum,
 } from "../src";
 
@@ -27,16 +27,21 @@ function karamanSeferi(tohum = 1453, karamanTutumu: Tutum = "dengeli") {
   karamanOrdusu.tutum = karamanTutumu;
   expect(emirVer(d, { tur: "savasIlan", devlet: osm, hedef: kar }, B).gecerli).toBe(true);
   turSuresiAyarla(d, "hafta");
-  turuIlerlet(d, B); // savaş ilanı tur başında uygulanır
-  const anadolu = ordu(d, "Anadolu Ordusu");
-  expect(emirVer(d, { tur: "orduHedef", ordu: anadolu.id, ...sehirHedefi("Larende") }, B).gecerli).toBe(true);
   const kesintiler: string[] = [];
-  for (let i = 0; i < 40 && !d.muharebeRaporlari.length; i++) {
+  const ilk = turuIlerlet(d, B); // savaş ilanı tur başında uygulanır; Karaman (AI) da hemen sefere çıkabilir (6c)
+  if (ilk.kesinti) kesintiler.push(ilk.kesinti.neden);
+  const anadolu = ordu(d, "Anadolu Ordusu");
+  if (anadolu.muharebe === null && !anadolu.cekiliyor) {
+    expect(emirVer(d, { tur: "orduHedef", ordu: anadolu.id, ...sehirHedefi("Larende") }, B).gecerli).toBe(true);
+  }
+  // AI devletleri kendi aralarında da savaşır (6c); yalnızca Osmanlı–Karaman muharebesi izlenir
+  const bizim = () => d.muharebeRaporlari.filter((r) => r.taraflar.some((t) => t.devlet === osm));
+  for (let i = 0; i < 40 && !bizim().length; i++) {
     const s = turuIlerlet(d, B);
     if (s.kesinti) kesintiler.push(s.kesinti.neden);
     expect(degismezler(d)).toEqual([]);
   }
-  return { d, osm, kar, kesintiler };
+  return { d, osm, kar, kesintiler, rapor: () => bizim()[0] };
 }
 
 describe("savaş ilanı ve erişim", () => {
@@ -50,7 +55,7 @@ describe("savaş ilanı ve erişim", () => {
     expect(emirVer(d, { tur: "orduHedef", ordu: anadolu.id, ...sehirHedefi("Konya") }, B).gecerli).toBe(true);
     expect(emirVer(d, { tur: "savasIlan", devlet: osm, hedef: kar }, B).gecerli).toBe(false); // çift ilan
     turuIlerlet(d, B);
-    expect(d.savaslar).toHaveLength(1);
+    expect(d.savaslar.filter((s) => s.saldiran === osm || s.savunan === osm)).toHaveLength(1); // AI'lar kendi aralarında da savaşabilir (6c)
     expect(d.gunluk.some((o) => o.tur === "savas-ilani")).toBe(true);
     expect(d.gunluk.some((o) => o.tur === "emir-reddedildi")).toBe(false);
     expect(anadolu.rota.length).toBeGreaterThan(0); // yürüyüş ilanla aynı turda başladı
@@ -59,10 +64,10 @@ describe("savaş ilanı ve erişim", () => {
 
 describe("muharebe (AT-008)", () => {
   it("karşılaşmada tur durur; muharebe otomatik çözülür ve ayrıntılı rapor üretilir", () => {
-    const { d, osm, kar, kesintiler } = karamanSeferi();
+    const { d, osm, kar, kesintiler, rapor } = karamanSeferi();
     expect(kesintiler.some((k) => k.startsWith("Muharebe başladı"))).toBe(true);
-    expect(d.muharebeRaporlari).toHaveLength(1);
-    const r = d.muharebeRaporlari[0];
+    const r = rapor();
+    expect(r).toBeDefined();
     expect(r.taraflar.map((t) => t.devlet).sort()).toEqual([osm, kar].sort());
     for (const t of r.taraflar) {
       expect(t.kayip).toBeGreaterThan(0);
@@ -73,13 +78,13 @@ describe("muharebe (AT-008)", () => {
     expect(r.bitis).toBeGreaterThanOrEqual(r.baslangic);
     const kaybeden = r.taraflar.find((t) => t.devlet !== r.kazanan)!;
     expect(["geri-cekildi", "dagildi"]).toContain(kaybeden.sonuc);
-    expect(d.muharebeler).toHaveLength(0);
-    expect(d.ordular.every((o) => o.muharebe === null)).toBe(true);
+    expect(d.muharebeler.filter((m) => m.taraflar.some((t) => t.devlet === osm))).toHaveLength(0);
+    expect(d.ordular.filter((o) => o.devlet === osm || o.devlet === kar).every((o) => o.muharebe === null)).toBe(true);
   });
 
   it("geri çekilen ordu kendi şehrine yürür ve çekilmeyi tamamlar", () => {
-    const { d } = karamanSeferi();
-    const r = d.muharebeRaporlari[0];
+    const { d, rapor } = karamanSeferi();
+    const r = rapor();
     const kaybeden = r.taraflar.find((t) => t.devlet !== r.kazanan)!;
     if (kaybeden.sonuc !== "geri-cekildi") return; // dağıldıysa çekilme yok
     const cekilen = d.ordular.filter((o) => o.devlet === kaybeden.devlet && o.cekiliyor);
@@ -100,20 +105,24 @@ describe("muharebe (AT-008)", () => {
   });
 
   it("tutum: inatçı ordu temkinli olandan daha uzun dayanır (DEC-0008)", () => {
-    const sure = (t: Tutum) => { const r = karamanSeferi(1453, t).d.muharebeRaporlari[0]; return r.bitis - r.baslangic; };
+    const sure = (t: Tutum) => { const r = karamanSeferi(1453, t).rapor(); return r.bitis - r.baslangic; };
     expect(sure("inatci")).toBeGreaterThanOrEqual(sure("temkinli"));
   });
 
   it("muharebeli sefer deterministiktir; muharebe ortasında kayıt/yükleme sonucu değiştirmez", () => {
     expect(durumOzeti(karamanSeferi(7).d)).toBe(durumOzeti(karamanSeferi(7).d));
-    // Muharebe başladığı anda kaydet
-    const d = yeni(11);
-    emirVer(d, { tur: "savasIlan", devlet: devlet(d, "osm"), hedef: devlet(d, "kar") }, B);
-    turSuresiAyarla(d, "hafta");
-    turuIlerlet(d, B);
+    // Muharebe başladığı anda kaydet (gün gün ilerleyerek: AI ordusu artık kendisi de hareket eder, 6c)
+    const d = yeni(11), osm = devlet(d, "osm");
+    d.ordular.find((o) => o.devlet === devlet(d, "kar"))!.asker = 10000; // tek günde dağılmasın (garnizon tabanı 0, DEC-0040)
+    emirVer(d, { tur: "savasIlan", devlet: osm, hedef: devlet(d, "kar") }, B);
+    emirleriUygula(d, B);
     emirVer(d, { tur: "orduHedef", ordu: ordu(d, "Anadolu Ordusu").id, ...sehirHedefi("Larende") }, B);
-    for (let i = 0; i < 40 && !d.muharebeler.length; i++) turuIlerlet(d, B);
-    expect(d.muharebeler).toHaveLength(1);
+    emirleriUygula(d, B);
+    const bizim = () => d.muharebeler.filter((m) => m.taraflar.some((t) => t.devlet === osm));
+    for (let i = 0; i < 280 && !bizim().length; i++) gunIlerlet(d, B);
+    expect(bizim()).toHaveLength(1);
+    d.aktifKesinti = null;
+    turSuresiAyarla(d, "hafta");
     const e = yukle(kaydet(d), d.senaryo);
     for (let i = 0; i < 3; i++) { turuIlerlet(d, B); turuIlerlet(e, B); }
     expect(durumOzeti(e)).toBe(durumOzeti(d));

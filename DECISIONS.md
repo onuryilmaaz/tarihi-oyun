@@ -548,3 +548,14 @@ Kaynak belge: `MASTER_SPEC.md` (v1.3). Orijinal keşif çıktısı:
   3. 6b commit + push onaylandı; 6c (AI savaş ilanı, sefer, kuşatma, barış) başlar.
 - **Onay kaydı:** Kullanıcı: "1- test başarılı 2- a 3- evet 4- başla" (2026-10-29)
 - **Durum:** GEÇERLİ
+
+## DEC-0041 — 6c kabulü ve Aşama 6 kapanışı
+
+- **Tarih:** 2026-10-29
+- **Seçilen karar:**
+  1. 6c (AI savaş ilanı, sefer, kuşatma, barış, oyuncuya gelen teklifler) kullanıcı tarafından test edildi ve kabul edildi.
+  2. **Aşama 6 kapandı.** AI'lar arası yeni ittifak kurma ve ileri diplomasi (geçiş izni, ticaret, vasallık,
+     ateşkes antlaşması, ambargo) sonraki bir alt adıma ertelendi; ayrıca onaylanır.
+  3. 6c commit + push onaylandı. Aşama 7'ye geçiş ayrıca kullanıcı onayı ister.
+- **Onay kaydı:** Kullanıcı: "1- tamam 2- pushla 3- a" (2026-10-29)
+- **Durum:** GEÇERLİ

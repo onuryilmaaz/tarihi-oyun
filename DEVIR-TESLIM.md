@@ -21,7 +21,8 @@ Son güncelleme: **2026-10-29, Claude (Opus 5.5)** — Codex'in 4b/4c/5a işinde
 - **Aşama 6: TASK-0009 onaylandı (DEC-0038). 6a tamamlandı** (`diplomasi.ts`, şema 8, 116 test, Diplomasi
   harita modu). 6a ve başlangıç ilişki tablosu kabul edildi, commit edildi (DEC-0039).
 - **6b kabul edildi ve commit edildi** (DEC-0040; garnizon tabanı 0, eksi bütçeli başlangıç 71 → 0).
-  **Sıradaki: 6c (AI savaş ilanı, sefer, kuşatma, barış; oyuncuya gelen ilan/teklif turu durdurur) — uygulanıyor.**
+- **6c tamamlandı** (`yz-savas.ts`, şema 10, 129 test) — commit edilmedi; kullanıcı testi ve commit izni bekleniyor.
+  Ardından Aşama 6 kapanış değerlendirmesi (kapı: kullanıcı dünya davranışını onaylar).
 - Aşağıdaki 2–3. bölümler Codex'in notlarıdır; "5b/5c sorusuna yanıt yok" bilgisi artık geçersiz (DEC-0033).
 - Arayüz notu: Ordu işaretinin olduğu şehre tıklamak orduyu seçer; şehir paneline sol paneldeki
   "Şehir yatırımları → Şehri aç" ile de ulaşılır.

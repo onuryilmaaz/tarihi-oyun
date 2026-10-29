@@ -24,9 +24,9 @@ export function barisBedeli(d: DunyaDurumu, devlet: number, karsi: number, t: Ba
   return toprak + Math.ceil(t.tazminat / DENGE.TAZMINAT_PUAN_BASINA);
 }
 
-export function barisDogrula(d: DunyaDurumu, t: BarisTalebi): Dogrulama {
+/** devlet: talep eden (kazanan) taraf; oyuncu emri için varsayılan oyuncu. AI da aynı kuralla barış yapar (6c). */
+export function barisDogrula(d: DunyaDurumu, t: BarisTalebi, devlet = d.ayarlar.oyuncu): Dogrulama {
   const s = d.savaslar.find((v) => v.id === t.savas);
-  const devlet = d.ayarlar.oyuncu;
   if (!s || (s.saldiran !== devlet && s.savunan !== devlet)) return { gecerli: false, neden: "Tarafı olduğunuz savaş bulunamadı." };
   const karsi = s.saldiran === devlet ? s.savunan : s.saldiran;
   if (!Array.isArray(t.birimler) || !Array.isArray(t.sehirler)
@@ -57,9 +57,9 @@ function baskentleriGuncelle(d: DunyaDurumu): void {
 }
 
 /** Yalnızca doğrulanmış talep için, turun başında. İsteğe bağlı tazminat eksi hazine yaratamaz. */
-export function barisiUygula(d: DunyaDurumu, b: Baglam, t: BarisTalebi): void {
+export function barisiUygula(d: DunyaDurumu, b: Baglam, t: BarisTalebi, devlet = d.ayarlar.oyuncu): void {
   const s = d.savaslar.find((v) => v.id === t.savas)!;
-  const devlet = d.ayarlar.oyuncu, karsi = s.saldiran === devlet ? s.savunan : s.saldiran;
+  const karsi = s.saldiran === devlet ? s.savunan : s.saldiran;
   const taraflar = [devlet, karsi];
   // Önce bu savaşa ait muharebe ve kuşatmaları bitir; diğer savaşlar sürer.
   const bitenMuharebeler = d.muharebeler.filter((m) => m.taraflar.every((a) => taraflar.includes(a.devlet))).map((m) => m.id);
@@ -110,8 +110,18 @@ export function barisiUygula(d: DunyaDurumu, b: Baglam, t: BarisTalebi): void {
       }
     }
   }
+  // Ateşkes: AI bu ikiliye bir süre savaş açmaz; savaşa ait bekleyen teklifler düşer (6c)
+  d.ateskesler = d.ateskesler.filter((a) => !(a.a === Math.min(devlet, karsi) && a.b === Math.max(devlet, karsi)));
+  d.ateskesler.push({ a: Math.min(devlet, karsi), b: Math.max(devlet, karsi), bitis: d.gun + DENGE.ATESKES_GUN });
+  d.barisTeklifleri = d.barisTeklifleri.filter((x) => x.savas !== t.savas);
   d.barislar.push({ savas: t.savas, tazminat: t.tazminat, birimler: [...t.birimler], sehirler: [...t.sehirler], gun: d.gun, devlet, karsi });
   if (d.barislar.length > DENGE.BARIS_GECMISI_SINIRI) d.barislar.shift();
-  olayEkle(d, { tur: "baris", devlet,
-    metin: `${d.devletler[karsi].ad} ile barış yapıldı: ${t.birimler.length} arazi, ${t.sehirler.length} şehir, ${t.tazminat} tazminat. Talep edilmeyen işgaller kaldırıldı.` });
+  // İki AI arasındaki barış herkesin bildiği bir dünya haberidir (devlet: null)
+  const oyuncu = d.ayarlar.oyuncu;
+  olayEkle(d, { tur: "baris", devlet: taraflar.includes(oyuncu) ? oyuncu : null,
+    metin: !taraflar.includes(oyuncu)
+      ? `${d.devletler[devlet].ad} ile ${d.devletler[karsi].ad} barış yaptı: ${t.birimler.length} arazi, ${t.sehirler.length} şehir ${d.devletler[devlet].ad}'na geçti.`
+      : devlet !== oyuncu
+        ? `${d.devletler[devlet].ad} ile barış yapıldı: ${t.birimler.length} arazi, ${t.sehirler.length} şehir onlara geçti, ${t.tazminat} tazminat.`
+        : `${d.devletler[karsi].ad} ile barış yapıldı: ${t.birimler.length} arazi, ${t.sehirler.length} şehir, ${t.tazminat} tazminat. Talep edilmeyen işgaller kaldırıldı.` });
 }

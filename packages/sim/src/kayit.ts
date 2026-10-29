@@ -86,6 +86,13 @@ export function yukle(metin: string, beklenenSenaryo?: string): DunyaDurumu {
   if (d.sema === 8) {
     // Şema 8 → 9 (TASK-0009/6b): AI faaliyet sayacı
     d.yzSayac = { insaat: 0, arastirma: 0, asker: 0 };
+    d.sema = 9;
+  }
+  if (d.sema === 9) {
+    // Şema 9 → 10 (TASK-0009/6c): barış teklifi ve ateşkes yok
+    d.barisTeklifleri = [];
+    d.sonrakiTeklifId = 1;
+    d.ateskesler = [];
     d.sema = SEMA_SURUMU;
   }
   if (d.sema !== SEMA_SURUMU) throw new KayitHatasi("Kayıt tutarsız: dünya şema sürümü uyuşmuyor.");

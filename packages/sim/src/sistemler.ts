@@ -17,6 +17,7 @@ import { insaatlariIlerlet } from "./yatirim";
 import { arastirmalariIlerlet } from "./teknoloji";
 import { diplomasiSonumu } from "./diplomasi";
 import { yzKararlari, yzYillikOzet } from "./yz";
+import { seferKararlari, teklifSureleri } from "./yz-savas";
 
 export type Siklik = "gunluk" | "aylik" | "yillik";
 
@@ -58,6 +59,9 @@ export const SISTEMLER: Sistem[] = [
   { id: "arastirma", siklik: "gunluk", calistir: arastirmalariIlerlet },
   // AI devletleri (TASK-0009/6b): her devlet 30 günde bir, kendi gününde
   { id: "yz-ekonomi", siklik: "gunluk", calistir: yzKararlari },
+  // 6c: savaştaki AI orduları birkaç günde bir yeni hedef alır; oyuncuya gelen teklifler 30 gün geçerli
+  { id: "yz-sefer", siklik: "gunluk", calistir: seferKararlari },
+  { id: "baris-teklif-suresi", siklik: "gunluk", calistir: teklifSureleri },
   {
     // Test: her gün rastgele bir şehrin nüfusu 0–2 artar (rastgelelik akışını her gün kullanır)
     id: "test-nufus",

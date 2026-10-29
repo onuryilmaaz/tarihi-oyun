@@ -119,4 +119,17 @@ export const DENGE = {
   YZ_MAAS_NET_YUZDE: 50, // yeni askerin maaşı aylık fazlanın en çok bu yüzdesi
   YZ_TOPLAMA_EN_AZ: 500,
   YZ_DUSMANCA_ESIK: -40, // bu ilişkideki büyük komşu tehdit sayılır
+  // 6c — AI savaş ve barış (DEC-0040); hepsi [TASLAK]
+  YZ_SAVAS_ILISKI: -30, // en az bu kadar kötü ilişki
+  YZ_SAVAS_GUC_YUZDE: 150, // kendi ordusu / (hedef + müttefikleri tahmini) en az bu yüzde
+  YZ_SAVAS_OLASILIK: 25, // koşullar uygunsa bir ayda ilan etme olasılığı (%)
+  YZ_SALDIRGANLIK_SINIRI: 20, // saldırganlığı bu düzeydeyken yeni savaş açmaz
+  ATESKES_GUN: 1825, // barıştan sonra AI aynı devlete 5 yıl savaş açmaz
+  YZ_SEFER_ARALIGI: 5, // gün; savaştaki AI ordularına bu aralıkla yeni emir
+  YZ_SEFER_MORAL: 500, // bu moralin altındaki ordu sefere çıkmaz
+  YZ_SALDIRI_GUC_KATI: 2, // gereken kuşatma gücünün bu katı varsa surlara saldırır, yoksa abluka
+  YZ_BARIS_SKOR: 20, // bu skora ulaşan taraf barış dayatır/teklif eder
+  YZ_SAVAS_YORGUNLUK_GUN: 730, // bu kadar süren dengeli savaş beyaz barışla biter
+  YZ_KAYBEDEN_TEKLIF_GUN: 180, // kaybeden taraf bu süreden sonra oyuncuya taviz teklif eder
+  BARIS_TEKLIF_GUN: 30, // oyuncuya gelen teklifin geçerlilik süresi
 };
