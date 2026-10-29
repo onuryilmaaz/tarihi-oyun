@@ -1,5 +1,16 @@
 # CHANGELOG
 
+## 2026-10-29 — TASK-0009 / 6b: AI ekonomi ve ordu hazırlığı (Claude)
+
+- DEC-0039: 6a ve başlangıç ilişki tablosu kabul edildi. DEC-0040: 6b kabul; garnizon tabanı 2.000 → 0
+  (başlangıçta eksi bütçeli devlet 71 → 0).
+- `packages/sim/src/yz.ts`: AI devletleri 30 günde bir (günlere yayılmış) karar verir; yedek para korunur;
+  tehdit (savaş ya da düşmanca büyük komşu — yalnızca açık bilgi) varsa asker → sur → askerî araştırma,
+  yoksa araştırma → tarla/pazar → asker. Emirler oyuncuyla aynı doğrulamadan geçer (`emirUygula` ayrıldı).
+- Başka devletlere özel olaylar oyuncu günlüğüne yazılmaz; yıllık "dünya özeti" olayı. Kayıt şeması 9.
+- `packages/sim/test/yz.test.ts` (5 test; toplam 122). 10 yıllık gerçek senaryo ölçümü: yıllık tur ~0,2 sn,
+  değişmez hatası yok.
+
 ## 2026-10-29 — TASK-0009 / 6a: ilişkiler, ittifak, hediye, diplomasi haritası (Claude)
 
 - DEC-0038: Aşama 6 kartı onaylandı.

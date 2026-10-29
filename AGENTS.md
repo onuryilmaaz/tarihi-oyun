@@ -17,7 +17,7 @@ kaynak: `MASTER_SPEC.md` §21 ve §27.
 
 ## Mevcut durum
 
-- **Aşama:** 6 (diplomasi ve AI devletleri) — TASK-0009 onaylandı (DEC-0038); 6a kabul edildi (DEC-0039), 6b uygulanıyor.
+- **Aşama:** 6 (diplomasi ve AI devletleri) — TASK-0009 onaylandı (DEC-0038); 6a, 6b kabul edildi (DEC-0039, DEC-0040); 6c uygulanıyor.
   Aşama 4 ve 5 kapandı (DEC-0037; şehir yönetimi otomasyonu Aşama 7'ye ertelendi). Durum için `DEVIR-TESLIM.md`.
 - **Yerel sunucu (DEC-0036):** Kullanıcı da agent da **5173**'teki geliştirme sunucusunu kullanır
   (kullanıcı başlattı, kapatılmaz; kod değişince kendini yeniler). Kullanıcıya test adımı 5173 ile verilir;

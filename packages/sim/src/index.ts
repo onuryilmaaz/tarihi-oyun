@@ -11,6 +11,7 @@ export * from "./ekonomi";
 export * from "./yatirim";
 export * from "./teknoloji";
 export * from "./diplomasi";
+export * from "./yz";
 export * from "./kusatma";
 export * from "./baris";
 export * from "./savas";

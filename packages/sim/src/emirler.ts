@@ -34,16 +34,17 @@ export type Emir =
   | { tur: "savasIlan"; devlet: number; hedef: number }
   // Geri çekilme tutumu (DEC-0008)
   | { tur: "orduTutum"; ordu: number; tutum: Tutum }
-  | { tur: "askerTopla"; sehir: number; asker: number }
+  // devlet: yalnızca AI kararlarında (TASK-0009/6b); oyuncu emrinde boş bırakılır
+  | { tur: "askerTopla"; sehir: number; asker: number; devlet?: number }
   | { tur: "orduBol"; ordu: number; asker: number }
   | { tur: "orduBirlestir"; ordu: number; diger: number }
   | { tur: "kusat"; ordu: number; sehir: number; yontem: KusatmaYontemi }
   | { tur: "kusatmaBirak"; ordu: number }
   | ({ tur: "baris" } & BarisTalebi)
   // Şehir yatırımı (TASK-0008/5b, DEC-0033)
-  | { tur: "insaat"; sehir: number; yapi: YapiTuru }
+  | { tur: "insaat"; sehir: number; yapi: YapiTuru; devlet?: number }
   // Teknoloji araştırması (TASK-0008/5c, DEC-0035); her zaman oyuncu devleti için
-  | { tur: "arastir"; teknoloji: TeknolojiId }
+  | { tur: "arastir"; teknoloji: TeknolojiId; devlet?: number }
   // Diplomasi (TASK-0009/6a, DEC-0038); her zaman oyuncu devleti adına
   | { tur: "ittifakTeklif"; hedef: number }
   | { tur: "ittifakBoz"; hedef: number }
@@ -106,7 +107,7 @@ export function emirDogrula(d: DunyaDurumu, e: Emir, b: Baglam = BOS_BAGLAM, kuy
     }
     case "insaat": {
       const s = d.sehirler[e.sehir];
-      if (!s || s.devlet !== d.ayarlar.oyuncu || s.kontrol !== s.devlet) return { gecerli: false, neden: "Yalnızca kontrolünüzdeki kendi şehrinize yatırım yapabilirsiniz." };
+      if (!s || s.devlet !== (e.devlet ?? d.ayarlar.oyuncu) || s.kontrol !== s.devlet) return { gecerli: false, neden: "Yalnızca kontrolünüzdeki kendi şehrinize yatırım yapabilirsiniz." };
       if (!["tarla", "pazar", "sur"].includes(e.yapi)) return { gecerli: false, neden: "Geçersiz yapı türü." };
       if (d.kusatmalar.some((k) => k.sehir === e.sehir)) return { gecerli: false, neden: "Kuşatma altındaki şehirde inşaat başlatılamaz." };
       if (sehirdeInsaatVar(d, e.sehir, kuyrukHaric)) return { gecerli: false, neden: `${s.ad} şehrinde zaten bir inşaat sürüyor ya da bekliyor; aynı anda tek inşaat yapılır.` };
@@ -139,7 +140,8 @@ export function emirDogrula(d: DunyaDurumu, e: Emir, b: Baglam = BOS_BAGLAM, kuy
     }
     case "arastir": {
       if (!teknolojiGecerli(e.teknoloji)) return { gecerli: false, neden: "Geçersiz teknoloji." };
-      const oyuncu = d.ayarlar.oyuncu;
+      const oyuncu = e.devlet ?? d.ayarlar.oyuncu;
+      if (!d.devletler[oyuncu]) return { gecerli: false, neden: "Devlet bulunamadı." };
       const engel = arastirmaEngeli(d, oyuncu, e.teknoloji, kuyrukHaric);
       if (engel) return { gecerli: false, neden: engel };
       const bedel = DENGE.TEKNOLOJI[e.teknoloji].bedel;
@@ -149,7 +151,7 @@ export function emirDogrula(d: DunyaDurumu, e: Emir, b: Baglam = BOS_BAGLAM, kuy
     }
     case "askerTopla": {
       const s = d.sehirler[e.sehir];
-      if (!s || s.devlet !== d.ayarlar.oyuncu || s.kontrol !== s.devlet) return { gecerli: false, neden: "Asker yalnızca kontrolünüzdeki kendi şehrinizden toplanır." };
+      if (!s || s.devlet !== (e.devlet ?? d.ayarlar.oyuncu) || s.kontrol !== s.devlet) return { gecerli: false, neden: "Asker yalnızca kontrolünüzdeki kendi şehrinizden toplanır." };
       const n = b.ag?.dugumler[s.dugum];
       if (!n || d.birimler[n.b]?.kontrol !== s.devlet) return { gecerli: false, neden: "Şehir çevresi kontrolünüzde ve hareket ağına bağlı olmalı." };
       if (!Number.isSafeInteger(e.asker) || e.asker <= 0 || !Number.isSafeInteger(e.asker * DENGE.TOPLAMA_ASKER_BASINA_MALIYET_BINDE)) return { gecerli: false, neden: "Asker sayısı pozitif tam sayı olmalı." };
@@ -254,6 +256,9 @@ export function orduyuDurdur(o: OrduDurumu): void {
 
 /** Emri doğrular ve kuyruğa ekler. Dünya durumunu (kuyruk dışında) değiştirmez. */
 export function emirVer(d: DunyaDurumu, e: Emir, b: Baglam = BOS_BAGLAM): Dogrulama {
+  if ((e.tur === "insaat" || e.tur === "arastir" || e.tur === "askerTopla") && e.devlet !== undefined && e.devlet !== d.ayarlar.oyuncu) {
+    return { gecerli: false, neden: "Yalnızca kendi devletiniz adına emir verebilirsiniz." };
+  }
   const s = emirDogrula(d, e, b);
   if (s.gecerli) d.emirKuyrugu.push(e);
   return s;
@@ -267,138 +272,143 @@ export function emirleriUygula(d: DunyaDurumu, b: Baglam = BOS_BAGLAM): void {
   for (const e of kuyruk) {
     const s = emirDogrula(d, e, b, true);
     if (!s.gecerli) {
-      olayEkle(d, { tur: "emir-reddedildi", devlet: "devlet" in e ? e.devlet : d.ayarlar.oyuncu, metin: s.neden });
+      olayEkle(d, { tur: "emir-reddedildi", devlet: ("devlet" in e ? e.devlet : undefined) ?? d.ayarlar.oyuncu, metin: s.neden });
       continue;
     }
-    switch (e.tur) {
-      case "baris":
-        barisiUygula(d, b, e);
-        break;
-      case "kusat": {
-        const o = orduBul(d, e.ordu)!, s = d.sehirler[e.sehir];
-        let k = d.kusatmalar.find((a) => a.sehir === e.sehir);
-        if (!k) {
-          k = { sehir: e.sehir, devlet: o.devlet, savunan: s.kontrol, ordular: [], yontem: e.yontem,
-            baslangic: d.gun, gun: 0, erzak: DENGE.KUSATMA_ERZAK };
-          d.kusatmalar.push(k);
-        }
-        if (!k.ordular.includes(o.id)) k.ordular.push(o.id);
-        k.yontem = e.yontem;
-        olayEkle(d, { tur: "kusatma-emri", devlet: o.devlet, metin: `${s.ad} kuşatması: ${{ abluka: "kara ablukası", bekle: "teslim bekleme", saldiri: "surlara saldırı" }[e.yontem]}.` });
-        break;
+    emirUygula(d, e, b);
+  }
+}
+
+/** Doğrulanmış tek emri uygular (oyuncu kuyruğu ve AI kararları aynı yolu kullanır). */
+export function emirUygula(d: DunyaDurumu, e: Emir, b: Baglam = BOS_BAGLAM): void {
+  switch (e.tur) {
+    case "baris":
+      barisiUygula(d, b, e);
+      break;
+    case "kusat": {
+      const o = orduBul(d, e.ordu)!, s = d.sehirler[e.sehir];
+      let k = d.kusatmalar.find((a) => a.sehir === e.sehir);
+      if (!k) {
+        k = { sehir: e.sehir, devlet: o.devlet, savunan: s.kontrol, ordular: [], yontem: e.yontem,
+          baslangic: d.gun, gun: 0, erzak: DENGE.KUSATMA_ERZAK };
+        d.kusatmalar.push(k);
       }
-      case "kusatmaBirak":
-        kusatmadanCikar(d, e.ordu);
-        break;
-      case "insaat": {
-        const s = d.sehirler[e.sehir];
-        const bedel = insaatMaliyeti(d, s, e.yapi)!;
-        const hedef = yapiSeviyesi(s, e.yapi) + 1;
-        const sure = insaatSuresi(d, s.devlet, e.yapi);
-        d.devletler[s.devlet].hazine -= bedel;
-        d.insaatlar.push({ sehir: e.sehir, devlet: s.devlet, yapi: e.yapi, hedef, kalanGun: sure });
-        olayEkle(d, { tur: "insaat-basladi", devlet: s.devlet,
-          metin: `${s.ad}: ${YAPI_ADLARI[e.yapi]} ${hedef}. seviye inşaatı başladı (${sure} gün). Bedel: −${bedel}.` });
-        break;
-      }
-      case "arastir": {
-        const devlet = d.ayarlar.oyuncu, t = DENGE.TEKNOLOJI[e.teknoloji];
-        d.devletler[devlet].hazine -= t.bedel;
-        d.arastirmalar.push({ devlet, teknoloji: e.teknoloji, kalanGun: t.sure });
-        olayEkle(d, { tur: "arastirma-basladi", devlet, metin: `${teknolojiBul(e.teknoloji).ad} araştırması başladı (${t.sure} gün). Bedel: −${t.bedel}.` });
-        break;
-      }
-      case "askerTopla": {
-        const s = d.sehirler[e.sehir];
-        const bedel = toplamaMaliyeti(e.asker, toplamaBedelYuzde(d, s.devlet));
-        const sure = toplamaSuresi(d, s.devlet);
-        d.devletler[s.devlet].hazine -= bedel;
-        s.insanGucu -= e.asker;
-        d.askerToplamalar.push({ sehir: e.sehir, devlet: s.devlet, asker: e.asker, kalanGun: sure });
-        olayEkle(d, { tur: "asker-toplama", devlet: s.devlet, metin: `${s.ad}: ${e.asker} asker toplanıyor (${sure} gün). Bedel: −${bedel}.` });
-        break;
-      }
-      case "orduBol": {
-        const o = orduBul(d, e.ordu)!;
-        o.asker -= e.asker;
-        const yeni = { ...o, id: d.sonrakiOrduId++, asker: e.asker, ad: `${o.ad} · Ayrılan birlik`, rota: [], hedef: null };
-        d.ordular.push(yeni);
-        olayEkle(d, { tur: "ordu-bolundu", devlet: o.devlet, metin: `${o.ad}: ${e.asker} asker ayrı orduya ayrıldı; moral ve tutum korundu.` });
-        break;
-      }
-      case "orduBirlestir": {
-        const o = orduBul(d, e.ordu)!, a = orduBul(d, e.diger)!;
-        o.moral = Math.floor((o.moral * o.asker + a.moral * a.asker) / (o.asker + a.asker));
-        o.asker += a.asker;
-        d.ordular = d.ordular.filter((x) => x.id !== a.id);
-        olayEkle(d, { tur: "ordu-birlesti", devlet: o.devlet, metin: `${a.ad}, ${o.ad} ile birleşti (${o.asker} asker); seçili ordunun tutumu korundu.` });
-        break;
-      }
-      case "harca":
-        d.devletler[e.devlet].hazine -= e.miktar;
-        olayEkle(d, { tur: "harcama", devlet: e.devlet, metin: `${e.aciklama}: −${e.miktar}` });
-        break;
-      case "testKesintisi":
-        d.planliKesintiler.push({ gun: d.gun + e.gunSonra, neden: e.neden });
-        break;
-      case "orduHedef": {
-        const o = orduBul(d, e.ordu)!;
-        kusatmadanCikar(d, o.id);
-        orduyuDurdur(o);
-        const r = rotaBul(d, b.ag!, o, e);
-        if (!r.gecerli) break; // doğrulandı; buraya düşmez
-        o.rota = r.adimlar;
-        o.hedef = { x: e.x, y: e.y };
-        olayEkle(d, { tur: "ordu-yuruyus", devlet: o.devlet,
-          metin: `${o.ad} yürüyüşe başladı; tahmini varış ${tarihMetni(d.gun + r.gun)} (${r.gun} gün).` });
-        break;
-      }
-      case "orduDur": {
-        const o = orduBul(d, e.ordu)!;
-        kusatmadanCikar(d, o.id);
-        if (o.rota.length) olayEkle(d, { tur: "ordu-durdu", devlet: o.devlet, metin: `${o.ad} durduruldu.` });
-        orduyuDurdur(o);
-        break;
-      }
-      case "savasIlan":
-        d.savaslar.push({ id: d.sonrakiSavasId++, saldiran: e.devlet, savunan: e.hedef, baslangic: d.gun });
-        olayEkle(d, { tur: "savas-ilani", devlet: e.devlet, metin: `${d.devletler[e.devlet].ad}, ${d.devletler[e.hedef].ad}'na savaş ilan etti.` });
-        savasIlaniSonuclari(d, b.ag, e.devlet, e.hedef);
-        break;
-      case "ittifakTeklif": {
-        const oyuncu = d.ayarlar.oyuncu, ad = d.devletler[e.hedef].ad;
-        const c = ittifakDegerlendir(d, diplomasiOnHesap(d, b.ag), oyuncu, e.hedef);
-        if (c.kabul) ittifakKur(d, oyuncu, e.hedef);
-        olayEkle(d, { tur: "ittifak-cevap", devlet: oyuncu,
-          metin: c.kabul ? `${ad} savunma ittifakı teklifinizi kabul etti. ${c.nedenler.join(" ")}` : `${ad} ittifak teklifinizi reddetti: ${c.nedenler.join(" ")}` });
-        break;
-      }
-      case "ittifakBoz":
-        ittifakBoz(d, d.ayarlar.oyuncu, e.hedef);
-        olayEkle(d, { tur: "ittifak-bozuldu", devlet: d.ayarlar.oyuncu, metin: `${d.devletler[e.hedef].ad} ile ittifaktan çıktınız; ilişkiniz bozuldu (${DENGE.ETKI_ITTIFAK_BOZMA}).` });
-        break;
-      case "hediye": {
-        const oyuncu = d.ayarlar.oyuncu;
-        const puan = hediyePuani(d, diplomasiOnHesap(d, b.ag), oyuncu, e.hedef, e.miktar);
-        d.devletler[oyuncu].hazine -= e.miktar;
-        d.devletler[e.hedef].hazine += e.miktar;
-        if (puan > 0) etkiEkle(d, oyuncu, e.hedef, "hediye", puan);
-        olayEkle(d, { tur: "hediye", devlet: oyuncu, metin: `${d.devletler[e.hedef].ad}'na ${e.miktar} hediye gönderildi; ilişki +${puan}.` });
-        break;
-      }
-      case "orduTutum":
-        orduBul(d, e.ordu)!.tutum = e.tutum;
-        break;
-      case "testIsgal": {
-        const hedef = e.hedef === "birim" ? d.birimler[e.indeks] : d.sehirler[e.indeks];
-        const sahip = "sahip" in hedef ? hedef.sahip : hedef.devlet;
-        hedef.kontrol = e.devlet;
-        hedef.isgalBaslangic = e.devlet === sahip ? null : d.gun;
-        olayEkle(d, { tur: "test-isgal", devlet: e.devlet, metin: e.devlet === sahip
-          ? `Test: askerî kontrol yasal sahibe döndü (${e.hedef} ${e.indeks}).`
-          : `Test: ${d.devletler[e.devlet].ad} askerî kontrolü aldı (${e.hedef} ${e.indeks}).` });
-        break;
-      }
+      if (!k.ordular.includes(o.id)) k.ordular.push(o.id);
+      k.yontem = e.yontem;
+      olayEkle(d, { tur: "kusatma-emri", devlet: o.devlet, metin: `${s.ad} kuşatması: ${{ abluka: "kara ablukası", bekle: "teslim bekleme", saldiri: "surlara saldırı" }[e.yontem]}.` });
+      break;
+    }
+    case "kusatmaBirak":
+      kusatmadanCikar(d, e.ordu);
+      break;
+    case "insaat": {
+      const s = d.sehirler[e.sehir];
+      const bedel = insaatMaliyeti(d, s, e.yapi)!;
+      const hedef = yapiSeviyesi(s, e.yapi) + 1;
+      const sure = insaatSuresi(d, s.devlet, e.yapi);
+      d.devletler[s.devlet].hazine -= bedel;
+      d.insaatlar.push({ sehir: e.sehir, devlet: s.devlet, yapi: e.yapi, hedef, kalanGun: sure });
+      olayEkle(d, { tur: "insaat-basladi", devlet: s.devlet,
+        metin: `${s.ad}: ${YAPI_ADLARI[e.yapi]} ${hedef}. seviye inşaatı başladı (${sure} gün). Bedel: −${bedel}.` });
+      break;
+    }
+    case "arastir": {
+      const devlet = e.devlet ?? d.ayarlar.oyuncu, t = DENGE.TEKNOLOJI[e.teknoloji];
+      d.devletler[devlet].hazine -= t.bedel;
+      d.arastirmalar.push({ devlet, teknoloji: e.teknoloji, kalanGun: t.sure });
+      olayEkle(d, { tur: "arastirma-basladi", devlet, metin: `${teknolojiBul(e.teknoloji).ad} araştırması başladı (${t.sure} gün). Bedel: −${t.bedel}.` });
+      break;
+    }
+    case "askerTopla": {
+      const s = d.sehirler[e.sehir];
+      const bedel = toplamaMaliyeti(e.asker, toplamaBedelYuzde(d, s.devlet));
+      const sure = toplamaSuresi(d, s.devlet);
+      d.devletler[s.devlet].hazine -= bedel;
+      s.insanGucu -= e.asker;
+      d.askerToplamalar.push({ sehir: e.sehir, devlet: s.devlet, asker: e.asker, kalanGun: sure });
+      olayEkle(d, { tur: "asker-toplama", devlet: s.devlet, metin: `${s.ad}: ${e.asker} asker toplanıyor (${sure} gün). Bedel: −${bedel}.` });
+      break;
+    }
+    case "orduBol": {
+      const o = orduBul(d, e.ordu)!;
+      o.asker -= e.asker;
+      const yeni = { ...o, id: d.sonrakiOrduId++, asker: e.asker, ad: `${o.ad} · Ayrılan birlik`, rota: [], hedef: null };
+      d.ordular.push(yeni);
+      olayEkle(d, { tur: "ordu-bolundu", devlet: o.devlet, metin: `${o.ad}: ${e.asker} asker ayrı orduya ayrıldı; moral ve tutum korundu.` });
+      break;
+    }
+    case "orduBirlestir": {
+      const o = orduBul(d, e.ordu)!, a = orduBul(d, e.diger)!;
+      o.moral = Math.floor((o.moral * o.asker + a.moral * a.asker) / (o.asker + a.asker));
+      o.asker += a.asker;
+      d.ordular = d.ordular.filter((x) => x.id !== a.id);
+      olayEkle(d, { tur: "ordu-birlesti", devlet: o.devlet, metin: `${a.ad}, ${o.ad} ile birleşti (${o.asker} asker); seçili ordunun tutumu korundu.` });
+      break;
+    }
+    case "harca":
+      d.devletler[e.devlet].hazine -= e.miktar;
+      olayEkle(d, { tur: "harcama", devlet: e.devlet, metin: `${e.aciklama}: −${e.miktar}` });
+      break;
+    case "testKesintisi":
+      d.planliKesintiler.push({ gun: d.gun + e.gunSonra, neden: e.neden });
+      break;
+    case "orduHedef": {
+      const o = orduBul(d, e.ordu)!;
+      kusatmadanCikar(d, o.id);
+      orduyuDurdur(o);
+      const r = rotaBul(d, b.ag!, o, e);
+      if (!r.gecerli) break; // doğrulandı; buraya düşmez
+      o.rota = r.adimlar;
+      o.hedef = { x: e.x, y: e.y };
+      olayEkle(d, { tur: "ordu-yuruyus", devlet: o.devlet,
+        metin: `${o.ad} yürüyüşe başladı; tahmini varış ${tarihMetni(d.gun + r.gun)} (${r.gun} gün).` });
+      break;
+    }
+    case "orduDur": {
+      const o = orduBul(d, e.ordu)!;
+      kusatmadanCikar(d, o.id);
+      if (o.rota.length) olayEkle(d, { tur: "ordu-durdu", devlet: o.devlet, metin: `${o.ad} durduruldu.` });
+      orduyuDurdur(o);
+      break;
+    }
+    case "savasIlan":
+      d.savaslar.push({ id: d.sonrakiSavasId++, saldiran: e.devlet, savunan: e.hedef, baslangic: d.gun });
+      olayEkle(d, { tur: "savas-ilani", devlet: e.devlet, metin: `${d.devletler[e.devlet].ad}, ${d.devletler[e.hedef].ad}'na savaş ilan etti.` });
+      savasIlaniSonuclari(d, b.ag, e.devlet, e.hedef);
+      break;
+    case "ittifakTeklif": {
+      const oyuncu = d.ayarlar.oyuncu, ad = d.devletler[e.hedef].ad;
+      const c = ittifakDegerlendir(d, diplomasiOnHesap(d, b.ag), oyuncu, e.hedef);
+      if (c.kabul) ittifakKur(d, oyuncu, e.hedef);
+      olayEkle(d, { tur: "ittifak-cevap", devlet: oyuncu,
+        metin: c.kabul ? `${ad} savunma ittifakı teklifinizi kabul etti. ${c.nedenler.join(" ")}` : `${ad} ittifak teklifinizi reddetti: ${c.nedenler.join(" ")}` });
+      break;
+    }
+    case "ittifakBoz":
+      ittifakBoz(d, d.ayarlar.oyuncu, e.hedef);
+      olayEkle(d, { tur: "ittifak-bozuldu", devlet: d.ayarlar.oyuncu, metin: `${d.devletler[e.hedef].ad} ile ittifaktan çıktınız; ilişkiniz bozuldu (${DENGE.ETKI_ITTIFAK_BOZMA}).` });
+      break;
+    case "hediye": {
+      const oyuncu = d.ayarlar.oyuncu;
+      const puan = hediyePuani(d, diplomasiOnHesap(d, b.ag), oyuncu, e.hedef, e.miktar);
+      d.devletler[oyuncu].hazine -= e.miktar;
+      d.devletler[e.hedef].hazine += e.miktar;
+      if (puan > 0) etkiEkle(d, oyuncu, e.hedef, "hediye", puan);
+      olayEkle(d, { tur: "hediye", devlet: oyuncu, metin: `${d.devletler[e.hedef].ad}'na ${e.miktar} hediye gönderildi; ilişki +${puan}.` });
+      break;
+    }
+    case "orduTutum":
+      orduBul(d, e.ordu)!.tutum = e.tutum;
+      break;
+    case "testIsgal": {
+      const hedef = e.hedef === "birim" ? d.birimler[e.indeks] : d.sehirler[e.indeks];
+      const sahip = "sahip" in hedef ? hedef.sahip : hedef.devlet;
+      hedef.kontrol = e.devlet;
+      hedef.isgalBaslangic = e.devlet === sahip ? null : d.gun;
+      olayEkle(d, { tur: "test-isgal", devlet: e.devlet, metin: e.devlet === sahip
+        ? `Test: askerî kontrol yasal sahibe döndü (${e.hedef} ${e.indeks}).`
+        : `Test: ${d.devletler[e.devlet].ad} askerî kontrolü aldı (${e.hedef} ${e.indeks}).` });
+      break;
     }
   }
 }

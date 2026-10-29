@@ -536,3 +536,15 @@ Kaynak belge: `MASTER_SPEC.md` (v1.3). Orijinal keşif çıktısı:
   3. 6a commit + push onaylandı; 6b (AI ekonomi ve ordu hazırlığı) başlar.
 - **Onay kaydı:** Kullanıcı: "1- başarılı 2- uygundur 3- evet 4- evet" (2026-10-29)
 - **Durum:** GEÇERLİ
+
+## DEC-0040 — 6b kabulü, garnizon formülü düzeltmesi ve 6c'ye geçiş
+
+- **Tarih:** 2026-10-29
+- **Seçilen karar:**
+  1. 6b (AI ekonomi ve ordu hazırlığı) kullanıcı tarafından test edildi ve kabul edildi.
+  2. Garnizon ordusu formülünden sabit 2.000 asker kaldırıldı (`GARNIZON_TABAN: 0`; arazi başına 300 kalır).
+     Başlangıçta eksi bütçeli devlet sayısı 71 → 0. Yalnızca yeni oyunları etkiler; senaryoda tanımlı
+     Osmanlı orduları değişmez. Terhis mekaniği eklenmedi.
+  3. 6b commit + push onaylandı; 6c (AI savaş ilanı, sefer, kuşatma, barış) başlar.
+- **Onay kaydı:** Kullanıcı: "1- test başarılı 2- a 3- evet 4- başla" (2026-10-29)
+- **Durum:** GEÇERLİ

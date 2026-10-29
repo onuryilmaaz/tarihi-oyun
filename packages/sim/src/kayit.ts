@@ -81,6 +81,11 @@ export function yukle(metin: string, beklenenSenaryo?: string): DunyaDurumu {
     d.iliskiEtkileri = [];
     d.saldirganlik = d.devletler.map(() => 0);
     d.ittifaklar = [];
+    d.sema = 8;
+  }
+  if (d.sema === 8) {
+    // Şema 8 → 9 (TASK-0009/6b): AI faaliyet sayacı
+    d.yzSayac = { insaat: 0, arastirma: 0, asker: 0 };
     d.sema = SEMA_SURUMU;
   }
   if (d.sema !== SEMA_SURUMU) throw new KayitHatasi("Kayıt tutarsız: dünya şema sürümü uyuşmuyor.");

@@ -16,6 +16,7 @@ import { isgalleriIlerlet, kusatmalariIlerlet } from "./kusatma";
 import { insaatlariIlerlet } from "./yatirim";
 import { arastirmalariIlerlet } from "./teknoloji";
 import { diplomasiSonumu } from "./diplomasi";
+import { yzKararlari, yzYillikOzet } from "./yz";
 
 export type Siklik = "gunluk" | "aylik" | "yillik";
 
@@ -55,6 +56,8 @@ export const SISTEMLER: Sistem[] = [
   { id: "kusatma", siklik: "gunluk", calistir: kusatmalariIlerlet },
   { id: "sehir-insaati", siklik: "gunluk", calistir: insaatlariIlerlet },
   { id: "arastirma", siklik: "gunluk", calistir: arastirmalariIlerlet },
+  // AI devletleri (TASK-0009/6b): her devlet 30 günde bir, kendi gününde
+  { id: "yz-ekonomi", siklik: "gunluk", calistir: yzKararlari },
   {
     // Test: her gün rastgele bir şehrin nüfusu 0–2 artar (rastgelelik akışını her gün kullanır)
     id: "test-nufus",
@@ -76,6 +79,7 @@ export const SISTEMLER: Sistem[] = [
   },
   { id: "ordu-maasi", siklik: "aylik", calistir: (d) => maaslariOde(d) },
   { id: "diplomasi-sonumu", siklik: "aylik", calistir: diplomasiSonumu },
+  { id: "yz-yillik-ozet", siklik: "yillik", calistir: yzYillikOzet },
   {
     // Test: yılbaşında oyuncu için yıllık özet olayı
     id: "test-yillik-ozet",

@@ -56,7 +56,7 @@ export const DENGE = {
   MORAL_TOPARLANMA_YURUYUS: 8,
   GERI_CEKILME_ESIGI: { temkinli: 600, dengeli: 350, inatci: 100 } as const,
   // Yabancı garnizon orduları (DEC-0025/4, DEC-0027/1)
-  GARNIZON_TABAN: 2000,
+  GARNIZON_TABAN: 0, // DEC-0040: sabit pay kaldırıldı; maaş arazi gelirinin ~%60'ı (küçük devletler eksi bütçeyle başlamaz)
   GARNIZON_BIRIM_BASINA: 300,
   GARNIZON_EN_COK: 40000,
   // Görünürlük (DEC-0027/2)
@@ -110,4 +110,13 @@ export const DENGE = {
   HEDIYE_EN_COK: 30, // bir çiftte birikebilecek hediye etkisi
   HEDIYE_PUAN_EN_AZ: 20, // bir ilişki puanının en düşük bedeli
   HEDIYE_PUAN_GELIR_BINDE: 100, // puan bedeli: alıcının aylık arazi gelirinin %10'u
+  // 6b — AI ekonomi kararları (DEC-0039); hepsi [TASLAK]
+  YZ_KARAR_ARALIGI: 30, // gün; her devlet bu aralıkla, kendi gününde karar verir (yük günlere yayılır)
+  YZ_YEDEK_AY: 3, // hazinede bırakılan yedek: kaç aylık maaş
+  YZ_YEDEK_EN_AZ: 200,
+  YZ_ASKER_ARAZI_BASINA: 300, // barışta hedef ordu büyüklüğü (arazi başına)
+  YZ_TEHDIT_ASKER_CARPANI: 2, // tehdit altında hedef ordu bu kat
+  YZ_MAAS_NET_YUZDE: 50, // yeni askerin maaşı aylık fazlanın en çok bu yüzdesi
+  YZ_TOPLAMA_EN_AZ: 500,
+  YZ_DUSMANCA_ESIK: -40, // bu ilişkideki büyük komşu tehdit sayılır
 };

@@ -95,7 +95,7 @@ describe("ordu hareketi", () => {
     const hafta = calistir("hafta"), yil = calistir("yil");
     expect(hafta.varis).toBeGreaterThan(0);
     expect(yil.varis).toBe(hafta.varis);
-    while (hafta.d.gun < yil.d.gun) gunIlerlet(hafta.d);
+    while (hafta.d.gun < yil.d.gun) gunIlerlet(hafta.d, B); // aynı bağlam: AI kararları ağa bağlıdır
     expect(dunyaOzeti(hafta.d)).toBe(dunyaOzeti(yil.d));
   });
 

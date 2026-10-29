@@ -144,7 +144,7 @@ export function savasIlaniSonuclari(d: DunyaDurumu, ag: HareketAgi | null, saldi
     } else {
       d.ittifaklar = d.ittifaklar.filter((i) => !(i.a === Math.min(m, savunan) && i.b === Math.max(m, savunan)));
       etkiEkle(d, m, savunan, "cagriReddi", DENGE.ETKI_CAGRI_REDDI);
-      olayEkle(d, { tur: "ittifak-cagri", devlet: savunan === d.ayarlar.oyuncu ? savunan : m,
+      olayEkle(d, { tur: "ittifak-cagri", devlet: [savunan, saldiran].includes(d.ayarlar.oyuncu) ? d.ayarlar.oyuncu : m,
         metin: `${ad}, ${savunanAd}'nın yardım çağrısını reddetti (bakışı ${p}); ittifak bozuldu.` });
     }
   }
