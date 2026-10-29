@@ -13,6 +13,7 @@ import { YAPI_ADLARI, insaatMaliyeti, insaatSuresi, sehirdeInsaatVar, yapiSeviye
 import { bekleyenVerasetiCoz, tahtaCikar } from "./hanedan";
 import { iskanBedeli, nufusCikar } from "./nufus";
 import { ambargoVar } from "./ticaret";
+import { GOREV_TURLERI, gorevEngeli, type GorevTuru } from "./casusluk";
 import { bolgeGunu, denizYolu, GEMI_TURLERI, kapasite, type GemiTuru } from "./deniz";
 import { diplomasiOnHesap, etkiEkle, hediyePuani, ittifakBoz, ittifakDegerlendir, ittifakKur, muttefik, muttefikleri, savasIlaniSonuclari } from "./diplomasi";
 import { biliyor, arastirmaEngeli, teknolojiBul, teknolojiGecerli, toplamaBedelYuzde, toplamaSuresi, type TeknolojiId } from "./teknoloji";
@@ -65,7 +66,9 @@ export type Emir =
   | { tur: "donanmaHedef"; donanma: number; bolge: number }
   | { tur: "cikarma"; donanma: number; ordu: number; sehir: number }
   // Ambargo koy/kaldır (TASK-0011/8b); oyuncu adına
-  | { tur: "ambargo"; hedef: number; acik: boolean };
+  | { tur: "ambargo"; hedef: number; acik: boolean }
+  // Casusluk görevi (TASK-0011/8c); devlet: yalnızca AI
+  | { tur: "casusluk"; hedef: number; gorev: GorevTuru; sehir: number | null; devlet?: number };
 
 export type Dogrulama = { gecerli: true } | { gecerli: false; neden: string };
 
@@ -77,6 +80,7 @@ function bekleyenHarcama(d: DunyaDurumu, devlet: number): number {
     if (e.tur === "askerTopla" && d.sehirler[e.sehir]?.devlet === devlet) s += toplamaMaliyeti(e.asker, toplamaBedelYuzde(d, devlet));
     if (e.tur === "insaat" && d.sehirler[e.sehir]?.devlet === devlet) s += insaatMaliyeti(d, d.sehirler[e.sehir], e.yapi) ?? 0;
     if (e.tur === "hediye" && d.ayarlar.oyuncu === devlet) s += e.miktar;
+    if (e.tur === "casusluk" && (e.devlet ?? d.ayarlar.oyuncu) === devlet && GOREV_TURLERI.includes(e.gorev)) s += DENGE.CASUS[e.gorev].bedel;
     if (e.tur === "gemiInsa" && d.sehirler[e.sehir]?.devlet === devlet && GEMI_TURLERI.includes(e.gemi)) s += e.adet * DENGE.GEMI[e.gemi].bedel;
     if (e.tur === "iskan" && d.ayarlar.oyuncu === devlet) s += iskanBedeli(e.miktar);
     if (e.tur === "arastir" && d.ayarlar.oyuncu === devlet && teknolojiGecerli(e.teknoloji)) s += DENGE.TEKNOLOJI[e.teknoloji].bedel;
@@ -157,6 +161,16 @@ export function emirDogrula(d: DunyaDurumu, e: Emir, b: Baglam = BOS_BAGLAM, kuy
       if (!Number.isSafeInteger(e.miktar) || e.miktar <= 0 || e.miktar > enCok) return { gecerli: false, neden: `İskân miktarı 1 ile ${enCok} (nüfusun %${DENGE.ISKAN_EN_COK_YUZDE}'si) arasında olmalı.` };
       const para = kuyrukHaric ? d.devletler[oyuncu].hazine : kullanilabilirHazine(d, oyuncu);
       const bedel = iskanBedeli(e.miktar);
+      if (para < 0 || bedel > para) return { gecerli: false, neden: `Hazine yetersiz: ${para} kullanılabilir, ${bedel} gerekli. Borçlanma yoktur.` };
+      return { gecerli: true };
+    }
+    case "casusluk": {
+      const devlet = e.devlet ?? d.ayarlar.oyuncu;
+      const bekleyen = kuyrukHaric ? 0 : d.emirKuyrugu.filter((x) => x.tur === "casusluk").length;
+      const engel = gorevEngeli(d, devlet, e.hedef, e.gorev, e.sehir, bekleyen);
+      if (engel) return { gecerli: false, neden: engel };
+      const para = kuyrukHaric ? d.devletler[devlet].hazine : kullanilabilirHazine(d, devlet);
+      const bedel = DENGE.CASUS[e.gorev].bedel;
       if (para < 0 || bedel > para) return { gecerli: false, neden: `Hazine yetersiz: ${para} kullanılabilir, ${bedel} gerekli. Borçlanma yoktur.` };
       return { gecerli: true };
     }
@@ -361,7 +375,7 @@ export function emirVer(d: DunyaDurumu, e: Emir, b: Baglam = BOS_BAGLAM): Dogrul
     || (e.tur === "savasIlan" && e.devlet !== oyuncu)
     || ("ordu" in e && orduBul(d, e.ordu) && orduBul(d, e.ordu)!.devlet !== oyuncu)
     || ("donanma" in e && d.donanmalar.find((f) => f.id === e.donanma) && d.donanmalar.find((f) => f.id === e.donanma)!.devlet !== oyuncu)
-    || (e.tur === "gemiInsa" && e.devlet !== undefined && e.devlet !== oyuncu)) {
+    || ((e.tur === "gemiInsa" || e.tur === "casusluk") && e.devlet !== undefined && e.devlet !== oyuncu)) {
     return { gecerli: false, neden: "Yalnızca kendi devletiniz ve ordularınız adına emir verebilirsiniz." };
   }
   const s = emirDogrula(d, e, b);
@@ -496,6 +510,13 @@ export function emirUygula(d: DunyaDurumu, e: Emir, b: Baglam = BOS_BAGLAM): voi
       }
       savasIlaniSonuclari(d, b.ag, e.devlet, e.hedef);
       break;
+    case "casusluk": {
+      const devlet = e.devlet ?? d.ayarlar.oyuncu, c = DENGE.CASUS[e.gorev];
+      d.devletler[devlet].hazine -= c.bedel;
+      d.casusGorevleri.push({ id: d.sonrakiGorevId++, devlet, hedef: e.hedef, tur: e.gorev, sehir: e.sehir, kalanGun: c.hazirlik });
+      olayEkle(d, { tur: "casusluk", devlet, metin: `${c.ad} görevi hazırlanıyor: ${d.devletler[e.hedef].ad}${e.sehir !== null ? ` (${d.sehirler[e.sehir].ad})` : ""}, ${c.hazirlik} gün, başarı şansı %${c.basari}. Bedel: −${c.bedel}.` });
+      break;
+    }
     case "ambargo": {
       const oyuncu = d.ayarlar.oyuncu, ad = d.devletler[e.hedef].ad;
       if (e.acik) d.ambargolar.push({ devlet: oyuncu, hedef: e.hedef });

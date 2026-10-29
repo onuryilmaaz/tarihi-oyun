@@ -1,5 +1,14 @@
 # CHANGELOG
 
+## 2026-10-29 — TASK-0011 / 8c: casusluk (Claude)
+
+- `packages/sim/src/casusluk.ts`: askerî ve diplomatik istihbarat, isyanı destekleme (7c risk bileşeni "Yabancı kışkırtma"),
+  sabotaj; bedel/hazırlık/başarı olasılığı; yakalanma ve ilişki bedeli ("Yakalanan casus"); AI'nın sınırlı kullanımı.
+  Askerî istihbarat görünürlüğü genişletir ve sayıları kesinleştirir (yalnızca bu yolla, AT-013). Kayıt şeması 17.
+- İstemci: devlet panelinde Casusluk (görev + şehir + başlat), istihbarat raporu; Savaş sekmesinde görev listesi;
+  kesin sayılı yabancı ordu işaretleri (👁).
+- `packages/sim/test/casusluk.test.ts` (4 test; toplam 184), `docs/qa/ASAMA-8C-TEST.md`.
+
 ## 2026-10-29 — Sol panel düzeni, kalyon teknolojisi, TASK-0011 / 8b ticaret (Claude)
 
 - DEC-0052: 8a kabul; deniz tablosu onayı; kalyon teknolojiye bağlandı; sol panel düzeni.

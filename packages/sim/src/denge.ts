@@ -201,4 +201,18 @@ export const DENGE = {
   AMBARGO_HEDEF_EN_COK: 50,
   AMBARGO_KOYAN_YUZDE: 5, // koyanın kendi ticaret kaybı (ambargo başına)
   AMBARGO_ILISKI: -20, // hedefin koyana bakışı
+  // 8c — casusluk (DEC-0051/0053); hepsi [TASLAK]. hazirlik gün, basari %, sure: etkinin süresi (gün)
+  CASUS: {
+    askeri: { ad: "Askerî istihbarat", bedel: 150, hazirlik: 30, basari: 70, sure: 180 },
+    diplomatik: { ad: "Diplomatik istihbarat", bedel: 120, hazirlik: 30, basari: 70, sure: 180 },
+    isyan: { ad: "İsyanı destekleme", bedel: 250, hazirlik: 60, basari: 50, sure: 180 },
+    sabotaj: { ad: "Sabotaj", bedel: 200, hazirlik: 45, basari: 50, sure: 0 },
+  },
+  CASUS_EN_COK: 2, // aynı anda yürüyen görev (devlet başına)
+  CASUS_YAKALANMA_YUZDE: 50, // başarısız görevde casusun yakalanma olasılığı
+  CASUS_YAKALANMA_ILISKI: -30, // yakalanınca hedefin bakışı (zamanla söner)
+  CASUS_ISYAN_RISK: 25, // isyan desteği şehir riskine
+  CASUS_SABOTAJ_GUN: 60, // süren inşaatı geciktirme
+  CASUS_SABOTAJ_GARNIZON_YUZDE: 30, // inşaat yoksa garnizon kaybı
+  YZ_CASUS_OLASILIK: 10, // savaştaki AI'nın aylık askerî istihbarat görevi açma olasılığı (%)
 };

@@ -3,6 +3,7 @@ import { olayEkle, type DunyaDurumu, type SehirDurumu } from "./durum";
 import { DENGE } from "./denge";
 import type { Baglam } from "./emirler";
 import { savasta } from "./savas";
+import { disDestek } from "./casusluk";
 
 export interface RiskBileseni { id: string; ad: string; puan: number }
 export interface Istikrar {
@@ -50,6 +51,7 @@ export function riskBilesenleri(d: DunyaDurumu, sehir: number, b: Baglam): RiskB
     { id: "asayis", ad: "Yeterli kendi ordusu", puan: asayisAskeri(d, sehir) >= gerekenAsayis(s) ? -DENGE.IST_ASAYIS_INDIRIM : 0 },
     { id: "baskent", ad: "Başkent yakınlığı", puan: yakinBaskent ? -DENGE.IST_BASKENT_INDIRIM : 0 },
     { id: "bagis", ad: "Bağış / imar yardımı", puan: -s.istikrar.bagis },
+    { id: "disdestek", ad: "Yabancı kışkırtma (casusluk)", puan: disDestek(d, sehir) },
   ];
 }
 

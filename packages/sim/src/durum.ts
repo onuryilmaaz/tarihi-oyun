@@ -5,6 +5,7 @@ import { tarihtenGun, type Tarih } from "./takvim";
 import { bosIstikrar, type Istikrar } from "./istikrar";
 import { bosYerelYonetim, type YerelYonetim } from "./yonetim";
 import type { Ambargo } from "./ticaret";
+import { GOREV_TURLERI, type CasusEtkisi, type CasusGorevi } from "./casusluk";
 import { baslangicDenizi, GEMI_TURLERI, type DenizHaritasi, type Donanma, type GemiInsasi } from "./deniz";
 import type { Emir } from "./emirler";
 import { HAREKET, type AgVerisi, type RotaAdimi } from "./hareket";
@@ -195,6 +196,9 @@ export interface DunyaDurumu {
   sonrakiDonanmaId: number;
   gemiInsalari: GemiInsasi[];
   ambargolar: Ambargo[]; // 8b
+  casusGorevleri: CasusGorevi[]; // 8c
+  casusEtkileri: CasusEtkisi[];
+  sonrakiGorevId: number;
   kusatmalar: Kusatma[];
   isgalHazirliklari: IsgalHazirligi[];
   barislar: BarisKaydi[];
@@ -251,7 +255,7 @@ export interface SenaryoVerisi {
 // 5: kuşatma, gerçek işgal ve barış (TASK-0007/4c); şema 3–4 için eklemeli dönüşüm var.
 // Şema geçmişi: 6 şehir yatırımları (5b), 7 teknoloji (5c), 8 diplomasi (6a), 9 AI ekonomi (6b), 10 AI savaş/barış (6c),
 // 11 hükümdar ve veraset (7a), 12 nüfus grupları ve iskân (7b), 13 istikrar (7c), 14 yerel yönetim (7d)
-export const SEMA_SURUMU = 16; // 15 donanma ve deniz (8a), 16 ticaret ve ambargo (8b)
+export const SEMA_SURUMU = 17; // 15 donanma ve deniz (8a), 16 ticaret ve ambargo (8b), 17 casusluk (8c)
 
 export function baslangicDurumu(s: SenaryoVerisi, secenek: { tohum: number; oyuncu?: string }): DunyaDurumu {
   const indeks = new Map(s.devletler.map((d, i) => [d.id, i]));
@@ -336,6 +340,9 @@ export function baslangicDurumu(s: SenaryoVerisi, secenek: { tohum: number; oyun
     sonrakiDonanmaId: deniz.donanmalar.length + 1,
     gemiInsalari: [],
     ambargolar: [],
+    casusGorevleri: [],
+    casusEtkileri: [],
+    sonrakiGorevId: 1,
     ittifaklar: (s.ittifaklar ?? []).map((r) => {
       const [a, b] = [bul(r.a), bul(r.b)].sort((x, y) => x - y);
       return { a, b, baslangic: tarihtenGun(s.baslangic) };
@@ -489,6 +496,9 @@ export function degismezler(d: DunyaDurumu): string[] {
     if (!d.devletler[a.devlet] || !d.devletler[a.hedef] || a.devlet === a.hedef || amb.has(`${a.devlet}:${a.hedef}`)) h.push("ambargo geçersiz");
     amb.add(`${a.devlet}:${a.hedef}`);
   }
+  for (const g of d.casusGorevleri) if (!tam(g.id) || g.id >= d.sonrakiGorevId || !d.devletler[g.devlet] || !d.devletler[g.hedef]
+    || !GOREV_TURLERI.includes(g.tur) || !tam(g.kalanGun) || g.kalanGun <= 0 || (g.sehir !== null && !d.sehirler[g.sehir])) h.push("casus görevi geçersiz");
+  for (const e of d.casusEtkileri) if (!d.devletler[e.devlet] || !d.devletler[e.hedef] || !["askeri", "diplomatik", "isyan"].includes(e.tur) || !tam(e.bitis)) h.push("casus etkisi geçersiz");
   for (const g of d.gemiInsalari) if (!d.sehirler[g.sehir] || (d.deniz.limanlar[g.sehir] ?? -1) < 0 || !GEMI_TURLERI.includes(g.gemi)
     || !tam(g.adet) || g.adet <= 0 || !tam(g.kalanGun) || g.kalanGun <= 0) h.push("gemi inşası geçersiz");
   const yy = d.yerelYonetim;

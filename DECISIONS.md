@@ -689,3 +689,14 @@ Kaynak belge: `MASTER_SPEC.md` (v1.3). Orijinal keşif çıktısı:
   3. 8c (casusluk) başlar.
 - **Onay kaydı:** Kullanıcı: "1- daha iyi olabilir. panel biraz daha geniş olsun. input alanları default olmasın orayı da bizim tasarımı kullan. 2- evet 3- evet" (2026-10-29)
 - **Durum:** GEÇERLİ
+
+## DEC-0054 — 8c kabulü, Aşama 8 kapanışı, Aşama 9'a geçiş, açılır liste tasarımı
+
+- **Tarih:** 2026-10-29
+- **Seçilen karar:**
+  1. 8c (casusluk) kullanıcı tarafından test edildi ve kabul edildi; commit + push onaylandı.
+  2. **Aşama 8 kapandı.** Sonraya: AI gemi inşası, kara ticaret yolları/antlaşmalar, karşı istihbarat ve yanlış bilgi.
+  3. Aşama 9 (tarihî içerik, UX, optimizasyon) başlar; önce TASK-0012 kapsamı onaya sunulur.
+  4. Açılır listelerin (select) **açılan kısmı** da tarayıcı varsayılanı değil, oyunun kendi tasarımıyla olur.
+- **Onay kaydı:** Kullanıcı: "1- başarılı 2- evet 3- evet 4- evet … dropdownların açılan kısmını da bizim tasarımla yap. default bişey istemiyorum" (2026-10-29)
+- **Durum:** GEÇERLİ

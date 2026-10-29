@@ -302,6 +302,9 @@ async function baslat() {
       + " Yönetici yalnızca bağış ve tarla/pazar yapar; her harcama günlüğe yazılır, borç yapmaz.";
     if (!ozet.verasetSecimi) secilenAday = null;
     if (!$("verasetPencere").hidden) verasetCiz();
+    $("casusListesi").innerHTML = ozet.casusGorevleri.map((g) => `<li>🕵 ${kacis(g.ad)} → ${kacis(h.paket.devletler[g.hedef].ad)}${g.sehir !== null ? ` (${kacis(senaryo.sehirler[g.sehir].ad)})` : ""} · ${g.emir ? "emir bekliyor" : `${g.kalanGun} gün`}</li>`).join("")
+      + ozet.istihbarat.map((x) => `<li>👁 ${x.tur === "askeri" ? "Askerî" : "Diplomatik"} istihbarat: ${kacis(h.paket.devletler[x.hedef].ad)} · ${x.kalanGun} gün</li>`).join("")
+      || '<li class="bos">Görev yok. Bir devlete tıklayıp panelindeki Casusluk bölümünden başlatın.</li>';
     $("raporListesi").innerHTML = [...ozet.raporlar].reverse().map((r) => {
       const biz = r.kazanan === ozet.oyuncu.indeks;
       const karsi = r.taraflar.find((t) => t.devlet !== ozet.oyuncu.indeks)!;
@@ -492,13 +495,23 @@ async function baslat() {
     const hediye = k.savasta ? "" : `<div class="hediye-satir"><input id="hediyeMiktar" type="number" min="1" step="1" value="${k.hediyePuanBedeli * 5}" aria-label="Hediye miktarı" />
         <button data-eylem="hediye" data-devlet="${devlet}"${k.hediyeKalan ? "" : " disabled"}>Hediye gönder</button></div>
       <p class="not">1 ilişki puanı ≈ ${k.hediyePuanBedeli.toLocaleString("tr-TR")} · ${k.hediyeKalan ? `en çok ${k.hediyeKalan} puan daha eklenebilir` : "hediye etkisi dolu"}; zamanla söner.</p>`;
+    const dev = h.paket.devletler, rap = ozet.diplomatikRapor[devlet];
+    const casusSehirleri = senaryo.sehirler.flatMap((c, i) => (ozet.sehirDurumlari[i].devlet === devlet ? [i] : []));
+    const casus = `<h4>Casusluk</h4><div class="casus-satir">
+        <select id="casusGorev" aria-label="Görev">${(["askeri", "diplomatik", "isyan", "sabotaj"] as const).map((g) => `<option value="${g}">${DENGE.CASUS[g].ad} — ${DENGE.CASUS[g].bedel}, ${DENGE.CASUS[g].hazirlik} gün, %${DENGE.CASUS[g].basari}</option>`).join("")}</select>
+        <select id="casusSehir" aria-label="Hedef şehir (isyan/sabotaj)">${casusSehirleri.map((i) => `<option value="${i}">${kacis(senaryo.sehirler[i].ad)}</option>`).join("")}</select>
+        <button data-eylem="casusluk" data-devlet="${devlet}">Görevi başlat</button></div>
+      <p class="not">Şehir yalnızca isyanı destekleme ve sabotaj için kullanılır. Başarısız casus yakalanırsa ilişki bozulur (${DENGE.CASUS_YAKALANMA_ILISKI}).</p>
+      ${ozet.istihbarat.filter((x) => x.hedef === devlet).map((x) => `<p class="not">🕵 ${x.tur === "askeri" ? "Askerî" : "Diplomatik"} istihbarat: ${x.kalanGun} gün daha.</p>`).join("")}
+      ${rap ? `<p class="not"><b>İstihbarat raporu</b><br />Müttefikleri: ${rap.muttefikleri.map((m) => kacis(dev[m].ad)).join(", ") || "yok"} · Savaşları: ${rap.savaslari.map((m) => kacis(dev[m].ad)).join(", ") || "yok"}<br />
+        En düşmanca baktıkları: ${rap.enKotu.map(([m, p]) => `${kacis(dev[m].ad)} (${p})`).join(", ")}<br />En dostça: ${rap.enIyi.map(([m, p]) => `${kacis(dev[m].ad)} (${p})`).join(", ")}<br />Hazine ≈ ${rap.hazine.toLocaleString("tr-TR")}</p>` : ""}`;
     const inanc = `<p class="not">Resmî din: ${kacis(dinAdi(ozet.devletDinleri[devlet]))}</p>`;
     const arma = `<div class="arma">${armaSvg(gorunum.devletRengiHex(devlet), ozet.devletDinleri[devlet], h.paket.devletler[devlet].ad)}</div>`;
     const huk = k.hukumdar ? `<h4>Hükümdar</h4><p class="not"><b>${kacis(k.hukumdar.ad)}</b>${kurguRozeti(k.hukumdar)} · ${k.hukumdar.yas} yaşında · ${kacis(k.hukumdar.hanedan)}<br />${yetenekMetni(k.hukumdar)} · meşruiyet ${k.hukumdar.mesruiyet}</p>` : "";
     return `${arma}${huk}${inanc}<h4>Diplomasi</h4><dl><dt>Size bakışı</dt><dd>${isaretli(k.bakisi)} · ${iliskiAdi(k.bakisi)}</dd>
       <dt>Sizin bakışınız</dt><dd>${isaretli(k.bakisimiz)} · ${iliskiAdi(k.bakisimiz)}</dd></dl>
       ${k.bilesenler.length ? `<ul class="iliski-bilesen">${k.bilesenler.map((b) => `<li><span>${kacis(b.ad)}</span>${isaretli(b.deger)}</li>`).join("")}</ul>` : '<p class="not">Aranızda özel bir etken yok.</p>'}
-      ${durum ? `<p class="not">${durum}</p>` : ""}${ittifak}${hediye}`;
+      ${durum ? `<p class="not">${durum}</p>` : ""}${ittifak}${hediye}${casus}`;
   };
   $("bilgi").addEventListener("click", async (e) => {
     const bagis = (e.target as HTMLElement).closest<HTMLElement>("[data-bagis]");
@@ -520,6 +533,14 @@ async function baslat() {
     }
     const baris = (e.target as HTMLElement).closest<HTMLElement>('[data-eylem="baris"]');
     if (baris) { savasUI.barisAc(Number(baris.dataset.savas)); return; }
+    const cas = (e.target as HTMLElement).closest<HTMLElement>('[data-eylem="casusluk"]');
+    if (cas) {
+      const hedef = Number(cas.dataset.devlet), gorev = $<HTMLSelectElement>("casusGorev").value as "askeri" | "diplomatik" | "isyan" | "sabotaj";
+      const sehirli = gorev === "isyan" || gorev === "sabotaj", sv = $<HTMLSelectElement>("casusSehir").value;
+      const sehir = sehirli && sv !== "" ? Number(sv) : null;
+      await emirGonder({ tur: "casusluk", hedef, gorev, sehir }, `${DENGE.CASUS[gorev].ad} görevi emri verildi: ${h.paket.devletler[hedef].ad}${sehir !== null ? ` (${senaryo.sehirler[sehir].ad})` : ""}.`);
+      return;
+    }
     const amb = (e.target as HTMLElement).closest<HTMLElement>('[data-eylem="ambargo"]');
     if (amb) {
       const hedef = Number(amb.dataset.devlet), acik = amb.dataset.acik === "1", ad = h.paket.devletler[hedef].ad;

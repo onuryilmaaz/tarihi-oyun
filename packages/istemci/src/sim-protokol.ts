@@ -82,6 +82,10 @@ export interface Ozet {
   yabanciDonanmalar: { id: number; ad: string; devlet: number; bolge: number; yaklasikGemi: number }[];
   ticaret: ({ taban: number; gelir: number; yuzde: number; nedenler: string[] } | null)[]; // kendi liman şehirleri (8b)
   ambargolarim: number[]; bizeAmbargo: number[];
+  // 8c — casusluk
+  casusGorevleri: { hedef: number; tur: string; ad: string; sehir: number | null; kalanGun: number; emir: boolean }[];
+  istihbarat: { hedef: number; tur: string; kalanGun: number }[];
+  diplomatikRapor: Record<number, { muttefikleri: number[]; savaslari: number[]; enKotu: [number, number][]; enIyi: [number, number][]; hazine: number }>;
   gemiInsalari: { sehir: number; gemi: string; adet: number; kalanGun: number; emir: boolean }[];
   devletKulturleri: string[];
   iskanlar: { kaynak: number; hedef: number; miktar: number; kalanGun: number; emir: boolean }[];

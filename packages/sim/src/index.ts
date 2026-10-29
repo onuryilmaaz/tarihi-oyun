@@ -18,6 +18,7 @@ export * from "./nufus";
 export * from "./yonetim";
 export * from "./deniz";
 export * from "./ticaret";
+export * from "./casusluk";
 export * from "./kusatma";
 export * from "./baris";
 export * from "./savas";

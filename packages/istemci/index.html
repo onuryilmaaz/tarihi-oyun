@@ -202,6 +202,10 @@
     #sekmeIcerik .satir select { flex: 1; min-width: 0; }
     #donanmaPaneli label select { width: 100%; margin-top: 2px; }
     #sekmeIcerik .ordu-satir { width: 100%; text-align: left; }
+    #casusListesi { list-style: none; margin: 0; padding: 0; display: grid; gap: 4px; font-size: 12px; }
+    #casusListesi .bos { color: var(--soluk); }
+    .casus-satir { display: grid; gap: 6px; }
+    .casus-satir select { width: 100%; }
     #onay { position: fixed; inset: 0; display: grid; place-items: center; background: rgba(15, 12, 9, .5); z-index: 12; }
     #onay .panel { position: static; width: min(440px, calc(100% - 32px)); padding: 22px; text-align: center; }
     #onay h3 { font-family: "Cinzel", serif; margin: 0 0 8px; font-size: 18px; }
@@ -382,6 +386,8 @@
         <h2>Savaşlar</h2>
         <ul id="savasListesi"></ul>
         <ul id="barisGecmisi"></ul>
+        <h2>Casusluk</h2>
+        <ul id="casusListesi"></ul>
         <h2>Muharebe raporları</h2>
         <ul id="raporListesi"></ul>
       </section>

@@ -39,6 +39,11 @@ export function devletKarari(d: DunyaDurumu, b: Baglam, on: DiplomasiOnHesap, de
   // 6c: önce süren savaşların barışı, sonra yeni savaş kararı (tehdit hesabı ilanı da görür)
   barisKararlari(d, b, devlet);
   savasKarari(d, b, on, devlet);
+  // 8c: savaştaki AI ara sıra düşmanına askerî istihbarat görevi açar (aynı kurallar, aynı bedel)
+  const dusmanSavasi = d.savaslar.find((s) => s.saldiran === devlet || s.savunan === devlet);
+  if (dusmanSavasi && DENGE.CASUS.askeri.bedel <= para() && aralik(d, 100) < DENGE.YZ_CASUS_OLASILIK) {
+    dene({ tur: "casusluk", hedef: dusmanSavasi.saldiran === devlet ? dusmanSavasi.savunan : dusmanSavasi.saldiran, gorev: "askeri", sehir: null, devlet });
+  }
   const tehdit = tehditNedeni(d, on, devlet);
   const sehirler = d.sehirler.flatMap((s, i) => (s.devlet === devlet && s.kontrol === devlet ? [i] : []));
 

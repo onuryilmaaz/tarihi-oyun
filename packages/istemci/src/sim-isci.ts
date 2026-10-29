@@ -85,6 +85,22 @@ function ozet(durum: DunyaDurumu): Ozet {
     ticaret: durum.sehirler.map((s, i) => (s.devlet === durum.ayarlar.oyuncu && durum.deniz.limanlar[i] >= 0 ? sehirTicareti(durum, i) : null)),
     ambargolarim: durum.ambargolar.filter((a) => a.devlet === durum.ayarlar.oyuncu).map((a) => a.hedef),
     bizeAmbargo: durum.ambargolar.filter((a) => a.hedef === durum.ayarlar.oyuncu).map((a) => a.devlet),
+    casusGorevleri: [
+      ...durum.casusGorevleri.filter((g) => g.devlet === durum.ayarlar.oyuncu).map((g) => ({ hedef: g.hedef, tur: g.tur, ad: DENGE.CASUS[g.tur].ad, sehir: g.sehir, kalanGun: g.kalanGun, emir: false })),
+      ...durum.emirKuyrugu.flatMap((e) => (e.tur === "casusluk" ? [{ hedef: e.hedef, tur: e.gorev, ad: DENGE.CASUS[e.gorev].ad, sehir: e.sehir, kalanGun: DENGE.CASUS[e.gorev].hazirlik, emir: true }] : [])),
+    ],
+    istihbarat: durum.casusEtkileri.filter((e) => e.devlet === durum.ayarlar.oyuncu && e.tur !== "isyan").map((e) => ({ hedef: e.hedef, tur: e.tur, kalanGun: e.bitis - durum.gun })),
+    diplomatikRapor: (() => {
+      const r: Ozet["diplomatikRapor"] = {}, p = durum.ayarlar.oyuncu, on = diplomasiOnHesap(durum, baglam.ag);
+      for (const e of durum.casusEtkileri) {
+        if (e.devlet !== p || e.tur !== "diplomatik" || e.bitis <= durum.gun || r[e.hedef]) continue;
+        const h = e.hedef, bakis = durum.devletler.flatMap((_, k) => (k === h || !durum.birimler.some((b) => b.sahip === k) ? [] : [[k, iliski(durum, on, h, k)] as [number, number]]));
+        bakis.sort((a, b) => a[1] - b[1] || a[0] - b[0]);
+        r[h] = { muttefikleri: muttefikleri(durum, h), savaslari: durum.savaslar.flatMap((s) => (s.saldiran === h ? [s.savunan] : s.savunan === h ? [s.saldiran] : [])),
+          enKotu: bakis.slice(0, 3), enIyi: bakis.slice(-3).reverse(), hazine: Math.round(durum.devletler[h].hazine / 100) * 100 };
+      }
+      return r;
+    })(),
     gemiInsalari: [
       ...durum.gemiInsalari.filter((g) => g.devlet === durum.ayarlar.oyuncu).map((g) => ({ sehir: g.sehir, gemi: g.gemi, adet: g.adet, kalanGun: g.kalanGun, emir: false })),
       ...durum.emirKuyrugu.flatMap((e) => (e.tur === "gemiInsa" ? [{ sehir: e.sehir, gemi: e.gemi, adet: e.adet, kalanGun: DENGE.GEMI[e.gemi].sure, emir: true }] : [])),

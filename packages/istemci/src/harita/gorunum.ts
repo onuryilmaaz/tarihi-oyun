@@ -529,8 +529,8 @@ export function haritaGorunumuKur(h: Harita, wikidata: Record<string, WdDevlet>,
           ogeler.orduKap.append(el);
           orduOgeleri.set(o.id, el);
         }
-        el.innerHTML = `${devletRenkKutusu(o.devlet)}<b>~${Math.round(o.yaklasikAsker / 1000)}B</b>`;
-        el.title = `${o.ad} · yaklaşık ${o.yaklasikAsker.toLocaleString("tr-TR")} asker (kesin sayı bilinmiyor)`;
+        el.innerHTML = `${devletRenkKutusu(o.devlet)}<b>${o.kesin ? `${o.yaklasikAsker.toLocaleString("tr-TR")} 👁` : `~${Math.round(o.yaklasikAsker / 1000)}B`}</b>`;
+        el.title = o.kesin ? `${o.ad} · ${o.yaklasikAsker.toLocaleString("tr-TR")} asker (askerî istihbarat)` : `${o.ad} · yaklaşık ${o.yaklasikAsker.toLocaleString("tr-TR")} asker (kesin sayı bilinmiyor)`;
         el.classList.toggle("muharebede", o.muharebede);
       }
       for (const o of ordular) {

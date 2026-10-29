@@ -5,6 +5,7 @@ import { olayEkle, type DunyaDurumu, type Muharebe, type MuharebeRaporu, type Or
 import { DENGE } from "./denge";
 import { rotaBul, type HareketAgi } from "./hareket";
 import { aralik } from "./rastgele";
+import { istihbaratVar } from "./casusluk";
 import { muharebeGucYuzde } from "./teknoloji";
 
 /** Binlik ayırıcılı sayı (ortamdan bağımsız; toLocaleString simülasyonda yasak) */
@@ -54,17 +55,20 @@ export interface YabanciOrdu {
   dugum: number;
   x: number;
   y: number;
-  yaklasikAsker: number; // kesin asker sayısı bilinçli olarak yoktur
+  yaklasikAsker: number; // kesin asker sayısı bilinçli olarak yoktur (askerî istihbarat varsa kesin, 8c)
   muharebede: boolean;
+  kesin: boolean; // askerî istihbaratla bilinen kesin sayı
 }
 
 /** Oyuncuya gösterilebilecek yabancı ordular (görünmeyenler hiç gönderilmez). */
 export function gorunurYabanciOrdular(d: DunyaDurumu, ag: HareketAgi, devlet: number): YabanciOrdu[] {
   const g = gorunurDugumler(d, ag, devlet);
-  return d.ordular.filter((o) => o.devlet !== devlet && g.has(o.dugum)).map((o) => ({
-    id: o.id, ad: o.ad, devlet: o.devlet, dugum: o.dugum, x: o.x, y: o.y,
-    yaklasikAsker: yaklasikAsker(o.asker), muharebede: o.muharebe !== null,
-  }));
+  // Askerî istihbarat (8c): hedefin bütün orduları görünür ve sayıları kesindir
+  return d.ordular.filter((o) => o.devlet !== devlet && (g.has(o.dugum) || istihbaratVar(d, devlet, o.devlet, "askeri"))).map((o) => {
+    const kesin = istihbaratVar(d, devlet, o.devlet, "askeri");
+    return { id: o.id, ad: o.ad, devlet: o.devlet, dugum: o.dugum, x: o.x, y: o.y,
+      yaklasikAsker: kesin ? o.asker : yaklasikAsker(o.asker), muharebede: o.muharebe !== null, kesin };
+  });
 }
 
 // --- Muharebe ---------------------------------------------------------------------------------

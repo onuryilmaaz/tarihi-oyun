@@ -140,6 +140,11 @@ export function yukle(metin: string, beklenenSenaryo?: string): DunyaDurumu {
     // Şema 15 → 16 (TASK-0011/8b): ambargo yok; eski kayıtta ticaret geçidi bilinmiyor (etkisiz)
     for (const b of d.deniz.bolgeler) b.gecit = -1;
     d.ambargolar = [];
+    d.sema = 16;
+  }
+  if (d.sema === 16) {
+    // Şema 16 → 17 (TASK-0011/8c): casus görevi yok
+    d.casusGorevleri = []; d.casusEtkileri = []; d.sonrakiGorevId = 1;
     d.sema = SEMA_SURUMU;
   }
   if (d.sema !== SEMA_SURUMU) throw new KayitHatasi("Kayıt tutarsız: dünya şema sürümü uyuşmuyor.");

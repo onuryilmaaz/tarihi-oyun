@@ -1,6 +1,6 @@
 # Aşama 8 — Denizcilik, casusluk ve ileri sistemler
 
-**Durum:** Başlama onayı var (DEC-0050). Görev kartı `tasks/TASK-0011.md` onaylandı (DEC-0051); 8a kabul edildi (DEC-0052); 8b kabul edildi (DEC-0053); 8c sürüyor.
+**Durum:** ✔ KAPANDI — kullanıcı onayı (2026-10-29, DEC-0054). 8a–8c kabul edildi (DEC-0052–0054).
 
 **Çıktılar (MASTER_SPEC §22):** Donanmalar, deniz kontrolü, abluka/çıkarma, ticaret yolları, casusluk görevleri, gelişmiş istihbarat.
 
