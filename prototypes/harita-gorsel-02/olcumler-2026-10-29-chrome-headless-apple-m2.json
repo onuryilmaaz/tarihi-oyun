@@ -1,0 +1,98 @@
+[
+  {
+    "gorev": "TASK-0002",
+    "tarih": "2026-10-29T05:56:57.674Z",
+    "tema": "atlas",
+    "birim": 3488,
+    "yay": 13700,
+    "ucgen": 301090,
+    "kurulumMs": {
+      "veriVeFont": 381,
+      "katmanlar": 120,
+      "ilkKare": 72
+    },
+    "kare": {
+      "kareSayisi": 690,
+      "ortFps": 60,
+      "kareMsP50": 16.7,
+      "kareMsP95": 16.7,
+      "kareMsP99": 16.8,
+      "kareMsMaks": 16.8,
+      "renderCpuMsOrt": 0.22,
+      "renderCpuMsP95": 0.5
+    },
+    "etiketMs": {
+      "ort": 0.16,
+      "p95": 0.3
+    },
+    "cizimCagrisi": 9,
+    "heapMb": 38,
+    "tuval": "1600x900 @2x",
+    "gpu": "ANGLE (Apple, ANGLE Metal Renderer: Apple M2, Unspecified Version)",
+    "tarayici": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/156.0.0.0 Safari/537.36"
+  },
+  {
+    "gorev": "TASK-0002",
+    "tarih": "2026-10-29T05:57:10.924Z",
+    "tema": "modern",
+    "birim": 3488,
+    "yay": 13700,
+    "ucgen": 301090,
+    "kurulumMs": {
+      "veriVeFont": 93,
+      "katmanlar": 126,
+      "ilkKare": 46
+    },
+    "kare": {
+      "kareSayisi": 685,
+      "ortFps": 59.57,
+      "kareMsP50": 16.7,
+      "kareMsP95": 16.8,
+      "kareMsP99": 16.8,
+      "kareMsMaks": 33.4,
+      "renderCpuMsOrt": 0.19,
+      "renderCpuMsP95": 0.4
+    },
+    "etiketMs": {
+      "ort": 0.18,
+      "p95": 0.3
+    },
+    "cizimCagrisi": 9,
+    "heapMb": 38,
+    "tuval": "1600x900 @2x",
+    "gpu": "ANGLE (Apple, ANGLE Metal Renderer: Apple M2, Unspecified Version)",
+    "tarayici": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/156.0.0.0 Safari/537.36"
+  },
+  {
+    "gorev": "TASK-0002",
+    "tarih": "2026-10-29T05:57:24.140Z",
+    "tema": "gece",
+    "birim": 3488,
+    "yay": 13700,
+    "ucgen": 301090,
+    "kurulumMs": {
+      "veriVeFont": 79,
+      "katmanlar": 117,
+      "ilkKare": 42
+    },
+    "kare": {
+      "kareSayisi": 690,
+      "ortFps": 60,
+      "kareMsP50": 16.7,
+      "kareMsP95": 16.7,
+      "kareMsP99": 16.8,
+      "kareMsMaks": 16.8,
+      "renderCpuMsOrt": 0.22,
+      "renderCpuMsP95": 0.5
+    },
+    "etiketMs": {
+      "ort": 0.17,
+      "p95": 0.3
+    },
+    "cizimCagrisi": 9,
+    "heapMb": 38,
+    "tuval": "1600x900 @2x",
+    "gpu": "ANGLE (Apple, ANGLE Metal Renderer: Apple M2, Unspecified Version)",
+    "tarayici": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/156.0.0.0 Safari/537.36"
+  }
+]

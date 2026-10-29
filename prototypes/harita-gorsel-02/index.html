@@ -1,0 +1,122 @@
+<!doctype html>
+<html lang="tr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>1453 Harita Görsel Yönü</title>
+  <style>
+    :root {
+      --panel: rgba(28, 24, 20, 0.88);
+      --metin: #efe6d4;
+      --soluk: #ab9f8a;
+      --vurgu: #e2b356;
+      --cizgi: rgba(239, 230, 212, 0.14);
+      --kart: rgba(239, 230, 212, 0.06);
+    }
+    body[data-arayuz="acik"] {
+      --panel: rgba(255, 255, 255, 0.92);
+      --metin: #1f2328;
+      --soluk: #646b75;
+      --vurgu: #b5532a;
+      --cizgi: rgba(31, 35, 40, 0.14);
+      --kart: rgba(31, 35, 40, 0.04);
+    }
+    * { box-sizing: border-box; }
+    html, body { margin: 0; height: 100%; overflow: hidden; background: #1b1814; color: var(--metin);
+      font: 13px/1.45 "Inter", system-ui, -apple-system, sans-serif; }
+    #tuvalKap { position: fixed; inset: 0; }
+    canvas { display: block; touch-action: none; }
+    /* Tarihî atlas: kenar kararması */
+    body[data-tema="atlas"] #tuvalKap::after { content: ""; position: absolute; inset: 0; pointer-events: none;
+      background: radial-gradient(ellipse at center, transparent 55%, rgba(70, 45, 20, 0.28) 100%); }
+
+    #kagit { position: fixed; inset: 0; pointer-events: none; mix-blend-mode: multiply; background-size: 512px 512px; }
+    #etiketler { position: fixed; inset: 0; pointer-events: none; overflow: hidden; }
+    .et-devlet, .et-sehir { position: absolute; left: 0; top: 0; white-space: nowrap; will-change: transform;
+      text-shadow: 0 0 3px var(--et-hale), 0 0 6px var(--et-hale); }
+    .et-devlet { font-family: var(--et-devlet-font); font-weight: var(--et-devlet-agirlik); color: var(--et-devlet-renk);
+      letter-spacing: var(--et-devlet-aralik); text-transform: var(--et-donusum); text-align: center; line-height: 1.1; }
+    .et-sehir { font-family: var(--et-sehir-font); font-weight: var(--et-sehir-agirlik); color: var(--et-sehir-renk);
+      font-size: var(--et-sehir-boyut); font-style: var(--et-sehir-stil); line-height: 1; }
+
+    .panel { position: fixed; background: var(--panel); border: 1px solid var(--cizgi); border-radius: 10px;
+      padding: 14px; backdrop-filter: blur(8px); box-shadow: 0 6px 24px rgba(0,0,0,.18); }
+    #yan { top: 12px; left: 12px; width: 272px; max-height: calc(100% - 24px); overflow: auto; }
+    h1 { font-size: 15px; margin: 0; }
+    .alt { color: var(--soluk); font-size: 11.5px; margin: 2px 0 0; }
+    h2 { font-size: 10.5px; text-transform: uppercase; letter-spacing: .09em; color: var(--soluk);
+      margin: 16px 0 6px; font-weight: 700; }
+    #temalar { display: grid; gap: 6px; }
+    #temalar button { text-align: left; display: grid; gap: 1px; padding: 8px 10px; }
+    #temalar button span { color: var(--soluk); font-size: 11.5px; }
+    #temalar button.etkin { border-color: var(--vurgu); box-shadow: inset 3px 0 0 var(--vurgu); }
+    button { font: inherit; color: var(--metin); background: var(--kart); border: 1px solid var(--cizgi);
+      border-radius: 7px; padding: 5px 10px; cursor: pointer; }
+    button:hover { border-color: var(--soluk); }
+    button:disabled { opacity: .5; cursor: default; }
+    .satir { display: flex; gap: 6px; flex-wrap: wrap; }
+    label { display: flex; align-items: center; gap: 8px; padding: 2px 0; cursor: pointer; }
+    input[type=checkbox] { accent-color: var(--vurgu); }
+    .ana { width: 100%; background: var(--vurgu); color: #fff; border-color: var(--vurgu); font-weight: 600; }
+    pre { background: var(--kart); border-radius: 6px; padding: 8px; font-size: 10.5px; max-height: 200px;
+      overflow: auto; white-space: pre-wrap; margin: 6px 0; }
+
+    #bilgi { right: 12px; top: 12px; width: 290px; }
+    #bilgi h3 { margin: 10px 0 8px; font-size: 16px; display: flex; align-items: center; gap: 8px; }
+    .kirinti { display: flex; flex-wrap: wrap; align-items: center; gap: 4px; font-size: 12px; }
+    .yol { padding: 2px 8px; display: inline-flex; align-items: center; gap: 6px; }
+    .yol-sabit { color: var(--soluk); padding: 2px 4px; }
+    .ayrac { color: var(--soluk); }
+    dl { display: grid; grid-template-columns: auto 1fr; gap: 4px 12px; margin: 0; }
+    dt { color: var(--soluk); }
+    dd { margin: 0; }
+    .bag { border: 0; background: none; padding: 0; color: var(--vurgu); text-decoration: underline; text-underline-offset: 2px; }
+    .renk { display: inline-block; width: 12px; height: 12px; border-radius: 3px; border: 1px solid var(--cizgi); flex: none; }
+    .ipucu-metin { color: var(--soluk); font-size: 11.5px; margin: 10px 0 0; }
+
+    #lejant { left: 12px; bottom: 12px; padding: 8px 12px; font-size: 11.5px; color: var(--soluk); max-width: 560px; }
+    #lejant b { color: var(--metin); font-weight: 600; }
+    #ipucu { position: fixed; left: 0; top: 0; pointer-events: none; background: var(--panel); color: var(--metin);
+      border: 1px solid var(--cizgi); border-radius: 5px; padding: 3px 8px; font-size: 12px; white-space: nowrap; }
+    #yukleniyor { position: fixed; inset: 0; display: grid; place-items: center; color: var(--soluk); background: #1b1814; }
+    [hidden] { display: none !important; }
+  </style>
+</head>
+<body>
+  <div id="tuvalKap"></div>
+  <div id="kagit" hidden></div>
+  <div id="etiketler"></div>
+  <aside id="yan" class="panel">
+    <h1>1453 · Harita görsel yönü</h1>
+    <p class="alt">TASK-0002 · görsel yön denemesi · sınırlar yaklaşıktır</p>
+    <h2>Görsel yön</h2>
+    <div id="temalar"></div>
+    <h2>Katmanlar</h2>
+    <label><input type="checkbox" id="kEtiket" checked /> Devlet adları</label>
+    <label><input type="checkbox" id="kSehir" checked /> Şehirler</label>
+    <label><input type="checkbox" id="kArazi" checked /> Arazi birimi sınırları</label>
+    <label><input type="checkbox" id="kNehir" checked /> Nehirler</label>
+    <h2>Git</h2>
+    <div class="satir">
+      <button data-git="dunya">Dünya</button>
+      <button data-git="avrupa">Avrupa ve Yakındoğu</button>
+      <button data-git="konstantiniyye">Konstantiniyye</button>
+    </div>
+    <h2>Performans</h2>
+    <button class="ana" id="olcBtn">Ölçümü başlat (12 sn)</button>
+    <div id="sonuc" hidden>
+      <pre id="sonucJson"></pre>
+      <button id="kopyalaBtn">Kopyala</button>
+    </div>
+  </aside>
+  <aside id="bilgi" class="panel" hidden></aside>
+  <div id="lejant" class="panel">
+    <b>1453 sınırları yaklaşıktır</b> — modern idari birimlerin agent tarafından atanmasıyla üretildi, kaynaklı
+    senaryo verisi değildir. Coğrafya: Natural Earth (kamu malı). · Ölçek: <span id="olcek"></span><br />
+    Sürükle: kaydır · Tekerlek / + −: yakınlaştır · Tıkla: devlet, tekrar tıkla: arazi · Esc: bir üst seviye
+  </div>
+  <div id="ipucu" hidden></div>
+  <div id="yukleniyor">Harita yükleniyor…</div>
+  <script type="module" src="/src/main.ts"></script>
+</body>
+</html>

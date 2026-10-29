@@ -224,3 +224,31 @@ Kaynak belge: `MASTER_SPEC.md` (v1.3). Orijinal keşif çıktısı:
 - **Etkilenen modüller:** Harita
 - **Onay kaydı:** Kullanıcı: "evet" (2026-10-29)
 - **Durum:** GEÇERLİ
+
+## DEC-0015 — Depo: GitHub (özel), doğrudan main
+
+- **Tarih:** 2026-10-29
+- **Konu:** Uzaktan (Claude remote) devam edebilmek için sürüm kontrolü
+- **Seçilen karar:** Proje github.com/onuryilmaaz/tarihi-oyun özel
+  deposundadır. Çalışma doğrudan `main` dalında yapılır.
+- **Onay kaydı:** Kullanıcı depoyu kendisi oluşturup gönderdi; "mainde
+  yapabilirsin sorun yok" (2026-10-29)
+- **Durum:** GEÇERLİ
+
+## DEC-0016 — TASK-0002 coğrafyası: gerçek dünya + 1453 dönemi sınırları
+
+- **Tarih:** 2026-10-29
+- **Konu:** TASK-0002 açık sorusu 1
+- **Alternatifler:** (a) sentetik harita; (b) Natural Earth gerçek dünya
+  coğrafyası
+- **Seçilen karar:** (b) Natural Earth (kamu malı) coğrafyası; siyasi
+  sınırlar 1453 dönemine ait olacak.
+- **Uygulama notu:** Prototipte 1453 sınırları, Natural Earth modern
+  1. düzey idari birimlerinin (il/eyalet) 1453 devletlerine atanmasıyla
+  **yaklaşık** olarak üretilir; gerektiğinde birimler elle bölünür (ör.
+  Konstantiniyye). Atamalar agent'ın genel tarih bilgisine dayanır,
+  kaynaklandırılmamıştır ve **tahmin** olarak etiketlenir (§5.1). Gerçek
+  senaryo verisi değildir; kaynaklı veri OPEN-018 ile ayrıca ele alınır.
+- **Onay kaydı:** Kullanıcı: "gerçek dünya haritası ama sınırlar o zamana
+  ait olsun. önerin iyi" (2026-10-29)
+- **Durum:** GEÇERLİ

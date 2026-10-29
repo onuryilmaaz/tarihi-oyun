@@ -1,5 +1,17 @@
 # CHANGELOG
 
+## 2026-10-29 — TASK-0002: gerçek dünya haritası, 1453 sınırları, görsel yönler
+
+### Eklendi
+- DEC-0015 (GitHub özel depo, main), DEC-0016 (Natural Earth + yaklaşık 1453).
+- `prototypes/harita-gorsel-02/`: Natural Earth veri hattı, 131 devletli yaklaşık
+  1453 haritası, 3 görsel yön, devlet/arazi/şehir seçim hiyerarşisi, etiketler.
+- `docs/ui-ux/gorsel-yon-denemeleri.md` + ekran görüntüleri.
+- `docs/historical-sources/1453-yaklasik-sinirlar.md`.
+
+### Değişti
+- AGENTS.md: depo bilgisi, mevcut aşama.
+
 ## 2026-10-29 — TASK-0001 kabul, TASK-0002, git deposu
 
 ### Eklendi

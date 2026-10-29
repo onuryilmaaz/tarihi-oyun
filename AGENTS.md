@@ -17,10 +17,9 @@ kaynak: `MASTER_SPEC.md` §21 ve §27.
 ## Mevcut durum
 
 - **Aşama:** 1 (harita deneyimi prototipi) sürüyor. TASK-0001 kabul edildi
-  (ADR-0001); sıradaki iş TASK-0002.
-- **Depo:** Git; GitHub'a gönderilir. Çalışma dalı stratejisi: kullanıcı
-  aksini söylemedikçe her görev kendi dalında (`task/XXXX-...`) yürütülür,
-  `main`'e kullanıcı onayıyla birleştirilir.
+  (ADR-0001); TASK-0002 tamamlandı, görsel yön seçimi bekliyor.
+- **Depo:** github.com/onuryilmaaz/tarihi-oyun (özel). Çalışma doğrudan
+  `main` dalında yapılır (DEC-0015); her anlamlı adım commit + push.
 - **Teknoloji:** TypeScript + three.js; oyun motoru yok (DEC-0012). Önce web
   (DEC-0013). Diğer mimari başlıklar AÇIK; `src/` henüz oluşturulmaz.
 - **İlk sürüm:** Tek oyunculu, tek senaryo (1453).

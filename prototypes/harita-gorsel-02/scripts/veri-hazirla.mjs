@@ -1,0 +1,258 @@
+// Natural Earth (kamu malı) → prototip harita paketi: public/veri/dunya-1453.json
+// Çalıştırma: npm run veri   (girdi: veri-ham/*.geojson, depoya dahil değil)
+
+import fs from "node:fs";
+import { topology } from "topojson-server";
+import { presimplify, simplify, quantile } from "topojson-simplify";
+import { merge } from "topojson-client";
+import polygonClipping from "polygon-clipping";
+import polylabel from "polylabel";
+import { DEVLETLER, BOLMELER, SEHIRLER, BIRLESTIR, ata } from "./devletler-1453.mjs";
+
+const HAM = new URL("../veri-ham/", import.meta.url);
+const CIKTI = new URL("../public/veri/dunya-1453.json", import.meta.url);
+const oku = (ad) => JSON.parse(fs.readFileSync(new URL(ad, HAM), "utf8"));
+
+const ENLEM_MIN = -57, ENLEM_MAX = 83.7;
+// Ayrıntı bölgesi (DEC-0004): Balkanlar, Anadolu, Doğu Akdeniz
+const AYRINTI = { lon0: 12, lon1: 50, lat0: 29, lat1: 49 };
+const SADELIK_ORANI = Number(process.env.SADELIK ?? 0.25); // korunacak nokta oranı (yaklaşık)
+
+// Miller silindirik projeksiyon (derece cinsinden y)
+const R2D = 180 / Math.PI, D2R = Math.PI / 180;
+const miller = (lat) => 1.25 * Math.log(Math.tan(Math.PI / 4 + 0.4 * lat * D2R)) * R2D;
+const proj = ([lon, lat]) => {
+  const la = Math.max(ENLEM_MIN, Math.min(ENLEM_MAX, lat));
+  return [lon, miller(la)];
+};
+const projGeo = (g) => {
+  if (g.type === "Polygon") return { type: "Polygon", coordinates: g.coordinates.map((r) => r.map(proj)) };
+  if (g.type === "MultiPolygon") {
+    return { type: "MultiPolygon", coordinates: g.coordinates.map((p) => p.map((r) => r.map(proj))) };
+  }
+  if (g.type === "LineString") return { type: "LineString", coordinates: g.coordinates.map(proj) };
+  if (g.type === "MultiLineString") return { type: "MultiLineString", coordinates: g.coordinates.map((l) => l.map(proj)) };
+  throw new Error(g.type);
+};
+const cokluPoligon = (g) => (g.type === "Polygon" ? [g.coordinates] : g.coordinates);
+
+const t0 = Date.now();
+const devletIndeks = new Map(DEVLETLER.map((d, i) => [d.id, i]));
+
+// 1) Birimler ve 1453 ataması
+const admin1 = oku("ne_10m_admin_1_states_provinces.geojson");
+const birimler = [];
+const bolmeKullanildi = new Set();
+let atanmamis = 0;
+for (const f of admin1.features) {
+  const p = f.properties;
+  if (p.adm0_a3 === "ATA" || !f.geometry) continue;
+  const ad = p.name_tr || p.name || "?";
+  const temel = { ad, ulke: p.admin, kod: p.adm0_a3, bolge: p.region || null };
+  const bolme = BOLMELER.find(([k, a]) => k === p.adm0_a3 && a === p.name);
+  if (bolme) {
+    bolmeKullanildi.add(bolme[1]);
+    const [, , kesici, icDevlet, disDevlet] = bolme;
+    const geo = cokluPoligon(f.geometry);
+    const ic = polygonClipping.intersection(geo, [[kesici]]);
+    const dis = polygonClipping.difference(geo, [[kesici]]);
+    if (ic.length) birimler.push({ ...temel, ad: `${ad} (iç)`, devlet: icDevlet, geo: ic });
+    if (dis.length) birimler.push({ ...temel, devlet: disDevlet, geo: dis });
+    continue;
+  }
+  const devlet = ata(p);
+  if (devlet && !devletIndeks.has(devlet)) throw new Error(`Bilinmeyen devlet: ${devlet} (${p.name})`);
+  if (!devlet) atanmamis++;
+  birimler.push({ ...temel, devlet, geo: cokluPoligon(f.geometry) });
+}
+for (const [, a] of BOLMELER) if (!bolmeKullanildi.has(a)) console.warn("UYARI: bölme eşleşmedi:", a);
+
+// Çok küçük birimleri birleştir (görsel kalabalığı azaltır; oyun ölçeği kaza/nahiye olmaya devam eder)
+{
+  const gruplar = new Map();
+  const kalan = [];
+  for (const b of birimler) {
+    const tur = BIRLESTIR[b.kod];
+    if (!tur) { kalan.push(b); continue; }
+    const anahtar = `${b.kod}|${tur === "bolge" ? b.bolge ?? "-" : "-"}|${b.devlet}`;
+    if (!gruplar.has(anahtar)) gruplar.set(anahtar, []);
+    gruplar.get(anahtar).push(b);
+  }
+  for (const liste of gruplar.values()) {
+    const ilk = liste[0];
+    const geo = liste.length === 1 ? ilk.geo : polygonClipping.union(...liste.map((b) => b.geo));
+    const ad = liste.length === 1 ? ilk.ad : BIRLESTIR[ilk.kod] === "bolge" && ilk.bolge ? ilk.bolge : ilk.ulke;
+    kalan.push({ ...ilk, ad, geo });
+  }
+  console.log("birleştirme:", birimler.length, "→", kalan.length);
+  birimler.length = 0;
+  birimler.push(...kalan);
+}
+
+// Hiç birimi olmayan devletleri bildir (yanlış yazılmış ad)
+const kullanilan = new Set(birimler.map((b) => b.devlet));
+for (const d of DEVLETLER) if (!kullanilan.has(d.id)) console.warn("UYARI: birimi olmayan devlet:", d.id);
+
+// 2) Projeksiyon + topoloji
+const fc = {
+  type: "FeatureCollection",
+  features: birimler.map((b, i) => ({
+    type: "Feature", id: i, properties: {},
+    geometry: projGeo({ type: "MultiPolygon", coordinates: b.geo }),
+  })),
+};
+let topo = topology({ b: fc });
+const ayrintiY0 = miller(AYRINTI.lat0), ayrintiY1 = miller(AYRINTI.lat1);
+const ayrintida = ([x, y]) => x >= AYRINTI.lon0 && x <= AYRINTI.lon1 && y >= ayrintiY0 && y <= ayrintiY1;
+topo = presimplify(topo, (t) => {
+  const alan = Math.abs((t[0][0] - t[2][0]) * (t[1][1] - t[0][1]) - (t[0][0] - t[1][0]) * (t[2][1] - t[0][1])) / 2;
+  return ayrintida(t[1]) ? alan * 25 : alan;
+});
+const hamNokta = topo.arcs.reduce((s, a) => s + a.length, 0);
+topo = simplify(topo, quantile(topo, SADELIK_ORANI));
+const sadeNokta = topo.arcs.reduce((s, a) => s + a.filter((p) => p[2] !== 0).length, 0);
+
+// 3) Komşuluk: aynı yayı kullanan birimler
+const geos = topo.objects.b.geometries;
+const yaySahipleri = new Map();
+geos.forEach((g, bi) => {
+  const polys = g.type === "Polygon" ? [g.arcs] : g.type === "MultiPolygon" ? g.arcs : [];
+  for (const poly of polys) for (const ring of poly) for (const a of ring) {
+    const k = a < 0 ? ~a : a;
+    if (!yaySahipleri.has(k)) yaySahipleri.set(k, []);
+    yaySahipleri.get(k).push(bi);
+  }
+});
+const komsu = DEVLETLER.map(() => new Set());
+for (const sahip of yaySahipleri.values()) {
+  if (sahip.length < 2) continue;
+  const [a, b] = sahip.map((bi) => birimler[bi].devlet);
+  if (a && b && a !== b) {
+    komsu[devletIndeks.get(a)].add(devletIndeks.get(b));
+    komsu[devletIndeks.get(b)].add(devletIndeks.get(a));
+  }
+}
+
+// 4) Renk tonu: sabit tonlar önce; diğerleri komşulardan en uzak aday
+const tonFarki = (a, b) => { const d = Math.abs(a - b) % 1; return Math.min(d, 1 - d); };
+const ton = DEVLETLER.map((d) => d.hue ?? null);
+let tohum = 1453;
+const rnd = () => ((tohum = (tohum * 16807) % 2147483647) / 2147483647);
+DEVLETLER.forEach((d, i) => {
+  if (ton[i] !== null) return;
+  let enIyi = 0, skor = -1;
+  for (let k = 0; k < 48; k++) {
+    const aday = rnd();
+    let s = 1;
+    for (const n of komsu[i]) if (ton[n] !== null) s = Math.min(s, tonFarki(aday, ton[n]));
+    if (s > skor) { skor = s; enIyi = aday; }
+  }
+  ton[i] = enIyi;
+});
+
+// 5) Devlet etiket noktaları: birleşik geometrinin en büyük parçasında en geniş iç daire
+const poligonAlani = (ring) => {
+  let s = 0;
+  for (let i = 0, j = ring.length - 1; i < ring.length; j = i++) s += (ring[j][0] - ring[i][0]) * (ring[j][1] + ring[i][1]);
+  return Math.abs(s / 2);
+};
+const devletCikti = DEVLETLER.map((d, i) => {
+  const parcalar = geos.filter((g, bi) => birimler[bi].devlet === d.id);
+  let etiket = null, toplamAlan = 0;
+  if (parcalar.length) {
+    const birlesik = merge(topo, parcalar);
+    let enBuyuk = null, enAlan = -1;
+    for (const poly of birlesik.coordinates) {
+      const a = poligonAlani(poly[0]);
+      toplamAlan += a;
+      if (a > enAlan) { enAlan = a; enBuyuk = poly; }
+    }
+    if (enBuyuk) {
+      const pl = polylabel(enBuyuk, 0.02);
+      etiket = [+pl[0].toFixed(3), +pl[1].toFixed(3), +pl.distance.toFixed(3)];
+    }
+  }
+  return { id: d.id, ad: d.ad, ton: +ton[i].toFixed(3), etiket, alan: +toplamAlan.toFixed(2) };
+});
+
+// 6) Göller ve nehirler (basit Douglas–Peucker)
+const dp = (pts, tol) => {
+  if (pts.length < 3) return pts;
+  const tut = new Uint8Array(pts.length);
+  tut[0] = tut[pts.length - 1] = 1;
+  const yigin = [[0, pts.length - 1]];
+  while (yigin.length) {
+    const [a, b] = yigin.pop();
+    let maks = 0, mi = -1;
+    const [ax, ay] = pts[a], [bx, by] = pts[b];
+    const dx = bx - ax, dy = by - ay, l2 = dx * dx + dy * dy || 1e-12;
+    for (let i = a + 1; i < b; i++) {
+      const t = Math.max(0, Math.min(1, ((pts[i][0] - ax) * dx + (pts[i][1] - ay) * dy) / l2));
+      const ex = ax + t * dx - pts[i][0], ey = ay + t * dy - pts[i][1];
+      const d2 = ex * ex + ey * ey;
+      if (d2 > maks) { maks = d2; mi = i; }
+    }
+    if (mi >= 0 && maks > tol * tol) { tut[mi] = 1; yigin.push([a, mi], [mi, b]); }
+  }
+  return pts.filter((_, i) => tut[i]);
+};
+const duz = (pts) => pts.flatMap(([x, y]) => [+x.toFixed(3), +y.toFixed(3)]);
+const tolerans = (pts) => (pts.some(ayrintida) ? 0.01 : 0.04);
+
+const goller = [];
+for (const f of oku("ne_10m_lakes.geojson").features) {
+  if (f.properties.scalerank > 4 || !f.geometry) continue;
+  for (const poly of cokluPoligon(projGeo(f.geometry))) {
+    const halkalar = poly.map((r) => dp(r, tolerans(r))).filter((r) => r.length >= 4);
+    if (halkalar.length) goller.push(halkalar.map(duz));
+  }
+}
+const nehirler = [];
+for (const f of oku("ne_10m_rivers_lake_centerlines.geojson").features) {
+  const sr = f.properties.scalerank;
+  if (!f.geometry || f.properties.featurecla?.includes("Lake")) continue;
+  const g = projGeo(f.geometry);
+  const hatlar = g.type === "LineString" ? [g.coordinates] : g.coordinates;
+  for (const h of hatlar) {
+    const ayr = h.some(ayrintida);
+    if (sr > (ayr ? 6 : 4)) continue;
+    const s = dp(h, tolerans(h));
+    if (s.length >= 2) nehirler.push({ r: sr, p: duz(s) });
+  }
+}
+
+// 7) Çıktı
+const yuvarla = (a) => {
+  const out = [];
+  for (const p of a) if (p[2] !== 0) out.push(+p[0].toFixed(4), +p[1].toFixed(4));
+  return out;
+};
+const paket = {
+  surum: 1,
+  uyari: "1453 sınırları YAKLAŞIKTIR (agent tahmini, kaynaksız). Coğrafya: Natural Earth (kamu malı).",
+  projeksiyon: "miller",
+  dunya: { x0: -180, x1: 180, y0: miller(ENLEM_MIN), y1: miller(ENLEM_MAX) },
+  arklar: topo.arcs.map(yuvarla),
+  birimler: birimler.map((b, i) => {
+    const g = geos[i];
+    const polys = g.type === "Polygon" ? [g.arcs] : g.type === "MultiPolygon" ? g.arcs : [];
+    return { ad: b.ad, ulke: b.ulke, d: b.devlet ? devletIndeks.get(b.devlet) : -1, p: polys };
+  }),
+  devletler: devletCikti,
+  sehirler: SEHIRLER.map(([ad, lon, lat, d, b]) => {
+    const [x, y] = proj([lon, lat]);
+    return { ad, x: +x.toFixed(3), y: +y.toFixed(3), d: devletIndeks.get(d), b: b ? 1 : 0 };
+  }),
+  goller,
+  nehirler,
+};
+for (const s of paket.sehirler) if (s.d === undefined) throw new Error("Şehir devleti yok: " + s.ad);
+
+fs.mkdirSync(new URL("../public/veri/", import.meta.url), { recursive: true });
+const json = JSON.stringify(paket);
+fs.writeFileSync(CIKTI, json);
+console.log({
+  birim: birimler.length, atanmamisBirim: atanmamis, devlet: DEVLETLER.length, sehir: SEHIRLER.length,
+  hamNokta, sadeNokta, yay: topo.arcs.length, gol: goller.length, nehir: nehirler.length,
+  boyutMB: +(json.length / 1048576).toFixed(2), sureSn: (Date.now() - t0) / 1000,
+});
