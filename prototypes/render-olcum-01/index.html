@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="tr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Harita Render Ölçümü</title>
+  <style>
+    :root {
+      --panel: rgba(22, 19, 16, 0.86);
+      --metin: #efe6d4;
+      --soluk: #a99d88;
+      --vurgu: #e2b356;
+      --cizgi: rgba(239, 230, 212, 0.14);
+    }
+    * { box-sizing: border-box; }
+    html, body { margin: 0; height: 100%; overflow: hidden; background: #1b1814; color: var(--metin);
+      font: 13px/1.45 system-ui, -apple-system, "Segoe UI", sans-serif; }
+    canvas { display: block; touch-action: none; }
+    .panel { position: fixed; background: var(--panel); border: 1px solid var(--cizgi); border-radius: 8px;
+      padding: 12px 14px; backdrop-filter: blur(6px); }
+    #olcum { top: 12px; left: 12px; width: 300px; max-height: calc(100% - 24px); overflow: auto; }
+    #bilgi { right: 12px; bottom: 12px; width: 240px; display: none; }
+    #yardim { left: 12px; bottom: 12px; color: var(--soluk); padding: 8px 12px; }
+    h1 { font-size: 14px; margin: 0 0 2px; letter-spacing: .02em; }
+    h2 { font-size: 11px; text-transform: uppercase; letter-spacing: .08em; color: var(--soluk);
+      margin: 12px 0 4px; font-weight: 600; }
+    .not { color: var(--soluk); font-size: 11px; margin: 0; }
+    dl { display: grid; grid-template-columns: 1fr auto; gap: 2px 12px; margin: 0; }
+    dt { color: var(--soluk); }
+    dd { margin: 0; text-align: right; font-variant-numeric: tabular-nums; }
+    .dugmeler { display: flex; gap: 6px; flex-wrap: wrap; }
+    button { font: inherit; color: var(--metin); background: rgba(239,230,212,.08); border: 1px solid var(--cizgi);
+      border-radius: 6px; padding: 5px 10px; cursor: pointer; }
+    button:hover { background: rgba(239,230,212,.16); }
+    button.etkin { border-color: var(--vurgu); color: var(--vurgu); }
+    button.ana { background: var(--vurgu); color: #1b1814; border-color: var(--vurgu); font-weight: 600; width: 100%; margin-top: 8px; }
+    button:disabled { opacity: .5; cursor: default; }
+    pre { background: rgba(0,0,0,.35); border-radius: 6px; padding: 8px; font-size: 11px; max-height: 220px;
+      overflow: auto; white-space: pre-wrap; margin: 6px 0 0; }
+    #ipucu { position: fixed; pointer-events: none; background: var(--panel); border: 1px solid var(--cizgi);
+      border-radius: 4px; padding: 3px 7px; font-size: 12px; display: none; white-space: nowrap; }
+    #yukleniyor { position: fixed; inset: 0; display: grid; place-items: center; color: var(--soluk); }
+    .renk { display: inline-block; width: 10px; height: 10px; border-radius: 2px; margin-right: 6px; vertical-align: -1px; }
+  </style>
+</head>
+<body>
+  <div id="yukleniyor">Sentetik harita üretiliyor…</div>
+  <div id="olcum" class="panel">
+    <h1>Harita render ölçümü</h1>
+    <p class="not">TASK-0001 · sentetik veri · gerçek tarihî harita değildir</p>
+    <h2>Arazi birimi sayısı</h2>
+    <div class="dugmeler" id="nSecim"></div>
+    <h2>Kurulum</h2>
+    <dl id="kurulum"></dl>
+    <h2>Canlı</h2>
+    <dl id="canli"></dl>
+    <button class="ana" id="olcBtn">Ölçümü başlat (12 sn)</button>
+    <div id="sonuc" style="display:none">
+      <h2>Ölçüm sonucu</h2>
+      <pre id="sonucJson"></pre>
+      <button id="kopyalaBtn" style="margin-top:6px">Kopyala</button>
+    </div>
+  </div>
+  <div id="bilgi" class="panel"></div>
+  <div id="yardim" class="panel">Sürükle: kaydır · Tekerlek / + −: yakınlaştır · Ok tuşları: kaydır · Tıkla: arazi seç · Esc: seçimi kaldır</div>
+  <div id="ipucu"></div>
+  <script type="module" src="/src/main.ts"></script>
+</body>
+</html>

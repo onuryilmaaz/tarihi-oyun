@@ -1,0 +1,118 @@
+[
+  {
+    "gorev": "TASK-0001",
+    "tarih": "2026-10-29T05:25:05.105Z",
+    "hedefN": 5000,
+    "tohum": 1453,
+    "karaAraziBirimi": 5000,
+    "toplamHucre": 6750,
+    "devlet": 114,
+    "yerlesim": 1500,
+    "ucgen": 88192,
+    "ortCizimCagrisi": 5.6,
+    "kurulumMs": {
+      "veri.noktalar": 9,
+      "veri.voronoi": 15,
+      "veri.devletler": 7,
+      "veri.kenarlar": 58,
+      "veri.toplam": 90,
+      "katman.ucgenleme": 19,
+      "katman.geometri": 10,
+      "katman.toplam": 29,
+      "ilkKare": 370
+    },
+    "kare": {
+      "kareSayisi": 690,
+      "ortFps": 60,
+      "kareMsP50": 16.7,
+      "kareMsP95": 16.7,
+      "kareMsP99": 16.8,
+      "kareMsMaks": 16.8,
+      "renderCpuMsOrt": 0.34,
+      "renderCpuMsP95": 0.5
+    },
+    "heapMb": 22,
+    "tuval": "1600x900 @2x",
+    "gpu": "ANGLE (Apple, ANGLE Metal Renderer: Apple M2, Unspecified Version)",
+    "tarayici": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/156.0.0.0 Safari/537.36",
+    "konsolHatalari": [
+      "Failed to load resource: the server responded with a status of 404 (Not Found)"
+    ]
+  },
+  {
+    "gorev": "TASK-0001",
+    "tarih": "2026-10-29T05:25:20.421Z",
+    "hedefN": 20000,
+    "tohum": 1453,
+    "karaAraziBirimi": 20000,
+    "toplamHucre": 27000,
+    "devlet": 446,
+    "yerlesim": 5982,
+    "ucgen": 347836,
+    "ortCizimCagrisi": 5.2,
+    "kurulumMs": {
+      "veri.noktalar": 23,
+      "veri.voronoi": 36,
+      "veri.devletler": 20,
+      "veri.kenarlar": 215,
+      "veri.toplam": 295,
+      "katman.ucgenleme": 55,
+      "katman.geometri": 20,
+      "katman.toplam": 75,
+      "ilkKare": 35
+    },
+    "kare": {
+      "kareSayisi": 691,
+      "ortFps": 60,
+      "kareMsP50": 16.7,
+      "kareMsP95": 16.7,
+      "kareMsP99": 16.8,
+      "kareMsMaks": 16.8,
+      "renderCpuMsOrt": 0.41,
+      "renderCpuMsP95": 0.5
+    },
+    "heapMb": 99,
+    "tuval": "1600x900 @2x",
+    "gpu": "ANGLE (Apple, ANGLE Metal Renderer: Apple M2, Unspecified Version)",
+    "tarayici": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/156.0.0.0 Safari/537.36",
+    "konsolHatalari": []
+  },
+  {
+    "gorev": "TASK-0001",
+    "tarih": "2026-10-29T05:25:36.102Z",
+    "hedefN": 50000,
+    "tohum": 1453,
+    "karaAraziBirimi": 50000,
+    "toplamHucre": 67500,
+    "devlet": 1101,
+    "yerlesim": 14982,
+    "ucgen": 864522,
+    "ortCizimCagrisi": 5,
+    "kurulumMs": {
+      "veri.noktalar": 45,
+      "veri.voronoi": 73,
+      "veri.devletler": 42,
+      "veri.kenarlar": 598,
+      "veri.toplam": 762,
+      "katman.ucgenleme": 109,
+      "katman.geometri": 35,
+      "katman.toplam": 146,
+      "ilkKare": 56
+    },
+    "kare": {
+      "kareSayisi": 689,
+      "ortFps": 59.92,
+      "kareMsP50": 16.7,
+      "kareMsP95": 16.8,
+      "kareMsP99": 16.8,
+      "kareMsMaks": 33.4,
+      "renderCpuMsOrt": 0.47,
+      "renderCpuMsP95": 0.6
+    },
+    "heapMb": 136,
+    "tuval": "1600x900 @2x",
+    "gpu": "ANGLE (Apple, ANGLE Metal Renderer: Apple M2, Unspecified Version)",
+    "tarayici": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/156.0.0.0 Safari/537.36",
+    "konsolHatalari": []
+  }
+]
