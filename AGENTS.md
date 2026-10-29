@@ -17,8 +17,8 @@ kaynak: `MASTER_SPEC.md` §21 ve §27.
 
 ## Mevcut durum
 
-- **Aşama:** 6 kapandı (DEC-0041); Aşama 4 ve 5 de kapalı (DEC-0037). Aşama 7 (hanedan, karakter, nüfus,
-  kültür, iç siyaset) için kullanıcı onayı bekleniyor. Durum için `DEVIR-TESLIM.md`.
+- **Aşama:** 6 kapandı (DEC-0041); Aşama 4 ve 5 de kapalı (DEC-0037). Aşama 7 başladı (DEC-0042); TASK-0010
+  7a (hükümdar ve veraset) onaylandı (DEC-0043), uygulanıyor. Durum için `DEVIR-TESLIM.md`.
 - **Yerel sunucu (DEC-0036):** Kullanıcı da agent da **5173**'teki geliştirme sunucusunu kullanır
   (kullanıcı başlattı, kapatılmaz; kod değişince kendini yeniler). Kullanıcıya test adımı 5173 ile verilir;
   4175 önizlemesi kullanılmaz. Aşama 2 kapandı

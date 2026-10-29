@@ -559,3 +559,27 @@ Kaynak belge: `MASTER_SPEC.md` (v1.3). Orijinal keşif çıktısı:
   3. 6c commit + push onaylandı. Aşama 7'ye geçiş ayrıca kullanıcı onayı ister.
 - **Onay kaydı:** Kullanıcı: "1- tamam 2- pushla 3- a" (2026-10-29)
 - **Durum:** GEÇERLİ
+
+## DEC-0042 — Aşama 7'ye geçiş
+
+- **Tarih:** 2026-10-29
+- **Seçilen karar:**
+  1. Aşama 7 (hanedan, karakter, nüfus, kültür, iç siyaset) başlar; önce TASK-0010 kartı onaya sunulur.
+  2. Sıra: 7a hükümdar ve veraset → 7b nüfus grupları, din/kültür, göç → 7c istikrar ve isyan riski → 7d yerel yönetim
+     (şehir otomasyonu, OPEN-016).
+  3. Tarihî hükümdar verisi: önemli devletler (~20–30) için elle hazırlanmış küçük tablo (kullanıcı onayına sunulur);
+     diğer devletlerde kurallarla üretilen, açıkça kurgusal işaretli hükümdarlar.
+- **Onay kaydı:** Kullanıcı: "1- evet 2- uygun 3- a" (2026-10-29)
+- **Durum:** GEÇERLİ
+
+## DEC-0043 — 7a (hükümdar ve veraset) kapsamı
+
+- **Tarih:** 2026-10-29
+- **Seçilen karar:**
+  1. TASK-0010 / 7a kapsamı onaylandı (hükümdar, yetenekler, meşruiyet, veraset gelenekleri, tarihî/kurgusal halef).
+  2. Ölüm yaşa bağlı olasılıkla; tarihî ölüm tarihi zorlanmaz.
+  3. Yetenek etkileri küçük: gelir ve muharebe gücü en çok ±%10, diplomatik bakış en çok ±10.
+  4. Oyuncunun hükümdarı ölünce tur durur; halefi oyuncu oyunun kendi penceresinde seçer.
+  5. DEC-0042 ve TASK-0010/ASAMA-7 taslakları commit + push edilir; hükümdar tablosu onaya sunulur.
+- **Onay kaydı:** Kullanıcı: "1- uygundur 2- evet 3- evet 4- evet 5- evet" (2026-10-29)
+- **Durum:** GEÇERLİ
