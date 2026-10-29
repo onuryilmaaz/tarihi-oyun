@@ -4,6 +4,8 @@
 // doğru yuvarlanır, tarayıcıdan bağımsızdır) kullanılır.
 
 import type { DunyaDurumu, OrduDurumu } from "./durum";
+import { HAREKET } from "./denge";
+export { HAREKET } from "./denge";
 
 export interface AgDugum { b: number; x: number; y: number; z: number; kx: number; ky: number }
 export interface AgKenar { a: number; b: number; mx: number; my: number; da: number; db: number; n: number; g: number; ad?: string }
@@ -12,13 +14,6 @@ export interface AgVerisi { dugumler: AgDugum[]; kenarlar: AgKenar[] }
 export interface HareketAgi extends AgVerisi {
   komsu: number[][]; // düğüm → kenar indeksleri
 }
-
-// [TASLAK — denge değerleri] MASTER_SPEC §8.3; Aşama 4–5'te ordu türü, ikmal ve mevsimle ayrıntılanacak
-export const HAREKET = {
-  TEMEL_HIZ: 20000, // metre/gün (piyade ağırlıklı ordu)
-  NEHIR_CEZASI: 15000, // büyük nehir geçişi başına efektif metre
-  BOGAZ_CEZASI: 40000, // boğaz geçişi (gemiyle karşıya geçiş) efektif metre
-};
 
 export function agHazirla(veri: AgVerisi): HareketAgi {
   const komsu: number[][] = veri.dugumler.map(() => []);

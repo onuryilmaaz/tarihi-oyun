@@ -44,6 +44,29 @@
     h2:first-child { margin-top: 0; }
     label { display: flex; align-items: center; gap: 8px; padding: 2px 0; cursor: pointer; }
     input[type=checkbox] { accent-color: var(--vurgu); }
+    input[type=number], select { font: inherit; color: var(--metin); background: #29231d;
+      border: 1px solid var(--cizgi); border-radius: 6px; padding: 5px; max-width: 100%; }
+    input[type=number] { width: 95px; }
+    #toplamaSehir { width: 100%; }
+    #butceOzeti { margin-top: 10px; }
+    #butceOzeti summary { cursor: pointer; color: var(--vurgu); }
+    #butceOzeti dl { margin-top: 8px; font-size: 11.5px; gap: 5px 8px; }
+    #butceNet.artı { color: #9fcf7a; }
+    #butceNet.eksi { color: var(--hata); }
+    #toplamaListesi { padding-left: 16px; font-size: 11.5px; color: var(--soluk); }
+    #askerToplama label { margin-top: 5px; }
+    .ordu-duzenle { border-top: 1px solid var(--cizgi); margin-top: 10px; padding-top: 8px; }
+    #kusatmaPaneli select { width: 100%; margin: 4px 0; }
+    #kusatmaListesi, #barisGecmisi { margin: 8px 0 0; padding-left: 16px; font-size: 11.5px; color: var(--soluk); }
+    #baris { position: fixed; inset: 0; display: grid; place-items: center; background: rgba(15,12,9,.6); z-index: 11; }
+    #baris .panel { position: static; width: min(650px, calc(100% - 32px)); max-height: calc(100% - 48px); overflow: auto; padding: 22px; }
+    #baris h3 { font-family: "Cinzel", serif; margin: 0 0 8px; }
+    #baris fieldset { margin: 12px 0; padding: 10px; border: 1px solid var(--cizgi); border-radius: 6px; }
+    #baris legend { color: var(--soluk); }
+    #barisKosullari { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+    #barisKosullari fieldset { max-height: 240px; overflow: auto; }
+    #barisSonuc { padding: 10px 0; }
+    #barisSonuc[data-gecerli="false"] { color: var(--uyari); }
     .satir { display: flex; gap: 6px; flex-wrap: wrap; align-items: center; }
     .renk { display: inline-block; width: 12px; height: 12px; border-radius: 3px; border: 1px solid var(--cizgi); flex: none; }
     .not { color: var(--soluk); font-size: 11.5px; margin: 4px 0 0; }
@@ -195,8 +218,29 @@
     <h2>Ordular</h2>
     <ul id="orduListesi"></ul>
     <div id="orduDetay" hidden></div>
+    <h2>Kuşatma</h2>
+    <div id="kusatmaPaneli"></div>
+    <ul id="kusatmaListesi"></ul>
+    <h2>Asker toplama</h2>
+    <div id="askerToplama">
+      <label for="toplamaSehir">Şehir</label>
+      <select id="toplamaSehir" aria-label="Asker toplanacak şehir"></select>
+      <label for="toplamaAsker">Asker sayısı <input id="toplamaAsker" type="number" min="1" step="1" value="1000" /></label>
+      <p id="toplamaBilgi" class="not"></p>
+      <button id="toplaBtn" style="margin-top:6px">Asker topla</button>
+      <p class="not">İnsan gücü ve denge değerleri tahminidir. Havuz bu sürümde kendiliğinden yenilenmez.</p>
+      <ul id="toplamaListesi"></ul>
+    </div>
+    <h2>Ordu giderleri</h2>
+    <p id="orduGideri" class="not"></p>
+    <details id="butceOzeti" open>
+      <summary>Aylık bütçe özeti</summary>
+      <dl id="butceKalemleri"></dl>
+      <p class="not">Gelir hâlâ prototip hesabıdır. Aylık fark, mevcut arazi ve ordular korunursa geçerlidir; toplama ve tazminat gibi tek seferlik işlemler bu farka dahil değildir.</p>
+    </details>
     <h2>Savaşlar</h2>
     <ul id="savasListesi"></ul>
+    <ul id="barisGecmisi"></ul>
     <h2>Muharebe raporları</h2>
     <ul id="raporListesi"></ul>
     <h2>Olay günlüğü</h2>
@@ -219,7 +263,6 @@
     <div class="satir">
       <button id="testKesinti">Test kesintisi (10 gün)</button>
       <button id="testHarca">Test harcaması (50.000)</button>
-      <button id="testIsgal">Test işgali (seçili arazi/şehir)</button>
     </div>
     <p class="not">Aşama 2 altyapısını sınamak içindir; gerçek oyun mekaniği değildir. Gelir ve nüfus değerleri test değeridir.</p>
     <p class="not"><span id="sonTur"></span><br />Durum özeti: <span id="ozetHash"></span></p>
@@ -250,6 +293,18 @@
     <div class="panel" role="dialog" aria-label="Muharebe raporu">
       <div id="raporIcerik"></div>
       <div class="satir" style="margin-top:14px"><button id="raporKapat">Kapat</button></div>
+    </div>
+  </div>
+
+  <div id="baris" hidden>
+    <div class="panel" role="dialog" aria-modal="true" aria-labelledby="barisBaslik">
+      <h3 id="barisBaslik">Barış antlaşması</h3>
+      <p id="barisSkor" class="not"></p>
+      <div id="barisKosullari"></div>
+      <label for="barisTazminat">Peşin tazminat <input id="barisTazminat" type="number" min="0" step="1" value="0" /></label>
+      <p class="not">Yalnızca işgal ettiğiniz yerleri talep edebilirsiniz. Seçilmeyen işgaller yasal sahibine döner. Tazminat karşı tarafın mevcut parasını aşamaz.</p>
+      <p id="barisSonuc" role="status"></p>
+      <div class="satir"><button id="barisKapat">Vazgeç</button><button id="barisGonder" disabled>Barış teklif et</button></div>
     </div>
   </div>
 

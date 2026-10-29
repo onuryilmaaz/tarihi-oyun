@@ -1,6 +1,6 @@
 // Ana iş parçacığı ↔ simülasyon Worker'ı mesaj protokolü.
 
-import type { Dogrulama, Emir, MuharebeRaporu, OlayKaydi, RotaKirilimi, SenaryoVerisi, Tutum, TurSonucu, TurSuresi, YabanciOrdu } from "@tarihi/sim";
+import type { BarisKaydi, BarisTalebi, ButceOzeti, Dogrulama, Emir, KusatmaYontemi, MuharebeRaporu, OlayKaydi, RotaKirilimi, SenaryoVerisi, Tutum, TurSonucu, TurSuresi, YabanciOrdu } from "@tarihi/sim";
 
 export type Istek = { id: number } & (
   | { tip: "yeniOyun"; senaryo: SenaryoVerisi; tohum: number; oyuncu?: string }
@@ -10,6 +10,7 @@ export type Istek = { id: number } & (
   | { tip: "turuIlerlet" }
   | { tip: "kaydet" }
   | { tip: "rotaOnizle"; ordu: number; x: number; y: number; dugum: number }
+  | { tip: "barisOnizle"; talep: BarisTalebi }
 );
 
 export interface OrduOzeti {
@@ -27,6 +28,15 @@ export interface OrduOzeti {
   tutum: Tutum;
   muharebede: boolean;
   cekiliyor: boolean;
+  ikmal: number;
+  ikmalNedeni: string;
+  maas: number;
+  maasAksiyor: boolean;
+  bolunebilir: boolean;
+  birlesebilir: number[];
+  kusatma: number | null;
+  kusatilabilir: number[];
+  kusatmaEmriBekliyor: boolean;
 }
 
 export interface RotaOnizleme {
@@ -47,18 +57,28 @@ export interface Ozet {
   oyuncu: { indeks: number; id: string; ad: string; hazine: number };
   gunluk: OlayKaydi[];
   bekleyenEmir: number;
+  kullanilabilirHazine: number;
+  aylikMaas: number;
+  butce: ButceOzeti;
+  askerSehirleri: { indeks: number; ad: string; insanGucu: number; uygun: boolean }[];
+  toplamalar: { sehir: string; asker: number; kalanGun: number; bekliyor: boolean; emir: boolean }[];
   planliKesinti: { tarih: string; neden: string }[];
   hash: string;
   ordular: OrduOzeti[];
   yabanciOrdular: YabanciOrdu[]; // yalnızca görünenler; kesin asker sayısı yok (AT-013)
-  savaslar: { karsi: number; baslangic: string; saldiran: boolean }[];
+  savaslar: { id: number; karsi: number; baslangic: string; saldiran: boolean; skor: number; alinan: number; kaybedilen: number; toplam: number; birimler: number[]; sehirler: number[] }[];
+  kusatmalar: { sehir: number; devlet: number; savunan: number; yontem: KusatmaYontemi; gun: number; erzak: number; gucYeterli: boolean | null }[];
+  sehirDurumlari: { devlet: number; kontrol: number; baskent: boolean; sur: number; garnizon: number; garnizonTahmin: boolean }[];
+  birimSahipleri: number[];
+  isgalHazirliklari: { birim: number; gun: number }[];
+  barislar: BarisKaydi[];
   raporlar: MuharebeRaporu[]; // oyuncunun taraf olduğu son muharebeler
   birimIsgal: [number, number, number][]; // [birim, kontrol eden devlet, başlangıç günü]
   sehirIsgal: [number, number, number][];
 }
 
 export type Yanit =
-  | { id: number; tamam: true; ozet: Ozet; sonuc?: TurSonucu; sureMs?: number; metin?: string; dogrulama?: Dogrulama; rota?: RotaOnizleme }
+  | { id: number; tamam: true; ozet: Ozet; sonuc?: TurSonucu; sureMs?: number; metin?: string; dogrulama?: Dogrulama; rota?: RotaOnizleme; baris?: { puan: number; skor: number; dogrulama: Dogrulama } }
   | { id: number; tamam: false; hata: string };
 
 type IstekGovdesi = Istek extends infer T ? (T extends { id: number } ? Omit<T, "id"> : never) : never;

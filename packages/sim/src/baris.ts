@@ -1,0 +1,117 @@
+// TASK-0007/4c — DEC-0027/1: AI gelene kadar işgal skoru talebi karşılıyorsa barış kabul edilir.
+import { olayEkle, type BarisTalebi, type DunyaDurumu } from "./durum";
+import { DENGE } from "./denge";
+import type { Baglam, Dogrulama } from "./emirler";
+import { gecilebilir, orduKonumu, rotaBul } from "./hareket";
+
+export const sehirDegeri = (d: DunyaDurumu, sehir: number): number => d.sehirler[sehir].baskent ? DENGE.BASKENT_DEGERI : DENGE.SEHIR_DEGERI;
+function toplamDeger(d: DunyaDurumu, devlet: number): number {
+  return d.birimler.filter((b) => b.sahip === devlet).length * DENGE.BOLGE_DEGERI
+    + d.sehirler.reduce((s, c, i) => s + (c.devlet === devlet ? sehirDegeri(d, i) : 0), 0);
+}
+function isgalDegeri(d: DunyaDurumu, sahip: number, kontrol: number): number {
+  return d.birimler.filter((b) => b.sahip === sahip && b.kontrol === kontrol).length * DENGE.BOLGE_DEGERI
+    + d.sehirler.reduce((s, c, i) => s + (c.devlet === sahip && c.kontrol === kontrol ? sehirDegeri(d, i) : 0), 0);
+}
+export function savasSkoru(d: DunyaDurumu, devlet: number, karsi: number): { skor: number; alinan: number; kaybedilen: number; toplam: number } {
+  const alinan = isgalDegeri(d, karsi, devlet), kaybedilen = isgalDegeri(d, devlet, karsi);
+  const toplam = Math.max(1, toplamDeger(d, karsi));
+  return { skor: Math.max(-100, Math.min(100, Math.floor((alinan - kaybedilen) * 100 / toplam))), alinan, kaybedilen, toplam };
+}
+export function barisBedeli(d: DunyaDurumu, devlet: number, karsi: number, t: BarisTalebi): number {
+  const deger = t.birimler.length * DENGE.BOLGE_DEGERI + t.sehirler.reduce((s, i) => s + sehirDegeri(d, i), 0);
+  const toprak = deger > 0 ? Math.max(1, Math.floor(deger * 100 / Math.max(1, toplamDeger(d, karsi)))) : 0;
+  return toprak + Math.ceil(t.tazminat / DENGE.TAZMINAT_PUAN_BASINA);
+}
+
+export function barisDogrula(d: DunyaDurumu, t: BarisTalebi): Dogrulama {
+  const s = d.savaslar.find((v) => v.id === t.savas);
+  const devlet = d.ayarlar.oyuncu;
+  if (!s || (s.saldiran !== devlet && s.savunan !== devlet)) return { gecerli: false, neden: "Tarafı olduğunuz savaş bulunamadı." };
+  const karsi = s.saldiran === devlet ? s.savunan : s.saldiran;
+  if (!Array.isArray(t.birimler) || !Array.isArray(t.sehirler)
+    || t.birimler.some((i) => !Number.isSafeInteger(i) || !d.birimler[i])
+    || t.sehirler.some((i) => !Number.isSafeInteger(i) || !d.sehirler[i])
+    || new Set(t.birimler).size !== t.birimler.length || new Set(t.sehirler).size !== t.sehirler.length) {
+    return { gecerli: false, neden: "Barış talebindeki arazi/şehir listesi geçersiz veya tekrar içeriyor." };
+  }
+  if (!Number.isSafeInteger(t.tazminat) || t.tazminat < 0) return { gecerli: false, neden: "Tazminat sıfır veya pozitif tam sayı olmalı." };
+  if (t.birimler.some((i) => d.birimler[i].sahip !== karsi || d.birimler[i].kontrol !== devlet)
+    || t.sehirler.some((i) => d.sehirler[i].devlet !== karsi || d.sehirler[i].kontrol !== devlet)) {
+    return { gecerli: false, neden: "Yalnızca bu düşmana ait ve sizin işgal ettiğiniz arazi/şehirler talep edilebilir." };
+  }
+  if (t.tazminat > Math.max(0, d.devletler[karsi].hazine)) return { gecerli: false, neden: "Karşı taraf bu tazminatı peşin ödeyemiyor. Borçlanma yoktur; tazminatı azaltın." };
+  const skor = savasSkoru(d, devlet, karsi).skor, bedel = barisBedeli(d, devlet, karsi, t);
+  if (bedel > skor) return { gecerli: false, neden: `Talep ${bedel} puan; savaş skorunuz ${skor}. Daha az talep edin veya işgali genişletin.` };
+  return { gecerli: true };
+}
+
+function baskentleriGuncelle(d: DunyaDurumu): void {
+  d.devletler.forEach((v, devlet) => {
+    if (v.baskent !== null && d.sehirler[v.baskent]?.devlet === devlet) return;
+    const aday = d.sehirler.map((s, i) => ({ s, i })).filter(({ s }) => s.devlet === devlet)
+      .sort((a, b) => b.s.nufus - a.s.nufus || a.i - b.i);
+    v.baskent = aday[0]?.i ?? null;
+  });
+  d.sehirler.forEach((s, i) => { s.baskent = d.devletler[s.devlet].baskent === i; });
+}
+
+/** Yalnızca doğrulanmış talep için, turun başında. İsteğe bağlı tazminat eksi hazine yaratamaz. */
+export function barisiUygula(d: DunyaDurumu, b: Baglam, t: BarisTalebi): void {
+  const s = d.savaslar.find((v) => v.id === t.savas)!;
+  const devlet = d.ayarlar.oyuncu, karsi = s.saldiran === devlet ? s.savunan : s.saldiran;
+  const taraflar = [devlet, karsi];
+  // Önce bu savaşa ait muharebe ve kuşatmaları bitir; diğer savaşlar sürer.
+  const bitenMuharebeler = d.muharebeler.filter((m) => m.taraflar.every((a) => taraflar.includes(a.devlet))).map((m) => m.id);
+  for (const o of d.ordular) if (o.muharebe !== null && bitenMuharebeler.includes(o.muharebe)) o.muharebe = null;
+  d.muharebeler = d.muharebeler.filter((m) => !bitenMuharebeler.includes(m.id));
+  d.kusatmalar = d.kusatmalar.filter((k) => !(taraflar.includes(k.devlet) && taraflar.includes(k.savunan)));
+  d.isgalHazirliklari = d.isgalHazirliklari.filter((p) => !(taraflar.includes(p.devlet) && taraflar.includes(d.birimler[p.birim].sahip)));
+  for (const i of t.birimler) d.birimler[i].sahip = devlet;
+  for (const i of t.sehirler) d.sehirler[i].devlet = devlet;
+  for (const a of d.birimler) if (taraflar.includes(a.sahip) && taraflar.includes(a.kontrol)) {
+    a.kontrol = a.sahip; a.isgalBaslangic = null;
+  }
+  for (const c of d.sehirler) if (taraflar.includes(c.devlet) && taraflar.includes(c.kontrol)) {
+    c.kontrol = c.devlet; c.isgalBaslangic = null;
+  }
+  // Kaybedilen şehirlerde devam eden toplama iptal edilir; harcanmış havuz/paralar yeniden kullanılmaz.
+  d.askerToplamalar = d.askerToplamalar.filter((a) => d.sehirler[a.sehir].devlet === a.devlet);
+  d.devletler[karsi].hazine -= t.tazminat;
+  d.devletler[devlet].hazine += t.tazminat;
+  d.savaslar = d.savaslar.filter((a) => a !== s);
+  baskentleriGuncelle(d);
+
+  // Yeni sınır dışında kalan ordular eski savaşın erişimini sadece dönüş rotası için kullanır.
+  // Konum anında değişmez; rota sıradan günlük yürüyüşle tamamlanır. Geçiş hakkı verilmez.
+  if (b.ag) {
+    const ag = b.ag, donus = { ...d, savaslar: [...d.savaslar, s] };
+    for (const o of d.ordular.filter((a) => taraflar.includes(a.devlet))) {
+      const birim = ag.dugumler[o.dugum]?.b;
+      if (birim === undefined) continue;
+      const disarida = taraflar.includes(d.birimler[birim].sahip) && d.birimler[birim].sahip !== o.devlet;
+      const rotaYasak = o.rota.some((a) => !gecilebilir(d, ag, a.d, o.devlet));
+      if (!disarida && !rotaYasak) continue;
+      const konum = orduKonumu(o);
+      o.x = konum.x; o.y = konum.y; o.rota = []; o.ilerleme = 0; o.hedef = null; o.cekiliyor = false;
+      if (!disarida || o.muharebe !== null) continue;
+      const adaylar = ag.dugumler.map((n, i) => ({ n, i })).filter(({ n }) => {
+        const a = d.birimler[n.b]; return a.sahip === o.devlet && a.kontrol === o.devlet;
+      }).sort((a, c) => {
+        const uzaklik = (n: typeof a.n) => Math.abs(n.x - konum.x) + Math.abs(n.y - konum.y);
+        return uzaklik(a.n) - uzaklik(c.n) || a.i - c.i;
+      });
+      for (const { n, i } of adaylar) {
+        const r = rotaBul(donus, ag, o, { x: n.x, y: n.y, dugum: i });
+        if (!r.gecerli) continue;
+        o.rota = r.adimlar; o.cekiliyor = r.adimlar.length > 0;
+        olayEkle(d, { tur: "baris-donus", devlet: o.devlet, metin: `${o.ad} barış sonrası kendi toprağına dönüyor (${r.gun} gün).` });
+        break;
+      }
+    }
+  }
+  d.barislar.push({ savas: t.savas, tazminat: t.tazminat, birimler: [...t.birimler], sehirler: [...t.sehirler], gun: d.gun, devlet, karsi });
+  if (d.barislar.length > DENGE.BARIS_GECMISI_SINIRI) d.barislar.shift();
+  olayEkle(d, { tur: "baris", devlet,
+    metin: `${d.devletler[karsi].ad} ile barış yapıldı: ${t.birimler.length} arazi, ${t.sehirler.length} şehir, ${t.tazminat} tazminat. Talep edilmeyen işgaller kaldırıldı.` });
+}

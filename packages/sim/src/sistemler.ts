@@ -10,6 +10,9 @@ import { gundenTarih } from "./takvim";
 import { orduIlerlet } from "./hareket";
 import { moralToparla, muharebeGunleri, muharebeleriBaslat } from "./savas";
 import type { Baglam } from "./emirler";
+import { ikmalVeMaasMorali, maaslariOde, toplamalariIlerlet } from "./ordu";
+import { prototipGelirleri } from "./ekonomi";
+import { isgalleriIlerlet, kusatmalariIlerlet } from "./kusatma";
 
 export type Siklik = "gunluk" | "aylik" | "yillik";
 
@@ -20,6 +23,7 @@ export interface Sistem {
 }
 
 export const SISTEMLER: Sistem[] = [
+  { id: "asker-toplama", siklik: "gunluk", calistir: (d, b) => toplamalariIlerlet(d, b) },
   {
     // Ordu hareketi (TASK-0006): her gün hız kadar rota tüketilir
     id: "ordu-hareket",
@@ -43,6 +47,9 @@ export const SISTEMLER: Sistem[] = [
   { id: "muharebe-temas", siklik: "gunluk", calistir: (d) => muharebeleriBaslat(d) },
   { id: "muharebe-gunu", siklik: "gunluk", calistir: (d, b) => muharebeGunleri(d, b.ag) },
   { id: "moral-toparlanma", siklik: "gunluk", calistir: (d, b) => moralToparla(d, b.ag) },
+  { id: "ikmal-maas-moral", siklik: "gunluk", calistir: (d, b) => ikmalVeMaasMorali(d, b.ag) },
+  { id: "gercek-isgal", siklik: "gunluk", calistir: isgalleriIlerlet },
+  { id: "kusatma", siklik: "gunluk", calistir: kusatmalariIlerlet },
   {
     // Test: her gün rastgele bir şehrin nüfusu 0–2 artar (rastgelelik akışını her gün kullanır)
     id: "test-nufus",
@@ -58,11 +65,11 @@ export const SISTEMLER: Sistem[] = [
     id: "test-gelir",
     siklik: "aylik",
     calistir(d) {
-      const gelir = new Array<number>(d.devletler.length).fill(0);
-      for (const b of d.birimler) if (b.sahip >= 0) gelir[b.sahip] += 10;
+      const gelir = prototipGelirleri(d);
       d.devletler.forEach((v, i) => { v.hazine += gelir[i]; });
     },
   },
+  { id: "ordu-maasi", siklik: "aylik", calistir: (d) => maaslariOde(d) },
   {
     // Test: yılbaşında oyuncu için yıllık özet olayı
     id: "test-yillik-ozet",

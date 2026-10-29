@@ -17,7 +17,9 @@ kaynak: `MASTER_SPEC.md` §21 ve §27.
 
 ## Mevcut durum
 
-- **Aşama:** 4 (savaş, kuşatma ve barış) — 4a tamamlandı, kullanıcı testi bekliyor; sonra 4b, 4c.
+- **Aşama:** 5 (ekonomi, şehirler, teknoloji) — geçiş kullanıcı tarafından testler ertelenerek
+  onaylandı (DEC-0032). TASK-0008 / 5a bütçe özeti tamamlandı; 5b/5c kapsam önerisi yanıt bekliyor.
+  4c testi 5a ile birlikte yapılacak; Aşama 4 resmî kabulü açık. 4b kabul edildi (DEC-0030).
   Aşama 3 kapandı (DEC-0026). Denge değerleri yalnızca `packages/sim/src/denge.ts` içinde tutulur.
 - **Yerel sunucular:** Kullanıcı oyunu 4175'te (`vite preview`) dener; agent denemelerini 5173'teki
   geliştirme sunucusunda yapar (kullanıcı başlattı, kapatılmaz). Aşama 2 kapandı

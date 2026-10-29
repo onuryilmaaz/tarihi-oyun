@@ -9,7 +9,7 @@ import { tarihMetni, type YabanciOrdu } from "@tarihi/sim";
 import type { OrduOzeti } from "../sim-protokol";
 import { birimBul, type Harita } from "./veri";
 import { TEMALAR } from "./temalar";
-import { katmanlariKur, temaUygula, boyutAyarla, secimiCiz, devletRengi, kagitDokusu, isgalKatmani, type Secim } from "./harita";
+import { katmanlariKur, temaUygula, boyutAyarla, secimiCiz, devletRengi, kagitDokusu, isgalKatmani, mulkiyetKatmanlariniGuncelle, type Secim } from "./harita";
 import { Etiketler, ESIK } from "./etiketler";
 
 const sinirla = (x: number, a: number, b: number) => Math.min(b, Math.max(a, x));
@@ -39,6 +39,7 @@ export interface HaritaGorunumu {
   ordulariGoster(ordular: OrduOzeti[], yabanci: YabanciOrdu[], secili: number | null, planli: Map<number, [number, number][]>): void;
   /** [birim, kontrol eden, gün], [şehir, kontrol eden, gün] */
   isgalGoster(birimler: [number, number, number][], sehirler: [number, number, number][]): void;
+  mulkiyetGoster(birimler: number[], sehirler: { devlet: number; baskent: boolean }[]): void;
   orduyaOdaklan(o: OrduOzeti): void;
   seciliOge(): Secim;
   olaylar: {
@@ -71,6 +72,7 @@ export function haritaGorunumuKur(h: Harita, wikidata: Record<string, WdDevlet>,
 
   let secim: Secim = null;
   let oyuncu = -1;
+  const ilkEtiketler = h.paket.devletler.map((d) => d.etiket ? [...d.etiket] as [number, number, number] : null);
   const olaylar: HaritaGorunumu["olaylar"] = {};
 
   // --- Ordu ve işgal katmanları (TASK-0006)
@@ -397,6 +399,35 @@ export function haritaGorunumuKur(h: Harita, wikidata: Record<string, WdDevlet>,
     git,
     istek,
     devletRenkKutusu,
+    mulkiyetGoster(birimler, sehirler) {
+      let degisti = false;
+      birimler.forEach((d, i) => { if (h.paket.birimler[i].d !== d) { h.paket.birimler[i].d = d; degisti = true; } });
+      sehirler.forEach((s, i) => {
+        const c = h.paket.sehirler[i];
+        if (c.d !== s.devlet || !!c.b !== s.baskent) { c.d = s.devlet; c.b = Number(s.baskent); degisti = true; }
+      });
+      if (!degisti) return;
+      h.devletBirimleri = h.paket.devletler.map(() => []);
+      h.devletSehirleri = h.paket.devletler.map(() => []);
+      h.paket.birimler.forEach((b, i) => { if (b.d >= 0) h.devletBirimleri[b.d].push(i); });
+      h.paket.sehirler.forEach((s, i) => h.devletSehirleri[s.d].push(i));
+      h.paket.devletler.forEach((d, i) => {
+        const et = ilkEtiketler[i];
+        d.etiket = h.devletBirimleri[i].length && et ? [...et] : null;
+        if (!d.etiket) return;
+        const bi = birimBul(h, d.etiket[0], d.etiket[1]);
+        if (bi >= 0 && h.paket.birimler[bi].d === i) return;
+        const c = h.paket.sehirler.find((s) => s.d === i && s.b)
+          ?? h.paket.sehirler.find((s) => s.d === i);
+        const ring = h.halkalar[h.devletBirimleri[i][0]][0]?.[0];
+        d.etiket = c ? [c.x, c.y, Math.min(et![2], 1)] : ring ? [ring[0], ring[1], 0.5] : null;
+      });
+      mulkiyetKatmanlariniGuncelle(k, h, tema, sahne);
+      boyutAyarla(k, W, H, oran);
+      secimiCiz(k, h, tema, secim);
+      etiketler.yenile(h);
+      bilgiGoster(); istek();
+    },
     oyuncuyuAyarla(d) { oyuncu = d; bilgiGoster(); },
     olaylar,
     seciliOge: () => secim,
@@ -420,7 +451,9 @@ export function haritaGorunumuKur(h: Harita, wikidata: Record<string, WdDevlet>,
           el.addEventListener("contextmenu", (e) => {
             e.preventDefault(); e.stopPropagation();
             if (seciliOrdu === null || !olaylar.hedef) return;
-            const [x, y] = ekrandanDunyaya(e.clientX, e.clientY);
+            const guncel = orduListesi.find((a) => a.id === o.id);
+            if (!guncel) return;
+            const x = guncel.x / 1e4, y = guncel.y / 1e4;
             olaylar.hedef(x, y, birimBul(h, x, y));
           });
           ogeler.orduKap.append(el);
@@ -442,7 +475,9 @@ export function haritaGorunumuKur(h: Harita, wikidata: Record<string, WdDevlet>,
             e.preventDefault();
             e.stopPropagation();
             if (seciliOrdu === null || !olaylar.hedef) return;
-            const [x, y] = ekrandanDunyaya(e.clientX, e.clientY);
+            const guncel = orduListesi.find((a) => a.id === o.id);
+            if (!guncel) return;
+            const x = guncel.x / 1e4, y = guncel.y / 1e4;
             olaylar.hedef(x, y, birimBul(h, x, y));
           });
           ogeler.orduKap.append(el);

@@ -1,5 +1,73 @@
 # CHANGELOG
 
+## 2026-10-29 — TASK-0008 / 5a: bütçe görünürlüğü ve devir
+
+- DEC-0032: kullanıcı 4c testini sonraki teslimle birleştirdi, Aşama 5'e geçişi yetkilendirdi;
+  4c ve Aşama 4 resmî kabulü açık kaldı.
+- TASK-0008 ve ASAMA-5 açıldı; sınırlı 5a bütçe özeti tamamlandı. 5b/5c kapsam önerisi yanıt bekliyor.
+- `ekonomi.ts`: mevcut gelir/maaş/kuyruk rezervasyonu özeti; aylık test geliri aynı kaynaktan hesaplanır.
+- İstemci: “Aylık bütçe özeti”, hazine/rezerv/kullanılabilir para/gelir/maaş/net fark ve prototip açıklaması.
+- Yeni ekonomik kural, denge değeri veya kayıt şeması değişikliği yok.
+- 94 test, tip kontrolü ve build başarılı; Chrome'da rezervasyon/ay başı hesabı doğrulandı.
+- Devir ve test belgeleri güncellendi. 4b + 4c + 5a commit/push edilmedi.
+
+## 2026-10-29 — TASK-0007 / 4c: kuşatma, gerçek işgal ve barış
+
+### Eklendi
+- DEC-0031: 4c'ye başlama onayı; Aşama 4 kapanışı kullanıcı kabulü bekliyor.
+- `packages/sim/src/kusatma.ts`: 3 gün bekleyişle arazi kontrolü; şehir yakınında açık emirle
+  kuşatma, prototip sur ve garnizonlar, kara ablukası/surlara saldırı/teslim bekleme,
+  güç yeterliliği, erzak, saldırı kayıpları, kuşatmadan ayrılma ve şehir düşmesinde tur kesintisi.
+- `packages/sim/src/baris.ts`: işgal değerinden açıklanabilir savaş skoru; şehir ve araziyi
+  ayrı talep etme, puan ve peşin tazminat doğrulaması, kalıcı sahiplik ve başkent güncellemesi,
+  ilgili savaşa ait kontrol/muharebe/kuşatma temizliği; kalan orduların yürüyerek dönüşü.
+- `packages/istemci/src/savas-arayuzu.ts`: kuşatma paneli, yöntem/garnizon/erzak açıklamaları,
+  ayrı şehir-arazi seçimli barış ekranı, Worker'dan talep önizlemesi ve oyun içi onay penceresi.
+- Barış geçmişi, şehir savunma bilgisi, “Şehre yürü” düğmesi ve işgal ilerleme açıklaması.
+- 23 yeni davranış testi + iki yeni modülün determinizm kontrolü: toplam 89 test.
+- Kabul kanıtları ve kullanıcı adımları: `docs/qa/ASAMA-4C-TEST.md`.
+
+### Değişti
+- Kayıt şeması 5; şema 3 ve 4 kayıtları mevcut ordu/para/toplama/emirler korunarak dönüştürülür.
+- Barış ve kayıt yüklemesinde harita dolguları, siyasi sınırlar, seçim bilgileri, devlet-şehir
+  eşlemeleri, başkent işaretleri ve etiketler aynı sahiplik durumuna güncellenir.
+- Test işgali düğmesi kaldırıldı. Eski kayıt/kabul testleri için çekirdekteki eski test emri korunur.
+- Kuşatan ordu bölünemez/birleştirilemez; hareket emri kuşatmadan çıkarır. Onay penceresinin
+  Escape dinleyicisi kapatılırken doğru biçimde kaldırılır.
+- Denge değerleri yalnızca `denge.ts` içinde TASLAK. Yeni veri kaynağı/bağımlılık eklenmedi.
+- 4c ve Aşama 4 kullanıcı kabulü bekliyor; Aşama 5 başlamadı. Commit/push yapılmadı.
+
+## 2026-10-29 — 4b kullanıcı kabulü
+
+- Kullanıcı 4b testini başarılı buldu; kabul DEC-0030 olarak kaydedildi.
+- AGENTS, TASK-0007, Aşama 4, test raporu ve devir teslim durumları güncellendi.
+- 4c başlama onayı bekliyor; üretim kodu değişmedi, commit/push yapılmadı.
+
+## 2026-10-29 — TASK-0007 / 4b: asker toplama, maaş, ikmal, böl/birleştir
+
+### Eklendi
+- DEC-0029: kullanıcının 4b'ye geçiş onayı.
+- `packages/sim/src/ordu.ts`: nüfustan türetilmiş ek insan gücü havuzu, 30 günlük toplama,
+  aylık zorunlu ordu maaşı, eksi hazinede günlük moral cezası, düşman toprağında asker/moral aşınması.
+- `askerTopla`, `orduBol`, `orduBirlestir` emirleri; kuyrukta ortak hazine ve insan gücü kontrolü,
+  tur başında yeniden doğrulama; aynı konumda bekleyen ordularda asker ve tutum korunumu,
+  asker sayısıyla ağırlıklı moral ortalaması. Toplama, şehir veya çevresi işgal edilirse bekler.
+- İstemcide şehir/asker seçimi, bedel/süre/havuz, toplama kuyruğu, maaş ve ikmal açıklamaları,
+  ordu bölme ve birleştirme kontrolleri.
+- 15 yeni davranış testi + yeni modülün determinizm kontrolü: toplam 64 test.
+  Tarayıcı kabul kanıtları: `docs/qa/ASAMA-4B-TEST.md`.
+
+### Değişti
+- Kayıt şeması 4; 4a'nın şema 3 kayıtları mevcut ordular, para ve emirler korunarak dönüştürülür.
+- Hareket ve prototip ekonomi denge sabitleri de `denge.ts` içine taşındı; sayıları korunuyor.
+- Maaş devletin toplam askerinden hesaplanır; bölme/birleştirme maaşı değiştirmez.
+- Haritadaki ordu işaretine sağ tıklamak ordunun güncel konumunu hedefler; iki orduyu
+  birleştirmek için tam olarak buluşturmak mümkün. Muharebe/geri çekilme sırasında yürüyüş
+  ve durdurma, bekleyen bölme/birleştirme ile çakışan emirler gerekçeleriyle reddedilir.
+- Maaş olayları yalnızca oyuncu için günlüğe yazılır; yabancı devletlerin mali bilgileri
+  gösterilmez ve uzun turlarda oyuncunun hareket olayları gereksiz maaş olaylarıyla silinmez.
+- 4b kullanıcı kabulü bekliyor; 4c başlamadı. Commit/push yapılmadı.
+
 ## 2026-10-29 — TASK-0007 / 4a: savaş, görünürlük, muharebe, moral
 
 ### Eklendi

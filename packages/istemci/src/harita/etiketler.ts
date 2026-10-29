@@ -38,6 +38,13 @@ export class Etiketler {
   etiketlerAcik = true;
 
   constructor(private kap: HTMLElement, h: Harita) {
+    this.yenile(h);
+  }
+
+  /** Barış veya kayıt yüklemesi sonrası başkent ve devlet etiketlerini yeniden kurar. */
+  yenile(h: Harita) {
+    this.kap.replaceChildren();
+    this.liste = [];
     const sirali = h.paket.devletler.map((d, i) => ({ d, i })).filter((o) => o.d.etiket)
       .sort((a, b) => b.d.alan - a.d.alan);
     for (const { d } of sirali) {
@@ -47,6 +54,7 @@ export class Etiketler {
     const sehirler = h.paket.sehirler.map((s, i) => ({ s, i }))
       .sort((a, b) => b.s.b - a.s.b || h.paket.devletler[b.s.d].alan - h.paket.devletler[a.s.d].alan);
     for (const { s } of sehirler) this.ekle(s.b ? "baskent" : "sehir", s.ad, s.x, s.y, 0);
+    if (this.tema) this.temaAyarla(this.tema);
   }
 
   private ekle(tur: Etiket["tur"], ad: string, x: number, y: number, r: number) {

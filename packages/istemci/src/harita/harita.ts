@@ -159,6 +159,29 @@ export function devletRengi(t: Tema, ton: number, i: number): THREE.Color {
   return new THREE.Color().setHSL(ton, s, l, THREE.SRGBColorSpace);
 }
 
+/** Geometriyi yeniden üçgenlemeden yeni siyasi sınırları ve başkent işaretlerini uygular. */
+export function mulkiyetKatmanlariniGuncelle(k: Katmanlar, h: Harita, t: Tema, sahne: THREE.Scene): void {
+  const ic: number[] = [], devlet: number[] = [], tahmin: number[] = [];
+  for (let i = 0; i < h.arklar.length; i++) {
+    const a = h.yaySahipA[i], b = h.yaySahipB[i];
+    if (a < 0 || b < 0) continue;
+    const A = h.paket.birimler[a], B = h.paket.birimler[b];
+    if (A.d !== B.d) yayParcalari(h.arklar[i], A.k?.startsWith("ohm:") && B.k?.startsWith("ohm:") ? devlet : tahmin);
+    else if (A.d >= 0) yayParcalari(h.arklar[i], ic);
+  }
+  for (const [l, pts] of [[k.araziSiniri, ic], [k.devletSiniri, devlet], [k.devletSiniriTahmin, tahmin]] as const) {
+    l.geometry.dispose();
+    l.geometry = new LineSegmentsGeometry().setPositions(pts.length ? pts : [0, 0, 0, 0, 0, 0]);
+    l.computeLineDistances();
+  }
+  for (const [p, baskent] of [[k.sehirler, false], [k.baskentler, true]] as const) {
+    const konum = h.paket.sehirler.filter((s) => !!s.b === baskent).flatMap((s) => [s.x, s.y, 0]);
+    p.geometry.dispose();
+    p.geometry = new THREE.BufferGeometry().setAttribute("position", new THREE.Float32BufferAttribute(konum, 3));
+  }
+  temaUygula(k, h, t, sahne);
+}
+
 function daire(dolgu: string, kenar: string, halka = false): THREE.Texture {
   const c = document.createElement("canvas");
   c.width = c.height = 64;

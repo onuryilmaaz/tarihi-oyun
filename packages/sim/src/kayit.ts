@@ -2,6 +2,7 @@
 // Depolama (IndexedDB) istemcinin işidir; burada yalnızca serileştirme ve doğrulama vardır.
 
 import { SEMA_SURUMU, degismezler, type DunyaDurumu } from "./durum";
+import { DENGE } from "./denge";
 
 export interface KayitPaketi {
   tur: "tarihi-oyun-kayit";
@@ -31,11 +32,11 @@ export function yukle(metin: string, beklenenSenaryo?: string): DunyaDurumu {
     throw new KayitHatasi("Kayıt dosyası okunamadı (bozuk JSON).");
   }
   if (!paket || paket.tur !== "tarihi-oyun-kayit") throw new KayitHatasi("Bu bir oyun kaydı değil.");
-  if (typeof paket.sema !== "number") throw new KayitHatasi("Kaydın şema sürümü yok.");
+  if (!Number.isSafeInteger(paket.sema)) throw new KayitHatasi("Kaydın şema sürümü geçersiz.");
   if (paket.sema > SEMA_SURUMU) {
     throw new KayitHatasi(`Kayıt daha yeni bir oyun sürümüyle yapılmış (şema ${paket.sema} > ${SEMA_SURUMU}).`);
   }
-  if (paket.sema < SEMA_SURUMU) {
+  if (paket.sema < 3) {
     // Şema 1 (Aşama 2 prototipi) için dönüşüm yazılmadı: senaryo verisi de değiştiği için taşınamaz.
     throw new KayitHatasi(`Bu kayıt oyunun eski bir prototip sürümüne ait (şema ${paket.sema}); taşınamaz.`);
   }
@@ -46,6 +47,24 @@ export function yukle(metin: string, beklenenSenaryo?: string): DunyaDurumu {
   if (!d || !Array.isArray(d.devletler) || !Array.isArray(d.birimler) || !Array.isArray(d.sehirler)) {
     throw new KayitHatasi("Kayıt eksik: dünya durumu bulunamadı.");
   }
+  if (!Array.isArray(d.ordular) || !Array.isArray(d.savaslar) || !Array.isArray(d.muharebeler)
+    || !Array.isArray(d.emirKuyrugu) || !Array.isArray(d.gunluk)) throw new KayitHatasi("Kayıt eksik: ordu veya emir listeleri yok.");
+  if (d.sema !== paket.sema) throw new KayitHatasi("Kayıt tutarsız: paket ve dünya şema sürümleri uyuşmuyor.");
+  if (paket.sema === 3) {
+    // 4a kaydını koruyan eklemeli dönüşüm; mevcut para, ordular, savaşlar ve emirler aynen kalır.
+    for (const s of d.sehirler) s.insanGucu = Math.floor(s.nufus * DENGE.INSAN_GUCU_YUZDE / 100);
+    d.askerToplamalar = [];
+    d.sema = 4;
+  }
+  if (paket.sema <= 4) {
+    for (const s of d.sehirler) {
+      s.sur = s.baskent ? DENGE.BASKENT_SUR : DENGE.SEHIR_SUR;
+      s.garnizon = s.baskent ? DENGE.BASKENT_GARNIZON : DENGE.SEHIR_GARNIZON;
+    }
+    d.kusatmalar = []; d.isgalHazirliklari = []; d.barislar = [];
+    d.sema = SEMA_SURUMU;
+  }
+  if (d.sema !== SEMA_SURUMU) throw new KayitHatasi("Kayıt tutarsız: dünya şema sürümü uyuşmuyor.");
   const hatalar = degismezler(d);
   if (hatalar.length) throw new KayitHatasi(`Kayıt tutarsız: ${hatalar.slice(0, 3).join("; ")}`);
   return d;

@@ -1,108 +1,149 @@
 # DEVİR TESLİM — agent değişiminde kaldığın yer
 
-> Bu dosya, bir AI agent (Claude, Codex vb.) oturumu bittiğinde bir sonrakinin **tam olarak kaldığı
-> yerden ve aynı kurallarla** devam etmesi içindir. Oturumu biten her agent bu dosyayı günceller
-> (bkz. AGENTS.md → "Devir teslim"). Son güncelleme: **2026-10-29, Claude (Opus 5.5)**.
+Son güncelleme: **2026-10-29, Codex**. Bağlayıcı kurallar: `AGENTS.md`, `MASTER_SPEC.md`, `DECISIONS.md`.
 
-## 1. Önce oku (sırayla)
+## 1. İlk okunacaklar
 
-1. `AGENTS.md` — bağlayıcı kurallar (özeti aşağıda; asıl metin oradadır).
-2. Bu dosya — şu anki durum ve sıradaki adım.
-3. `DECISIONS.md` — DEC-0001 … DEC-0028; kullanıcı kararları. Kararla çelişen hiçbir şey yapma.
-4. `tasks/TASK-0007.md` — aktif görev (Aşama 4) ve `docs/milestones/ASAMA-4.md`.
-5. Gerektikçe `MASTER_SPEC.md` (ana şartname, v1.3).
+1. Bu belge, `AGENTS.md`, `MASTER_SPEC.md` tamamen ve `DECISIONS.md` (DEC-0001 … DEC-0032).
+2. Aktif görev `tasks/TASK-0008.md`, aşama `docs/milestones/ASAMA-5.md`; önceki görev TASK-0007.
+3. Son rapor `docs/qa/ASAMA-5A-TEST.md`; birlikte test edilecek `docs/qa/ASAMA-4C-TEST.md`.
 
-## 2. Şu anki durum
+## 2. Mevcut durum
 
-- **Aşama 4 — savaş, kuşatma, barış (TASK-0007).** Üç alt teslim: 4a → 4b → 4c (DEC-0027/4).
-- **4a kod olarak TAMAM** (savaş ilanı, yabancı ordular, görünürlük, muharebe, moral, tutum,
-  geri çekilme). 48 test geçiyor, `tsc` temiz, tarayıcıda uçtan uca doğrulandı.
-- **Kullanıcı 4a'yı anlamadığını söyledi.** İlk iş: aşağıdaki "4a'yı sade anlatım" bölümüyle
-  kullanıcıya basitçe anlat ve adım adım birlikte test ettir. Kullanıcı 4a'yı onaylamadan 4b'ye geçme.
-- **Son değişiklik:** Savaş ilanındaki tarayıcı `confirm()` penceresi kaldırıldı; yerine oyunun kendi
-  onay ekranı (`#onay`, `onayIste()` — `packages/istemci/src/main.ts`) geldi (DEC-0028).
-- **Commit durumu:** 4a + onay ekranı + bu devir belgesi kullanıcı onayıyla commit edilip GitHub'a
-  gönderildi ("comitle"). Yine de `git status` ile kontrol et. Kullanıcı onayı olmadan commit/push
-  YAPMA (DEC-0017).
+- **Aşama 5 başladı (DEC-0032). 5a bütçe özeti tamamlandı.**
+- Aşama 4: 4a, 4b ve 4c kod olarak tamamlandı.
+- 4b kullanıcı tarafından “test ettim başarılı” ile kabul edildi (DEC-0030).
+- Kullanıcı 4c başlama sorusuna **“başla”** dedi (DEC-0031); bu oturum 4c'yi uyguladı.
+- Kullanıcının son talimatı: **4c testini sonraki adımla birlikte yapacak; sıradaki adıma
+  geçmemizi ve limit nedeniyle işi kontrollü tamamlamamızı istedi (DEC-0032).**
+- **4c kabul edilmiş sayılmaz; resmî Aşama 4 kapanışı açık. Aşama 5 geçişine açık izin var.**
+- Bu tur sınırlı 5a tamamlandı; yeni ekonomi kuralı eklenmedi. 4c + 5a kullanıcı testi ertelendi.
+- 5b/5c önerisi için kullanıcıya metin sorusu gönderildi; **yanıt henüz yok**. Sorunun özeti:
+  “5b tarım/pazar/sur, 5c küçük ağaç ve iki paralel alan uygun mu; yoksa önce yalnızca ekonomi mi?”
+  Yanıtı yeni agent ilk kontrol etsin. Sessizliği onay sayma.
+- 4a için ayrı test tutanağı alınmadı; önceki 4b geçişi kullanıcının açık “4b geçebilirsin”
+  talimatıyla (DEC-0029) yapılmıştı. Kullanıcı onayı uydurma.
+- **94 test başarılı** (12 dosya), sim/istemci tip kontrolü ve `npm run build` başarılı.
+  4175 önizlemesi yeni derlemeyi sunar. Mevcut 500 kB paket uyarısı sürüyor; derleme hatası yok.
+- 5173'te ayrı Chrome profiliyle gerçek düğmeler kullanılarak savaş → yürüyüş → muharebe →
+  kuşatma → şehir düşmesi → barış → eski kuşatma kaydına dönüş akışı doğrulandı; JS hatası yok.
+- **Kayıt şeması 5.** Şema 3 ve 4 kayıtları mevcut ordu/para/emir/toplama durumları korunarak
+  dönüştürülür; yeni sur/garnizon ve boş kuşatma/işgal/barış listeleri eklenir. Şema 1–2 reddedilir.
 
-### Kullanıcıdan bekleyen kararlar
+### Bekleyen kararlar
 
-1. 4a testi sonucu (sade anlatım + test adımlarından sonra).
-2. 4b'ye başlama onayı.
+1. 5b/5c kapsam sorusunun yanıtı; genel kapsam onayı bina/teknoloji formüllerinin onayı değildir.
+2. Kullanıcı uygun bulduğunda 4c + 5a birlikte test ve kabul; Aşama 4 resmî kapanışı açık.
+3. Commit/push için ayrıca kullanıcı onayı (DEC-0017). **4b, 4c ve 5a commit/push edilmedi.**
 
-### 4a'yı sade anlatım (kullanıcıya böyle anlat)
+## 2a. En son tamamlanan iş: 5a bütçe özeti
 
-- Haritada artık **başka devletlerin orduları** da var; ama yalnızca **sınırınıza yakın olanları**
-  görürsünüz ve büyüklüklerini **tahmini** görürsünüz ("~4B" = yaklaşık 4 bin asker).
-- Bir devlete **savaş ilan edebilirsiniz**: devlete tıklayın → sağ panelde "Savaş ilan et".
-  Savaş ilan ettiğiniz devletin topraklarına ordunuz girebilir (önce giremiyordu).
-- İki düşman ordu aynı yere gelince **muharebe** olur: oyun durur ("Tur durdu"), birkaç günde kendiliğinden
-  sonuçlanır, sonra **rapor** açılır (kim kazandı, kaç kayıp, neden).
-- Her ordunun bir **morali** vardır. **Tutum** ne zaman kaçacağını belirler: Temkinli = erken çekilir,
-  Dengeli = ortada, İnatçı = sonuna kadar direnir. Yenilen ordu en yakın kendi şehrine kaçar.
+- `packages/sim/src/ekonomi.ts`: salt sorgu `butceOzeti` ve mevcut `prototipGelirleri`.
+  Test geliri/maaş kuralları değişmedi. Hazine, ayrılan ve kullanılabilir para, aylık gelir/maaş/net,
+  arazi ve asker sayısı gösterilir. Aylık gelir artık sistemle özetin kullandığı aynı fonksiyondan gelir.
+- İstemci `sim-protokol.ts`, `sim-isci.ts`, `main.ts`, `index.html`: oyuncu bütçesini taşır ve
+  “Ordu giderleri” altında açılır “Aylık bütçe özeti” gösterir.
+- Yeni test `packages/sim/test/ekonomi.test.ts`: 4 davranış testi. Yeni modülün determinizm
+  taramasıyla 89 → 94 test. Kayıt şeması değişmedi (5), yeni denge değeri/harcama yok.
+- Chrome: başlangıç hazine 9.400, gelir 940, maaş 640, net +300; 1.000 asker emrinde
+  rezerv 100, kullanılabilir 9.300; bir ay sonra hazine 9.580, maaş 660, net +280. JS hatası yok.
+- Yeni görev/aşama/rapor: TASK-0008, ASAMA-5, ASAMA-5A-TEST. 4175 build güncel.
 
-### 4a test adımları (http://localhost:4175 ya da 5173)
+### Devralanın ilk yapacağı iş
 
-1. Ankara'nın güneydoğusundaki **Karamanoğulları**'na tıkla → sağ panel → **Savaş ilan et** → onay ekranında onayla.
-2. Sol panel → **Ordular** → **Anadolu Ordusu**'nu seç → haritada **Larende**'ye **sağ tıkla**.
-3. Üstte **Hafta** → **Turu ilerlet**'e birkaç kez bas. "Tur durdu" çıkınca **Anladım** → devam.
-4. Muharebe bitince rapor penceresi açılır; sol paneldeki **Muharebe raporları**'ndan tekrar açılır.
+1. Son kullanıcı mesajını kontrol et; yukarıdaki 5b/5c sorusuna yanıt varsa kaydet.
+2. TASK-0008 kapsamına göre 5b'nin somut bina/etki/maliyet/otomasyon önerisini hazırla.
+   MASTER_SPEC OPEN-010/011/016 açık; bunları kendi kendine kapatma. Yeniden Aşama 5'e
+   geçiş izni isteme: kullanıcı zaten verdi (DEC-0032).
+3. Kullanıcının test ertelemesine saygı göster. 4c/5a için test yapılmış veya kabul edilmiş yazma.
+4. Yeni üretim işi ancak ilgili açık mekanik kararları netleştikten sonra; küçük teslimleri bitir,
+   test/typecheck/build çalıştır, sonra kullanıcıya sun. Limitte bu devir notunu güncelle.
 
-## 3. Sıradaki işler
+## 3. 4c nasıl çalışır?
 
-- **4b** (kullanıcı onayından sonra): asker toplama (şehirden, hazineden ödenir, borçsuz; süre alır;
-  insan gücü havuzu nüfustan), ordu maaşı (aylık zorunlu gider → hazine eksiye düşebilir, eksi bakiye
-  morale ceza — DEC-0002, OPEN-023 ilk uygulama), ikmal (kendi topraklarında tam, düşmanda aşınma),
-  orduları birleştir/böl. Ayrıntı: `tasks/TASK-0007.md`.
-- **4c:** kuşatma (sur/garnizon, abluka/saldırı/teslim bekleme; AT-009 anında düşmez), gerçek işgal
-  (test işgalinin yerini alır), savaş skoru, barış antlaşması (toprak, tazminat; DEC-0027/1 basit kabul kuralı).
-- 4c bitince Aşama 4 kapısı için kullanıcı testi; sonra Aşama 5 (ekonomi, şehirler, teknoloji) görev kartı.
+- **Arazi işgali:** Savaştaki düşman kontrolündeki arazide, muharebe/geri çekilme dışında duran
+  ordu 3 gün sonra askerî kontrolü alır. Şehrin kontrolü/sahibi bundan değişmez.
+- **Kuşatma:** Ordu şehir noktasının 3 km yakınına yürütülür. Soldaki Kuşatma panelinde
+  şehir ve yöntem seçilir. Kuşatma açık emirle başlar; salt yürüyüşle şehir düşmez.
+- **Yöntemler:** Kara ablukası erzağı günde 50/1000, teslim bekleme 25/1000 azaltır.
+  Saldırı daha hızlı ve kayıplıdır. Kuşatanın moral ağırlıklı gücü garnizon × (sur+1)
+  seviyesinin altındaysa ilerleme bekler. Kuşatma en az 7 etkin gün sürer; garnizon veya erzak
+  tükenmelidir. Şehir düşünce oyuncunun turu durur. Ayrılma/hareket kuşatmayı bırakır.
+- **İşgal ve sahiplik ayrı:** Kuşatmayla yalnızca askerî kontrol değişir. Kalıcı sahiplik barışla gelir.
+- **Barış:** Savaşlar listesinden açılır; işgal edilen arazi/şehirler ayrı seçilir. İşgal değeri,
+  düşmanın toplam varlık değeri ve karşı işgallerden skor hesaplanır. Başkent tek başına zafer değildir.
+  Tazminat peşindir, düşmanın mevcut parasını aşamaz; borç/faiz yaratmaz. Puan/sahiplik/para
+  emir verilirken ve turun başında yeniden doğrulanır.
+- **Barış sonrası:** Seçilmemiş iki taraflı işgaller kalkar; ilgili muharebe/kuşatmalar biter,
+  diğer savaşlar sürer. Sınırlar, renkler, şehirler ve başkentler güncellenir. Dışarıda kalan
+  ordu anında konum değiştirmeden kendi toprağına yürür. Barış geçmişi kaydedilir.
+
+### Kullanıcıya kısa test
+
+4175'i yenile → Karaman ordusuna tıkla → savaş ilan et/onayla → Anadolu Ordusu'nu seç →
+sağ panelde Larende → Şehre yürü → haftalar ilerlet (muharebe kesinti/raporunu kapat) →
+Larende'ye varınca Kuşatma: Larende / Surlara saldırı → Kuşatmayı başlat → Ay / Turu ilerlet →
+şehir düşünce Anladım → Savaşlar / Barış teklif et → Karaman arazisi ve Larende şehrini seç,
+0 tazminat → teklif/onay/tur. Harita ve sahiplik değişmeli.
+Ayrıntılı adımlar ve doğrulanmış sonuçlar `docs/qa/ASAMA-4C-TEST.md` içinde.
 
 ## 4. Kod haritası
 
-| Yer | İçerik |
-|---|---|
-| `packages/sim/src/` | Oyun kuralları (saf TypeScript; DOM/three.js/Node API yasak). `durum.ts` dünya durumu ve şema (şu an 3), `tur.ts` tur döngüsü, `emirler.ts` emir kuyruğu, `sistemler.ts` günlük/aylık/yıllık sistemler, `hareket.ts` yol bulma, `savas.ts` savaş/muharebe/görünürlük, `denge.ts` **tüm denge değerleri** [TASLAK], `kayit.ts` kayıt |
-| `packages/sim/test/` | Vitest; `kurallar.test.ts` determinizm yasaklarını tarar (Math.random, Date, trig, `**`, toLocaleString…) |
-| `packages/istemci/src/` | `main.ts` arayüz ve oyun akışı, `sim-isci.ts` Web Worker, `sim-protokol.ts` mesajlar, `harita/` three.js harita, `kayit-deposu.ts` IndexedDB |
-| `veri/senaryo-1453/` | Senaryo + harita + hareket ağı; `npm run senaryo` ile üretilir (ham veri gerekir: `veri/senaryo-1453/KAYNAKLAR.md`) |
-| `prototypes/` | Atılabilir prototipler (harita-gorsel-02 = veri hattı ve OHM/Wikidata betikleri) |
+- `packages/sim/src/kusatma.ts`: kuşatma mesafesi, güç, yöntemler, günlük erzak/kayıp,
+  bırakma, şehir düşmesi ve ayrı arazi işgali.
+- `packages/sim/src/baris.ts`: puanlar/doğrulama, sahiplik/başkent değişimi, savaş temizliği,
+  para transferi, yürüyerek dönüş ve antlaşma geçmişi.
+- `durum.ts`: şehir sur/garnizon alanları, kuşatma/işgal hazırlığı/barış kayıtları; şema 5.
+- `emirler.ts`: kusat/kusatmaBirak/baris; mevcut hareket kuşatmayı bırakır, bölme/birleştirme
+  kuşatma sırasında reddedilir. Emirler yalnızca turun başında uygulanır.
+- `sistemler.ts`: toplama → hareket → muharebe → moral → ikmal → arazi işgali → kuşatma;
+  ay başında test geliri → maaş.
+- `denge.ts`: **bütün denge sayıları** TASLAK. Hareket sabitleri de buradadır; `hareket.ts` yeniden dışa aktarır.
+- `ordu.ts`: 4b toplama/maaş/ikmal; `kayit.ts`: şema 3–4 dönüşümü, kayıt doğrulaması.
+- `packages/sim/test/kusatma-baris.test.ts`: 23 yeni davranış testi; `ordu.test.ts`: 4b'nin 15 testi.
+- İstemci `savas-arayuzu.ts`: kuşatma paneli, barış önizlemesi ve onayı; `main.ts`: bağlantılar,
+  şehir bilgileri ve yürüyüş, savaş listesi. Test işgali düğmesi kaldırıldı.
+- `sim-isci.ts`, `sim-protokol.ts`: yeni özetler, barış önizlemesi. Yabancı garnizonlar yaklaşık
+  gösterilir; yabancı ordular için 4a görünürlük/yuvarlama kuralı devam eder.
+- `harita/harita.ts`, `gorunum.ts`, `etiketler.ts`: sahiplik değişince sınır/dolgu, şehir-devlet
+  listeleri, başkent noktaları ve etiketleri güncelleme; eski kayda dönünce eski haritaya dönüş.
+- 4b şehir koordinatları `Baglam.sehirKonumlari` içindedir; yeni ordu ve kuşatma gerçek şehir noktasını kullanır.
 
-## 5. Komutlar ve sunucular
+## 5. Bilinen sınırlar ve kapsam
 
-```sh
-npm test             # sim testleri (her değişiklikten sonra)
-npm run typecheck    # tüm paketler
-npm run build        # istemci → packages/istemci/dist (4175'teki önizleme bunu sunar)
-npm run dev          # geliştirme sunucusu (5173)
-```
+- Sayılar tarihî kesin veri değil; prototip tahminleridir. Kuşatma deniz ablukası/ikmali, sur onarımı,
+  garnizon yenilemesi içermez. Gerçek AI Aşama 6; donanma Aşama 8. Yeni veri kaynağı/bağımlılık eklenmedi.
+- Skor yalnızca işgal değerlerinden; muharebe zaferine ayrıca puan verilmez. Vasallık, çok taraflı
+  antlaşma, ateşkes süresi ve oyuncunun düşmana toprak/tazminat verme pazarlığı bu teslimde yok.
+- Başkent barışla kaybedilirse kalan en kalabalık şehir seçilir (eşitlikte sabit indeks).
+  Devlet otomatik silinmez; geri dönebileceği toprağı/yolu olmayan ordu yerinde kalır (OPEN-024 açık).
+- Muharebe karşılaşması hâlâ aynı düğümde algılanır; 4a'nın bilinen sınırı devam eder.
+- İkmal ağ düğümündeki askerî kontrole göredir; ayrıntılı hat/kış/otomatik takviye yok.
+- Şehir insan gücü ek havuzdur, başlangıç nüfusunun %5'i; kendiliğinden yenilenmez.
+- Gelir ve nüfus hâlâ test sistemleridir; Aşama 5/7 kapsamı kendiliğinden eklenmedi.
+- Eski testIsgal emri yalnızca eski kayıt ve kabul testi uyumu için sim çekirdeğinde kaldı;
+  oyunun arayüzünde test işgali yoktur.
 
-- **4175:** kullanıcının denediği önizleme (`vite preview`). Kod değiştikten sonra `npm run build`
-  çalıştır ki kullanıcı yeni sürümü görsün.
-- **5173:** kullanıcının başlattığı geliştirme sunucusu; agent kendi denemelerini burada yapar, kapatmaz.
-- Tarayıcı testi: Claude, puppeteer-core ile yerel Chrome'u (`/Applications/Google Chrome.app`) sürerek
-  akışları denedi ve ekran görüntüsü aldı (betikler oturum geçici klasöründeydi, depoda değil).
-  Eşdeğer bir yöntemle kullanıcıya vermeden önce akışı kendin dene.
+## 6. Çalışma ağacı ve yarım işler
 
-## 6. Değişmez kurallar (özet — asıl metin AGENTS.md)
+- Dal `main`. **4b + kabul belgeleri + 4c + 5a değişiklikleri commit edilmemiştir.** Güncel liste `git status`.
+- Yeni dosyalar: `packages/sim/src/ordu.ts`, `kusatma.ts`, `baris.ts`;
+  `ekonomi.ts`; `packages/sim/test/ordu.test.ts`, `kusatma-baris.test.ts`, `ekonomi.test.ts`;
+  `packages/istemci/src/savas-arayuzu.ts`; `docs/qa/ASAMA-4B-TEST.md`, `ASAMA-4C-TEST.md`, `ASAMA-5A-TEST.md`; `tasks/TASK-0008.md`, `docs/milestones/ASAMA-5.md`.
+- Mevcut sim dosyaları: denge/durum/emirler/hareket/index/kayit/savas/sistemler;
+  istemci: index.html, main/sim-isci/sim-protokol, harita/gorunum/harita/etiketler.
+- Belgeler: AGENTS, DECISIONS, CHANGELOG, TASK-0007, ASAMA-4, DEVIR-TESLIM.
+- Bilinen yarım kod veya kırık test yok. 5a tamam; sıradaki iş 5b/5c kararlarını netleştirmek.
+  4c + 5a kullanıcı kabulü ve Aşama 4 resmî kapısı açık.
+- Geçici test betikleri/görseller `/tmp/tarihi-4c-*`, `/tmp/tarihi-5a-*` içinde olabilir; depo parçası değildir.
 
-- Kullanıcı ürün sahibidir; her aşama/görev onayla başlar, aşama kapısı açık onayla geçilir.
-- Her iş `tasks/TASK-XXXX.md` kartıyla; her karar `DECISIONS.md`'ye (DEC-XXXX), her değişiklik
-  `CHANGELOG.md`'ye.
-- **Commit/push öncesi kullanıcıya sor** (DEC-0017). Çalışma `main` dalında.
-- Kullanıcıyla **Türkçe** konuş; soruları numaralı sor, her soruda önerini yaz; kullanıcı
-  "1- evet 2- ..." diye cevaplar. Test adımlarını sade, tıklama tıklama ver.
-- **Tarayıcının kendi pencereleri (alert/confirm/prompt) yasak**; oyunun kendi tasarımıyla yap (DEC-0028).
-- Simülasyon deterministik: tohumlu rastgelelik, tam sayı, yasaklı API yok; denge değerleri yalnızca `denge.ts`.
-- Tarihî veri: kaynaksız tahminler "tahmin" diye etiketlenir; lisans kontrolsüz veri eklenmez;
-  yeni veri seti kullanıcı onayı ister.
-- Testleri ve tip kontrolünü çalıştırmadan "bitti" deme; sonuçları dürüstçe raporla.
+## 7. Komutlar ve değişmez kurallar
 
-## 7. Bu dosyayı güncelleme (devir kuralı)
-
-Oturumun / limitin bitmesine yaklaşınca, **son işten önce** bu dosyayı güncelle:
-- "Son güncelleme" satırı (tarih, agent adı),
-- Şu anki durum, kullanıcıdan bekleyen kararlar, sıradaki işler,
-- Commit edilmemiş değişiklikler (`git status` özeti),
-- Yarım kalan iş varsa: nerede kaldı, hangi dosyalar, hangi testler kırık.
-Sonra kullanıcıya kısa bir devir notu yaz.
+- `npm test`, `npm run typecheck`; kod değişince `npm run build` ile 4175 güncellenir.
+- **4175** kullanıcı önizlemesi, **5173** agent denemesi; kullanıcı sunucularını kapatma.
+- Türkçe, sade iletişim; karar soruları numaralı ve önerili. Tarayıcı alert/confirm/prompt yok.
+- Yalnızca onaylı görev kapsamında üretim kodu. Kapılar açık kullanıcı onayıyla geçilir.
+- Commit/push öncesi ayrıca sor (DEC-0017). Main üzerinde çalışma yetkisi commit yetkisi değildir.
+- Sim saf ve deterministik: tam sayılar, tohumlu rastgelelik; DOM/three.js/Node API yok.
+- Yeni kaynak/veri seti veya kapsam dışı mekanik ekleme. Denge sayıları `denge.ts` içinde.
+- Oturum/limit bitmeden bu belgeyi mevcut durum, kararlar, testler, çalışma ağacı ve yarım işle güncelle.

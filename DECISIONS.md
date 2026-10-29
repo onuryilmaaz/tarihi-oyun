@@ -408,3 +408,63 @@ Kaynak belge: `MASTER_SPEC.md` (v1.3). Orijinal keşif çıktısı:
 - **Onay kaydı:** Kullanıcı: "onay ekranı da bizim tasarladığımız bir ekran olsun… codex e geçicem
   kaldığın yeri onun devam edeceği şekilde hallet. aynı şeyi o da limiti bitince yapsın." (2026-10-29)
 - **Durum:** GEÇERLİ
+
+## DEC-0029 — 4b'ye geçiş onayı
+
+- **Tarih:** 2026-10-29
+- **Konu:** TASK-0007 alt teslim sırası (DEC-0027/4)
+- **Seçilen karar:** Kullanıcı 4b'ye (asker toplama, maaş, ikmal, birleştir/böl)
+  başlanmasına açık onay verdi. 4c ve Aşama 4 kapanışı ayrıca kullanıcı kabulü bekler.
+- **Onay kaydı:** Kullanıcı: “4b geçebilirsin” (2026-10-29).
+- **Durum:** GEÇERLİ
+
+## DEC-0030 — 4b kullanıcı kabulü
+
+- **Tarih:** 2026-10-29
+- **Konu:** TASK-0007 / 4b alt tesliminin kabulü (DEC-0027/4, DEC-0029)
+- **Seçilen karar:** Kullanıcı 4b'yi kendi tarayıcısında test etti ve başarılı buldu;
+  asker toplama, maaş, ikmal ve bölme/birleştirme alt teslimi kabul edildi.
+  4c'ye başlama ve Aşama 4 kapanışı henüz onaylanmadı.
+- **Etkilenen belgeler:** Görev, aşama, test raporu ve devir teslim durumları.
+- **Onay kaydı:** Kullanıcı: “test ettim başarılı” (2026-10-29).
+- **Durum:** GEÇERLİ
+
+## DEC-0031 — 4c'ye başlama onayı
+
+- **Tarih:** 2026-10-29
+- **Konu:** TASK-0007 / 4c (DEC-0027/4)
+- **Seçilen karar:** 4b kabulünden sonra kuşatma, gerçek işgal, savaş skoru ve barış
+  alt tesliminin uygulanmasına başlandı. Aşama 4 kapanışı ayrıca kullanıcı testi/onayı bekler.
+- **Onay kaydı:** Kullanıcı, 4c'ye başlama sorusuna “başla” dedi (2026-10-29).
+- **Durum:** GEÇERLİ
+
+## DEC-0032 — 4c testini birleştirme ve Aşama 5'e geçiş
+
+- **Tarih:** 2026-10-29
+- **Konu:** Kullanıcının test takvimi ve sıradaki işe başlama talimatı
+- **Seçilen karar:** Kullanıcı 4c testini sonraki adımla birlikte yapacak; buna rağmen
+  Aşama 5'e başlanmasına açık izin verdi. Bu, önceki “4c kabulünden önce ilerleme”
+  bekleyişini bu geçiş için değiştirir; 4c test edilmiş/kabul edilmiş sayılmaz ve Aşama 4
+  resmî kabulü açık kalır. 4c + ilk Aşama 5 teslimi birlikte kullanıcı testine sunulacak.
+- **İlk sınırlı teslim:** TASK-0008 / 5a, mevcut gelir/maaş/harcama rezervasyonunu gösteren
+  bütçe özeti. Yeni gelir, harcama, bina veya araştırma kuralı eklenmez. Diğer Aşama 5
+  taslaklarının kapsamı/formülleri ayrıca netleştirilir.
+- **Devir:** Kullanıcı limit uyarısı yaptı; tamamlanmış 5a sonrası test/çalışma ağacı ve
+  bekleyen kararlar DEVIR-TESLIM'e aktarılır. Commit/push izni verilmedi.
+- **Onay kaydı:** Kullanıcı: “şuanlık sadece bu testleri daha sonraki adımla beraber yapayım.
+  sen sıradaki adıma geç ama limitin az kalmış ona göre yap.” (2026-10-29).
+- **Durum:** GEÇERLİ
+
+## DEC-0033 — 4c/5a kısmi test, 5b kapsamı onayı
+
+- **Tarih:** 2026-10-29
+- **Seçilen karar:**
+  1. Kullanıcı 4c ve 5a'yı "az çok" test etti, sorun bildirmedi; ayrıntılı test sonraki turlarda
+     yapılacak. Aşama 4'ün resmî kapanışı ayrıntılı testle birlikte yapılır (açık kalır).
+  2. **5b kapsamı:** Şehir yatırımları — tarla (gelir), pazar (gelir) ve sur (kuşatma direnci);
+     seviyeli, maliyetli ve yapım süreli yapılar. İlk adımda yatırımı yalnızca oyuncu yapar;
+     bütçe sınırlı otomatik yerel yönetici (OPEN-016) ayrı adımda. Sayılar `denge.ts`'te [TASLAK]
+     olarak tutulur ve kullanıcıya test raporuyla sunulur. 5c (teknoloji ağacı) 5b'den sonra.
+  3. Codex'in 4b/4c/5a çalışması kullanıcı onayıyla commit edildi.
+- **Onay kaydı:** Kullanıcı: "commitle", "az çok yaptım diğer turlarda daha detaylı yaparız", "yap" (2026-10-29)
+- **Durum:** GEÇERLİ

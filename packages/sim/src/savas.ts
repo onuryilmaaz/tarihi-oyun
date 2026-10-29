@@ -280,7 +280,7 @@ export function muharebeGunleri(d: DunyaDurumu, ag: HareketAgi | null): void {
 /** Moral toparlanması: muharebede olmayan ordular. */
 export function moralToparla(d: DunyaDurumu, ag: HareketAgi | null): void {
   for (const o of d.ordular) {
-    if (o.muharebe !== null || o.moral >= DENGE.MORAL_EN_YUKSEK) continue;
+    if (o.muharebe !== null || o.moral >= DENGE.MORAL_EN_YUKSEK || d.devletler[o.devlet].hazine < 0) continue;
     const kendi = ag ? d.birimler[ag.dugumler[o.dugum].b]?.kontrol === o.devlet : true;
     if (!kendi) continue; // ikmal ve yabancı toprak etkisi 4b'de
     o.moral = Math.min(DENGE.MORAL_EN_YUKSEK, o.moral + (o.rota.length ? DENGE.MORAL_TOPARLANMA_YURUYUS : DENGE.MORAL_TOPARLANMA_KENDI));
