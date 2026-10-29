@@ -1,6 +1,6 @@
 # Aşama 7 — Hanedan, karakter, nüfus, kültür ve iç siyaset
 
-**Durum:** Başlama onayı var (DEC-0042). 7a kabul edildi (DEC-0044); 7b kabul edildi (DEC-0046); 7c uygulandı (DEC-0047), kullanıcı kabulü bekliyor. 7d başlamadı.
+**Durum:** ✔ KAPANDI — kullanıcı onayı (2026-10-29, DEC-0050). 7a–7d kabul edildi (DEC-0044, 0046, 0048, 0050).
 
 **Çıktılar (MASTER_SPEC §22):** Tarihî karakterler, veraset, alternatif soy, nüfus grupları, göç, isyan riski ve yerel yönetim.
 

@@ -233,6 +233,12 @@ async function baslat() {
     if (!$("teknoloji").hidden) teknolojiCiz();
     diplomasiHaritasi();
     hukumdarKarti();
+    const yy = ozet.yerelYonetim, acikSehir = ozet.sehirYatirimlari.filter((x) => x.yonetici);
+    if (document.activeElement?.id !== "yonetimButce") $<HTMLInputElement>("yonetimButce").value = String(yy.butce);
+    if (document.activeElement?.id !== "yonetimAlt") $<HTMLInputElement>("yonetimAlt").value = String(yy.altSinir);
+    $("yonetimBilgi").textContent = `Bu ay harcanan: ${yy.harcanan.toLocaleString("tr-TR")} / ${yy.butce.toLocaleString("tr-TR")}. `
+      + (acikSehir.length ? `Yönetici açık: ${acikSehir.map((x) => x.ad).join(", ")}.` : "Hiçbir şehirde yönetici açık değil; şehir panelinden açabilirsiniz.")
+      + " Yönetici yalnızca bağış ve tarla/pazar yapar; her harcama günlüğe yazılır, borç yapmaz.";
     if (!ozet.verasetSecimi) secilenAday = null;
     if (!$("verasetPencere").hidden) verasetCiz();
     $("raporListesi").innerHTML = [...ozet.raporlar].reverse().map((r) => {
@@ -350,7 +356,9 @@ async function baslat() {
     if (s.tur === "sehir") {
       const c = ozet.sehirDurumlari[s.id], k = ozet.kusatmalar.find((v) => v.sehir === s.id);
       const y = ozet.sehirYatirimlari.find((v) => v.indeks === s.id);
-      const yatirim = !y ? "" : `<h4>Şehir yatırımları (prototip değerleri)</h4>
+      const yonetici = !y ? "" : `<div class="satir eylem"><button data-eylem="yonetici" data-sehir="${s.id}" data-acik="${y.yonetici ? 0 : 1}">Yerel yönetici: ${y.yonetici ? "Açık — kapat" : "Kapalı — aç"}</button></div>
+        <p class="not">${y.yonetici ? `Ayda bir, sol paneldeki bütçe tavanı içinde riskliyse bağış, değilse tarla/pazar yapar. Sizin emirleriniz önce gelir.${ozet.yerelYonetim.butce ? "" : " Bütçe tavanı 0 olduğu için şu an harcama yapmaz."}` : "Açarsanız bu şehrin bağış ve tarla/pazar kararlarını bütçe tavanı içinde yönetici verir."}</p>`;
+      const yatirim = !y ? "" : `${yonetici}<h4>Şehir yatırımları (prototip değerleri)</h4>
         <p class="not">Yapıların aylık geliri: +${y.aylikGelir.toLocaleString("tr-TR")}${y.insaat ? ` · ${kacis(y.insaat.ad)} ${y.insaat.hedef}. seviye ${y.insaat.emir ? "emri bekliyor" : y.insaat.durdu ? "kuşatma/ayaklanma nedeniyle durdu" : `yapılıyor (${y.insaat.kalanGun} gün kaldı)`}` : ""}</p>
         <ul class="yatirimlar">${y.secenekler.map((o) => `<li><span><b>${kacis(o.ad)}</b> ${o.seviye}/${o.enYuksek}
           <small>${o.maliyet === null ? "En yüksek seviye" : `${o.seviye + 1}. seviye: ${o.maliyet.toLocaleString("tr-TR")} · ${o.sure} gün · ${o.yapi === "sur" ? "kuşatma direnci artar" : `aylık +${o.gelirArtisi}`}`}</small></span>
@@ -437,6 +445,15 @@ async function baslat() {
     }
     const baris = (e.target as HTMLElement).closest<HTMLElement>('[data-eylem="baris"]');
     if (baris) { savasUI.barisAc(Number(baris.dataset.savas)); return; }
+    const yon = (e.target as HTMLElement).closest<HTMLElement>('[data-eylem="yonetici"]');
+    if (yon) {
+      const acik = yon.dataset.acik === "1", sehir = Number(yon.dataset.sehir);
+      const y = await sim.gonder({ tip: "yonetim", sehir, acik });
+      ozet = y.ozet; arayuzuGuncelle(); gorunum.istek();
+      if (y.dogrulama && !y.dogrulama.gecerli) bildir(y.dogrulama.neden, "uyari");
+      else bildir(`${senaryo.sehirler[sehir].ad}: yerel yönetici ${acik ? "açıldı" : "kapatıldı"}.`);
+      return;
+    }
     const isk = (e.target as HTMLElement).closest<HTMLElement>('[data-eylem="iskan"]');
     if (isk) {
       const kaynak = Number(isk.dataset.sehir), hedef = Number($<HTMLSelectElement>("iskanHedef").value);
@@ -608,6 +625,13 @@ async function baslat() {
     $<HTMLButtonElement>("kesintiTamam").focus();
   };
   $("kesintiTamam").onclick = () => { $("kesinti").hidden = true; if (ozet.verasetSecimi && secilenAday === null) verasetAc(); else teklifGoster(); };
+  $("yonetimKaydet").onclick = async () => {
+    const butce = $<HTMLInputElement>("yonetimButce").valueAsNumber, altSinir = $<HTMLInputElement>("yonetimAlt").valueAsNumber;
+    const y = await sim.gonder({ tip: "yonetim", butce, altSinir });
+    ozet = y.ozet; arayuzuGuncelle();
+    if (y.dogrulama && !y.dogrulama.gecerli) bildir(y.dogrulama.neden, "uyari");
+    else bildir(`Yerel yönetim: aylık tavan ${butce.toLocaleString("tr-TR")}, hazine alt sınırı ${altSinir.toLocaleString("tr-TR")}.`);
+  };
   $("verasetKapat").onclick = () => { $("verasetPencere").hidden = true; };
   $("hukumdarKarti").addEventListener("click", (e) => { if ((e.target as HTMLElement).id === "verasetAc") verasetAc(); });
   $("verasetAdaylar").addEventListener("click", async (e) => {

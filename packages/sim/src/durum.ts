@@ -3,6 +3,7 @@
 
 import { tarihtenGun, type Tarih } from "./takvim";
 import { bosIstikrar, type Istikrar } from "./istikrar";
+import { bosYerelYonetim, type YerelYonetim } from "./yonetim";
 import type { Emir } from "./emirler";
 import { HAREKET, type AgVerisi, type RotaAdimi } from "./hareket";
 import { DENGE } from "./denge";
@@ -52,6 +53,7 @@ export interface SehirDurumu {
   sur: number; // prototip seviye; tarihî doğrulanmış sur verisi değildir
   garnizon: number; // şehirdeki savunucular; hareketli ordudan ayrıdır
   istikrar: Istikrar;
+  yonetici: boolean; // oyuncunun yerel yöneticisi açık mı (7d)
   gruplar: NufusGrubu[]; // din × kültür; toplam = nufus (7b)
   yapilar: { tarla: number; pazar: number }; // 5b şehir yatırımları (seviye 0–en yüksek)
 }
@@ -184,6 +186,7 @@ export interface DunyaDurumu {
   ateskesler: Ateskes[];
   verasetSecimi: VerasetSecimi | null; // oyuncunun halef seçimi (7a)
   iskanlar: Iskan[]; // yoldaki iskânlar (7b)
+  yerelYonetim: YerelYonetim; // oyuncunun yerel yönetim bütçesi (7d)
   kusatmalar: Kusatma[];
   isgalHazirliklari: IsgalHazirligi[];
   barislar: BarisKaydi[];
@@ -231,7 +234,9 @@ export interface SenaryoVerisi {
 // 2: ordular ve şehir kontrolü (TASK-0006); 3: savaş, muharebe, moral, garnizon orduları (TASK-0007/4a)
 // 4: insan gücü ve asker toplama (TASK-0007/4b); şema 3 için eklemeli dönüşüm var.
 // 5: kuşatma, gerçek işgal ve barış (TASK-0007/4c); şema 3–4 için eklemeli dönüşüm var.
-export const SEMA_SURUMU = 13; // 12: nüfus grupları ve iskân (7b); 11 11: hükümdar ve veraset (7a); 10 10: AI savaş/barış (6c); 6: şehir yatırımları (TASK-0008/5b); 7: teknoloji (5c); 8: diplomasi (TASK-0009/6a); 9: AI ekonomi (6b)
+// Şema geçmişi: 6 şehir yatırımları (5b), 7 teknoloji (5c), 8 diplomasi (6a), 9 AI ekonomi (6b), 10 AI savaş/barış (6c),
+// 11 hükümdar ve veraset (7a), 12 nüfus grupları ve iskân (7b), 13 istikrar (7c), 14 yerel yönetim (7d)
+export const SEMA_SURUMU = 14;
 
 export function baslangicDurumu(s: SenaryoVerisi, secenek: { tohum: number; oyuncu?: string }): DunyaDurumu {
   const indeks = new Map(s.devletler.map((d, i) => [d.id, i]));
@@ -254,7 +259,7 @@ export function baslangicDurumu(s: SenaryoVerisi, secenek: { tohum: number; oyun
       insanGucu: Math.floor(c.nufus * DENGE.INSAN_GUCU_YUZDE / 100), baskent: c.baskent,
       sur: c.baskent ? DENGE.BASKENT_SUR : DENGE.SEHIR_SUR,
       garnizon: c.baskent ? DENGE.BASKENT_GARNIZON : DENGE.SEHIR_GARNIZON, yapilar: { tarla: 0, pazar: 0 },
-      istikrar: bosIstikrar(), gruplar: baslangicGruplari(s, c.ad, c.devlet, c.nufus) };
+      istikrar: bosIstikrar(), yonetici: false, gruplar: baslangicGruplari(s, c.ad, c.devlet, c.nufus) };
   });
   const yeniOrdu = (id: number, ad: string, devlet: number, asker: number, dugum: number, x: number, y: number): OrduDurumu => ({
     id, ad, devlet, asker, dugum, x, y, hiz: HAREKET.TEMEL_HIZ, rota: [], ilerleme: 0, hedef: null,
@@ -309,6 +314,7 @@ export function baslangicDurumu(s: SenaryoVerisi, secenek: { tohum: number; oyun
     ateskesler: [],
     verasetSecimi: null,
     iskanlar: [],
+    yerelYonetim: bosYerelYonetim(),
     ittifaklar: (s.ittifaklar ?? []).map((r) => {
       const [a, b] = [bul(r.a), bul(r.b)].sort((x, y) => x - y);
       return { a, b, baslangic: tarihtenGun(s.baslangic) };
@@ -446,6 +452,9 @@ export function degismezler(d: DunyaDurumu): string[] {
   for (const v of d.devletler) if (!(v.din in DIN_AILELERI) || typeof v.kultur !== "string") h.push(`${v.id} din/kültür geçersiz`);
   for (const k of d.iskanlar) if (!d.sehirler[k.kaynak] || !d.sehirler[k.hedef] || !tam(k.kalanGun) || k.kalanGun <= 0
     || k.gruplar.some((g) => !tam(g.nufus) || g.nufus <= 0)) h.push("iskân geçersiz");
+  const yy = d.yerelYonetim;
+  if (!yy || ![yy.butce, yy.altSinir, yy.harcanan].every((x) => tam(x) && x >= 0) || yy.harcanan > yy.butce) h.push("yerel yönetim geçersiz");
+  d.sehirler.forEach((c, i) => { if (typeof c.yonetici !== "boolean") h.push(`şehir ${i} yönetici alanı geçersiz`); });
   const y = d.yzSayac;
   if (!y || ![y.insaat, y.arastirma, y.asker].every((x) => tam(x) && x >= 0)) h.push("AI sayacı geçersiz");
   if (!Array.isArray(d.saldirganlik) || d.saldirganlik.length !== n || d.saldirganlik.some((x) => !tam(x) || x < 0)) h.push("saldırganlık geçersiz");

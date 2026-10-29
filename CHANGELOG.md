@@ -1,5 +1,14 @@
 # CHANGELOG
 
+## 2026-10-29 — TASK-0010 / 7d: yerel yönetim (Claude)
+
+- DEC-0048: 7c kabul (Codex uygulaması commit edildi, `463b49b`). DEC-0049: 7d kapsamı. DEC-0050: 7d kabul, Aşama 7 kapandı.
+- `packages/sim/src/yonetim.ts`: şehir başına aç/kapa yerel yönetici, oyuncunun aylık toplam bütçe tavanı ve hazine alt
+  sınırı; önce riskli şehre bağış, sonra en kârlı tarla/pazar; şehir başına ayda bir iş; oyuncunun inşaatı/bekleyen emri
+  olan şehre dokunmaz; her harcama günlükte; borç yok. Varsayılan kapalı, bütçe 0. Kayıt şeması 14.
+- İstemci: sol panelde "Yerel yönetim" (tavan, alt sınır, bu ay harcanan), şehir panelinde yönetici aç/kapa.
+- `packages/sim/test/yonetim.test.ts` (6 test; toplam 165), `docs/qa/ASAMA-7D-TEST.md`.
+
 ## 2026-10-29 — TASK-0010 / 7c: istikrar ve isyan riski (DEC-0047)
 
 - `istikrar.ts`: deterministik aylık risk bileşenleri, önceki aya göre farklar, uyarı,

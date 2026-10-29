@@ -293,6 +293,13 @@
       <p class="not">İnsan gücü ve denge değerleri tahminidir. Havuz bu sürümde kendiliğinden yenilenmez.</p>
       <ul id="toplamaListesi"></ul>
     </div>
+    <h2>Yerel yönetim</h2>
+    <div id="yerelYonetim">
+      <label for="yonetimButce">Aylık bütçe tavanı <input id="yonetimButce" type="number" min="0" step="50" value="0" /></label>
+      <label for="yonetimAlt">Hazine alt sınırı <input id="yonetimAlt" type="number" min="0" step="100" value="0" /></label>
+      <button id="yonetimKaydet" style="margin-top:6px">Ayarı uygula</button>
+      <p id="yonetimBilgi" class="not"></p>
+    </div>
     <h2>Şehir yatırımları</h2>
     <div class="satir"><select id="yatirimSehir" aria-label="Yatırım yapılacak şehir"></select><button id="yatirimAc">Şehri aç</button></div>
     <ul id="insaatListesi"></ul>

@@ -15,6 +15,7 @@ export * from "./yz";
 export * from "./yz-savas";
 export * from "./hanedan";
 export * from "./nufus";
+export * from "./yonetim";
 export * from "./kusatma";
 export * from "./baris";
 export * from "./savas";

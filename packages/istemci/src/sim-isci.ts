@@ -9,7 +9,7 @@ import {
   butceOzeti, insaatMaliyeti, insaatSuresi, sehirYapiGeliri, yapiSeviyesi, yapiEnYuksek, pazarGeliriSeviyeBasina, YAPI_ADLARI, YAPI_TURLERI,
   diplomasiOnHesap, etkiDegeri, hediyePuanBedeli, iliski, iliskiBilesenleri, ittifakDegerlendir, komsuMu, muttefik, muttefikleri, savasta,
   asayisAskeri, gerekenAsayis,
-  hukumdarYasi, VERASET_ADLARI, type Hukumdar,
+  hukumdarYasi, VERASET_ADLARI, yerelYonetimAyarla, type Hukumdar,
   ALAN_ADLARI, TEKNOLOJILER, teknolojiBul, biliyor, toplamaBedelYuzde, toplamaSuresi,
 } from "@tarihi/sim";
 import type { Istek, Ozet, Yanit } from "./sim-protokol";
@@ -46,7 +46,7 @@ function ozet(durum: DunyaDurumu): Ozet {
           ? { yapi: emir.yapi, ad: YAPI_ADLARI[emir.yapi], hedef: yapiSeviyesi(s, emir.yapi) + 1, kalanGun: insaatSuresi(durum, s.devlet, emir.yapi), emir: true, durdu: false }
           : null;
       return [{
-        indeks, ad: s.ad, aylikGelir: sehirYapiGeliri(durum, s), insaat,
+        indeks, ad: s.ad, aylikGelir: sehirYapiGeliri(durum, s), yonetici: s.yonetici, insaat,
         secenekler: YAPI_TURLERI.map((yapi) => {
           const dog = emirDogrula(durum, { tur: "insaat", sehir: indeks, yapi }, baglam);
           return {
@@ -71,6 +71,7 @@ function ozet(durum: DunyaDurumu): Ozet {
     }),
     sehirNufuslari: durum.sehirler.map((s) => ({ nufus: s.nufus, gruplar: s.gruplar.map((g) => [g.din, g.kultur, g.nufus] as [string, string, number]) })),
     devletDinleri: durum.devletler.map((v) => v.din),
+    yerelYonetim: { ...durum.yerelYonetim },
     devletKulturleri: durum.devletler.map((v) => v.kultur),
     iskanlar: [
       ...durum.iskanlar.filter((k) => k.devlet === durum.ayarlar.oyuncu).map((k) => ({ kaynak: k.kaynak, hedef: k.hedef,
@@ -210,6 +211,10 @@ function isle(i: Istek): Yanit {
     case "turSuresi":
       turSuresiAyarla(d, i.sure);
       return { id: i.id, tamam: true, ozet: ozet(d) };
+    case "yonetim": {
+      const dogrulama = yerelYonetimAyarla(d, i);
+      return { id: i.id, tamam: true, ozet: ozet(d), dogrulama };
+    }
     case "emir": {
       const dogrulama = emirVer(d, i.emir, baglam);
       return { id: i.id, tamam: true, ozet: ozet(d), dogrulama };

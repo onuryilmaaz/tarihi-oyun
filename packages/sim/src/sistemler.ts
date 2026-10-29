@@ -6,6 +6,7 @@
 
 import { olayEkle, type DunyaDurumu } from "./durum";
 import { istikrarAyi } from "./istikrar";
+import { yerelYoneticiler } from "./yonetim";
 import { gundenTarih } from "./takvim";
 import { orduIlerlet } from "./hareket";
 import { moralToparla, muharebeGunleri, muharebeleriBaslat } from "./savas";
@@ -67,6 +68,8 @@ export const SISTEMLER: Sistem[] = [
   // 7b: yoldaki iskânlar; aylık savaş kaybı/göçü; yıllık doğal artış (test amaçlı günlük rastgele artış kaldırıldı, DEC-0045)
   { id: "iskan", siklik: "gunluk", calistir: iskanlariIlerlet },
   { id: "istikrar", siklik: "aylik", calistir: istikrarAyi },
+  // 7d: oyuncunun yerel yöneticileri, güncel istikrar riskine göre (istikrar hesabından sonra)
+  { id: "yerel-yonetim", siklik: "aylik", calistir: yerelYoneticiler },
   {
     // Test: her ayın başında devlet, yasal sahibi olduğu birim başına 10 gelir alır
     id: "test-gelir",

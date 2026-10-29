@@ -7,6 +7,8 @@ export type Istek = { id: number } & (
   | { tip: "yeniOyun"; senaryo: SenaryoVerisi; tohum: number; oyuncu?: string }
   | { tip: "yukle"; metin: string; senaryo: string }
   | { tip: "turSuresi"; sure: TurSuresi }
+  // Yerel yönetim ayarı (7d): tur süresi gibi anında uygulanır, harcama yapmaz
+  | { tip: "yonetim"; sehir?: number; acik?: boolean; butce?: number; altSinir?: number }
   | { tip: "emir"; emir: Emir }
   | { tip: "turuIlerlet" }
   | { tip: "kaydet" }
@@ -70,6 +72,7 @@ export interface Ozet {
   istikrar: (Istikrar & { asayis: number; gerekenAsker: number; bagisUygun: boolean; bagisNedeni: string | null })[];
   sehirNufuslari: { nufus: number; gruplar: [string, string, number][] }[]; // şehir başına din × kültür
   devletDinleri: string[]; // harita modu için
+  yerelYonetim: { butce: number; altSinir: number; harcanan: number }; // 7d
   devletKulturleri: string[];
   iskanlar: { kaynak: number; hedef: number; miktar: number; kalanGun: number; emir: boolean }[];
   diplomasi: (DiplomasiKarti | null)[]; // devlet başına; oyuncunun kendisi null (TASK-0009/6a)
@@ -177,6 +180,7 @@ export interface SehirYatirimi {
   indeks: number;
   ad: string;
   aylikGelir: number;
+  yonetici: boolean; // yerel yönetici açık mı (7d)
   insaat: { yapi: YapiTuru; ad: string; hedef: number; kalanGun: number; emir: boolean; durdu: boolean } | null;
   secenekler: YatirimSecenegi[];
 }

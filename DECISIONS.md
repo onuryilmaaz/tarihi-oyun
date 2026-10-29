@@ -641,3 +641,14 @@ Kaynak belge: `MASTER_SPEC.md` (v1.3). Orijinal keşif çıktısı:
   varsayılan: yöneticiler kapalı, bütçe 0. 7c commit + push onaylandı.
 - **Onay kaydı:** Kullanıcı: "1- evet 2- evet 3- evet 4- evet" (2026-10-29)
 - **Durum:** GEÇERLİ
+
+## DEC-0050 — 7d kabulü, Aşama 7 kapanışı, Aşama 8'e geçiş
+
+- **Tarih:** 2026-10-29
+- **Seçilen karar:**
+  1. 7d (yerel yönetim) kullanıcı tarafından test edildi ve kabul edildi; commit + push onaylandı.
+  2. **Aşama 7 kapandı** (7a–7d kabul). Sonraya kalanlar: isyan eden şehrin bağımsızlığı / yeni devlet, vergi
+     politikası, yerel yöneticiye geniş yetki.
+  3. Aşama 8 (denizcilik, casusluk, ileri sistemler) başlar; önce TASK-0011 kapsamı onaya sunulur.
+- **Onay kaydı:** Kullanıcı: "1- başarılı 2- evet 3- evet 4- evet" (2026-10-29)
+- **Durum:** GEÇERLİ

@@ -124,6 +124,12 @@ export function yukle(metin: string, beklenenSenaryo?: string): DunyaDurumu {
     });
     d.sema = 13;
   }
+  if (d.sema === 13) {
+    // Şema 13 → 14 (TASK-0010/7d): yöneticiler kapalı, bütçe 0 (DEC-0049 varsayılanı)
+    for (const s of d.sehirler) s.yonetici = false;
+    d.yerelYonetim = { butce: 0, altSinir: 0, harcanan: 0 };
+    d.sema = SEMA_SURUMU;
+  }
   if (d.sema !== SEMA_SURUMU) throw new KayitHatasi("Kayıt tutarsız: dünya şema sürümü uyuşmuyor.");
   const hatalar = degismezler(d);
   if (hatalar.length) throw new KayitHatasi(`Kayıt tutarsız: ${hatalar.slice(0, 3).join("; ")}`);
