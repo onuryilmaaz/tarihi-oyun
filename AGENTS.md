@@ -18,7 +18,7 @@ kaynak: `MASTER_SPEC.md` §21 ve §27.
 ## Mevcut durum
 
 - **Aşama:** 0–7 kapandı (Aşama 7: DEC-0050). Aşama 8 (denizcilik, casusluk, ileri sistemler) başladı; TASK-0011
-  kapsamı onay bekliyor. Kayıt şeması 14. Durum için `DEVIR-TESLIM.md`.
+  onaylandı (DEC-0051); 8a uygulanıyor. Kayıt şeması 14. Durum için `DEVIR-TESLIM.md`.
 - **Yerel sunucu (DEC-0036):** Kullanıcı da agent da **5173**'teki geliştirme sunucusunu kullanır
   (kullanıcı başlattı, kapatılmaz; kod değişince kendini yeniler). Kullanıcıya test adımı 5173 ile verilir;
   4175 önizlemesi kullanılmaz. Aşama 2 kapandı

@@ -652,3 +652,15 @@ Kaynak belge: `MASTER_SPEC.md` (v1.3). Orijinal keşif çıktısı:
   3. Aşama 8 (denizcilik, casusluk, ileri sistemler) başlar; önce TASK-0011 kapsamı onaya sunulur.
 - **Onay kaydı:** Kullanıcı: "1- başarılı 2- evet 3- evet 4- evet" (2026-10-29)
 - **Durum:** GEÇERLİ
+
+## DEC-0051 — Aşama 8 görev kartı (TASK-0011) onayı
+
+- **Tarih:** 2026-10-29
+- **Seçilen karar:**
+  1. 8a donanma ve deniz kontrolü → 8b ticaret yolları → 8c casusluk sırası ve kapsamı onaylandı.
+  2. Deniz haritası: elle tanımlanmış ~25 deniz bölgesi ve liman şehirleri (liste kullanıcı onayına sunulur).
+  3. Gemi türleri: **kadırga** ve **kalyon** (kullanıcı: "kadırga ve dev kalyonlar"). Not: kalyon tarihî olarak
+     16. yy'da yaygınlaşır; teknolojiye bağlanması ayrıca sorulur.
+  4. Aşama 8 taslak belgeleri commit + push edilir.
+- **Onay kaydı:** Kullanıcı: "1- evet 2- önerin iyi 3- kadırga ve dev kalyonlar 4- evet" (2026-10-29)
+- **Durum:** GEÇERLİ
