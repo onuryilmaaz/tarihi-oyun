@@ -6,15 +6,17 @@ export interface Devlet {
   ton: number;
   etiket: [number, number, number] | null; // x, y, iç daire yarıçapı (derece)
   alan: number;
+  kaynak?: { ohmOran: number; guven: "orta" | "dusuk"; ohm: number[] }; // v0.2
 }
 
 export interface Sehir { ad: string; x: number; y: number; d: number; b: number }
 
 export interface Paket {
+  surum?: string;
   uyari: string;
   dunya: { x0: number; x1: number; y0: number; y1: number };
   arklar: number[][];
-  birimler: { ad: string; ulke: string; d: number; p: number[][][] }[];
+  birimler: { ad: string; ulke: string; d: number; k?: string; p: number[][][] }[]; // k: "ohm:<id>" | "tahmin" | "tahmin-elle"
   devletler: Devlet[];
   sehirler: Sehir[];
   goller: number[][][];

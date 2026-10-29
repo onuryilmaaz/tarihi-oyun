@@ -1,16 +1,20 @@
-// Natural Earth (kamu malı) → prototip harita paketi: public/veri/dunya-1453.json
-// Çalıştırma: npm run veri   (girdi: veri-ham/*.geojson, depoya dahil değil)
+// Natural Earth (kamu malı) → prototip harita paketi
+//   SURUM=v01 (varsayılan): public/veri/dunya-1453.json — yalnızca tahmin kuralları (TASK-0002)
+//   SURUM=v02:              public/veri/dunya-1453-v02.json — OHM CC0 sınırları + tahmin (TASK-0004)
+// Çalıştırma: npm run veri / npm run veri:v02   (girdi: veri-ham/*.geojson, depoya dahil değil)
 
 import fs from "node:fs";
 import { topology } from "topojson-server";
 import { presimplify, simplify, quantile } from "topojson-simplify";
-import { merge } from "topojson-client";
+import { merge, feature } from "topojson-client";
 import polygonClipping from "polygon-clipping";
 import polylabel from "polylabel";
 import { DEVLETLER, BOLMELER, SEHIRLER, BIRLESTIR, ata } from "./devletler-1453.mjs";
+import { OHM_DEVLET, OHM_RED, OHM_DUZELTME } from "./ohm-esleme.mjs";
 
 const HAM = new URL("../veri-ham/", import.meta.url);
-const CIKTI = new URL("../public/veri/dunya-1453.json", import.meta.url);
+const SURUM = process.env.SURUM ?? "v01";
+const CIKTI = new URL(SURUM === "v02" ? "../public/veri/dunya-1453-v02.json" : "../public/veri/dunya-1453.json", import.meta.url);
 const oku = (ad) => JSON.parse(fs.readFileSync(new URL(ad, HAM), "utf8"));
 
 const ENLEM_MIN = -57, ENLEM_MAX = 83.7;
@@ -48,7 +52,7 @@ for (const f of admin1.features) {
   const p = f.properties;
   if (p.adm0_a3 === "ATA" || !f.geometry) continue;
   const ad = p.name_tr || p.name || "?";
-  const temel = { ad, ulke: p.admin, kod: p.adm0_a3, bolge: p.region || null };
+  const temel = { ad, neAd: p.name, ulke: p.admin, kod: p.adm0_a3, bolge: p.region || null };
   const bolme = BOLMELER.find(([k, a]) => k === p.adm0_a3 && a === p.name);
   if (bolme) {
     bolmeKullanildi.add(bolme[1]);
@@ -56,16 +60,119 @@ for (const f of admin1.features) {
     const geo = cokluPoligon(f.geometry);
     const ic = polygonClipping.intersection(geo, [[kesici]]);
     const dis = polygonClipping.difference(geo, [[kesici]]);
-    if (ic.length) birimler.push({ ...temel, ad: `${ad} (iç)`, devlet: icDevlet, geo: ic });
-    if (dis.length) birimler.push({ ...temel, devlet: disDevlet, geo: dis });
+    // Elle bölünen iç parça korunur (OHM ile değiştirilmez); kaynağı elle tahmin
+    if (ic.length) birimler.push({ ...temel, ad: `${ad} (iç)`, devlet: icDevlet, geo: ic, korunan: true, kaynak: "tahmin-elle" });
+    if (dis.length) birimler.push({ ...temel, devlet: disDevlet, geo: dis, kaynak: "tahmin" });
     continue;
   }
   const devlet = ata(p);
   if (devlet && !devletIndeks.has(devlet)) throw new Error(`Bilinmeyen devlet: ${devlet} (${p.name})`);
   if (!devlet) atanmamis++;
-  birimler.push({ ...temel, devlet, geo: cokluPoligon(f.geometry) });
+  birimler.push({ ...temel, devlet, geo: cokluPoligon(f.geometry), kaynak: "tahmin" });
 }
 for (const [, a] of BOLMELER) if (!bolmeKullanildi.has(a)) console.warn("UYARI: bölme eşleşmedi:", a);
+
+// 1b) v0.2: OpenHistoricalMap sınırları (DEC-0021). Her birim, OHM poligonlarıyla öncelik sırasına
+// göre (önce özgül alt düzeyler) kesilir; OHM'nin kapsamadığı kalan kısım tahmin kuralıyla kalır.
+const alan = (mp) => {
+  let s = 0;
+  for (const poly of mp) poly.forEach((ring, k) => {
+    let a = 0;
+    for (let i = 0, j = ring.length - 1; i < ring.length; j = i++) {
+      a += (ring[j][0] - ring[i][0]) * (ring[j][1] + ring[i][1]) * Math.cos(((ring[i][1] + ring[j][1]) / 2) * D2R);
+    }
+    s += (k === 0 ? 1 : -1) * Math.abs(a / 2);
+  });
+  return s;
+};
+const kutu = (mp) => {
+  let x0 = Infinity, y0 = Infinity, x1 = -Infinity, y1 = -Infinity;
+  for (const poly of mp) for (const [x, y] of poly[0]) { x0 = Math.min(x0, x); x1 = Math.max(x1, x); y0 = Math.min(y0, y); y1 = Math.max(y1, y); }
+  return [x0, y0, x1, y1];
+};
+const kesisir = (a, b) => a[0] <= b[2] && b[0] <= a[2] && a[1] <= b[3] && b[1] <= a[3];
+const ohmIstatistik = { kesilenBirim: 0, parca: 0, hata: 0 };
+if (SURUM === "v02") {
+  const ohm = oku("ohm-1453.geojson").features
+    .filter((f) => f.properties.kullanim === "ice-aktar" && !OHM_RED[f.properties.id])
+    .map((f) => {
+      const devlet = OHM_DEVLET[f.properties.id];
+      if (!devlet) throw new Error(`OHM eşlemesi yok: ${f.properties.id} ${f.properties.ad}`);
+      if (!devletIndeks.has(devlet)) throw new Error(`Bilinmeyen devlet: ${devlet}`);
+      let geo = f.geometry.coordinates;
+      try {
+        geo = polygonClipping.union(geo); // geçersiz/örtüşen halkaları düzelt
+        if (f.icHalkalar?.length) geo = polygonClipping.difference(geo, f.icHalkalar.map((h) => [h]));
+      } catch (e) {
+        console.warn("UYARI: OHM geometrisi düzeltilemedi:", f.properties.ad, e.message);
+      }
+      return { id: f.properties.id, ad: f.properties.ad, duzey: f.properties.duzey, devlet, geo, kutu: kutu(geo), alan: alan(geo) };
+    })
+    .sort((a, b) => b.duzey - a.duzey || a.alan - b.alan);
+
+  // DEC-0022: kullanıcı kararıyla düzeltilen OHM atamaları
+  const duzelt = (b, parca) => {
+    const kural = OHM_DUZELTME.find((k) => parca.kaynak === `ohm:${k.ohm}` && k.kosul(b));
+    if (!kural) return parca;
+    ohmIstatistik.duzeltme = (ohmIstatistik.duzeltme ?? 0) + 1;
+    return kural.devlet ? { ...parca, devlet: kural.devlet } : { ...parca, devlet: b.devlet, kaynak: "tahmin" };
+  };
+  const yeni = [];
+  for (const b of birimler) {
+    if (b.korunan) { yeni.push(b); continue; }
+    const bk = kutu(b.geo);
+    const adaylar = ohm.filter((o) => kesisir(bk, o.kutu));
+    if (!adaylar.length) { yeni.push(b); continue; }
+    const A = alan(b.geo);
+    let kalan = b.geo;
+    const parcalar = [];
+    for (const o of adaylar) {
+      try {
+        const ic = polygonClipping.intersection(kalan, o.geo);
+        if (!ic.length) continue;
+        const a = alan(ic);
+        if (a <= 0) continue;
+        parcalar.push({ devlet: o.devlet, geo: ic, kaynak: `ohm:${o.id}`, a });
+        kalan = polygonClipping.difference(kalan, o.geo);
+      } catch (e) {
+        ohmIstatistik.hata++;
+      }
+    }
+    const kalanA = kalan.length ? alan(kalan) : 0;
+    if (kalanA / A >= 0.15) parcalar.push({ devlet: b.devlet, geo: kalan, kaynak: "tahmin", a: kalanA });
+    const buyukHam = parcalar.filter((p) => p.a / A >= 0.02);
+    const buyuk = buyukHam.map((p) => duzelt(b, p)).sort((x, y) => y.a - x.a);
+    if (!buyuk.length) { yeni.push(b); continue; }
+    if (buyuk.length === 1) { // tek parça: birimin özgün geometrisi korunur
+      yeni.push({ ...b, devlet: buyuk[0].devlet, kaynak: buyuk[0].kaynak });
+      if (buyuk[0].kaynak !== "tahmin") ohmIstatistik.kesilenBirim++;
+      continue;
+    }
+    // küçük parçalar ve kıyı kırıntıları en büyük parçaya eklenir (kara boşluğu kalmasın)
+    const ufak = parcalar.filter((p) => !buyukHam.includes(p)).map((p) => p.geo);
+    if (kalanA / A < 0.15 && kalan.length) ufak.push(kalan);
+    if (ufak.length) {
+      try { buyuk[0].geo = polygonClipping.union(buyuk[0].geo, ...ufak); } catch { ohmIstatistik.hata++; }
+    }
+    // aynı devlete düşen parçaları birleştir
+    const devleteGore = new Map();
+    for (const p of buyuk) {
+      const k = `${p.devlet}|${p.kaynak}`;
+      if (!devleteGore.has(k)) devleteGore.set(k, []);
+      devleteGore.get(k).push(p);
+    }
+    for (const liste of devleteGore.values()) {
+      const geo = liste.length === 1 ? liste[0].geo : polygonClipping.union(...liste.map((p) => p.geo));
+      const dAd = DEVLETLER[devletIndeks.get(liste[0].devlet)]?.ad ?? "devlet yok";
+      yeni.push({ ...b, ad: `${b.ad} (${dAd})`, devlet: liste[0].devlet, kaynak: liste[0].kaynak, geo });
+      ohmIstatistik.parca++;
+    }
+    ohmIstatistik.kesilenBirim++;
+  }
+  console.log("OHM:", { kayit: ohm.length, birimOnce: birimler.length, birimSonra: yeni.length, ...ohmIstatistik });
+  birimler.length = 0;
+  birimler.push(...yeni);
+}
 
 // Çok küçük birimleri birleştir (görsel kalabalığı azaltır; oyun ölçeği kaza/nahiye olmaya devam eder)
 {
@@ -74,7 +181,7 @@ for (const [, a] of BOLMELER) if (!bolmeKullanildi.has(a)) console.warn("UYARI: 
   for (const b of birimler) {
     const tur = BIRLESTIR[b.kod];
     if (!tur) { kalan.push(b); continue; }
-    const anahtar = `${b.kod}|${tur === "bolge" ? b.bolge ?? "-" : "-"}|${b.devlet}`;
+    const anahtar = `${b.kod}|${tur === "bolge" ? b.bolge ?? "-" : "-"}|${b.devlet}|${b.kaynak}`;
     if (!gruplar.has(anahtar)) gruplar.set(anahtar, []);
     gruplar.get(anahtar).push(b);
   }
@@ -87,6 +194,17 @@ for (const [, a] of BOLMELER) if (!bolmeKullanildi.has(a)) console.warn("UYARI: 
   console.log("birleştirme:", birimler.length, "→", kalan.length);
   birimler.length = 0;
   birimler.push(...kalan);
+}
+
+// Devlet başına kaynak payı ve güven düzeyi (DEC-0021). "yuksek" kaynaklı + doğrulanmış veri için
+// ayrılmıştır; tarihçi gözden geçirmesi olmadığından bu sürümde kullanılmaz.
+const devletKaynak = DEVLETLER.map(() => ({ ohm: 0, toplam: 0, kayitlar: new Set() }));
+for (const b of birimler) {
+  if (!b.devlet) continue;
+  const dk = devletKaynak[devletIndeks.get(b.devlet)];
+  const a = alan(b.geo);
+  dk.toplam += a;
+  if (b.kaynak.startsWith("ohm:")) { dk.ohm += a; dk.kayitlar.add(Number(b.kaynak.slice(4))); }
 }
 
 // Hiç birimi olmayan devletleri bildir (yanlış yazılmış ad)
@@ -160,7 +278,19 @@ const devletCikti = DEVLETLER.map((d, i) => {
   const parcalar = geos.filter((g, bi) => birimler[bi].devlet === d.id);
   let etiket = null, toplamAlan = 0;
   if (parcalar.length) {
-    const birlesik = merge(topo, parcalar);
+    // Önce sadeleştirilmiş parçaların poligon birleşimi; OHM kesimlerinden doğan parçalar yay
+    // paylaşmadığında topojson merge bütünleşmiş bir şekil vermez. Hata olursa merge'e düşülür.
+    let birlesik;
+    try {
+      birlesik = {
+        coordinates: polygonClipping.union(...parcalar.map((g) => {
+          const geo = feature(topo, g).geometry;
+          return geo.type === "Polygon" ? [geo.coordinates] : geo.coordinates;
+        })),
+      };
+    } catch {
+      birlesik = merge(topo, parcalar);
+    }
     let enBuyuk = null, enAlan = -1;
     for (const poly of birlesik.coordinates) {
       const a = poligonAlani(poly[0]);
@@ -172,7 +302,12 @@ const devletCikti = DEVLETLER.map((d, i) => {
       etiket = [+pl[0].toFixed(3), +pl[1].toFixed(3), +pl.distance.toFixed(3)];
     }
   }
-  return { id: d.id, ad: d.ad, ton: +ton[i].toFixed(3), etiket, alan: +toplamAlan.toFixed(2) };
+  const dk = devletKaynak[i];
+  const ohmOran = dk.toplam ? dk.ohm / dk.toplam : 0;
+  return {
+    id: d.id, ad: d.ad, ton: +ton[i].toFixed(3), etiket, alan: +toplamAlan.toFixed(2),
+    kaynak: { ohmOran: +ohmOran.toFixed(2), guven: ohmOran >= 0.8 ? "orta" : "dusuk", ohm: [...dk.kayitlar] },
+  };
 });
 
 // 6) Göller ve nehirler (basit Douglas–Peucker)
@@ -228,15 +363,17 @@ const yuvarla = (a) => {
   return out;
 };
 const paket = {
-  surum: 1,
-  uyari: "1453 sınırları YAKLAŞIKTIR (agent tahmini, kaynaksız). Coğrafya: Natural Earth (kamu malı).",
+  surum: SURUM,
+  uyari: SURUM === "v02"
+    ? "1453 sınırları: OpenHistoricalMap (CC0) kayıtları + agent tahmini. Coğrafya: Natural Earth (kamu malı)."
+    : "1453 sınırları YAKLAŞIKTIR (agent tahmini, kaynaksız). Coğrafya: Natural Earth (kamu malı).",
   projeksiyon: "miller",
   dunya: { x0: -180, x1: 180, y0: miller(ENLEM_MIN), y1: miller(ENLEM_MAX) },
   arklar: topo.arcs.map(yuvarla),
   birimler: birimler.map((b, i) => {
     const g = geos[i];
     const polys = g.type === "Polygon" ? [g.arcs] : g.type === "MultiPolygon" ? g.arcs : [];
-    return { ad: b.ad, ulke: b.ulke, d: b.devlet ? devletIndeks.get(b.devlet) : -1, p: polys };
+    return { ad: b.ad, ulke: b.ulke, d: b.devlet ? devletIndeks.get(b.devlet) : -1, k: b.kaynak, p: polys };
   }),
   devletler: devletCikti,
   sehirler: SEHIRLER.map(([ad, lon, lat, d, b]) => {

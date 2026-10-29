@@ -12,6 +12,7 @@ import { KareOlcer, gpuAdi, heapMb } from "./olcum";
 
 const parametreler = new URLSearchParams(location.search);
 const otomatikOlcum = parametreler.get("olcum") === "1";
+const SURUM = parametreler.get("veri") === "v01" ? "v01" : "v02";
 const OLCUM_SURESI = 12000, ISINMA = 500;
 
 const $ = <T extends HTMLElement = HTMLElement>(id: string) => document.getElementById(id) as T;
@@ -41,7 +42,17 @@ async function baslat() {
     document.fonts.load('500 20px "Inter"'),
     document.fonts.load('700 20px "Inter"'),
   ]);
-  const h: Harita = await haritaYukle(`${import.meta.env.BASE_URL}veri/dunya-1453.json`);
+  const h: Harita = await haritaYukle(
+    `${import.meta.env.BASE_URL}veri/${SURUM === "v02" ? "dunya-1453-v02.json" : "dunya-1453.json"}`);
+  // Wikidata (CC0) devlet kayıtları — yalnızca bilgi panelinde gösterilir
+  type WdBaskent = { ad: string; durum: "gecerli" | "degil" | "belirsiz" };
+  type WdDevlet = { qid?: string; etiket?: string; kurulus?: number; yikilis?: number; baskentler?: WdBaskent[] };
+  let wikidata: Record<string, WdDevlet> = {};
+  if (SURUM === "v02") {
+    try {
+      wikidata = (await (await fetch(`${import.meta.env.BASE_URL}veri/wikidata-1453.json`)).json()).devletler;
+    } catch { /* bilgi panelinde Wikidata satırı gösterilmez */ }
+  }
   const tVeri = performance.now() - t0;
 
   const renderer = new THREE.WebGLRenderer({ antialias: true, powerPreference: "high-performance" });
@@ -95,6 +106,11 @@ async function baslat() {
     const nk = yumusak(g.z, 10, 16) * (katman.nehir ? 1 : 0);
     lm(k.nehirKucuk).opacity = tema.nehir.opak * nk;
     k.nehirKucuk.visible = nk > 0;
+    // Kaynak güveni: tahmine dayanan devlet sınırları kesikli (kesik boyu ekranda sabit)
+    const tahminMat = lm(k.devletSiniriTahmin);
+    tahminMat.dashed = katman.guven;
+    tahminMat.dashSize = 7 / g.z;
+    tahminMat.gapSize = 5 / g.z;
     k.baskentler.visible = katman.sehir && g.z >= ESIK.baskent;
     k.sehirler.visible = katman.sehir && g.z >= ESIK.sehir;
     etiketler.sehirlerAcik = katman.sehir;
@@ -120,8 +136,17 @@ async function baslat() {
     nehir: $<HTMLInputElement>("kNehir").checked,
     sehir: $<HTMLInputElement>("kSehir").checked,
     etiket: $<HTMLInputElement>("kEtiket").checked,
+    guven: $<HTMLInputElement>("kGuven").checked,
   });
-  for (const id of ["kArazi", "kNehir", "kSehir", "kEtiket"]) $(id).addEventListener("change", istek);
+  for (const id of ["kArazi", "kNehir", "kSehir", "kEtiket", "kGuven"]) $(id).addEventListener("change", istek);
+  for (const b of document.querySelectorAll<HTMLButtonElement>("[data-surum]")) {
+    b.classList.toggle("etkin", b.dataset.surum === SURUM);
+    b.onclick = () => {
+      if (b.dataset.surum === "v02") parametreler.delete("veri"); else parametreler.set("veri", "v01");
+      location.search = parametreler.toString();
+    };
+  }
+  $("lejantUyari").textContent = h.paket.uyari;
 
   const temaDugmeleri = $("temalar");
   const temaSec = (t: Tema) => {
@@ -152,6 +177,23 @@ async function baslat() {
     const c = devletRengi(tema, h.paket.devletler[d].ton, d);
     return `<span class="renk" style="background:#${c.getHexString(THREE.SRGBColorSpace)}"></span>`;
   };
+  const kaynakMetni = (k?: string) => !k || k === "tahmin" ? "Tahmin (agent, kaynaksız)"
+    : k === "tahmin-elle" ? "Tahmin (elle bölme)"
+    : `<a href="https://www.openhistoricalmap.org/relation/${k.slice(4)}" target="_blank" rel="noopener">OpenHistoricalMap #${k.slice(4)}</a> (CC0)`;
+  const devletKaynakSatirlari = (d: number) => {
+    const dv = h.paket.devletler[d];
+    const kay = dv.kaynak
+      ? `OHM payı %${Math.round(dv.kaynak.ohmOran * 100)} · güven: <b>${dv.kaynak.guven === "orta" ? "orta" : "düşük"}</b>`
+      : "Tahmin (v0.1)";
+    const wd = wikidata[dv.id];
+    let wdSatir = "";
+    if (wd?.qid) {
+      const bk = (wd.baskentler ?? []).filter((x) => x.durum !== "degil").map((x) => kacis(x.ad) + (x.durum === "gecerli" ? " ✓" : "")).join(", ");
+      wdSatir = `<dt>Wikidata</dt><dd><a href="https://www.wikidata.org/wiki/${wd.qid}" target="_blank" rel="noopener">${wd.qid}</a> · ${wd.kurulus ?? "?"}–${wd.yikilis ?? "?"}</dd>
+        <dt>Başkent (Wikidata)</dt><dd>${bk || "—"}</dd>`;
+    }
+    return `<dt>Sınır kaynağı</dt><dd>${kay}</dd>${wdSatir}`;
+  };
   const bilgiGoster = () => {
     if (!secim) { bilgi.hidden = true; return; }
     bilgi.hidden = false;
@@ -169,6 +211,7 @@ async function baslat() {
       govde = `<h3>${renkKutusu(secim.id)}${kacis(d.ad)}</h3><dl>
         <dt>Başkent</dt><dd>${baskent ? kacis(baskent.ad) : "—"}</dd>
         <dt>Arazi birimi</dt><dd>${h.devletBirimleri[secim.id].length}</dd>
+        ${devletKaynakSatirlari(secim.id)}
         <dt>Şehirler</dt><dd>${sehirler.length ? sehirler.map((s) => `<button class="bag" data-secim="sehir:${p.sehirler.indexOf(s)}">${kacis(s.ad)}</button>`).join(", ") : "—"}</dd>
       </dl><p class="ipucu-metin">Arazi birimini seçmek için devletin içine tekrar tıklayın.</p>`;
     } else if (secim.tur === "birim") {
@@ -178,6 +221,7 @@ async function baslat() {
       govde = `<h3>${kacis(b.ad)}</h3><dl>
         <dt>Devlet</dt><dd>${b.d >= 0 ? kacis(p.devletler[b.d].ad) : "Yerleşik devlet yok"}</dd>
         <dt>Modern idari birim</dt><dd>${kacis(b.ad)} (${kacis(b.ulke)})</dd>
+        <dt>Sınır kaynağı</dt><dd>${kaynakMetni(b.k)}</dd>
         <dt>Şehirler</dt><dd>${sehirler.length ? sehirler.map((i) => `<button class="bag" data-secim="sehir:${i}">${kacis(p.sehirler[i].ad)}</button>`).join(", ") : "—"}</dd>
       </dl><p class="ipucu-metin">Arazi birimi şimdilik modern il/eyalet sınırıdır (test verisi).</p>`;
     } else {

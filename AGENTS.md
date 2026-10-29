@@ -17,7 +17,8 @@ kaynak: `MASTER_SPEC.md` §21 ve §27.
 ## Mevcut durum
 
 - **Aşama:** 1 kapandı (DEC-0019). Görsel yön: Tarihî atlas (DEC-0018).
-  Sürüyor: TASK-0003 (1453 sınır verisi kaynak/lisans araştırması, OPEN-018).
+  TASK-0003 kapandı (DEC-0021). TASK-0004 (v0.2 harita verisi) tamamlandı, kullanıcı
+  kararı bekliyor.
 - **Depo:** github.com/onuryilmaaz/tarihi-oyun (özel). Çalışma doğrudan
   `main` dalında yapılır (DEC-0015). **Commit ve push öncesinde kullanıcıya
   sorulur; onaysız commit atılmaz (DEC-0017).**

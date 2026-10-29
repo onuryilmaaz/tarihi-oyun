@@ -41,7 +41,7 @@
 
     .panel { position: fixed; background: var(--panel); border: 1px solid var(--cizgi); border-radius: 10px;
       padding: 14px; backdrop-filter: blur(8px); box-shadow: 0 6px 24px rgba(0,0,0,.18); }
-    #yan { top: 12px; left: 12px; width: 272px; max-height: calc(100% - 24px); overflow: auto; }
+    #yan { top: 12px; left: 12px; width: 272px; max-height: calc(100% - 24px); overflow: auto; overscroll-behavior: contain; }
     h1 { font-size: 15px; margin: 0; }
     .alt { color: var(--soluk); font-size: 11.5px; margin: 2px 0 0; }
     h2 { font-size: 10.5px; text-transform: uppercase; letter-spacing: .09em; color: var(--soluk);
@@ -49,6 +49,8 @@
     #temalar { display: grid; gap: 6px; }
     #temalar button { text-align: left; display: grid; gap: 1px; padding: 8px 10px; }
     #temalar button span { color: var(--soluk); font-size: 11.5px; }
+    #surumler button.etkin { border-color: var(--vurgu); color: var(--vurgu); }
+    #bilgi a { color: var(--vurgu); }
     #temalar button.etkin { border-color: var(--vurgu); box-shadow: inset 3px 0 0 var(--vurgu); }
     button { font: inherit; color: var(--metin); background: var(--kart); border: 1px solid var(--cizgi);
       border-radius: 7px; padding: 5px 10px; cursor: pointer; }
@@ -74,7 +76,9 @@
     .renk { display: inline-block; width: 12px; height: 12px; border-radius: 3px; border: 1px solid var(--cizgi); flex: none; }
     .ipucu-metin { color: var(--soluk); font-size: 11.5px; margin: 10px 0 0; }
 
-    #lejant { left: 12px; bottom: 12px; padding: 8px 12px; font-size: 11.5px; color: var(--soluk); max-width: 560px; }
+    /* Lejant sol menünün sağında durur; menünün altını örtmez ve fare olaylarını engellemez */
+    #lejant { left: 296px; bottom: 12px; padding: 8px 12px; font-size: 11.5px; color: var(--soluk); max-width: 560px;
+      pointer-events: none; }
     #lejant b { color: var(--metin); font-weight: 600; }
     #ipucu { position: fixed; left: 0; top: 0; pointer-events: none; background: var(--panel); color: var(--metin);
       border: 1px solid var(--cizgi); border-radius: 5px; padding: 3px 8px; font-size: 12px; white-space: nowrap; }
@@ -88,7 +92,12 @@
   <div id="etiketler"></div>
   <aside id="yan" class="panel">
     <h1>1453 · Harita görsel yönü</h1>
-    <p class="alt">TASK-0002 · görsel yön denemesi · sınırlar yaklaşıktır</p>
+    <p class="alt">TASK-0002 / 0004 · sınırların kaynağı panelde gösterilir</p>
+    <h2>Veri sürümü</h2>
+    <div class="satir" id="surumler">
+      <button data-surum="v02">v0.2 · OHM + Wikidata</button>
+      <button data-surum="v01">v0.1 · tahmin</button>
+    </div>
     <h2>Görsel yön</h2>
     <div id="temalar"></div>
     <h2>Katmanlar</h2>
@@ -96,6 +105,7 @@
     <label><input type="checkbox" id="kSehir" checked /> Şehirler</label>
     <label><input type="checkbox" id="kArazi" checked /> Arazi birimi sınırları</label>
     <label><input type="checkbox" id="kNehir" checked /> Nehirler</label>
+    <label><input type="checkbox" id="kGuven" /> Kaynak güveni (tahmin sınırları kesikli)</label>
     <h2>Git</h2>
     <div class="satir">
       <button data-git="dunya">Dünya</button>
@@ -111,8 +121,7 @@
   </aside>
   <aside id="bilgi" class="panel" hidden></aside>
   <div id="lejant" class="panel">
-    <b>1453 sınırları yaklaşıktır</b> — modern idari birimlerin agent tarafından atanmasıyla üretildi, kaynaklı
-    senaryo verisi değildir. Coğrafya: Natural Earth (kamu malı). · Ölçek: <span id="olcek"></span><br />
+    <b>Prototip verisi — gerçek senaryo verisi değildir.</b> <span id="lejantUyari"></span> · Ölçek: <span id="olcek"></span><br />
     Sürükle: kaydır · Tekerlek / + −: yakınlaştır · Tıkla: devlet, tekrar tıkla: arazi · Esc: bir üst seviye
   </div>
   <div id="ipucu" hidden></div>

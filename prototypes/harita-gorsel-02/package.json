@@ -5,6 +5,7 @@
   "type": "module",
   "scripts": {
     "veri": "node scripts/veri-hazirla.mjs",
+    "veri:v02": "node scripts/ohm-indir.mjs && SURUM=v02 node scripts/veri-hazirla.mjs",
     "dev": "vite",
     "build": "tsc --noEmit && vite build",
     "typecheck": "tsc --noEmit"

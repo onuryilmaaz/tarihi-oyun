@@ -315,3 +315,17 @@ Kaynak belge: `MASTER_SPEC.md` (v1.3). Orijinal keşif çıktısı:
   belgelerde işaretlenir.
 - **Onay kaydı:** Kullanıcı: "evet", "gerek yok", "yok" (2026-10-29)
 - **Durum:** GEÇERLİ
+
+## DEC-0022 — v0.2 harita düzeltmeleri (TASK-0004 kararları)
+
+- **Tarih:** 2026-10-29
+- **Konu:** OHM verisinin şüpheli atamaları ve varsayılan sürüm
+- **Seçilen karar:**
+  1. **Napoli ayrı devlettir.** OHM'nin Aragon kaydından İtalya anakarasına düşen parçalar
+     Napoli Krallığı'na verilir; ortak hükümdar (V. Alfonso) ileride hanedan sistemiyle gösterilir.
+  2. **Dağıstan:** OHM'nin Büyük Orda ataması geri alınır; Gazikumuk Şamhallığı kalır.
+  3. **Güneydoğu Anadolu:** Malatya ve Antep Memlûk'te kalır; Urfa Akkoyunlu'ya döner.
+  4. **Varsayılan sürüm:** Prototip v0.2 ile açılır.
+- **Uygulama:** `scripts/ohm-esleme.mjs` → `OHM_DUZELTME`; geri alınan parçaların kaynağı "tahmin".
+- **Onay kaydı:** Kullanıcı: "önerin kalsın", "önerini uygula", "tamam", "olur" (2026-10-29)
+- **Durum:** GEÇERLİ

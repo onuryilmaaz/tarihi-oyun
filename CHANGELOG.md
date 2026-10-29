@@ -1,5 +1,21 @@
 # CHANGELOG
 
+## 2026-10-29 — TASK-0004: 1453 haritası v0.2 (OHM + Wikidata)
+
+### Eklendi
+- `prototypes/harita-gorsel-02/scripts/`: `ohm-indir.mjs`, `ohm-esleme.mjs`,
+  `ohm-kayitlari.json` (lisans kaydı), `wikidata-sorgula.mjs`, `karsilastir.mjs`.
+- `public/veri/dunya-1453-v02.json`, `public/veri/wikidata-1453.json`.
+- Teodoro Prensliği (OHM'den) ve Mangup, Teb şehirleri.
+- Prototip: veri sürümü geçişi, "Kaynak güveni" katmanı, bilgi panelinde kaynak / güven /
+  Wikidata satırları.
+- `docs/historical-sources/1453-v02-karsilastirma.md` + görseller.
+
+### Değişti
+- Başkentler Wikidata ile düzeltildi: Candaroğulları → Sinop, Atina Dükalığı → Teb.
+- Devlet etiket noktası: OHM parçaları için topojson merge yerine poligon birleşimi.
+- v0.1 verisi (`dunya-1453.json`) değiştirilmedi.
+
 ## 2026-10-29 — Aşama 1 kapandı, TASK-0003
 
 ### Eklendi

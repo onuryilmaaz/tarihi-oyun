@@ -19,6 +19,7 @@ export interface Katmanlar {
   nehirKucuk: LineSegments2;
   kiyi: LineSegments2;
   devletSiniri: LineSegments2;
+  devletSiniriTahmin: LineSegments2; // en az bir yanı tahmine dayanan devlet sınırları
   secimCercevesi: LineSegments2;
   baskentler: THREE.Points;
   sehirler: THREE.Points;
@@ -99,18 +100,21 @@ export function katmanlariKur(h: Harita): Katmanlar {
   goller.frustumCulled = false;
 
   // Sınırlar: yayın iki yanındaki birimlerin devletine göre
-  const ic: number[] = [], devlet: number[] = [], kiyiPts: number[] = [];
+  const ic: number[] = [], devlet: number[] = [], devletTahmin: number[] = [], kiyiPts: number[] = [];
+  const kaynakli = (bi: number) => paket.birimler[bi].k?.startsWith("ohm:") ?? false;
   for (let k = 0; k < h.arklar.length; k++) {
     const a = h.yaySahipA[k], b = h.yaySahipB[k];
     if (a < 0) continue;
     if (b < 0) { yayParcalari(h.arklar[k], kiyiPts); continue; }
     const da = paket.birimler[a].d, db = paket.birimler[b].d;
-    if (da !== db) yayParcalari(h.arklar[k], devlet);
+    if (da !== db) yayParcalari(h.arklar[k], kaynakli(a) && kaynakli(b) ? devlet : devletTahmin);
     else if (da >= 0) yayParcalari(h.arklar[k], ic); // atanmamış bölgelerde modern iç sınır çizilmez
   }
   const araziSiniri = cizgi(ic, 3);
   const kiyi = cizgi(kiyiPts, 5);
   const devletSiniri = cizgi(devlet, 6);
+  const devletSiniriTahmin = cizgi(devletTahmin, 6);
+  devletSiniriTahmin.computeLineDistances();
 
   const nb: number[] = [], nk: number[] = [];
   for (const n of paket.nehirler) {
@@ -131,13 +135,13 @@ export function katmanlariKur(h: Harita): Katmanlar {
   sehirSecimi.visible = false;
 
   const grup = new THREE.Group();
-  grup.add(dolgu, goller, araziSiniri, nehirBuyuk, nehirKucuk, kiyi, devletSiniri, secimCercevesi,
+  grup.add(dolgu, goller, araziSiniri, nehirBuyuk, nehirKucuk, kiyi, devletSiniri, devletSiniriTahmin, secimCercevesi,
     sehirler, baskentler, sehirSecimi);
 
   return {
-    grup, dolgu, goller, araziSiniri, nehirBuyuk, nehirKucuk, kiyi, devletSiniri, secimCercevesi,
+    grup, dolgu, goller, araziSiniri, nehirBuyuk, nehirKucuk, kiyi, devletSiniri, devletSiniriTahmin, secimCercevesi,
     baskentler, sehirler, sehirSecimi,
-    cizgiler: [araziSiniri, nehirBuyuk, nehirKucuk, kiyi, devletSiniri, secimCercevesi],
+    cizgiler: [araziSiniri, nehirBuyuk, nehirKucuk, kiyi, devletSiniri, devletSiniriTahmin, secimCercevesi],
     birimKose,
     temelRenk: new Float32Array(konum.length),
     ucgenSayisi: indeks.length / 3,
@@ -213,6 +217,7 @@ export function temaUygula(k: Katmanlar, h: Harita, t: Tema, sahne: THREE.Scene)
 
   cizgiAyarla(k.araziSiniri, t.araziSinir);
   cizgiAyarla(k.devletSiniri, t.devletSinir);
+  cizgiAyarla(k.devletSiniriTahmin, t.devletSinir);
   cizgiAyarla(k.kiyi, t.kiyi);
   cizgiAyarla(k.nehirBuyuk, t.nehir);
   cizgiAyarla(k.nehirKucuk, { ...t.nehir, kalinlik: t.nehir.kalinlik * 0.75 });

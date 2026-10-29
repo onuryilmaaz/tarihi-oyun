@@ -1,6 +1,8 @@
 # 1453 yaklaşık sınırları — prototip verisi
 
 - **Durum:** TAHMİN. Kaynaklandırılmamış ve doğrulanmamıştır (MASTER_SPEC §5.1, DEC-0016).
+- **Not (v0.2):** Bu belge v0.1'i anlatır. v0.2'de ayrıntı bölgesinin bir kısmı OpenHistoricalMap
+  kaynaklıdır; ayrıntılar `1453-v02-karsilastirma.md` belgesinde.
 - **Kullanım yeri:** Yalnızca görsel ve etkileşim prototipleri (TASK-0002). Gerçek senaryo
   verisi **değildir**. Kaynaklı veri OPEN-018 kapsamında ayrıca ele alınacak.
 - **Kod:** `prototypes/harita-gorsel-02/scripts/devletler-1453.mjs`
