@@ -1,5 +1,18 @@
 # CHANGELOG
 
+## 2026-10-29 — Aşama 9 kapanışı; Aşama 10 taslağı (Claude)
+
+- DEC-0060: 9e kabul (sekmelerde ← → artık haritayı kaydırmıyor); **Aşama 9 kapandı, oynanabilir sürüm kabul edildi.**
+- `tasks/TASK-0013.md`, `docs/milestones/ASAMA-10.md`: yayın hazırlığı taslağı (onay bekliyor).
+
+## 2026-10-29 — TASK-0012 / 9e: performans ve erişilebilirlik (Claude)
+
+- DEC-0059: 9d kabul.
+- `vite.config.ts`: three.js ayrı parça; yazı tipleri yalnızca Latin/Latin genişletilmiş alt kümeleri.
+- Ayar sekmesinde **Arayüz boyutu** (%90/%100/%115/%130; paneller ve pencereler ölçeklenir, harita etkilenmez); görünür klavye
+  odağı; sekmelerde ← →; `prefers-reduced-motion`; ≤1180 px'te lejant gizli, ≤980 px'te üst çubuk iki satır ve dar panel.
+- Ölçümler `docs/qa/ASAMA-9E-TEST.md`.
+
 ## 2026-10-29 — TASK-0012 / 9d: kaynaklar ve lisans kontrolü (Claude)
 
 - DEC-0058: 9c kabul.

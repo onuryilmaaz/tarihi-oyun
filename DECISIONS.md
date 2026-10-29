@@ -749,3 +749,14 @@ Kaynak belge: `MASTER_SPEC.md` (v1.3). Orijinal keşif çıktısı:
   onaylandı; 9e (performans ölçümleri, paket boyutu, erişilebilirlik, yazı boyutu ayarı) başlar.
 - **Onay kaydı:** Kullanıcı: "1- evet 2- evet 3- evet" (2026-10-29)
 - **Durum:** GEÇERLİ
+
+## DEC-0060 — 9e kabulü, Aşama 9 kapanışı (oynanabilir sürüm), Aşama 10'a geçiş
+
+- **Tarih:** 2026-10-29
+- **Seçilen karar:**
+  1. 9e kabul edildi; kullanıcının bulduğu hata (sekmelerde ← → haritayı da kaydırıyordu) düzeltildi: odak panel/sekme/menüdeyken
+     harita ok tuşlarını yok sayar. Commit + push onaylandı.
+  2. **Aşama 9 kapandı: oyunun bu hâli oynanabilir sürüm olarak kabul edildi.** Denge sayıları taslak kalır.
+  3. Aşama 10 (yayın hazırlığı) başlar; önce TASK-0013 kapsamı onaya sunulur. Üretime çıkış ayrıca açık onay ister (§22).
+- **Onay kaydı:** Kullanıcı: "1- … ← → tuşlarıyla sekmeler arasında gezin bunu yapınca haritada da geziyor sağa sola 2- evet 3- evet 4- evet" (2026-10-29)
+- **Durum:** GEÇERLİ

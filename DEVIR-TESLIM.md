@@ -14,8 +14,8 @@ Son güncelleme: **2026-10-29, Claude** (Codex'ten devraldı). **7c kullanıcı 
 7c ve 7d kabul edildi, commit edildi. **Aşama 7 kapandı (DEC-0050).** Aşama 8 başladı; TASK-0011 onaylandı (DEC-0051).
 **8a kabul edildi ve commit edildi (DEC-0052).** Sol panel düzeni, kalyon teknolojisi ve **8b ticaret tamamlandı**
 (şema 16, 179 test) — kabul ve commit (DEC-0053; panel 340 px, temalı form alanları). **8c kabul; Aşama 8 kapandı (DEC-0054).** Açılır liste tasarımı commit edildi. **Aşama 9 onaylandı (DEC-0055); 9a kabul edildi ve commit edildi (DEC-0056).** **9b kabul edildi ve commit edildi (DEC-0057).** Not: kullanıcı dünyayı "biraz durağan" buldu (ileride AI
-savaş olasılıkları artırılabilir). **9c kabul edildi ve commit edildi (DEC-0058).** **9d kabul edildi ve commit edildi (DEC-0059).** **9e (performans, paket boyutu, erişilebilirlik) uygulanıyor**;
-sonra Aşama 9 kapanışı (oynanabilir sürüm kabulü).
+savaş olasılıkları artırılabilir). **9c kabul edildi ve commit edildi (DEC-0058).** **9d kabul edildi ve commit edildi (DEC-0059).** **Aşama 9 kapandı: oynanabilir sürüm kabul edildi (DEC-0060).** Aşama 10 (yayın hazırlığı) başlıyor;
+`tasks/TASK-0013.md` kapsamı kullanıcı onayı bekliyor. Üretime çıkış/dağıtım ayrıca açık onay ister.
 Not: açılışta menü gelir; puppeteer betikleri için `?devlet=osm` menüyü atlar.
 
 - Aşama 0–6 kapalı. 7a kabul DEC-0044, 7b kabul DEC-0046 (son commit `0192de4`).

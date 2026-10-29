@@ -346,6 +346,28 @@
       border: 1px solid var(--cizgi); border-radius: 5px; padding: 3px 8px; font-size: 12px; white-space: nowrap; }
     #yukleniyor { position: fixed; inset: 0; display: grid; place-items: center; color: var(--soluk); background: #1b1814; z-index: 20; }
     [hidden] { display: none !important; }
+    /* 9e — erişilebilirlik: arayüz boyutu (--olcek), odak çizgisi, hareketi azaltma, küçük ekran.
+       Ölçeklenen paneller zoom ile büyür; konumları ölçeğe bölünerek görsel yerleri korunur. */
+    :root { --olcek: 1; }
+    #ust, #yan, #bilgi, .menu-kart, #teknoloji .panel, #baris .panel, #onay .panel, #rapor .panel, #kesinti .panel,
+    #barisTeklifi .panel, #verasetPencere .panel { zoom: var(--olcek); }
+    #ust { top: calc(12px / var(--olcek)); left: calc(12px / var(--olcek)); right: calc(12px / var(--olcek)); }
+    #yan { top: calc(var(--ust) + 24px / var(--olcek)); left: calc(12px / var(--olcek));
+      height: calc((100vh - 36px) / var(--olcek) - var(--ust)); max-height: none; }
+    #bilgi { top: calc(var(--ust) + 24px / var(--olcek)); right: calc(12px / var(--olcek));
+      max-height: calc((100vh - 36px) / var(--olcek) - var(--ust)); }
+    #lejant, #nufusLejant, #diplomasiLejant { left: calc(var(--yan-genislik) * var(--olcek) + 24px); }
+    .menu-kart, #teknoloji .panel, #baris .panel, #rapor .panel, #barisTeklifi .panel, #verasetPencere .panel { max-height: calc((100vh - 48px) / var(--olcek)); }
+    button:focus-visible, [role="tab"]:focus-visible, a:focus-visible { outline: 2px solid var(--vurgu); outline-offset: 2px; }
+    @media (prefers-reduced-motion: reduce) { *, *::before, *::after { transition: none !important; animation: none !important; } }
+    /* Küçük ekran: mobil arayüz sonraya (DEC-0013); burada yalnızca bozulmama */
+    @media (max-width: 1180px) { #lejant { display: none; } #ust { gap: 10px; } }
+    @media (max-width: 980px) {
+      :root { --yan-genislik: 290px; --ust: 112px; }
+      #ust { flex-wrap: wrap; align-content: center; padding: 6px 10px; row-gap: 6px; }
+      #tarihKutu { margin: 0; }
+      #bilgi { width: min(300px, calc(100vw - var(--yan-genislik) - 48px)); }
+    }
   </style>
 </head>
 <body>
@@ -458,6 +480,9 @@
         <ul id="planli"></ul>
       </section>
       <section data-sekme="ayar" hidden>
+        <h2>Görünüm</h2>
+        <label for="arayuzOlcek">Arayüz boyutu <select id="arayuzOlcek"><option value="0.9">%90</option><option value="1" selected>%100</option><option value="1.15">%115</option><option value="1.3">%130</option></select></label>
+        <p class="not">Paneller, menüler ve pencereler büyür; harita etkilenmez. Klavye: Tab ile gezin, sekmelerde ← →, Esc ile kapatın, Boşluk ile turu ilerletin.</p>
         <h2>Katmanlar</h2>
         <label><input type="checkbox" id="kEtiket" checked /> Devlet adları</label>
         <label><input type="checkbox" id="kSehir" checked /> Şehirler</label>

@@ -358,6 +358,10 @@ export function haritaGorunumuKur(h: Harita, wikidata: Record<string, WdDevlet>,
   window.addEventListener("keydown", (e) => {
     const etiket = (e.target as HTMLElement).tagName;
     if (etiket === "INPUT" || etiket === "SELECT" || etiket === "TEXTAREA") return;
+    // Odak bir panelde/sekmede/menüdeyse ya da tuşu başka bir öğe kullandıysa harita kaymaz (9e)
+    if (e.defaultPrevented || (e.target as HTMLElement).closest?.(".panel, [role=tablist], #menuKatmani, .secim-liste, #rehber")) {
+      if (e.key !== "Escape") return;
+    }
     const adim = 140 / g.z;
     if (e.key === "ArrowLeft") g.cx -= adim;
     else if (e.key === "ArrowRight") g.cx += adim;

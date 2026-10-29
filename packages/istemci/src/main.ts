@@ -1,10 +1,15 @@
 // Oyun istemcisi (TASK-0005): harita + üst durum çubuğu + tur akışı + yerel kayıt.
 // Simülasyon Web Worker'da çalışır (DEC-0023); bu dosya yalnızca arayüzü yönetir.
 
-import "@fontsource/cinzel/600.css";
-import "@fontsource/cormorant-garamond/700-italic.css";
-import "@fontsource/inter/500.css";
-import "@fontsource/inter/700.css";
+// Yazı tipleri: yalnızca Latin ve Latin genişletilmiş (Türkçe) alt kümeleri (9e)
+import "@fontsource/cinzel/latin-600.css";
+import "@fontsource/cinzel/latin-ext-600.css";
+import "@fontsource/cormorant-garamond/latin-700-italic.css";
+import "@fontsource/cormorant-garamond/latin-ext-700-italic.css";
+import "@fontsource/inter/latin-500.css";
+import "@fontsource/inter/latin-ext-500.css";
+import "@fontsource/inter/latin-700.css";
+import "@fontsource/inter/latin-ext-700.css";
 import { type YapiTuru, DENGE, tarihMetni, toplamaMaliyeti, type Emir, type MuharebeRaporu, type SenaryoVerisi, type Tutum, type TurSuresi } from "@tarihi/sim";
 import { Color } from "three";
 import { armaSvg } from "./arma";
@@ -231,6 +236,19 @@ async function baslat() {
     if (b) sekmeAc(b.dataset.sekme!);
   });
   sekmeAc((() => { try { return localStorage.getItem("tarihi-sol-sekme") ?? "devlet"; } catch { return "devlet"; } })());
+  // Sekmelerde ← → ile gezinme (9e)
+  $("sekmeler").addEventListener("keydown", (e) => {
+    if (e.key !== "ArrowLeft" && e.key !== "ArrowRight") return;
+    const tum = [...document.querySelectorAll<HTMLElement>("#sekmeler [data-sekme]")];
+    const i = tum.findIndex((b) => b.getAttribute("aria-selected") === "true");
+    const y = tum[(i + (e.key === "ArrowRight" ? 1 : tum.length - 1)) % tum.length];
+    e.preventDefault(); sekmeAc(y.dataset.sekme!); y.focus();
+  });
+  // Arayüz boyutu (9e); tarayıcıda hatırlanır
+  const olcekUygula = (v: string) => { document.documentElement.style.setProperty("--olcek", v); try { localStorage.setItem("tarihi-olcek", v); } catch { /* yok */ } };
+  { let v = "1"; try { v = localStorage.getItem("tarihi-olcek") ?? "1"; } catch { /* yok */ }
+    $<HTMLSelectElement>("arayuzOlcek").value = v; olcekUygula(v); }
+  $("arayuzOlcek").addEventListener("change", (e) => olcekUygula((e.target as HTMLSelectElement).value));
   const devletBasligi = () => {
     const i = ozet.oyuncu.indeks, hk = ozet.hukumdar;
     $("devletArmasi").innerHTML = armaSvg(gorunum.devletRengiHex(i), ozet.din, ozet.oyuncu.ad);
