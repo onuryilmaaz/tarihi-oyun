@@ -499,3 +499,29 @@ Kaynak belge: `MASTER_SPEC.md` (v1.3). Orijinal keşif çıktısı:
   3. Sıradaki: 4c/5a ayrıntılı kullanıcı testi; sonra Aşama 4 ve 5 kapanış onayı istenir.
 - **Onay kaydı:** Kullanıcı: "pushla", "başarılı", "neden tekrardan 4175 portuna geçtik. 5173 açık oradan devam edecektik" (2026-10-29)
 - **Durum:** GEÇERLİ
+
+## DEC-0037 — Aşama 4 ve Aşama 5 kapanışı; Aşama 6'ya geçiş
+
+- **Tarih:** 2026-10-29
+- **Seçilen karar:**
+  1. Kullanıcı 4c/5a ayrıntılı testini yaptı (bütçe, savaş/kuşatma, barış, kayıt): "hepsi başarılı".
+     **Aşama 4 kapandı.**
+  2. **Aşama 5 kapandı.** Kabul ölçütündeki "şehir yönetimi otomasyona devredilebilir" maddesi
+     Aşama 7'deki yerel yönetim kapsamına ertelendi (OPEN-016 açık kalır).
+  3. **Aşama 6 (diplomasi ve AI devletleri) onaylandı.** Önce kapsam ve görev kartı (TASK-0009)
+     kullanıcı onayına sunulur; kart onaylanmadan üretim kodu yazılmaz.
+- **Onay kaydı:** Kullanıcı: "hepsi başarılı"; "1- evet 2- b 3- evet" (2026-10-29)
+- **Durum:** GEÇERLİ
+
+## DEC-0038 — Aşama 6 görev kartı (TASK-0009) onayı
+
+- **Tarih:** 2026-10-29
+- **Seçilen karar:**
+  1. 6a (ilişkiler, diplomasi haritası, ilk eylemler) → 6b (AI ekonomi) → 6c (AI savaş/barış) sırası ve
+     TASK-0009 kapsamı onaylandı; her alt adım sonunda kullanıcı testi.
+  2. İlk diplomatik eylemler: savunma ittifakı (kur / çık) ve hediye. Geçiş izni, ticaret, vasallık,
+     ateşkes sonraki bir alt adımda ayrıca onaylanır.
+  3. Başlangıç ilişkileri: agent'ın hazırlayacağı küçük tarihî tahmin tablosu ([TASLAK], kullanıcı onayına sunulur).
+  4. AI'dan oyuncuya gelen savaş ilanı ve barış teklifi turu durdurur (DEC-0006); ittifak teklifi yalnızca bildirim.
+- **Onay kaydı:** Kullanıcı: "1- evet 2- önerin güzel yap onu 3- a 4- evet 5- evet" (2026-10-29)
+- **Durum:** GEÇERLİ

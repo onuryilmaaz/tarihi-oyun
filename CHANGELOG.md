@@ -1,5 +1,10 @@
 # CHANGELOG
 
+## 2026-10-29 — Aşama 4 ve 5 kapanışı; Aşama 6 taslağı (Claude)
+
+- DEC-0037: kullanıcı testi başarılı; Aşama 4 ve Aşama 5 kapandı (otomasyon Aşama 7'ye ertelendi).
+- `tasks/TASK-0009.md` ve `docs/milestones/ASAMA-6.md`: diplomasi ve AI devletleri taslağı (onay bekliyor).
+
 ## 2026-10-29 — TASK-0008 / 5c: teknoloji ağacı (Claude)
 
 ### Eklendi

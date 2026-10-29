@@ -1,8 +1,7 @@
 # Aşama 4 — Savaş, Kuşatma ve Barış
 
-**Durum:** 4a, 4b ve 4c kod olarak tamamlandı. 4b kabul edildi (DEC-0030); 4c testi ve
-Aşama 4 kapanış onayı bekleniyor. 4c uygulama onayı DEC-0031. Kullanıcı 4c testini
-5a ile birleştirip Aşama 5’e geçişe izin verdi (DEC-0032); bu izin 4c kabulü değildir.
+**Durum:** ✔ KAPANDI — kullanıcı 4c/5a ayrıntılı testini yaptı ("hepsi başarılı") ve kapanışı
+onayladı (2026-10-29, DEC-0037).
 
 ## 4a — Savaş ilanı, yabancı ordular, görünürlük, muharebe, moral, geri çekilme
 
@@ -66,8 +65,7 @@ Ayrıntılı kanıt ve kullanıcı adımları: `docs/qa/ASAMA-4B-TEST.md`.
 
 ## 4c — Kuşatma, gerçek işgal, savaş skoru ve barış
 
-**Durum:** Uygulama tamamlandı; kullanıcı kabulü BEKLENİYOR. 4c testi 5a ile birlikte
-yapılacak; Aşama 4 resmî kabulü açıkken Aşama 5’e geçiş DEC-0032 ile yetkilendirildi.
+**Durum:** Uygulama tamamlandı ve kullanıcı testiyle KABUL EDİLDİ (DEC-0037).
 
 | Kabul ölçütü | Kanıt | Sonuç |
 |---|---|---|

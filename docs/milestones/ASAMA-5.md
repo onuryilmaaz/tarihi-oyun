@@ -1,9 +1,8 @@
 # Aşama 5 — Ekonomi, şehirler ve teknoloji
 
-**Durum:** Başlandı (DEC-0032). 5a tamamlandı (kullanıcı testi 4c ile birlikte); 5b tamamlandı ve
-kabul edildi (DEC-0034); 5c teknoloji ağacı tamamlandı, kullanıcı testi bekliyor
-(`docs/qa/ASAMA-5C-TEST.md`). Aşama 4 resmî kabulü açık. Aşama 5 kapısı henüz değerlendirilmedi;
-kapanış için kullanıcının açık onayı gerekir.
+**Durum:** ✔ KAPANDI — kullanıcı onayı (2026-10-29, DEC-0037). 5a, 5b, 5c test edildi ve kabul edildi
+(DEC-0034, DEC-0036, DEC-0037). Kabul ölçütündeki "şehir yönetimi otomasyona devredilebilir" maddesi
+kullanıcı kararıyla Aşama 7'deki yerel yönetim kapsamına ertelendi (OPEN-016).
 
 ## 5a — Mevcut bütçenin görünürlüğü
 

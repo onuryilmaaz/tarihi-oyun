@@ -17,8 +17,8 @@ kaynak: `MASTER_SPEC.md` §21 ve §27.
 
 ## Mevcut durum
 
-- **Aşama:** 5 (ekonomi, şehirler, teknoloji) — 5a, 5b, 5c tamamlandı; 5b ve 5c kabul edildi (DEC-0036);
-  sıradaki: 4c/5a ayrıntılı kullanıcı testi, ardından Aşama 4 ve 5 kapanışı. Aşama 4 kod olarak tamam, resmî kapanışı ayrıntılı testle (DEC-0033). Durum için `DEVIR-TESLIM.md`.
+- **Aşama:** 6 (diplomasi ve AI devletleri) — TASK-0009 onaylandı (DEC-0038); 6a uygulanıyor.
+  Aşama 4 ve 5 kapandı (DEC-0037; şehir yönetimi otomasyonu Aşama 7'ye ertelendi). Durum için `DEVIR-TESLIM.md`.
 - **Yerel sunucu (DEC-0036):** Kullanıcı da agent da **5173**'teki geliştirme sunucusunu kullanır
   (kullanıcı başlattı, kapatılmaz; kod değişince kendini yeniler). Kullanıcıya test adımı 5173 ile verilir;
   4175 önizlemesi kullanılmaz. Aşama 2 kapandı
