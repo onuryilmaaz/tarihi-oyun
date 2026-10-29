@@ -16,10 +16,11 @@ kaynak: `MASTER_SPEC.md` §21 ve §27.
 
 ## Mevcut durum
 
-- **Aşama:** 1 (harita deneyimi prototipi) sürüyor. TASK-0001 kabul edildi
-  (ADR-0001); TASK-0002 tamamlandı, görsel yön seçimi bekliyor.
+- **Aşama:** 1 kapandı (DEC-0019). Görsel yön: Tarihî atlas (DEC-0018).
+  Sürüyor: TASK-0003 (1453 sınır verisi kaynak/lisans araştırması, OPEN-018).
 - **Depo:** github.com/onuryilmaaz/tarihi-oyun (özel). Çalışma doğrudan
-  `main` dalında yapılır (DEC-0015); her anlamlı adım commit + push.
+  `main` dalında yapılır (DEC-0015). **Commit ve push öncesinde kullanıcıya
+  sorulur; onaysız commit atılmaz (DEC-0017).**
 - **Teknoloji:** TypeScript + three.js; oyun motoru yok (DEC-0012). Önce web
   (DEC-0013). Diğer mimari başlıklar AÇIK; `src/` henüz oluşturulmaz.
 - **İlk sürüm:** Tek oyunculu, tek senaryo (1453).

@@ -165,6 +165,29 @@ function daire(dolgu: string, kenar: string, halka = false): THREE.Texture {
   return t;
 }
 
+// Başkent: klasik atlas işareti — açık zemin üzerinde halka + ortada dolu nokta
+function baskentIsareti(dolgu: string, kenar: string): THREE.Texture {
+  const c = document.createElement("canvas");
+  c.width = c.height = 64;
+  const g = c.getContext("2d")!;
+  g.beginPath();
+  g.arc(32, 32, 29, 0, Math.PI * 2);
+  g.fillStyle = kenar;
+  g.fill();
+  g.beginPath();
+  g.arc(32, 32, 22, 0, Math.PI * 2);
+  g.lineWidth = 6;
+  g.strokeStyle = dolgu;
+  g.stroke();
+  g.beginPath();
+  g.arc(32, 32, 11, 0, Math.PI * 2);
+  g.fillStyle = dolgu;
+  g.fill();
+  const t = new THREE.CanvasTexture(c);
+  t.colorSpace = THREE.SRGBColorSpace;
+  return t;
+}
+
 function cizgiAyarla(l: LineSegments2, s: { renk: string; opak: number; kalinlik: number }) {
   const m = l.material as LineMaterial;
   m.color.set(s.renk);
@@ -200,7 +223,7 @@ export function temaUygula(k: Katmanlar, h: Harita, t: Tema, sahne: THREE.Scene)
   pm(k.baskentler).map?.dispose();
   pm(k.sehirSecimi).map?.dispose();
   pm(k.sehirler).map = daire(t.sehir.dolgu, t.sehir.kenar);
-  pm(k.baskentler).map = daire(t.baskent.dolgu, t.baskent.kenar);
+  pm(k.baskentler).map = baskentIsareti(t.baskent.dolgu, t.baskent.kenar);
   pm(k.sehirSecimi).map = daire("", t.secim, true);
   for (const p of [k.sehirler, k.baskentler, k.sehirSecimi]) pm(p).needsUpdate = true;
 }
@@ -208,7 +231,7 @@ export function temaUygula(k: Katmanlar, h: Harita, t: Tema, sahne: THREE.Scene)
 export function boyutAyarla(k: Katmanlar, w: number, hgt: number, oran: number) {
   for (const l of k.cizgiler) (l.material as LineMaterial).resolution.set(w * oran, hgt * oran);
   (k.sehirler.material as THREE.PointsMaterial).size = 6 * oran;
-  (k.baskentler.material as THREE.PointsMaterial).size = 9 * oran;
+  (k.baskentler.material as THREE.PointsMaterial).size = 14 * oran;
   (k.sehirSecimi.material as THREE.PointsMaterial).size = 24 * oran;
 }
 

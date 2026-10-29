@@ -1,5 +1,19 @@
 # CHANGELOG
 
+## 2026-10-29 — Aşama 1 kapandı, TASK-0003
+
+### Eklendi
+- DEC-0017 (commit/push öncesi kullanıcı onayı), DEC-0018 (görsel yön: Tarihî
+  atlas), DEC-0019 (Aşama 1 kapısı), DEC-0020 (ticari değil), DEC-0021 (karma
+  1453 veri yöntemi).
+- `docs/milestones/ASAMA-1.md`, `tasks/TASK-0003.md`.
+- `docs/historical-sources/OPEN-018-kaynak-arastirmasi.md`.
+
+### Değişti
+- harita-gorsel-02: başkentler belirginleştirildi (halka + nokta işareti,
+  büyük kalın ad).
+- AGENTS.md: commit kuralı, mevcut aşama.
+
 ## 2026-10-29 — TASK-0002: gerçek dünya haritası, 1453 sınırları, görsel yönler
 
 ### Eklendi

@@ -122,14 +122,20 @@ export class Etiketler {
         }
       } else if (this.sehirlerAcik && g.z >= (et.tur === "baskent" ? ESIK.baskent : ESIK.sehir)
         && sx > -50 && sx < g.w + 50 && sy > -20 && sy < g.h + 20) {
-        const w = et.genislik * boy;
-        const x0 = sx + 6, y0 = sy - boy * 0.65, x1 = sx + 9 + w, y1 = sy + boy * 0.65;
+        const baskent = et.tur === "baskent";
+        const fs = baskent ? boy + 3 : boy;
+        const ara = baskent ? 10 : 7; // işaretten uzaklık
+        const w = et.genislik * fs * (baskent ? 1.06 : 1); // kalın yazı biraz daha geniş
+        const x0 = sx + ara - 2, y0 = sy - fs * 0.65, x1 = sx + ara + 1 + w, y1 = sy + fs * 0.65;
         // nokta her zaman çizilir; yalnızca yazı çakışmaya bakar
         if (!cakisir(x0, y0, x1, y1)) {
           kutular.push(x0, y0, x1, y1);
           goster = true;
-          et.el.style.fontWeight = et.tur === "baskent" ? "700" : "";
-          et.el.style.transform = `translate(${(sx + 8).toFixed(1)}px,${sy.toFixed(1)}px) translate(0,-50%)`;
+          if (baskent) {
+            et.el.style.fontWeight = "700";
+            et.el.style.fontSize = `${fs}px`;
+          }
+          et.el.style.transform = `translate(${(sx + ara).toFixed(1)}px,${sy.toFixed(1)}px) translate(0,-50%)`;
         }
       }
       if (goster !== et.gorunur) {

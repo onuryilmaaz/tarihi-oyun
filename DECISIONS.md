@@ -252,3 +252,66 @@ Kaynak belge: `MASTER_SPEC.md` (v1.3). Orijinal keşif çıktısı:
 - **Onay kaydı:** Kullanıcı: "gerçek dünya haritası ama sınırlar o zamana
   ait olsun. önerin iyi" (2026-10-29)
 - **Durum:** GEÇERLİ
+
+## DEC-0017 — Commit ve push kullanıcı onayıyla
+
+- **Tarih:** 2026-10-29
+- **Konu:** DEC-0015'teki çalışma düzeninin netleştirilmesi
+- **Seçilen karar:** Agent commit atmadan ve push etmeden önce kullanıcıya
+  sorar; onay olmadan commit/push yapılmaz. Çalışma `main` dalında devam eder.
+- **Onay kaydı:** Kullanıcı: "commit atmadan bana sor" (2026-10-29)
+- **Durum:** GEÇERLİ (DEC-0015'i bu yönüyle günceller)
+
+## DEC-0018 — Görsel yön: Tarihî atlas
+
+- **Tarih:** 2026-10-29
+- **Konu:** OPEN-021 (sanat yönü) — harita görsel yönü
+- **Alternatifler:** Tarihî atlas, Modern siyasi, Gece (`docs/ui-ux/gorsel-yon-denemeleri.md`)
+- **Seçilen karar:** **Tarihî atlas** (parşömen dokusu, soluk toprak tonları,
+  mürekkep sınırlar, Cinzel / Cormorant Garamond yazı). Başkent işaretleri
+  daha belirgin yapıldı (halka + nokta işareti, büyük ve kalın ad).
+- **Açık kalan:** Oyun adı ve görsel marka (OPEN-021'in diğer kısmı); arayüz
+  panellerinin nihai stili.
+- **Onay kaydı:** Kullanıcı: "tarihi" + "başkentleri daha belirgin yapabilirsin" (2026-10-29)
+- **Durum:** GEÇERLİ
+
+## DEC-0019 — Aşama 1 kapısı geçildi
+
+- **Tarih:** 2026-10-29
+- **Konu:** Aşama 1 (harita deneyimi prototipi) kabulü
+- **Seçilen karar:** Görsel yön (DEC-0018) ve etkileşim (seçim hiyerarşisi,
+  etiketler, yakınlaştırma) kabul edildi. TASK-0002 kabul edildi.
+- **Not:** Mobil etkileşim DEC-0013 gereği ertelendi.
+- **Onay kaydı:** Kullanıcı: "şuan gayet iyi. sadece başkentleri daha belirgin
+  yapabilirsin." (2026-10-29) — başkent düzeltmesi yapıldı.
+- **Durum:** GEÇERLİ
+
+## DEC-0020 — Oyun ticari olarak satılmayacak
+
+- **Tarih:** 2026-10-29
+- **Konu:** OPEN-022 (gelir modeli) — veri lisansı seçimini etkiler
+- **Seçilen karar:** Oyun ticari olarak satılmayacak.
+- **Sonuç:** Ticari olmayan (NC) lisanslı kaynaklar artık lisans açısından
+  kullanılabilir. Yine de CC0 / kamu malı kaynaklar tercih edilir; NC veya
+  copyleft (GPL, BY-SA) veri kullanılırsa kaynak ve lisans kaydı tutulur.
+  İleride ticari karar alınırsa bu veriler ayıklanabilmelidir.
+- **Açık kalan:** Yayın platformu sırası (OPEN-022'nin diğer kısmı).
+- **Onay kaydı:** Kullanıcı: "hayır" (ticari satış sorusuna, 2026-10-29)
+- **Durum:** GEÇERLİ
+
+## DEC-0021 — 1453 veri yöntemi: karma, proje kendi veri setini üretir
+
+- **Tarih:** 2026-10-29
+- **Konu:** OPEN-018 (TASK-0003 önerisi)
+- **Seçilen karar:** Coğrafya Natural Earth; siyasi sınırlar mümkün olduğunca
+  OpenHistoricalMap CC0 kayıtları (kayıt bazında lisans kontrolü); devlet,
+  hükümdar ve başkent verisi Wikidata (CC0); kalan yerler tahmin ve literatür;
+  kaza/nahiye katmanı projenin kendi çizimi. Lisansı kısıtlı kaynaklar
+  karşılaştırma için.
+- **Euratlas:** Teklif istenmeyecek.
+- **Doğrulama:** Tarihçi erişimi yok. Doğrulama agent'ın kaynak
+  karşılaştırması ve kullanıcı kontrolüyle yapılır; her devlet ve sınır için
+  `kaynak` ve `guven` alanı tutulur, düşük güvenli bölgeler haritada ve
+  belgelerde işaretlenir.
+- **Onay kaydı:** Kullanıcı: "evet", "gerek yok", "yok" (2026-10-29)
+- **Durum:** GEÇERLİ

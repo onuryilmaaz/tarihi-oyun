@@ -1,6 +1,7 @@
 # Harita görsel yön denemeleri (TASK-0002)
 
-- **Durum:** Kullanıcı seçimi bekliyor (OPEN-021, Aşama 1 kapısı)
+- **Durum:** KARARA BAĞLANDI — **Tarihî atlas** seçildi (DEC-0018); Aşama 1 kapısı geçildi (DEC-0019).
+  Seçimden sonra başkent işaretleri belirginleştirildi (halka + nokta, büyük kalın ad).
 - **Tarih:** 2026-10-29
 - **Prototip:** `prototypes/harita-gorsel-02/`. Çalıştırmak için `npm install && npm run dev`.
   Temalar prototip içinden anında değiştirilebilir.
