@@ -1,0 +1,189 @@
+<!doctype html>
+<html lang="tr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>1453 · Tarihî Strateji</title>
+  <style>
+    :root {
+      --panel: rgba(28, 24, 20, 0.9);
+      --metin: #efe6d4;
+      --soluk: #ab9f8a;
+      --vurgu: #e2b356;
+      --uyari: #e8925a;
+      --hata: #e06a5a;
+      --cizgi: rgba(239, 230, 212, 0.14);
+      --kart: rgba(239, 230, 212, 0.06);
+      --ust: 64px;
+    }
+    * { box-sizing: border-box; }
+    html, body { margin: 0; height: 100%; overflow: hidden; background: #1b1814; color: var(--metin);
+      font: 13px/1.45 "Inter", system-ui, -apple-system, sans-serif; }
+    #tuvalKap { position: fixed; inset: 0; }
+    canvas { display: block; touch-action: none; }
+    body[data-tema="atlas"] #tuvalKap::after { content: ""; position: absolute; inset: 0; pointer-events: none;
+      background: radial-gradient(ellipse at center, transparent 55%, rgba(70, 45, 20, 0.28) 100%); }
+    #kagit { position: fixed; inset: 0; pointer-events: none; mix-blend-mode: multiply; background-size: 512px 512px; }
+    #etiketler { position: fixed; inset: 0; pointer-events: none; overflow: hidden; }
+    .et-devlet, .et-sehir { position: absolute; left: 0; top: 0; white-space: nowrap; will-change: transform;
+      text-shadow: 0 0 3px var(--et-hale), 0 0 6px var(--et-hale); }
+    .et-devlet { font-family: var(--et-devlet-font); font-weight: var(--et-devlet-agirlik); color: var(--et-devlet-renk);
+      letter-spacing: var(--et-devlet-aralik); text-transform: var(--et-donusum); text-align: center; line-height: 1.1; }
+    .et-sehir { font-family: var(--et-sehir-font); font-weight: var(--et-sehir-agirlik); color: var(--et-sehir-renk);
+      font-size: var(--et-sehir-boyut); font-style: var(--et-sehir-stil); line-height: 1; }
+
+    .panel { position: fixed; background: var(--panel); border: 1px solid var(--cizgi); border-radius: 10px;
+      padding: 14px; backdrop-filter: blur(8px); box-shadow: 0 6px 24px rgba(0,0,0,.2); }
+    button { font: inherit; color: var(--metin); background: var(--kart); border: 1px solid var(--cizgi);
+      border-radius: 7px; padding: 5px 10px; cursor: pointer; }
+    button:hover:not(:disabled) { border-color: var(--soluk); }
+    button:disabled { opacity: .45; cursor: default; }
+    button.etkin { border-color: var(--vurgu); color: var(--vurgu); }
+    h2 { font-size: 10.5px; text-transform: uppercase; letter-spacing: .09em; color: var(--soluk);
+      margin: 14px 0 6px; font-weight: 700; }
+    h2:first-child { margin-top: 0; }
+    label { display: flex; align-items: center; gap: 8px; padding: 2px 0; cursor: pointer; }
+    input[type=checkbox] { accent-color: var(--vurgu); }
+    .satir { display: flex; gap: 6px; flex-wrap: wrap; align-items: center; }
+    .renk { display: inline-block; width: 12px; height: 12px; border-radius: 3px; border: 1px solid var(--cizgi); flex: none; }
+    .not { color: var(--soluk); font-size: 11.5px; margin: 4px 0 0; }
+
+    /* Üst durum çubuğu */
+    #ust { top: 12px; left: 12px; right: 12px; height: var(--ust); padding: 0 14px; display: flex; align-items: center;
+      gap: 18px; }
+    #oyuncu { display: flex; align-items: center; gap: 8px; font-weight: 700; font-size: 14px; white-space: nowrap; }
+    .deger { display: flex; flex-direction: column; line-height: 1.15; }
+    .deger small { color: var(--soluk); font-size: 10.5px; text-transform: uppercase; letter-spacing: .08em; }
+    .deger b { font-size: 15px; font-variant-numeric: tabular-nums; }
+    #hazine.eksi { color: var(--hata); }
+    #tarihKutu { margin: 0 auto; text-align: center; }
+    #tarih { font-family: "Cinzel", serif; font-weight: 600; font-size: 20px; letter-spacing: .04em; }
+    #turNo { color: var(--soluk); font-size: 11px; }
+    #sureler { display: flex; gap: 0; }
+    #sureler button { border-radius: 0; margin-left: -1px; padding: 6px 10px; }
+    #sureler button:first-child { border-radius: 7px 0 0 7px; margin-left: 0; }
+    #sureler button:last-child { border-radius: 0 7px 7px 0; }
+    #ilerleBtn { background: var(--vurgu); border-color: var(--vurgu); color: #1b1814; font-weight: 700; padding: 8px 16px;
+      display: flex; flex-direction: column; line-height: 1.1; align-items: center; }
+    #ilerleBtn small { font-weight: 500; font-size: 10.5px; opacity: .8; }
+    #kayitlar { display: flex; gap: 6px; }
+    #kayitlar button { display: flex; flex-direction: column; line-height: 1.1; align-items: center; }
+    #kayitlar small { color: var(--soluk); font-size: 10px; }
+
+    /* Sol panel */
+    #yan { top: calc(var(--ust) + 24px); left: 12px; width: 272px; max-height: calc(100% - var(--ust) - 36px);
+      overflow: auto; overscroll-behavior: contain; }
+    #gunluk { list-style: none; margin: 0; padding: 0; display: grid; gap: 6px; }
+    #gunluk li { font-size: 12px; border-left: 2px solid var(--cizgi); padding-left: 8px; }
+    #gunluk li[data-tur="kesinti"] { border-color: var(--uyari); }
+    #gunluk li[data-tur="emir-reddedildi"] { border-color: var(--hata); }
+    #gunluk li.bos { color: var(--soluk); border: 0; padding: 0; }
+    #gunluk time { display: block; color: var(--soluk); font-size: 10.5px; }
+    #planli { margin: 4px 0 0; padding-left: 16px; color: var(--uyari); font-size: 12px; }
+    #ozetHash { font-family: ui-monospace, monospace; font-size: 10.5px; color: var(--soluk); }
+
+    /* Bilgi paneli */
+    #bilgi { right: 12px; top: calc(var(--ust) + 24px); width: 300px; max-height: calc(100% - var(--ust) - 36px); overflow: auto; }
+    #bilgi h3 { margin: 10px 0 8px; font-size: 16px; display: flex; align-items: center; gap: 8px; }
+    #bilgi a { color: var(--vurgu); }
+    .rozet { font-size: 10.5px; color: #1b1814; background: var(--vurgu); border-radius: 4px; padding: 1px 6px; font-weight: 700; }
+    .kirinti { display: flex; flex-wrap: wrap; align-items: center; gap: 4px; font-size: 12px; }
+    .yol { padding: 2px 8px; display: inline-flex; align-items: center; gap: 6px; }
+    .yol-sabit { color: var(--soluk); padding: 2px 4px; }
+    .ayrac { color: var(--soluk); }
+    dl { display: grid; grid-template-columns: auto 1fr; gap: 4px 12px; margin: 0; }
+    dt { color: var(--soluk); }
+    dd { margin: 0; }
+    .bag { border: 0; background: none; padding: 0; color: var(--vurgu); text-decoration: underline; text-underline-offset: 2px; }
+    .ipucu-metin { color: var(--soluk); font-size: 11.5px; margin: 10px 0 0; }
+
+    /* Bildirim ve kesinti */
+    #bildirim { top: calc(var(--ust) + 24px); left: 50%; transform: translateX(-50%); padding: 8px 14px; z-index: 5;
+      max-width: min(560px, calc(100% - 640px)); min-width: 260px; text-align: center; }
+    #bildirim[data-tur="uyari"] { border-color: var(--uyari); }
+    #bildirim[data-tur="hata"] { border-color: var(--hata); color: #ffd9d2; }
+    #kesinti { position: fixed; inset: 0; display: grid; place-items: center; background: rgba(15, 12, 9, .45); z-index: 10; }
+    #kesinti .panel { position: static; width: min(420px, calc(100% - 32px)); text-align: center; padding: 22px; border-color: var(--uyari); }
+    #kesinti h3 { font-family: "Cinzel", serif; margin: 0 0 4px; font-size: 18px; color: var(--uyari); }
+    #kesinti p { margin: 8px 0 16px; }
+
+    #lejant { left: 296px; bottom: 12px; padding: 8px 12px; font-size: 11.5px; color: var(--soluk); max-width: 560px; pointer-events: none; }
+    #lejant b { color: var(--metin); font-weight: 600; }
+    #ipucu { position: fixed; left: 0; top: 0; pointer-events: none; background: var(--panel); color: var(--metin);
+      border: 1px solid var(--cizgi); border-radius: 5px; padding: 3px 8px; font-size: 12px; white-space: nowrap; }
+    #yukleniyor { position: fixed; inset: 0; display: grid; place-items: center; color: var(--soluk); background: #1b1814; z-index: 20; }
+    [hidden] { display: none !important; }
+  </style>
+</head>
+<body>
+  <div id="tuvalKap"></div>
+  <div id="kagit" hidden></div>
+  <div id="etiketler"></div>
+
+  <header id="ust" class="panel">
+    <div id="oyuncu"></div>
+    <div class="deger"><small>Hazine</small><b id="hazine">—</b></div>
+    <div id="tarihKutu"><div id="tarih">—</div><div id="turNo"></div></div>
+    <div id="sureler" role="group" aria-label="Tur süresi">
+      <button data-sure="hafta">Hafta</button>
+      <button data-sure="ay">Ay</button>
+      <button data-sure="ceyrek">3 Ay</button>
+      <button data-sure="yil">Yıl</button>
+    </div>
+    <button id="ilerleBtn" title="Boşluk tuşu">Turu ilerlet</button>
+    <div id="kayitlar">
+      <button id="kaydetBtn">Kaydet<small>manuel</small></button>
+      <button id="yukleManuel" disabled>Yükle<small>boş</small></button>
+      <button id="yukleOtomatik" disabled>Otomatik<small>boş</small></button>
+    </div>
+  </header>
+
+  <aside id="yan" class="panel">
+    <h2>Olay günlüğü</h2>
+    <ul id="gunluk"></ul>
+    <p class="not" id="bekleyen"></p>
+    <ul id="planli"></ul>
+    <h2>Katmanlar</h2>
+    <label><input type="checkbox" id="kEtiket" checked /> Devlet adları</label>
+    <label><input type="checkbox" id="kSehir" checked /> Şehirler</label>
+    <label><input type="checkbox" id="kArazi" checked /> Arazi birimi sınırları</label>
+    <label><input type="checkbox" id="kNehir" checked /> Nehirler</label>
+    <label><input type="checkbox" id="kGuven" /> Kaynak güveni (tahmin sınırları kesikli)</label>
+    <h2>Git</h2>
+    <div class="satir">
+      <button data-git="dunya">Dünya</button>
+      <button data-git="avrupa">Avrupa ve Yakındoğu</button>
+      <button data-git="konstantiniyye">Konstantiniyye</button>
+    </div>
+    <h2>Geliştirici denemeleri</h2>
+    <div class="satir">
+      <button id="testKesinti">Test kesintisi (10 gün)</button>
+      <button id="testHarca">Test harcaması (50.000)</button>
+    </div>
+    <p class="not">Aşama 2 altyapısını sınamak içindir; gerçek oyun mekaniği değildir. Gelir ve nüfus değerleri test değeridir.</p>
+    <p class="not"><span id="sonTur"></span><br />Durum özeti: <span id="ozetHash"></span></p>
+  </aside>
+
+  <aside id="bilgi" class="panel" hidden></aside>
+  <div id="bildirim" class="panel" hidden></div>
+
+  <div id="kesinti" hidden>
+    <div class="panel" role="alertdialog" aria-labelledby="kesintiBaslik">
+      <h3 id="kesintiBaslik">Tur durdu</h3>
+      <div class="not" id="kesintiTarih"></div>
+      <p id="kesintiMetin"></p>
+      <button id="kesintiTamam">Anladım</button>
+      <p class="not">Kararınızı verin, sonra turu yeniden ilerletin.</p>
+    </div>
+  </div>
+
+  <div id="lejant" class="panel">
+    <b>Prototip verisi — gerçek senaryo verisi değildir.</b> 1453 sınırları: OpenHistoricalMap (CC0) + agent tahmini.
+    Coğrafya: Natural Earth. Takvim: Jülyen.<br />
+    Boşluk: turu ilerlet · Sürükle: kaydır · Tekerlek: yakınlaştır · Tıkla: devlet, tekrar tıkla: arazi · Esc: üst seviye
+  </div>
+  <div id="ipucu" hidden></div>
+  <div id="yukleniyor">Dünya hazırlanıyor…</div>
+  <script type="module" src="/src/main.ts"></script>
+</body>
+</html>

@@ -74,6 +74,18 @@ Görseller: `ADR-0001/n20000-genel.png`, `ADR-0001/n20000-secim.png`, `ADR-0001/
 3. **Bellek** 50.000 birimde 136 MB. Bunun çoğu prototipin tuttuğu ara diziler. Önceden
    işlenmiş veriyle düşmesi beklenir, ama bu ölçülmedi.
 
+## Ek ölçüm: kullanıcının tarayıcısı (2026-10-29)
+
+Kullanıcı, harita-gorsel-02 prototipini (gerçek dünya, 3.637 birim, 333 bin üçgen, Gece teması)
+kendi Chrome penceresinde ölçtü: 1470×802 @2x, Apple M2.
+
+- Ortalama 60 FPS; kare süresi p50 16,7 ms, p95 17,6 ms, en kötü 17,7 ms.
+- Render CPU ortalama 0,15 ms; etiket güncellemesi ortalama 0,13 ms.
+- 10 çizim çağrısı; JS belleği 124 MB.
+
+Bu ölçüm, headless ölçümdeki "normal pencerede doğrulanmalı" uyarısını kapatır. Zayıf cihaz
+ölçümü (OPEN-019) hâlâ açıktır.
+
 ## Sınırlar — bu ölçüm neyi göstermiyor?
 
 - **Tek cihaz ve güçlü bir cihaz** (Apple M2). Zayıf bir dizüstü bilgisayar veya entegre

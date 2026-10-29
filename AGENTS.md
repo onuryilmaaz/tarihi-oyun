@@ -16,13 +16,20 @@ kaynak: `MASTER_SPEC.md` §21 ve §27.
 
 ## Mevcut durum
 
-- **Aşama:** 1 kapandı (DEC-0019). Görsel yön: Tarihî atlas (DEC-0018).
+- **Aşama:** 3 (siyasi kontrol ve hareket) — görev kartı hazırlanıyor. Aşama 2 kapandı
+  (DEC-0024), Aşama 1 kapandı (DEC-0019). Görsel yön: Tarihî atlas (DEC-0018).
   TASK-0003 kapandı (DEC-0021). TASK-0004 (v0.2 harita verisi) kabul edildi (DEC-0022).
 - **Depo:** github.com/onuryilmaaz/tarihi-oyun (özel). Çalışma doğrudan
   `main` dalında yapılır (DEC-0015). **Commit ve push öncesinde kullanıcıya
   sorulur; onaysız commit atılmaz (DEC-0017).**
 - **Teknoloji:** TypeScript + three.js; oyun motoru yok (DEC-0012). Önce web
-  (DEC-0013). Diğer mimari başlıklar AÇIK; `src/` henüz oluşturulmaz.
+  (DEC-0013). Simülasyon tarayıcıda Web Worker'da (DEC-0023, ADR-0002).
+- **Kod yapısı:** `packages/sim` (oyun kuralları; DOM/three.js/Node API yasak, determinizm
+  kuralları `kurallar.test.ts` ile denetlenir) ve `packages/istemci` (harita + arayüz).
+  Senaryo verisi `veri/senaryo-1453/` (`npm run senaryo`). Prototipler `prototypes/` altında
+  atılabilir koddur; ana koda yalnızca temizlenerek taşınır.
+- **Komutlar:** `npm test` (sim testleri), `npm run typecheck`, `npm run dev` (istemci).
+  Her değişiklikten sonra test ve tip kontrolü çalıştırılır.
 - **İlk sürüm:** Tek oyunculu, tek senaryo (1453).
 
 ## Kesinlikle korunacaklar

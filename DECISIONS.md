@@ -329,3 +329,27 @@ Kaynak belge: `MASTER_SPEC.md` (v1.3). Orijinal keşif çıktısı:
 - **Uygulama:** `scripts/ohm-esleme.mjs` → `OHM_DUZELTME`; geri alınan parçaların kaynağı "tahmin".
 - **Onay kaydı:** Kullanıcı: "önerin kalsın", "önerini uygula", "tamam", "olur" (2026-10-29)
 - **Durum:** GEÇERLİ
+
+## DEC-0023 — Simülasyon çekirdeği mimarisi (ADR-0002)
+
+- **Tarih:** 2026-10-29
+- **Konu:** OPEN-006 (simülasyon dili ve çalışma yeri), kod yapısı, takvim, Aşama 2 kayıt iskeleti
+- **Seçilen karar:**
+  1. Simülasyon **tarayıcıda, TypeScript, Web Worker** içinde çalışır. Çekirdek DOM'dan ve
+     three.js'ten bağımsız saf bir modüldür; ileride sunucuda da çalışabilir.
+  2. Kod `packages/sim` (kurallar) ve `packages/istemci` (harita ve arayüz) olarak iki pakete
+     ayrılır (npm workspaces). Testler Vitest ile yazılır; prototipler olduğu gibi kalır.
+  3. **Takvim: Jülyen.** İçeride gün sayacı (Jülyen gün numarası), ekranda Jülyen tarih.
+  4. **Kayıt:** Yalnızca tarayıcıda yerel (IndexedDB), JSON + şema sürümü; manuel kayıt +
+     tek otomatik kayıt. Ironman, geri sarma ve bulut kaydı yok (OPEN-007 ve OPEN-020 açık).
+- **Onay kaydı:** Kullanıcı: "dediğin gibi yap", "mantıklı", "önerini uygula", "aynen" (2026-10-29)
+- **Durum:** GEÇERLİ
+
+## DEC-0024 — Aşama 2 kapısı geçildi
+
+- **Tarih:** 2026-10-29
+- **Konu:** Aşama 2 (tur ve dünya durumu çekirdeği) kabulü
+- **Seçilen karar:** Tur deneyimi (tarih, tur süresi, Turu ilerlet, kesinti, kaydet/yükle) ve
+  TASK-0005 kabul edildi. Sıradaki aşama: Aşama 3 (siyasi kontrol ve hareket).
+- **Onay kaydı:** Kullanıcı: "onaylıyorum" (2026-10-29)
+- **Durum:** GEÇERLİ

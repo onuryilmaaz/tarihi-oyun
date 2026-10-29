@@ -4,8 +4,25 @@
 Oyuncu bir devleti yönetir; tarih başlangıç koşullarını belirler,
 sonrası serbesttir.
 
-**Durum:** Aşama 0 tamamlandı (tasarım tabanı onaylı). Kod yok;
-teknoloji yığını seçilmedi — TASK-0001 onay bekliyor.
+**Durum:** Aşama 2 — tur ve dünya durumu çekirdeği. Teknoloji: TypeScript + three.js,
+simülasyon tarayıcıda Web Worker'da.
+
+## Çalıştırma
+
+```sh
+npm install
+npm run dev        # oyun istemcisi: http://localhost:5173
+npm test           # simülasyon testleri
+npm run typecheck  # tip kontrolü (tüm paketler)
+npm run senaryo    # veri/senaryo-1453/ yeniden üretimi (prototip verisinden)
+```
+
+| Klasör | İçerik |
+|---|---|
+| `packages/sim` | Oyun kuralları: dünya durumu, tur, emirler, kayıt (saf TypeScript) |
+| `packages/istemci` | Harita ve arayüz (three.js), simülasyon Worker'ı, yerel kayıt |
+| `veri/senaryo-1453` | 1453 senaryo ve harita verisi |
+| `prototypes/` | Atılabilir prototipler ve ölçümler |
 
 ## Belgeler
 

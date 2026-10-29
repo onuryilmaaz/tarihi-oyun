@@ -1,0 +1,1094 @@
+{
+  "kaynak": "Wikidata (CC0) — https://www.wikidata.org/wiki/Wikidata:Licensing",
+  "sorgu": "2026-10-29",
+  "yil": 1453,
+  "devletler": {
+    "osm": {
+      "arama": "Ottoman Empire",
+      "qid": "Q12560",
+      "eslesme": "1453'ü kapsıyor",
+      "etiket": "Osmanlı İmparatorluğu",
+      "aciklama": "empire with the monarchs from the Ottoman dynasty (1299–1922)",
+      "kurulus": 1302,
+      "yikilis": 1922,
+      "baskentler": [
+        {
+          "q": "Q768506",
+          "durum": "degil",
+          "b": 1299,
+          "s": 1329,
+          "ad": "Söğüt"
+        },
+        {
+          "q": "Q40738",
+          "durum": "degil",
+          "b": 1329,
+          "s": 1365,
+          "ad": "Bursa"
+        },
+        {
+          "q": "Q43387",
+          "durum": "gecerli",
+          "b": 1365,
+          "s": 1453,
+          "ad": "Edirne"
+        },
+        {
+          "q": "Q16869",
+          "durum": "gecerli",
+          "b": 1453,
+          "s": 1922,
+          "ad": "Konstantinopolis"
+        },
+        {
+          "q": "Q932648",
+          "durum": "degil",
+          "b": 1361,
+          "s": 1363,
+          "ad": "Dimetoka"
+        },
+        {
+          "q": "Q406",
+          "durum": "belirsiz",
+          "b": null,
+          "s": null,
+          "ad": "İstanbul"
+        }
+      ],
+      "devletBaskanlari": []
+    },
+    "biz": {
+      "arama": "Byzantine Empire",
+      "qid": "Q12544",
+      "eslesme": "1453'ü kapsıyor",
+      "etiket": "Bizans İmparatorluğu",
+      "aciklama": "Roman Empire during Late Antiquity and the Middle Ages",
+      "kurulus": 395,
+      "yikilis": 1453,
+      "baskentler": [
+        {
+          "q": "Q16869",
+          "durum": "gecerli",
+          "b": 330,
+          "s": 1453,
+          "ad": "Konstantinopolis"
+        }
+      ],
+      "devletBaskanlari": []
+    },
+    "mor": {
+      "arama": "Despotate of the Morea",
+      "qid": "Q604593",
+      "eslesme": "1453'ü kapsıyor",
+      "etiket": "Mora Despotluğu",
+      "aciklama": "Province of the Byzantine Empire",
+      "kurulus": 1349,
+      "yikilis": 1460,
+      "baskentler": [
+        {
+          "q": "Q19053",
+          "durum": "belirsiz",
+          "b": null,
+          "s": null,
+          "ad": "Mistra"
+        }
+      ],
+      "devletBaskanlari": []
+    },
+    "atn": {
+      "arama": "Duchy of Athens",
+      "qid": "Q334714",
+      "eslesme": "1453'ü kapsıyor",
+      "etiket": "Atina Dukalığı",
+      "aciklama": "former country (1205–1458)",
+      "kurulus": 1205,
+      "yikilis": 1458,
+      "baskentler": [
+        {
+          "q": "Q1524",
+          "durum": "degil",
+          "b": 1205,
+          "s": 1311,
+          "ad": "Atina"
+        },
+        {
+          "q": "Q11225429",
+          "durum": "gecerli",
+          "b": 1311,
+          "s": null,
+          "ad": "Thebes"
+        }
+      ],
+      "devletBaskanlari": []
+    },
+    "trb": {
+      "arama": "Empire of Trebizond",
+      "qid": "Q178913",
+      "eslesme": "1453'ü kapsıyor",
+      "etiket": "Trabzon İmparatorluğu",
+      "aciklama": "Byzantine Greek state on Black Sea coast",
+      "kurulus": 1204,
+      "yikilis": 1461,
+      "baskentler": [
+        {
+          "q": "Q45301",
+          "durum": "belirsiz",
+          "b": null,
+          "s": null,
+          "ad": "Trabzon"
+        }
+      ],
+      "devletBaskanlari": []
+    },
+    "kar": {
+      "arama": "Karamanids",
+      "qid": "Q1469100",
+      "eslesme": "1453'ü kapsıyor",
+      "etiket": "Karamanoğulları",
+      "aciklama": "1255–1487 Turkish state in south-central Anatolia",
+      "kurulus": 1250,
+      "yikilis": 1487,
+      "baskentler": [
+        {
+          "q": "Q262579",
+          "durum": "belirsiz",
+          "b": null,
+          "s": null,
+          "ad": "Karaman"
+        },
+        {
+          "q": "Q79857",
+          "durum": "belirsiz",
+          "b": null,
+          "s": null,
+          "ad": "Konya"
+        }
+      ],
+      "devletBaskanlari": []
+    },
+    "can": {
+      "arama": "Q2096678",
+      "qid": "Q2096678",
+      "eslesme": "1453'ü kapsıyor",
+      "etiket": "Candaroğulları Beyliği",
+      "aciklama": "Anatolian princely dynasty",
+      "kurulus": 1291,
+      "yikilis": 1461,
+      "baskentler": [
+        {
+          "q": "Q1296393",
+          "durum": "degil",
+          "b": 1291,
+          "s": 1309,
+          "ad": "Eflani"
+        },
+        {
+          "q": "Q155915",
+          "durum": "degil",
+          "b": 1309,
+          "s": 1398,
+          "ad": "Kastamonu"
+        },
+        {
+          "q": "Q599416",
+          "durum": "gecerli",
+          "b": 1398,
+          "s": 1461,
+          "ad": "Sinop"
+        }
+      ],
+      "devletBaskanlari": []
+    },
+    "dul": {
+      "arama": "Dulkadirids",
+      "qid": "Q1264808",
+      "eslesme": "1453'ü kapsıyor",
+      "etiket": "Dulkadiroğulları",
+      "aciklama": "former country",
+      "kurulus": 1337,
+      "yikilis": 1522,
+      "baskentler": [
+        {
+          "q": "Q117181",
+          "durum": "belirsiz",
+          "b": null,
+          "s": null,
+          "ad": "Elbistan"
+        },
+        {
+          "q": "Q134703",
+          "durum": "belirsiz",
+          "b": null,
+          "s": null,
+          "ad": "Kahramanmaraş"
+        }
+      ],
+      "devletBaskanlari": []
+    },
+    "ram": {
+      "arama": "Ramadanid",
+      "qid": "Q2261321",
+      "eslesme": "1453'ü kapsıyor",
+      "etiket": "Ramazanoğulları Beyliği",
+      "aciklama": "de facto independent emirate that existed from 1352 to 1608 in Cilicia",
+      "kurulus": 1352,
+      "yikilis": 1608,
+      "baskentler": [
+        {
+          "q": "Q38545",
+          "durum": "belirsiz",
+          "b": null,
+          "s": null,
+          "ad": "Adana"
+        }
+      ],
+      "devletBaskanlari": []
+    },
+    "akk": {
+      "arama": "Aq Qoyunlu",
+      "qid": "Q555994",
+      "eslesme": "1453'ü kapsıyor",
+      "etiket": "Akkoyunlular",
+      "aciklama": "Historical state that ruled Eastern Anatolia, Azerbaijan, and Iran (1378–1503)",
+      "kurulus": 1378,
+      "yikilis": 1508,
+      "baskentler": [
+        {
+          "q": "Q83387",
+          "durum": "gecerli",
+          "b": null,
+          "s": 1468,
+          "ad": "Diyarbakır"
+        },
+        {
+          "q": "Q80053",
+          "durum": "gecerli",
+          "b": null,
+          "s": 1501,
+          "ad": "Tebriz"
+        },
+        {
+          "q": "Q1530",
+          "durum": "gecerli",
+          "b": null,
+          "s": 1508,
+          "ad": "Bağdat"
+        }
+      ],
+      "devletBaskanlari": []
+    },
+    "kkk": {
+      "arama": "Qara Qoyunlu",
+      "qid": "Q324470",
+      "eslesme": "1453'ü kapsıyor",
+      "etiket": "Karakoyunlular",
+      "aciklama": "Persianate Muslim Turkoman monarchy (1374–1468)",
+      "kurulus": 1375,
+      "yikilis": 1468,
+      "baskentler": [
+        {
+          "q": "Q80053",
+          "durum": "belirsiz",
+          "b": null,
+          "s": null,
+          "ad": "Tebriz"
+        },
+        {
+          "q": "Q695365",
+          "durum": "belirsiz",
+          "b": null,
+          "s": null,
+          "ad": "Erciş"
+        },
+        {
+          "q": "Q83317",
+          "durum": "belirsiz",
+          "b": null,
+          "s": null,
+          "ad": "Musul"
+        }
+      ],
+      "devletBaskanlari": []
+    },
+    "mem": {
+      "arama": "Mamluk Sultanate",
+      "qid": "Q282428",
+      "eslesme": "1453'ü kapsıyor",
+      "etiket": "Memlukler",
+      "aciklama": "Egyptian state spanning in Hejaz and the Levant (1250–1517)",
+      "kurulus": 1250,
+      "yikilis": 1517,
+      "baskentler": [
+        {
+          "q": "Q85",
+          "durum": "belirsiz",
+          "b": null,
+          "s": null,
+          "ad": "Kahire"
+        }
+      ],
+      "devletBaskanlari": []
+    },
+    "grc": {
+      "arama": "Kingdom of Georgia",
+      "qid": "Q154667",
+      "eslesme": "1453'ü kapsıyor",
+      "etiket": "Gürcü Krallığı",
+      "aciklama": "medieval state in Eastern Europe",
+      "kurulus": 1008,
+      "yikilis": 1466,
+      "baskentler": [
+        {
+          "q": "Q172415",
+          "durum": "degil",
+          "b": null,
+          "s": 1122,
+          "ad": "Kutaisi"
+        },
+        {
+          "q": "Q994",
+          "durum": "gecerli",
+          "b": 1122,
+          "s": null,
+          "ad": "Tiflis"
+        }
+      ],
+      "devletBaskanlari": []
+    },
+    "sir": {
+      "arama": "Shirvanshah",
+      "qid": "Q1642939",
+      "eslesme": "1453'ü kapsıyor",
+      "etiket": "şirvanşah",
+      "aciklama": "the successive rulers of the Kingdom of Shirvan, who belonged to different dynasties but bore the title Shirvanshah",
+      "kurulus": 861,
+      "yikilis": 1607,
+      "baskentler": [],
+      "devletBaskanlari": []
+    },
+    "dag": {
+      "arama": "Shamkhalate of Tarki",
+      "qid": "Q2043564",
+      "eslesme": "1453'ü kapsıyor",
+      "etiket": "Tarki Şamhallığı",
+      "aciklama": "Kumyk state in the eastern part of the North Caucasus",
+      "kurulus": 1200,
+      "yikilis": 1867,
+      "baskentler": [
+        {
+          "q": "Q1385112",
+          "durum": "belirsiz",
+          "b": null,
+          "s": null,
+          "ad": "Tarki"
+        }
+      ],
+      "devletBaskanlari": []
+    },
+    "cer": {
+      "arama": "Circassia",
+      "qid": "Q1408764",
+      "eslesme": "1453'ü kapsıyor",
+      "etiket": "Çerkesya",
+      "aciklama": "region in the North Caucasus",
+      "kurulus": 1427,
+      "yikilis": 1864,
+      "baskentler": [],
+      "devletBaskanlari": []
+    },
+    "ser": {
+      "arama": "Serbian Despotate",
+      "qid": "Q878319",
+      "eslesme": "1453'ü kapsıyor",
+      "etiket": "Sırp Despotluğu",
+      "aciklama": "former country (1402-1459/1537)",
+      "kurulus": 1402,
+      "yikilis": 1537,
+      "baskentler": [
+        {
+          "q": "Q3711",
+          "durum": "belirsiz",
+          "b": null,
+          "s": null,
+          "ad": "Belgrad"
+        }
+      ],
+      "devletBaskanlari": []
+    },
+    "bos": {
+      "arama": "Kingdom of Bosnia",
+      "qid": "Q2980623",
+      "eslesme": "1453'ü kapsıyor",
+      "etiket": "Bosna Krallığı",
+      "aciklama": "1377–1463 Bosnian medieval state, evolved from the Banate of Bosnia",
+      "kurulus": 1377,
+      "yikilis": 1463,
+      "baskentler": [
+        {
+          "q": "Q193229",
+          "durum": "degil",
+          "b": 9,
+          "s": 1340,
+          "ad": "Visoka"
+        },
+        {
+          "q": "Q33186",
+          "durum": "gecerli",
+          "b": 1377,
+          "s": 1460,
+          "ad": "Bobovac"
+        },
+        {
+          "q": "Q65075158",
+          "durum": "belirsiz",
+          "b": null,
+          "s": null,
+          "ad": "Royal court in Sutjeska"
+        },
+        {
+          "q": "Q258429",
+          "durum": "degil",
+          "b": 1460,
+          "s": 1463,
+          "ad": "Yayça"
+        }
+      ],
+      "devletBaskanlari": [
+        {
+          "q": "Q116",
+          "durum": "gecerli",
+          "b": 1377,
+          "s": null,
+          "ad": "Hükümdar"
+        }
+      ]
+    },
+    "hrc": {
+      "arama": "Duchy of Saint Sava",
+      "qid": "Q106311455",
+      "eslesme": "1453'ü kapsıyor",
+      "etiket": "Hersek Düklüğü",
+      "aciklama": "1448–1482 polity in Southeast Europe",
+      "kurulus": 1448,
+      "yikilis": 1482,
+      "baskentler": [],
+      "devletBaskanlari": []
+    },
+    "zet": {
+      "arama": "Zeta under the Crnojević",
+      "qid": "Q8069735",
+      "eslesme": "tarih doğrulanamadı (ilk arama sonucu)",
+      "etiket": "Zeta under the Crnojevići",
+      "aciklama": "Medieval Slavic state",
+      "kurulus": null,
+      "yikilis": 1498,
+      "baskentler": [],
+      "devletBaskanlari": []
+    },
+    "arn": {
+      "arama": "League of Lezhë",
+      "qid": "Q669241",
+      "eslesme": "1453'ü kapsıyor",
+      "etiket": "Lezha Birliği",
+      "aciklama": "former country",
+      "kurulus": 1444,
+      "yikilis": 1479,
+      "baskentler": [
+        {
+          "q": "Q169160",
+          "durum": "belirsiz",
+          "b": null,
+          "s": null,
+          "ad": "Leş"
+        }
+      ],
+      "devletBaskanlari": []
+    },
+    "rag": {
+      "arama": "Republic of Ragusa",
+      "qid": "Q208169",
+      "eslesme": "1453'ü kapsıyor",
+      "etiket": "Ragusa Cumhuriyeti",
+      "aciklama": "former maritime republic in southeast Europe (1358–1808)",
+      "kurulus": 1358,
+      "yikilis": 1808,
+      "baskentler": [
+        {
+          "q": "Q1722",
+          "durum": "belirsiz",
+          "b": null,
+          "s": null,
+          "ad": "Dubrovnik"
+        }
+      ],
+      "devletBaskanlari": []
+    },
+    "ven": {
+      "arama": "Republic of Venice",
+      "qid": "Q4948",
+      "eslesme": "1453'ü kapsıyor",
+      "etiket": "Venedik Cumhuriyeti",
+      "aciklama": "former state (697–1797) controlling, at various times, parts of northeastern Italy, the Balkans, and Mediterranean islands",
+      "kurulus": 697,
+      "yikilis": 1797,
+      "baskentler": [
+        {
+          "q": "Q641",
+          "durum": "gecerli",
+          "b": 810,
+          "s": 1797,
+          "ad": "Venedik"
+        },
+        {
+          "q": "Q47986",
+          "durum": "degil",
+          "b": 697,
+          "s": 742,
+          "ad": "Eraclea"
+        },
+        {
+          "q": "Q1886727",
+          "durum": "degil",
+          "b": 742,
+          "s": 810,
+          "ad": "Malamocco"
+        }
+      ],
+      "devletBaskanlari": []
+    },
+    "cen": {
+      "arama": "Republic of Genoa",
+      "qid": "Q174306",
+      "eslesme": "1453'ü kapsıyor",
+      "etiket": "Ceneviz Cumhuriyeti",
+      "aciklama": "medieval and early modern maritime republic from (1005-1797)",
+      "kurulus": 1005,
+      "yikilis": 1797,
+      "baskentler": [
+        {
+          "q": "Q1449",
+          "durum": "belirsiz",
+          "b": null,
+          "s": null,
+          "ad": "Cenova"
+        }
+      ],
+      "devletBaskanlari": []
+    },
+    "rod": {
+      "arama": "Knights Hospitaller",
+      "qid": "Q187549",
+      "eslesme": "1453'ü kapsıyor",
+      "etiket": "Hospitalier Şövalyeleri",
+      "aciklama": "medieval and early modern Catholic military order (1099–1799)",
+      "kurulus": 1099,
+      "yikilis": 1799,
+      "baskentler": [],
+      "devletBaskanlari": []
+    },
+    "kib": {
+      "arama": "Kingdom of Cyprus",
+      "qid": "Q213638",
+      "eslesme": "1453'ü kapsıyor",
+      "etiket": "Kıbrıs Krallığı",
+      "aciklama": "Mediaeval kingdom",
+      "kurulus": 1192,
+      "yikilis": 1489,
+      "baskentler": [
+        {
+          "q": "Q3856",
+          "durum": "belirsiz",
+          "b": null,
+          "s": null,
+          "ad": "Lefkoşa"
+        }
+      ],
+      "devletBaskanlari": []
+    },
+    "nax": {
+      "arama": "Duchy of the Archipelago",
+      "qid": "Q777981",
+      "eslesme": "1453'ü kapsıyor",
+      "etiket": "Nakşa Dükalığı",
+      "aciklama": "former country",
+      "kurulus": 1207,
+      "yikilis": 1579,
+      "baskentler": [
+        {
+          "q": "Q530644",
+          "durum": "belirsiz",
+          "b": null,
+          "s": null,
+          "ad": "Nakşa (şehir)"
+        }
+      ],
+      "devletBaskanlari": []
+    },
+    "hun": {
+      "arama": "Q16056854",
+      "qid": "Q16056854",
+      "eslesme": "1453'ü kapsıyor",
+      "etiket": "Macaristan Krallığı",
+      "aciklama": "former Central European monarchy (1301–1526)",
+      "kurulus": 1301,
+      "yikilis": 1526,
+      "baskentler": [
+        {
+          "q": "Q193478",
+          "durum": "degil",
+          "b": 1490,
+          "s": 1526,
+          "ad": "Budin"
+        },
+        {
+          "q": "Q1741",
+          "durum": "degil",
+          "b": 1485,
+          "s": 1490,
+          "ad": "Viyana"
+        },
+        {
+          "q": "Q193478",
+          "durum": "gecerli",
+          "b": 1408,
+          "s": 1485,
+          "ad": "Budin"
+        },
+        {
+          "q": "Q548097",
+          "durum": "degil",
+          "b": 1323,
+          "s": 1408,
+          "ad": "Visegrád"
+        },
+        {
+          "q": "Q83404",
+          "durum": "degil",
+          "b": 1315,
+          "s": 1323,
+          "ad": "Temeşvar"
+        },
+        {
+          "q": "Q193478",
+          "durum": "degil",
+          "b": 1301,
+          "s": 1315,
+          "ad": "Budin"
+        }
+      ],
+      "devletBaskanlari": []
+    },
+    "efl": {
+      "arama": "Principality of Wallachia",
+      "qid": "Q389004",
+      "eslesme": "1453'ü kapsıyor",
+      "etiket": "Eflak Prensliği",
+      "aciklama": "principality in Southeast Europe between 1310–1859",
+      "kurulus": 1330,
+      "yikilis": 1859,
+      "baskentler": [
+        {
+          "q": "Q736296",
+          "durum": "belirsiz",
+          "b": null,
+          "s": null,
+          "ad": "Uzunköy"
+        },
+        {
+          "q": "Q652838",
+          "durum": "degil",
+          "b": 1330,
+          "s": 1418,
+          "ad": "Curtea de Argeș"
+        },
+        {
+          "q": "Q188673",
+          "durum": "belirsiz",
+          "b": null,
+          "s": null,
+          "ad": "Tirgovişte"
+        },
+        {
+          "q": "Q19660",
+          "durum": "degil",
+          "b": 1659,
+          "s": null,
+          "ad": "Bükreş"
+        }
+      ],
+      "devletBaskanlari": []
+    },
+    "bog": {
+      "arama": "Principality of Moldavia",
+      "qid": "Q10957559",
+      "eslesme": "1453'ü kapsıyor",
+      "etiket": "Boğdan Prensliği",
+      "aciklama": "principality in Southeast Europe between 1346–1859",
+      "kurulus": 1346,
+      "yikilis": 1859,
+      "baskentler": [
+        {
+          "q": "Q46852",
+          "durum": "degil",
+          "b": 1564,
+          "s": 1859,
+          "ad": "Yaş"
+        },
+        {
+          "q": "Q46400",
+          "durum": "gecerli",
+          "b": 1388,
+          "s": 1564,
+          "ad": "Suçava"
+        },
+        {
+          "q": "Q587746",
+          "durum": "degil",
+          "b": 1354,
+          "s": 1388,
+          "ad": "Siret"
+        },
+        {
+          "q": "Q1044072",
+          "durum": "degil",
+          "b": 1343,
+          "s": 1354,
+          "ad": "Baia"
+        }
+      ],
+      "devletBaskanlari": []
+    },
+    "kir": {
+      "arama": "Crimean Khanate",
+      "qid": "Q160440",
+      "eslesme": "1453'ü kapsıyor",
+      "etiket": "Kırım Hanlığı",
+      "aciklama": "former state at the Crimean Peninsula until April 1783",
+      "kurulus": 1441,
+      "yikilis": 1783,
+      "baskentler": [
+        {
+          "q": "Q158604",
+          "durum": "degil",
+          "b": 1490,
+          "s": 1783,
+          "ad": "Bahçesaray"
+        },
+        {
+          "q": "Q1017178",
+          "durum": "gecerli",
+          "b": 1449,
+          "s": 1490,
+          "ad": "Çufutkale"
+        },
+        {
+          "q": "Q17305931",
+          "durum": "belirsiz",
+          "b": null,
+          "s": null,
+          "ad": "Salacık"
+        }
+      ],
+      "devletBaskanlari": []
+    },
+    "teo": {
+      "arama": "Principality of Theodoro",
+      "qid": "Q874954",
+      "eslesme": "1453'ü kapsıyor",
+      "etiket": "Theodoro Prensliği",
+      "aciklama": "former country on the Crimea Peninsula",
+      "kurulus": 1360,
+      "yikilis": 1475,
+      "baskentler": [],
+      "devletBaskanlari": []
+    },
+    "alt": {
+      "arama": "Great Horde",
+      "qid": "Q79965",
+      "eslesme": "1453'ü kapsıyor",
+      "etiket": "Altın Orda Devleti",
+      "aciklama": "medieval state in Eurasia",
+      "kurulus": 1243,
+      "yikilis": 1502,
+      "baskentler": [
+        {
+          "q": "Q477152",
+          "durum": "belirsiz",
+          "b": null,
+          "s": null,
+          "ad": "Saray"
+        },
+        {
+          "q": "Q1061338",
+          "durum": "belirsiz",
+          "b": null,
+          "s": null,
+          "ad": "Sarai Berke"
+        },
+        {
+          "q": "Q105284",
+          "durum": "belirsiz",
+          "b": null,
+          "s": null,
+          "ad": "Bolgar"
+        }
+      ],
+      "devletBaskanlari": []
+    },
+    "kaz": {
+      "arama": "Khanate of Kazan",
+      "qid": "Q186537",
+      "eslesme": "1453'ü kapsıyor",
+      "etiket": "Kazan Hanlığı",
+      "aciklama": "former country",
+      "kurulus": 1438,
+      "yikilis": 1552,
+      "baskentler": [
+        {
+          "q": "Q900",
+          "durum": "belirsiz",
+          "b": null,
+          "s": null,
+          "ad": "Kazan"
+        }
+      ],
+      "devletBaskanlari": []
+    },
+    "nog": {
+      "arama": "Nogai Horde",
+      "qid": "Q631210",
+      "eslesme": "1453'ü kapsıyor",
+      "etiket": "Nogay Orda",
+      "aciklama": "former country",
+      "kurulus": 1440,
+      "yikilis": 1634,
+      "baskentler": [
+        {
+          "q": "Q2996387",
+          "durum": "belirsiz",
+          "b": null,
+          "s": null,
+          "ad": "Saraycık (şehir), Kazakistan"
+        }
+      ],
+      "devletBaskanlari": []
+    },
+    "lit": {
+      "arama": "Grand Duchy of Lithuania",
+      "qid": "Q49683",
+      "eslesme": "1453'ü kapsıyor",
+      "etiket": "Litvanya Büyük Dükalığı",
+      "aciklama": "Eastern European monarchical state that existed from 1236 to 1795",
+      "kurulus": 1236,
+      "yikilis": 1795,
+      "baskentler": [
+        {
+          "q": "Q216",
+          "durum": "gecerli",
+          "b": 1323,
+          "s": null,
+          "ad": "Vilnius"
+        },
+        {
+          "q": "Q215315",
+          "durum": "degil",
+          "b": 1279,
+          "s": 1321,
+          "ad": "Kernavė"
+        },
+        {
+          "q": "Q191015",
+          "durum": "degil",
+          "b": 1321,
+          "s": 1323,
+          "ad": "Trakai"
+        },
+        {
+          "q": "Q278743",
+          "durum": "belirsiz",
+          "b": null,
+          "s": null,
+          "ad": "Navahrudak"
+        }
+      ],
+      "devletBaskanlari": []
+    },
+    "pol": {
+      "arama": "Crown of the Kingdom of Poland",
+      "qid": "Q171348",
+      "eslesme": "1453'ü kapsıyor",
+      "etiket": "Polonya Krallığı (1385-1569)",
+      "aciklama": "1385–1795 territorial possessions of the King of Poland",
+      "kurulus": 1386,
+      "yikilis": 1795,
+      "baskentler": [
+        {
+          "q": "Q31487",
+          "durum": "belirsiz",
+          "b": null,
+          "s": null,
+          "ad": "Kraków"
+        },
+        {
+          "q": "Q270",
+          "durum": "belirsiz",
+          "b": null,
+          "s": null,
+          "ad": "Varşova"
+        }
+      ],
+      "devletBaskanlari": []
+    },
+    "mos": {
+      "arama": "Grand Duchy of Moscow",
+      "qid": "Q170770",
+      "eslesme": "1453'ü kapsıyor",
+      "etiket": "Moskova Knezliği",
+      "aciklama": "Russian principality (1263–1547)",
+      "kurulus": 1263,
+      "yikilis": 1478,
+      "baskentler": [
+        {
+          "q": "Q649",
+          "durum": "belirsiz",
+          "b": null,
+          "s": null,
+          "ad": "Moskova"
+        }
+      ],
+      "devletBaskanlari": []
+    },
+    "nap": {
+      "arama": "Kingdom of Naples",
+      "qid": "Q173065",
+      "eslesme": "1453'ü kapsıyor",
+      "etiket": "Napoli Krallığı",
+      "aciklama": "Italian state (1282–1816)",
+      "kurulus": 1282,
+      "yikilis": 1816,
+      "baskentler": [
+        {
+          "q": "Q2634",
+          "durum": "belirsiz",
+          "b": null,
+          "s": null,
+          "ad": "Napoli"
+        }
+      ],
+      "devletBaskanlari": []
+    },
+    "pap": {
+      "arama": "Papal States",
+      "qid": "Q170174",
+      "eslesme": "1453'ü kapsıyor",
+      "etiket": "Papalık Devleti",
+      "aciklama": "territories mostly in the Appenine Peninsula under the sovereign direct rule of the pope between 756–1870",
+      "kurulus": 754,
+      "yikilis": 1870,
+      "baskentler": [
+        {
+          "q": "Q220",
+          "durum": "belirsiz",
+          "b": null,
+          "s": null,
+          "ad": "Roma"
+        }
+      ],
+      "devletBaskanlari": []
+    },
+    "ara": {
+      "arama": "Crown of Aragon",
+      "qid": "Q204920",
+      "eslesme": "1453'ü kapsıyor",
+      "etiket": "Aragon Tacı",
+      "aciklama": "composite monarchy which existed between 1162–1716",
+      "kurulus": 1162,
+      "yikilis": 1715,
+      "baskentler": [],
+      "devletBaskanlari": []
+    },
+    "tim": {
+      "arama": "Timurid Empire",
+      "qid": "Q484195",
+      "eslesme": "1453'ü kapsıyor",
+      "etiket": "Timur İmparatorluğu",
+      "aciklama": "Central Asian Persianate Turco-Mongol empire (1370–1507)",
+      "kurulus": 1370,
+      "yikilis": 1507,
+      "baskentler": [
+        {
+          "q": "Q5753",
+          "durum": "belirsiz",
+          "b": null,
+          "s": null,
+          "ad": "Semerkant"
+        },
+        {
+          "q": "Q45313",
+          "durum": "gecerli",
+          "b": 1405,
+          "s": 1507,
+          "ad": "Herat"
+        }
+      ],
+      "devletBaskanlari": []
+    },
+    "haf": {
+      "arama": "Hafsid dynasty",
+      "qid": "Q752662",
+      "eslesme": "1453'ü kapsıyor",
+      "etiket": "Hafsiler",
+      "aciklama": "Sunni Muslim dynasty of Amazigh (Berber) descent",
+      "kurulus": 1229,
+      "yikilis": 1574,
+      "baskentler": [
+        {
+          "q": "Q3572",
+          "durum": "belirsiz",
+          "b": null,
+          "s": null,
+          "ad": "Tunus"
+        }
+      ],
+      "devletBaskanlari": []
+    },
+    "avs": {
+      "arama": "Archduchy of Austria",
+      "qid": "Q699964",
+      "eslesme": "1453'ü kapsıyor",
+      "etiket": "Avusturya Arşidüklüğü",
+      "aciklama": "fief of the Holy Roman Empire, 1453–1806",
+      "kurulus": 1358,
+      "yikilis": 1918,
+      "baskentler": [
+        {
+          "q": "Q1741",
+          "durum": "belirsiz",
+          "b": null,
+          "s": null,
+          "ad": "Viyana"
+        }
+      ],
+      "devletBaskanlari": []
+    },
+    "boh": {
+      "arama": "Kingdom of Bohemia",
+      "qid": "Q42585",
+      "eslesme": "1453'ü kapsıyor",
+      "etiket": "Bohemya Krallığı",
+      "aciklama": "monarchy in Central Europe, predecessor of modern Czech Republic",
+      "kurulus": 1198,
+      "yikilis": 1918,
+      "baskentler": [
+        {
+          "q": "Q1085",
+          "durum": "belirsiz",
+          "b": null,
+          "s": null,
+          "ad": "Prag"
+        }
+      ],
+      "devletBaskanlari": []
+    }
+  }
+}

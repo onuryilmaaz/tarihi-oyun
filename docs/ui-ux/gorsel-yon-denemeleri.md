@@ -73,6 +73,8 @@ Koyu deniz, derin renkler, açık renkli sınırlar ve yazılar.
 - **Kurulum:** Katmanlar yaklaşık 120 ms, ilk kare 40–70 ms. JS belleği 38 MB.
 - **Ölçüm yolu:** Dünya görünümünde kaydırma, Konstantiniyye'ye yakınlaşma, ardından Avrupa'ya
   uzaklaşma. Ham sonuçlar: `prototypes/harita-gorsel-02/olcumler-2026-10-29-chrome-headless-apple-m2.json`.
+- **Kullanıcı ölçümü (normal Chrome penceresi, Gece teması, 1470×802 @2x):** 60 FPS, p95 17,6 ms,
+  etiket 0,13 ms, 10 çizim çağrısı, 124 MB (bkz. ADR-0001 ek ölçüm).
 - **Not:** "Etiket güncelleme" yalnızca JS süresidir. Tarayıcının stil ve yerleşim maliyeti kare
   süresinin içindedir; kare süresi yine de 60 Hz sınırında kaldı.
 

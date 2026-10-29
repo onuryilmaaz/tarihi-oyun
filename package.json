@@ -1,0 +1,13 @@
+{
+  "name": "tarihi-oyun",
+  "private": true,
+  "type": "module",
+  "workspaces": ["packages/*"],
+  "scripts": {
+    "test": "npm run test -w @tarihi/sim",
+    "typecheck": "npm run typecheck -w @tarihi/sim && npm run typecheck -w @tarihi/istemci",
+    "dev": "npm run dev -w @tarihi/istemci",
+    "build": "npm run build -w @tarihi/istemci",
+    "senaryo": "node araclar/senaryo-uret.mjs"
+  }
+}

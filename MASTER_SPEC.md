@@ -1430,6 +1430,8 @@ yapmamalıdır.
     birim sayısı ve veri biçimi açık.
 -   **OPEN-003** kısmen kapandı → DEC-0005, DEC-0006; iç adım boyları ve
     kesinti tetikleyici listesi \[TASLAK\].
+-   **OPEN-006** kapandı → DEC-0023 (tarayıcıda TypeScript, Web Worker; `packages/sim`).
+-   **Zaman kuralı (§19)** → DEC-0023: Jülyen takvimi; içeride Jülyen gün numarası.
 -   **OPEN-005** kapandı → DEC-0012 (TypeScript + three.js; oyun motoru
     yok).
 -   **OPEN-019** kısmen → ilk hedef masaüstü web tarayıcısı (DEC-0013);

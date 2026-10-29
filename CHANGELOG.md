@@ -1,5 +1,23 @@
 # CHANGELOG
 
+## 2026-10-29 — TASK-0005: Aşama 2 tur ve dünya durumu çekirdeği
+
+### Eklendi
+- DEC-0023, ADR-0002 (kabul): simülasyon Web Worker'da, `packages/sim` + `packages/istemci`,
+  Jülyen takvimi, yerel kayıt.
+- `packages/sim`: dünya durumu, Jülyen takvim, tohumlu rastgelelik, emir kuyruğu (borçsuz
+  harcama), sistem zamanlayıcısı (günlük/aylık/yıllık), tur döngüsü ve kesinti, kayıt/yükleme,
+  durum özeti; 30 test.
+- `packages/istemci`: harita (prototipten taşındı), üst durum çubuğu, tur süresi, "Turu ilerlet",
+  kesinti penceresi, olay günlüğü, manuel/otomatik kayıt (IndexedDB).
+- `veri/senaryo-1453/` ve `araclar/senaryo-uret.mjs`.
+- `docs/milestones/ASAMA-2.md`; DEC-0024 (Aşama 2 kapısı geçildi).
+- ADR-0001: kullanıcının kendi tarayıcısındaki ölçüm (60 FPS, p95 17,6 ms).
+
+### Değişti
+- MASTER_SPEC §25: OPEN-006 kapandı; zaman kuralı (Jülyen).
+- Kök `package.json` (npm workspaces), `tsconfig.base.json`.
+
 ## 2026-10-29 — TASK-0004: 1453 haritası v0.2 (OHM + Wikidata)
 
 ### Eklendi
