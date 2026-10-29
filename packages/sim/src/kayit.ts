@@ -35,7 +35,10 @@ export function yukle(metin: string, beklenenSenaryo?: string): DunyaDurumu {
   if (paket.sema > SEMA_SURUMU) {
     throw new KayitHatasi(`Kayıt daha yeni bir oyun sürümüyle yapılmış (şema ${paket.sema} > ${SEMA_SURUMU}).`);
   }
-  // Şema 1 ilk sürümdür; eski şemalar için dönüşümler buraya eklenecek.
+  if (paket.sema < SEMA_SURUMU) {
+    // Şema 1 (Aşama 2 prototipi) için dönüşüm yazılmadı: senaryo verisi de değiştiği için taşınamaz.
+    throw new KayitHatasi(`Bu kayıt oyunun eski bir prototip sürümüne ait (şema ${paket.sema}); taşınamaz.`);
+  }
   if (beklenenSenaryo && paket.senaryo !== beklenenSenaryo) {
     throw new KayitHatasi(`Kayıt farklı bir senaryoya ait: ${paket.senaryo} (beklenen ${beklenenSenaryo}).`);
   }

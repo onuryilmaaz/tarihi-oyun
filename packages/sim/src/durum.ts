@@ -3,6 +3,7 @@
 
 import { tarihtenGun, type Tarih } from "./takvim";
 import type { Emir } from "./emirler";
+import { HAREKET, type AgVerisi, type RotaAdimi } from "./hareket";
 
 export type TurSuresi = "hafta" | "ay" | "ceyrek" | "yil";
 export const TUR_SURESI_ADLARI: Record<TurSuresi, string> = {
@@ -25,10 +26,27 @@ export interface BirimDurumu {
 
 export interface SehirDurumu {
   ad: string;
-  devlet: number;
+  devlet: number; // yasal sahip
+  kontrol: number; // askerî kontrol — şehir çevresinden ayrı ele geçirilebilir (AT-007)
+  isgalBaslangic: number | null;
   birim: number; // -1 = bilinmiyor
   nufus: number;
   baskent: boolean;
+}
+
+// MASTER_SPEC §8.1 ordu veri modelinin ilk sürümü (TASK-0006); birlik grupları, moral ve ikmal Aşama 4–5'te
+export interface OrduDurumu {
+  id: number;
+  ad: string;
+  devlet: number;
+  asker: number;
+  dugum: number; // hareket ağında bulunduğu düğüm
+  x: number; // son ulaşılan nokta (Miller × 10⁴)
+  y: number;
+  hiz: number; // efektif metre/gün
+  rota: RotaAdimi[];
+  ilerleme: number; // rotanın ilk adımında katedilen efektif metre
+  hedef: { x: number; y: number } | null;
 }
 
 export interface OlayKaydi {
@@ -55,6 +73,8 @@ export interface DunyaDurumu {
   devletler: DevletDurumu[];
   birimler: BirimDurumu[];
   sehirler: SehirDurumu[];
+  ordular: OrduDurumu[];
+  sonrakiOrduId: number;
   emirKuyrugu: Emir[];
   planliKesintiler: Kesinti[];
   aktifKesinti: Kesinti | null;
@@ -72,9 +92,12 @@ export interface SenaryoVerisi {
   devletler: { id: string; ad: string }[];
   birimler: { devlet: string | null }[];
   sehirler: { ad: string; devlet: string; birim: number; baskent: boolean; nufus: number }[];
+  ordular?: { ad: string; devlet: string; asker: number; dugum: number; x: number; y: number }[];
+  ag?: AgVerisi;
 }
 
-export const SEMA_SURUMU = 1;
+// 2: ordular ve şehir kontrolü eklendi (TASK-0006)
+export const SEMA_SURUMU = 2;
 
 // [TASLAK — test değeri] Başlangıç hazinesi: birim başına 100. Ekonomi Aşama 5'te tasarlanacak.
 const BASLANGIC_HAZINE_BIRIM_BASINA = 100;
@@ -94,8 +117,13 @@ export function baslangicDurumu(s: SenaryoVerisi, secenek: { tohum: number; oyun
     if (sahip >= 0) birimSayisi[sahip]++;
     return { sahip, kontrol: sahip, isgalBaslangic: null };
   });
-  const sehirler: SehirDurumu[] = s.sehirler.map((c) => ({
-    ad: c.ad, devlet: bul(c.devlet), birim: c.birim, nufus: c.nufus, baskent: c.baskent,
+  const sehirler: SehirDurumu[] = s.sehirler.map((c) => {
+    const devlet = bul(c.devlet);
+    return { ad: c.ad, devlet, kontrol: devlet, isgalBaslangic: null, birim: c.birim, nufus: c.nufus, baskent: c.baskent };
+  });
+  const ordular: OrduDurumu[] = (s.ordular ?? []).map((o, i) => ({
+    id: i + 1, ad: o.ad, devlet: bul(o.devlet), asker: o.asker, dugum: o.dugum, x: o.x, y: o.y,
+    hiz: HAREKET.TEMEL_HIZ, rota: [], ilerleme: 0, hedef: null,
   }));
   const devletler: DevletDurumu[] = s.devletler.map((d, i) => ({
     id: d.id,
@@ -114,6 +142,8 @@ export function baslangicDurumu(s: SenaryoVerisi, secenek: { tohum: number; oyun
     devletler,
     birimler,
     sehirler,
+    ordular,
+    sonrakiOrduId: ordular.length + 1,
     emirKuyrugu: [],
     planliKesintiler: [],
     aktifKesinti: null,
@@ -144,6 +174,17 @@ export function degismezler(d: DunyaDurumu): string[] {
   d.sehirler.forEach((c, i) => {
     if (!tam(c.nufus) || c.nufus < 0) h.push(`şehir ${i} nüfusu geçersiz`);
     if (c.devlet < 0 || c.devlet >= n) h.push(`şehir ${i} devleti geçersiz`);
+    if (!tam(c.kontrol) || c.kontrol < 0 || c.kontrol >= n) h.push(`şehir ${i} kontrolü geçersiz`);
+  });
+  const idler = new Set<number>();
+  d.ordular.forEach((o, i) => {
+    if (idler.has(o.id)) h.push(`ordu ${i} kimliği tekrar ediyor`);
+    idler.add(o.id);
+    if (o.devlet < 0 || o.devlet >= n) h.push(`ordu ${i} devleti geçersiz`);
+    if (!tam(o.asker) || o.asker < 0) h.push(`ordu ${i} asker sayısı geçersiz`);
+    if (![o.x, o.y, o.dugum, o.hiz, o.ilerleme].every(tam) || o.hiz <= 0) h.push(`ordu ${i} konum/hız tam sayı değil`);
+    if (o.rota.some((a) => ![a.x, a.y, a.d, a.m].every(tam) || a.m <= 0)) h.push(`ordu ${i} rotası geçersiz`);
+    if (o.rota.length && o.ilerleme >= o.rota[0].m) h.push(`ordu ${i} ilerlemesi adımı aşıyor`);
   });
   if (d.ayarlar.oyuncu < 0 || d.ayarlar.oyuncu >= n) h.push("oyuncu devleti geçersiz");
   return h;

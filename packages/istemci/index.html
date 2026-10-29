@@ -48,6 +48,22 @@
     .renk { display: inline-block; width: 12px; height: 12px; border-radius: 3px; border: 1px solid var(--cizgi); flex: none; }
     .not { color: var(--soluk); font-size: 11.5px; margin: 4px 0 0; }
 
+    /* Ordular */
+    #ordular { position: fixed; inset: 0; pointer-events: none; overflow: hidden; }
+    .ordu { position: absolute; left: 0; top: 0; pointer-events: auto; cursor: pointer; display: flex; align-items: center;
+      gap: 4px; margin: -12px 0 0 -14px; padding: 2px 6px 2px 3px; border-radius: 4px; background: rgba(28,24,20,.88);
+      border: 1px solid rgba(239,230,212,.35); color: var(--metin); font-size: 11px; white-space: nowrap; }
+    .ordu .renk { width: 10px; height: 14px; border-radius: 2px; }
+    .ordu.secili { border-color: var(--vurgu); box-shadow: 0 0 0 2px rgba(226,179,86,.35); }
+    .ordu.yuruyor::after { content: "▸"; color: var(--vurgu); }
+    #orduListesi { list-style: none; margin: 0; padding: 0; display: grid; gap: 6px; }
+    #orduListesi .bos { color: var(--soluk); }
+    .ordu-satir { width: 100%; display: flex; gap: 8px; align-items: flex-start; text-align: left; }
+    .ordu-satir .renk { margin-top: 3px; }
+    .ordu-satir small { display: block; color: var(--soluk); font-size: 11px; }
+    #orduDetay { margin-top: 8px; }
+    .isgal { color: var(--uyari); }
+
     /* Üst durum çubuğu */
     #ust { top: 12px; left: 12px; right: 12px; height: var(--ust); padding: 0 14px; display: flex; align-items: center;
       gap: 18px; }
@@ -119,6 +135,7 @@
   <div id="tuvalKap"></div>
   <div id="kagit" hidden></div>
   <div id="etiketler"></div>
+  <div id="ordular"></div>
 
   <header id="ust" class="panel">
     <div id="oyuncu"></div>
@@ -139,6 +156,9 @@
   </header>
 
   <aside id="yan" class="panel">
+    <h2>Ordular</h2>
+    <ul id="orduListesi"></ul>
+    <div id="orduDetay" hidden></div>
     <h2>Olay günlüğü</h2>
     <ul id="gunluk"></ul>
     <p class="not" id="bekleyen"></p>
@@ -159,6 +179,7 @@
     <div class="satir">
       <button id="testKesinti">Test kesintisi (10 gün)</button>
       <button id="testHarca">Test harcaması (50.000)</button>
+      <button id="testIsgal">Test işgali (seçili arazi/şehir)</button>
     </div>
     <p class="not">Aşama 2 altyapısını sınamak içindir; gerçek oyun mekaniği değildir. Gelir ve nüfus değerleri test değeridir.</p>
     <p class="not"><span id="sonTur"></span><br />Durum özeti: <span id="ozetHash"></span></p>
@@ -180,7 +201,8 @@
   <div id="lejant" class="panel">
     <b>Prototip verisi — gerçek senaryo verisi değildir.</b> 1453 sınırları: OpenHistoricalMap (CC0) + agent tahmini.
     Coğrafya: Natural Earth. Takvim: Jülyen.<br />
-    Boşluk: turu ilerlet · Sürükle: kaydır · Tekerlek: yakınlaştır · Tıkla: devlet, tekrar tıkla: arazi · Esc: üst seviye
+    Boşluk: turu ilerlet · Sürükle: kaydır · Tekerlek: yakınlaştır · Tıkla: devlet, tekrar tıkla: arazi · Esc: üst seviye ·
+    Ordu seç, sonra <b>sağ tık</b>: hedef
   </div>
   <div id="ipucu" hidden></div>
   <div id="yukleniyor">Dünya hazırlanıyor…</div>

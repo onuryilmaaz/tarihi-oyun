@@ -1,6 +1,6 @@
 // Ana iş parçacığı ↔ simülasyon Worker'ı mesaj protokolü.
 
-import type { Dogrulama, Emir, OlayKaydi, SenaryoVerisi, TurSonucu, TurSuresi } from "@tarihi/sim";
+import type { Dogrulama, Emir, OlayKaydi, RotaKirilimi, SenaryoVerisi, TurSonucu, TurSuresi } from "@tarihi/sim";
 
 export type Istek = { id: number } & (
   | { tip: "yeniOyun"; senaryo: SenaryoVerisi; tohum: number; oyuncu?: string }
@@ -9,7 +9,30 @@ export type Istek = { id: number } & (
   | { tip: "emir"; emir: Emir }
   | { tip: "turuIlerlet" }
   | { tip: "kaydet" }
+  | { tip: "rotaOnizle"; ordu: number; x: number; y: number; dugum: number }
 );
+
+export interface OrduOzeti {
+  id: number;
+  ad: string;
+  devlet: number;
+  asker: number;
+  x: number; // anlık konum, Miller × 10⁴
+  y: number;
+  yuruyor: boolean;
+  rota: [number, number][]; // kalan rota noktaları (anlık konumdan sonra)
+  kalanGun: number;
+  varisTarihi: string | null;
+}
+
+export interface RotaOnizleme {
+  gecerli: boolean;
+  neden?: string;
+  noktalar?: [number, number][];
+  gun?: number;
+  varisTarihi?: string;
+  kirilim?: RotaKirilimi;
+}
 
 export interface Ozet {
   gun: number;
@@ -22,10 +45,13 @@ export interface Ozet {
   bekleyenEmir: number;
   planliKesinti: { tarih: string; neden: string }[];
   hash: string;
+  ordular: OrduOzeti[];
+  birimIsgal: [number, number, number][]; // [birim, kontrol eden devlet, başlangıç günü]
+  sehirIsgal: [number, number, number][];
 }
 
 export type Yanit =
-  | { id: number; tamam: true; ozet: Ozet; sonuc?: TurSonucu; sureMs?: number; metin?: string; dogrulama?: Dogrulama }
+  | { id: number; tamam: true; ozet: Ozet; sonuc?: TurSonucu; sureMs?: number; metin?: string; dogrulama?: Dogrulama; rota?: RotaOnizleme }
   | { id: number; tamam: false; hata: string };
 
 type IstekGovdesi = Istek extends infer T ? (T extends { id: number } ? Omit<T, "id"> : never) : never;

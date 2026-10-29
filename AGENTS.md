@@ -16,7 +16,9 @@ kaynak: `MASTER_SPEC.md` §21 ve §27.
 
 ## Mevcut durum
 
-- **Aşama:** 3 (siyasi kontrol ve hareket) — görev kartı hazırlanıyor. Aşama 2 kapandı
+- **Aşama:** 4 (savaş, kuşatma ve barış) — görev kartı hazırlanıyor. Aşama 3 kapandı (DEC-0026).
+- **Yerel sunucular:** Kullanıcı oyunu 4175'te (`vite preview`) dener; agent denemelerini 5173'teki
+  geliştirme sunucusunda yapar (kullanıcı başlattı, kapatılmaz). Aşama 2 kapandı
   (DEC-0024), Aşama 1 kapandı (DEC-0019). Görsel yön: Tarihî atlas (DEC-0018).
   TASK-0003 kapandı (DEC-0021). TASK-0004 (v0.2 harita verisi) kabul edildi (DEC-0022).
 - **Depo:** github.com/onuryilmaaz/tarihi-oyun (özel). Çalışma doğrudan

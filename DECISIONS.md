@@ -353,3 +353,28 @@ Kaynak belge: `MASTER_SPEC.md` (v1.3). Orijinal keşif çıktısı:
   TASK-0005 kabul edildi. Sıradaki aşama: Aşama 3 (siyasi kontrol ve hareket).
 - **Onay kaydı:** Kullanıcı: "onaylıyorum" (2026-10-29)
 - **Durum:** GEÇERLİ
+
+## DEC-0025 — Aşama 3 hareket ve kontrol kararları (TASK-0006)
+
+- **Tarih:** 2026-10-29
+- **Seçilen karar:**
+  1. **Hareket ağı:** Arazi birimlerinin (çok parçalı birimlerde parça başına) komşuluk ağı;
+     boğaz geçitleri elle tanımlanır ve ek süre alır.
+  2. **Arazi zorluğu:** NOAA ETOPO yükseklik verisi (ABD kamu malı) ile birim başına engebe →
+     hız çarpanı; büyük nehir geçişleri Natural Earth nehirlerinden ceza alır.
+  3. **Erişim (diplomasiye kadar):** Ordu yalnızca kendi ve devletsiz topraklarda hareket eder;
+     yabancı toprak hedefi gerekçesiyle reddedilir.
+  4. **Başlangıç orduları:** Yalnızca oyuncu devlete 2 test ordusu (başkent + büyük bir şehir);
+     yabancı ordular görünürlük kuralıyla Aşama 4'te.
+- **Onay kaydı:** Kullanıcı: "hepsini yap" (2026-10-29)
+- **Durum:** GEÇERLİ
+
+## DEC-0026 — Aşama 3 kapısı geçildi
+
+- **Tarih:** 2026-10-29
+- **Konu:** Aşama 3 (siyasi kontrol ve hareket) kabulü
+- **Seçilen karar:** Kullanıcı tüm denemeleri (hedef verme, yürüyüş, yasak hedefler, durdurma,
+  test işgali, kaydet/yükle) kendi tarayıcısında başarıyla yaptı; TASK-0006 kabul edildi.
+  Sıradaki aşama: Aşama 4 (savaş, kuşatma ve barış).
+- **Onay kaydı:** Kullanıcı: "hepsi başarılı", "Evet şunalık gayet iyi", "onaylıyorum" (2026-10-29)
+- **Durum:** GEÇERLİ

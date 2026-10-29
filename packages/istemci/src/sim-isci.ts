@@ -2,12 +2,13 @@
 // ana iş parçacığı yalnızca özet alır, böylece uzun turlar haritayı dondurmaz.
 
 import {
-  baslangicDurumu, durumOzeti, emirVer, kaydet, tarihMetni, turSuresiAyarla, turuIlerlet, yukle,
-  TUR_SURESI_ADLARI, type DunyaDurumu,
+  agHazirla, baslangicDurumu, durumOzeti, emirVer, kalanYol, kaydet, orduKonumu, rotaBul, tarihMetni,
+  turSuresiAyarla, turuIlerlet, yukle, TUR_SURESI_ADLARI, type Baglam, type DunyaDurumu,
 } from "@tarihi/sim";
 import type { Istek, Ozet, Yanit } from "./sim-protokol";
 
 let d: DunyaDurumu | null = null;
+let baglam: Baglam = { ag: null };
 
 function ozet(durum: DunyaDurumu): Ozet {
   const o = durum.devletler[durum.ayarlar.oyuncu];
@@ -22,12 +23,26 @@ function ozet(durum: DunyaDurumu): Ozet {
     bekleyenEmir: durum.emirKuyrugu.length,
     planliKesinti: durum.planliKesintiler.map((k) => ({ tarih: tarihMetni(k.gun), neden: k.neden })),
     hash: durumOzeti(durum),
+    ordular: durum.ordular.map((o) => {
+      const k = orduKonumu(o);
+      const kalan = kalanYol(o);
+      return {
+        id: o.id, ad: o.ad, devlet: o.devlet, asker: o.asker, x: k.x, y: k.y,
+        yuruyor: o.rota.length > 0,
+        rota: o.rota.map((a) => [a.x, a.y] as [number, number]),
+        kalanGun: o.rota.length ? kalan.gun : 0,
+        varisTarihi: o.rota.length ? tarihMetni(durum.gun + kalan.gun) : null,
+      };
+    }),
+    birimIsgal: durum.birimler.flatMap((b, i) => (b.kontrol !== b.sahip ? [[i, b.kontrol, b.isgalBaslangic ?? durum.gun]] : [])) as [number, number, number][],
+    sehirIsgal: durum.sehirler.flatMap((s, i) => (s.kontrol !== s.devlet ? [[i, s.kontrol, s.isgalBaslangic ?? durum.gun]] : [])) as [number, number, number][],
   };
 }
 
 function isle(i: Istek): Yanit {
   switch (i.tip) {
     case "yeniOyun":
+      baglam = { ag: i.senaryo.ag ? agHazirla(i.senaryo.ag) : null };
       d = baslangicDurumu(i.senaryo, { tohum: i.tohum, oyuncu: i.oyuncu });
       return { id: i.id, tamam: true, ozet: ozet(d) };
     case "yukle":
@@ -40,16 +55,27 @@ function isle(i: Istek): Yanit {
       turSuresiAyarla(d, i.sure);
       return { id: i.id, tamam: true, ozet: ozet(d) };
     case "emir": {
-      const dogrulama = emirVer(d, i.emir);
+      const dogrulama = emirVer(d, i.emir, baglam);
       return { id: i.id, tamam: true, ozet: ozet(d), dogrulama };
     }
     case "turuIlerlet": {
       const t0 = performance.now(); // yalnızca ölçüm; simülasyon sonucunu etkilemez
-      const sonuc = turuIlerlet(d);
+      const sonuc = turuIlerlet(d, baglam);
       return { id: i.id, tamam: true, ozet: ozet(d), sonuc, sureMs: performance.now() - t0 };
     }
     case "kaydet":
       return { id: i.id, tamam: true, ozet: ozet(d), metin: kaydet(d) };
+    case "rotaOnizle": {
+      const o = d.ordular.find((x) => x.id === i.ordu);
+      if (!o || !baglam.ag) return { id: i.id, tamam: true, ozet: ozet(d), rota: { gecerli: false, neden: "Ordu ya da hareket ağı bulunamadı." } };
+      const r = rotaBul(d, baglam.ag, { ...o, ...orduKonumu(o), ilerleme: 0, rota: [] }, i);
+      return {
+        id: i.id, tamam: true, ozet: ozet(d),
+        rota: r.gecerli
+          ? { gecerli: true, noktalar: r.adimlar.map((a) => [a.x, a.y]), gun: r.gun, varisTarihi: tarihMetni(d.gun + r.gun), kirilim: r.kirilim }
+          : { gecerli: false, neden: r.neden },
+      };
+    }
   }
 }
 

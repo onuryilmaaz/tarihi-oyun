@@ -14,7 +14,7 @@ npm install
 npm run dev        # oyun istemcisi: http://localhost:5173
 npm test           # simülasyon testleri
 npm run typecheck  # tip kontrolü (tüm paketler)
-npm run senaryo    # veri/senaryo-1453/ yeniden üretimi (prototip verisinden)
+npm run senaryo    # veri/senaryo-1453/ yeniden üretimi (ETOPO indirmesi gerekir: veri/senaryo-1453/KAYNAKLAR.md)
 ```
 
 | Klasör | İçerik |

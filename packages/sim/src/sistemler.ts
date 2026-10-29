@@ -7,6 +7,7 @@
 import { olayEkle, type DunyaDurumu } from "./durum";
 import { aralik } from "./rastgele";
 import { gundenTarih } from "./takvim";
+import { orduIlerlet } from "./hareket";
 
 export type Siklik = "gunluk" | "aylik" | "yillik";
 
@@ -17,6 +18,20 @@ export interface Sistem {
 }
 
 export const SISTEMLER: Sistem[] = [
+  {
+    // Ordu hareketi (TASK-0006): her gün hız kadar rota tüketilir
+    id: "ordu-hareket",
+    siklik: "gunluk",
+    calistir(d) {
+      for (const o of d.ordular) {
+        if (!o.rota.length) continue;
+        if (orduIlerlet(o)) {
+          o.hedef = null;
+          olayEkle(d, { tur: "ordu-vardi", devlet: o.devlet, metin: `${o.ad} hedefine vardı.` });
+        }
+      }
+    },
+  },
   {
     // Test: her gün rastgele bir şehrin nüfusu 0–2 artar (rastgelelik akışını her gün kullanır)
     id: "test-nufus",

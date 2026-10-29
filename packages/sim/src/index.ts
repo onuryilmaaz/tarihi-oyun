@@ -4,6 +4,7 @@ export * from "./takvim";
 export * from "./rastgele";
 export * from "./durum";
 export * from "./emirler";
+export * from "./hareket";
 export * from "./sistemler";
 export * from "./tur";
 export * from "./kayit";

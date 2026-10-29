@@ -26,6 +26,7 @@ export interface Katmanlar {
   sehirSecimi: THREE.Points;
   cizgiler: LineSegments2[];
   birimKose: Int32Array; // birim başına [başlangıç, sayı]
+  birimUcgen: Int32Array; // birim başına indeks tamponunda [başlangıç, sayı]
   temelRenk: Float32Array;
   ucgenSayisi: number;
 }
@@ -76,10 +77,13 @@ export function katmanlariKur(h: Harita): Katmanlar {
   const konum: number[] = [];
   const indeks: number[] = [];
   const birimKose = new Int32Array(paket.birimler.length * 2);
+  const birimUcgen = new Int32Array(paket.birimler.length * 2);
   h.halkalar.forEach((polys, bi) => {
     birimKose[2 * bi] = konum.length / 3;
+    birimUcgen[2 * bi] = indeks.length;
     poligonlariUcgenle(polys, konum, indeks);
     birimKose[2 * bi + 1] = konum.length / 3 - birimKose[2 * bi];
+    birimUcgen[2 * bi + 1] = indeks.length - birimUcgen[2 * bi];
   });
   const dolguGeo = new THREE.BufferGeometry();
   dolguGeo.setAttribute("position", new THREE.Float32BufferAttribute(konum, 3));
@@ -143,6 +147,7 @@ export function katmanlariKur(h: Harita): Katmanlar {
     baskentler, sehirler, sehirSecimi,
     cizgiler: [araziSiniri, nehirBuyuk, nehirKucuk, kiyi, devletSiniri, devletSiniriTahmin, secimCercevesi],
     birimKose,
+    birimUcgen,
     temelRenk: new Float32Array(konum.length),
     ucgenSayisi: indeks.length / 3,
   };
@@ -328,4 +333,41 @@ export function kagitDokusu(): string {
     g.stroke();
   }
   return c.toDataURL("image/png");
+}
+
+// İşgal katmanı (MASTER_SPEC §9.1): askerî kontrolü yasal sahipten farklı birimler, işgalcinin renginde
+// ekran ölçeğinde sabit çapraz tarama ile gösterilir. liste: [birim, kontrol eden devlet]
+export function isgalKatmani(k: Katmanlar, h: Harita, t: Tema, liste: [number, number][]): THREE.Mesh | null {
+  if (!liste.length) return null;
+  const kaynak = k.dolgu.geometry;
+  const pos = kaynak.getAttribute("position") as THREE.BufferAttribute;
+  const ind = kaynak.getIndex()!;
+  const konum: number[] = [], renk: number[] = [];
+  for (const [bi, devlet] of liste) {
+    const c = devletRengi(t, h.paket.devletler[devlet].ton, devlet).convertLinearToSRGB();
+    const koyu = c.multiplyScalar(0.7); // tarama çizgisi dolgudan koyu
+    const bas = k.birimUcgen[2 * bi], n = k.birimUcgen[2 * bi + 1];
+    for (let i = bas; i < bas + n; i++) {
+      const v = ind.getX(i);
+      konum.push(pos.getX(v), pos.getY(v), 0);
+      renk.push(koyu.r, koyu.g, koyu.b);
+    }
+  }
+  const geo = new THREE.BufferGeometry();
+  geo.setAttribute("position", new THREE.Float32BufferAttribute(konum, 3));
+  geo.setAttribute("renk", new THREE.Float32BufferAttribute(renk, 3));
+  const mat = new THREE.ShaderMaterial({
+    uniforms: { aralik: { value: 9 * Math.min(window.devicePixelRatio, 2) } },
+    vertexShader: `attribute vec3 renk; varying vec3 vRenk;
+      void main() { vRenk = renk; gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0); }`,
+    // Renk zaten sRGB; renk uzayı dönüşümü uygulanmaz
+    fragmentShader: `uniform float aralik; varying vec3 vRenk;
+      void main() { if (fract((gl_FragCoord.x + gl_FragCoord.y) / aralik) > 0.38) discard; gl_FragColor = vec4(vRenk, 0.9); }`,
+    transparent: true,
+    depthTest: false,
+  });
+  const m = new THREE.Mesh(geo, mat);
+  m.renderOrder = 2;
+  m.frustumCulled = false;
+  return m;
 }

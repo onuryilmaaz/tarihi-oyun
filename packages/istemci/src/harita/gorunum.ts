@@ -3,9 +3,13 @@
 
 import * as THREE from "three";
 import { LineMaterial } from "three/addons/lines/LineMaterial.js";
+import { LineSegments2 } from "three/addons/lines/LineSegments2.js";
+import { LineSegmentsGeometry } from "three/addons/lines/LineSegmentsGeometry.js";
+import { tarihMetni } from "@tarihi/sim";
+import type { OrduOzeti } from "../sim-protokol";
 import { birimBul, type Harita } from "./veri";
 import { TEMALAR } from "./temalar";
-import { katmanlariKur, temaUygula, boyutAyarla, secimiCiz, devletRengi, kagitDokusu, type Secim } from "./harita";
+import { katmanlariKur, temaUygula, boyutAyarla, secimiCiz, devletRengi, kagitDokusu, isgalKatmani, type Secim } from "./harita";
 import { Etiketler, ESIK } from "./etiketler";
 
 const sinirla = (x: number, a: number, b: number) => Math.min(b, Math.max(a, x));
@@ -31,10 +35,20 @@ export interface HaritaGorunumu {
   istek(): void;
   devletRenkKutusu(d: number): string;
   oyuncuyuAyarla(devletIndeksi: number): void;
+  /** Ordu işaretleri ve rotaları; planli: emri verilmiş ama yürüyüşe başlamamış rotalar (kesikli) */
+  ordulariGoster(ordular: OrduOzeti[], secili: number | null, planli: Map<number, [number, number][]>): void;
+  /** [birim, kontrol eden, gün], [şehir, kontrol eden, gün] */
+  isgalGoster(birimler: [number, number, number][], sehirler: [number, number, number][]): void;
+  orduyaOdaklan(o: OrduOzeti): void;
+  seciliOge(): Secim;
+  olaylar: {
+    orduSec?: (id: number) => void;
+    hedef?: (x: number, y: number, birim: number) => void; // Miller derece
+  };
 }
 
 export function haritaGorunumuKur(h: Harita, wikidata: Record<string, WdDevlet>,
-  ogeler: { kap: HTMLElement; etiketKap: HTMLElement; kagit: HTMLElement; bilgi: HTMLElement; ipucu: HTMLElement },
+  ogeler: { kap: HTMLElement; etiketKap: HTMLElement; orduKap: HTMLElement; kagit: HTMLElement; bilgi: HTMLElement; ipucu: HTMLElement },
   katmanAyarlari: () => Katmanlar): HaritaGorunumu {
   const tema = TEMALAR[0];
   const renderer = new THREE.WebGLRenderer({ antialias: true, powerPreference: "high-performance" });
@@ -55,6 +69,26 @@ export function haritaGorunumuKur(h: Harita, wikidata: Record<string, WdDevlet>,
 
   let secim: Secim = null;
   let oyuncu = -1;
+  const olaylar: HaritaGorunumu["olaylar"] = {};
+
+  // --- Ordu ve işgal katmanları (TASK-0006)
+  const rotaCizgisi = (renk: string, kalinlik: number, kesikli: boolean) => {
+    const m = new LineMaterial({ color: renk, linewidth: kalinlik, transparent: true, depthTest: false, dashed: kesikli });
+    const l = new LineSegments2(new LineSegmentsGeometry().setPositions([0, 0, 0, 0, 0, 0]), m);
+    l.renderOrder = 11;
+    l.frustumCulled = false;
+    l.visible = false;
+    sahne.add(l);
+    return l;
+  };
+  const rotaYuruyen = rotaCizgisi("#7a1f1a", 2.6, false);
+  const rotaPlanli = rotaCizgisi("#7a1f1a", 2.4, true);
+  let isgalMesh: THREE.Mesh | null = null;
+  const birimIsgal = new Map<number, [number, number]>(); // birim → [devlet, gün]
+  const sehirIsgal = new Map<number, [number, number]>();
+  let orduListesi: OrduOzeti[] = [];
+  let seciliOrdu: number | null = null;
+  const orduOgeleri = new Map<number, HTMLDivElement>();
   let kirli = true;
   const istek = () => { kirli = true; };
 
@@ -94,6 +128,12 @@ export function haritaGorunumuKur(h: Harita, wikidata: Record<string, WdDevlet>,
     tahminMat.dashed = katman.guven;
     tahminMat.dashSize = 7 / g.z;
     tahminMat.gapSize = 5 / g.z;
+    for (const l of [rotaYuruyen, rotaPlanli]) {
+      const m = l.material as LineMaterial;
+      m.resolution.set(W * oran, H * oran);
+      m.dashSize = 9 / g.z;
+      m.gapSize = 6 / g.z;
+    }
     k.baskentler.visible = katman.sehir && g.z >= ESIK.baskent;
     k.sehirler.visible = katman.sehir && g.z >= ESIK.sehir;
     etiketler.sehirlerAcik = katman.sehir;
@@ -136,6 +176,9 @@ export function haritaGorunumuKur(h: Harita, wikidata: Record<string, WdDevlet>,
     }
     return `<dt>Sınır kaynağı</dt><dd>${kay}</dd>${wdSatir}`;
   };
+  const kontrolSatiri = (isgal?: [number, number]) => isgal
+    ? `<dt>Askerî kontrol</dt><dd class="isgal">${devletRenkKutusu(isgal[0])}${kacis(h.paket.devletler[isgal[0]].ad)} · işgal ${kacis(tarihMetni(isgal[1]))}</dd>`
+    : "";
   const bilgiGoster = () => {
     const bilgi = ogeler.bilgi;
     if (!secim) { bilgi.hidden = true; return; }
@@ -165,6 +208,7 @@ export function haritaGorunumuKur(h: Harita, wikidata: Record<string, WdDevlet>,
         <dt>Devlet</dt><dd>${b.d >= 0 ? kacis(p.devletler[b.d].ad) : "Yerleşik devlet yok"}</dd>
         <dt>Modern idari birim</dt><dd>${kacis(b.ad)} (${kacis(b.ulke)})</dd>
         <dt>Sınır kaynağı</dt><dd>${kaynakMetni(b.k)}</dd>
+        ${kontrolSatiri(birimIsgal.get(secim.id))}
         <dt>Şehirler</dt><dd>${sehirler.length ? sehirler.map((i) => `<button class="bag" data-secim="sehir:${i}">${kacis(p.sehirler[i].ad)}</button>`).join(", ") : "—"}</dd>
       </dl><p class="ipucu-metin">Arazi birimi şimdilik modern il/eyalet sınırıdır (prototip verisi).</p>`;
     } else {
@@ -176,6 +220,7 @@ export function haritaGorunumuKur(h: Harita, wikidata: Record<string, WdDevlet>,
       govde = `<h3>${s.b ? "★ " : ""}${kacis(s.ad)}</h3><dl>
         <dt>Devlet</dt><dd>${kacis(p.devletler[s.d].ad)}</dd>
         <dt>Statü</dt><dd>${s.b ? "Başkent" : "Şehir"}</dd>
+        ${kontrolSatiri(sehirIsgal.get(secim.id))}
       </dl>`;
     }
     bilgi.innerHTML = `<nav class="kirinti">${yol.join('<span class="ayrac">›</span>')}</nav>${govde}`;
@@ -282,6 +327,13 @@ export function haritaGorunumuKur(h: Harita, wikidata: Record<string, WdDevlet>,
     surukle = null;
   });
   tuval.addEventListener("pointerleave", () => { ipucu.hidden = true; });
+  // Seçili orduya hedef: sağ tık (MASTER_SPEC §8.3 serbest hedef)
+  tuval.addEventListener("contextmenu", (e) => {
+    e.preventDefault();
+    if (seciliOrdu === null || !olaylar.hedef) return;
+    const [x, y] = ekrandanDunyaya(e.clientX, e.clientY);
+    olaylar.hedef(x, y, birimBul(h, x, y));
+  });
   tuval.addEventListener("wheel", (e) => {
     e.preventDefault();
     yakinlastir(Math.exp(-e.deltaY * 0.0018), e.clientX, e.clientY);
@@ -312,13 +364,91 @@ export function haritaGorunumuKur(h: Harita, wikidata: Record<string, WdDevlet>,
     gorunumuUygula();
     renderer.render(sahne, kamera);
     etiketler.guncelle({ cx: g.cx, cy: g.cy, z: g.z, w: W, h: H });
+    // Ordu işaretleri; aynı yerdeki ordular üst üste binmesin diye alt alta dizilir
+    const yerlesen: [number, number][] = [];
+    for (const o of orduListesi) {
+      const el = orduOgeleri.get(o.id);
+      if (!el) continue;
+      const [sx, x0] = dunyadanEkrana(o.x / 10000, o.y / 10000);
+      let sy = x0;
+      while (yerlesen.some(([ax, ay]) => Math.abs(ax - sx) < 46 && Math.abs(ay - sy) < 20)) sy += 21;
+      yerlesen.push([sx, sy]);
+      el.style.transform = `translate(${sx.toFixed(1)}px,${sy.toFixed(1)}px)`;
+    }
   };
   requestAnimationFrame(kare);
+
+  const rotaParcalari = (bas: [number, number], noktalar: [number, number][]) => {
+    const p: number[] = [];
+    let [px, py] = bas;
+    for (const [x, y] of noktalar) { p.push(px / 1e4, py / 1e4, 0, x / 1e4, y / 1e4, 0); px = x; py = y; }
+    return p;
+  };
+  const cizgiAyarla = (l: LineSegments2, p: number[]) => {
+    l.geometry.dispose();
+    l.geometry = new LineSegmentsGeometry().setPositions(p.length ? p : [0, 0, 0, 0, 0, 0]);
+    l.computeLineDistances();
+    l.visible = p.length > 0;
+  };
 
   return {
     git,
     istek,
     devletRenkKutusu,
     oyuncuyuAyarla(d) { oyuncu = d; bilgiGoster(); },
+    olaylar,
+    seciliOge: () => secim,
+    orduyaOdaklan(o) {
+      g.cx = o.x / 1e4; g.cy = o.y / 1e4; g.z = Math.max(g.z, 40);
+      istek();
+    },
+    ordulariGoster(ordular, secili, planli) {
+      orduListesi = ordular;
+      seciliOrdu = secili;
+      for (const [id, el] of orduOgeleri) if (!ordular.some((o) => o.id === id)) { el.remove(); orduOgeleri.delete(id); }
+      for (const o of ordular) {
+        let el = orduOgeleri.get(o.id);
+        if (!el) {
+          el = document.createElement("div");
+          el.className = "ordu";
+          el.addEventListener("pointerdown", (e) => e.stopPropagation());
+          el.addEventListener("click", (e) => { e.stopPropagation(); olaylar.orduSec?.(o.id); });
+          // İşaretin üstüne sağ tık da haritadaki o noktaya hedef vermektir (ör. başka bir ordunun yanına)
+          el.addEventListener("contextmenu", (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            if (seciliOrdu === null || !olaylar.hedef) return;
+            const [x, y] = ekrandanDunyaya(e.clientX, e.clientY);
+            olaylar.hedef(x, y, birimBul(h, x, y));
+          });
+          ogeler.orduKap.append(el);
+          orduOgeleri.set(o.id, el);
+        }
+        const asker = o.asker >= 1000 ? `${Math.round(o.asker / 1000)}B` : String(o.asker);
+        el.innerHTML = `${devletRenkKutusu(o.devlet)}<b>${asker}</b>`;
+        el.title = `${o.ad} · ${o.asker.toLocaleString("tr-TR")} asker`;
+        el.classList.toggle("secili", o.id === secili);
+        el.classList.toggle("yuruyor", o.yuruyor);
+      }
+      const yuruyen: number[] = [], plan: number[] = [];
+      for (const o of ordular) {
+        if (o.yuruyor) yuruyen.push(...rotaParcalari([o.x, o.y], o.rota));
+        const p = planli.get(o.id);
+        if (p) plan.push(...rotaParcalari([o.x, o.y], p));
+      }
+      cizgiAyarla(rotaYuruyen, yuruyen);
+      cizgiAyarla(rotaPlanli, plan);
+      istek();
+    },
+    isgalGoster(birimler, sehirler) {
+      birimIsgal.clear(); sehirIsgal.clear();
+      for (const [b, d, gun] of birimler) birimIsgal.set(b, [d, gun]);
+      for (const [s, d, gun] of sehirler) sehirIsgal.set(s, [d, gun]);
+      if (isgalMesh) { sahne.remove(isgalMesh); isgalMesh.geometry.dispose(); (isgalMesh.material as THREE.Material).dispose(); }
+      isgalMesh = isgalKatmani(k, h, tema, birimler.map(([b, d]) => [b, d]));
+      if (isgalMesh) sahne.add(isgalMesh);
+      bilgiGoster();
+      istek();
+    },
   };
 }

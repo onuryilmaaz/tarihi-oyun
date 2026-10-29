@@ -1,5 +1,20 @@
 # CHANGELOG
 
+## 2026-10-29 — TASK-0006: Aşama 3 siyasi kontrol ve ordu hareketi
+
+### Eklendi
+- DEC-0025 (hareket ağı, ETOPO 2022 zorluğu, erişim kuralı, başlangıç orduları).
+- `araclar/ag-uret.mjs`: parça başına düğümlü hareket ağı, boğaz geçitleri, nehir geçişleri,
+  ETOPO 2022 engebesinden zorluk.
+- `packages/sim/src/hareket.ts`: Dijkstra yol bulma, rota adımları, günlük ilerleme, tahmini varış
+  ve gerekçe; tam sayı aritmetiği.
+- Ordu modeli, şehir askerî kontrolü, `orduHedef` / `orduDur` / `testIsgal` emirleri,
+  `ordu-hareket` sistemi; kayıt şeması 2.
+- İstemci: ordu işaretleri, sağ tıkla hedef, planlı (kesikli) ve yürüyen (düz) rota, ordular
+  paneli, işgal taraması, bilgi panelinde askerî kontrol.
+- `veri/senaryo-1453/KAYNAKLAR.md`, `docs/milestones/ASAMA-3.md`; 9 yeni test (toplam 39).
+- DEC-0026: Aşama 3 kapısı geçildi (kullanıcı testi).
+
 ## 2026-10-29 — TASK-0005: Aşama 2 tur ve dünya durumu çekirdeği
 
 ### Eklendi

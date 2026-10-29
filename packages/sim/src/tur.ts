@@ -2,7 +2,7 @@
 // Kritik bir olay olursa tur o gün durur ve kararı oyuncu verir (DEC-0006).
 
 import { olayEkle, type DunyaDurumu, type Kesinti, type OlayKaydi, type TurSuresi } from "./durum";
-import { emirleriUygula } from "./emirler";
+import { BOS_BAGLAM, emirleriUygula, type Baglam } from "./emirler";
 import { gununSistemleri } from "./sistemler";
 import { ayEkle, gundenTarih, tarihtenGun } from "./takvim";
 
@@ -34,11 +34,11 @@ export function gunIlerlet(d: DunyaDurumu): void {
   }
 }
 
-export function turuIlerlet(d: DunyaDurumu): TurSonucu {
+export function turuIlerlet(d: DunyaDurumu, b: Baglam = BOS_BAGLAM): TurSonucu {
   const ilkOlay = d.sonrakiOlayId;
   const baslangicGun = d.gun;
   d.aktifKesinti = null;
-  emirleriUygula(d);
+  emirleriUygula(d, b);
   const hedefGun = turHedefi(d.gun, d.ayarlar.turSuresi);
   while (d.gun < hedefGun && !d.aktifKesinti) gunIlerlet(d);
   const kesinti = d.aktifKesinti as Kesinti | null; // döngüde gunIlerlet tarafından atanır
