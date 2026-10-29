@@ -5,6 +5,7 @@ import { olayEkle, type DunyaDurumu, type Muharebe, type MuharebeRaporu, type Or
 import { DENGE } from "./denge";
 import { rotaBul, type HareketAgi } from "./hareket";
 import { aralik } from "./rastgele";
+import { muharebeGucYuzde } from "./teknoloji";
 
 /** Binlik ayırıcılı sayı (ortamdan bağımsız; toLocaleString simülasyonda yasak) */
 export function sayiMetni(n: number): string {
@@ -142,9 +143,9 @@ export interface GunlukSonuc { kayip: [number, number]; guc: [number, number] }
  * zorluk: muharebe düğümünün arazi zorluğu (%); savunan: 0 ya da 1 (toprağın kontrolü kimdeyse), yoksa -1.
  */
 export function muharebeGunu(asker: [number, number], moral: [number, number], zorluk: number, savunan: number,
-  sans: [number, number]): GunlukSonuc {
+  sans: [number, number], gucYuzde: [number, number] = [100, 100]): GunlukSonuc {
   const arazi = (i: number) => (i === savunan ? 100 + Math.floor((zorluk - 100) / 2) : 100);
-  const guc = [0, 1].map((i) => Math.floor((asker[i] * moral[i] * arazi(i)) / 100000)) as [number, number];
+  const guc = [0, 1].map((i) => Math.floor((asker[i] * moral[i] * arazi(i) * gucYuzde[i]) / 10000000)) as [number, number];
   const kayip = [0, 1].map((i) => Math.min(asker[i], Math.round((guc[1 - i] * DENGE.KAYIP_YUZDE * sans[i]) / 10000))) as [number, number];
   return { kayip, guc };
 }
@@ -245,7 +246,8 @@ export function muharebeGunleri(d: DunyaDurumu, ag: HareketAgi | null): void {
     const kontrol = n ? d.birimler[n.b]?.kontrol ?? -1 : -1;
     const savunan = m.taraflar.findIndex((t) => t.devlet === kontrol);
     const sans = [0, 1].map(() => DENGE.SANS_ALT + aralik(d, DENGE.SANS_UST - DENGE.SANS_ALT + 1)) as [number, number];
-    const g = muharebeGunu(asker, moral, zorluk, savunan, sans);
+    const gucYuzde = m.taraflar.map((t) => muharebeGucYuzde(d, t.devlet)) as [number, number]; // Daimî Ordu (5c)
+    const g = muharebeGunu(asker, moral, zorluk, savunan, sans, gucYuzde);
     for (const i of [0, 1]) {
       kayipDagit(os[i], g.kayip[i]);
       m.taraflar[i].kayip += g.kayip[i];

@@ -4,6 +4,7 @@
 
 import { olayEkle, type DunyaDurumu, type SehirDurumu } from "./durum";
 import { DENGE } from "./denge";
+import { insaatSureYuzde, pazarGeliriSeviyeBasina, surBedelYuzde, yapiEnYuksek } from "./teknoloji";
 
 export type YapiTuru = "tarla" | "pazar" | "sur";
 export const YAPI_TURLERI: YapiTuru[] = ["tarla", "pazar", "sur"];
@@ -19,16 +20,22 @@ export interface Insaat {
 
 export const yapiSeviyesi = (s: SehirDurumu, yapi: YapiTuru) => (yapi === "sur" ? s.sur : s.yapilar[yapi]);
 
-/** Bir sonraki seviyenin bedeli; en yüksek seviyedeyse null. */
-export function insaatMaliyeti(s: SehirDurumu, yapi: YapiTuru): number | null {
+/** Sahibinin teknolojilerine göre bir sonraki seviyenin bedeli; en yüksek seviyedeyse null. */
+export function insaatMaliyeti(d: DunyaDurumu, s: SehirDurumu, yapi: YapiTuru): number | null {
   const hedef = yapiSeviyesi(s, yapi) + 1;
-  return hedef > DENGE.YAPI_EN_YUKSEK[yapi] ? null : DENGE.YAPI_MALIYET[yapi][hedef - 1];
+  if (hedef > yapiEnYuksek(d, s.devlet, yapi)) return null;
+  const bedel = DENGE.YAPI_MALIYET[yapi][hedef - 1];
+  return yapi === "sur" ? Math.ceil(bedel * surBedelYuzde(d, s.devlet) / 100) : bedel;
 }
 
+/** Yeni başlayacak inşaatın süresi (Yargı Teşkilatı kısaltır). */
+export const insaatSuresi = (d: DunyaDurumu, devlet: number, yapi: YapiTuru) =>
+  Math.ceil(DENGE.YAPI_SURE_GUN[yapi] * insaatSureYuzde(d, devlet) / 100);
+
 /** Şehrin yapılarından gelen aylık gelir (şehir yasal sahibinin askerî kontrolündeyken). */
-export function sehirYapiGeliri(s: SehirDurumu): number {
+export function sehirYapiGeliri(d: DunyaDurumu, s: SehirDurumu): number {
   if (s.kontrol !== s.devlet) return 0;
-  return s.yapilar.tarla * DENGE.YAPI_AYLIK_GELIR.tarla + s.yapilar.pazar * DENGE.YAPI_AYLIK_GELIR.pazar;
+  return s.yapilar.tarla * DENGE.YAPI_AYLIK_GELIR.tarla + s.yapilar.pazar * pazarGeliriSeviyeBasina(d, s.devlet);
 }
 
 /** Bekleyen ya da süren bir inşaat varsa kimliği; şehir başına aynı anda tek inşaat. */

@@ -14,6 +14,7 @@ import { ikmalVeMaasMorali, maaslariOde, toplamalariIlerlet } from "./ordu";
 import { prototipGelirleri } from "./ekonomi";
 import { isgalleriIlerlet, kusatmalariIlerlet } from "./kusatma";
 import { insaatlariIlerlet } from "./yatirim";
+import { arastirmalariIlerlet } from "./teknoloji";
 
 export type Siklik = "gunluk" | "aylik" | "yillik";
 
@@ -52,6 +53,7 @@ export const SISTEMLER: Sistem[] = [
   { id: "gercek-isgal", siklik: "gunluk", calistir: isgalleriIlerlet },
   { id: "kusatma", siklik: "gunluk", calistir: kusatmalariIlerlet },
   { id: "sehir-insaati", siklik: "gunluk", calistir: insaatlariIlerlet },
+  { id: "arastirma", siklik: "gunluk", calistir: arastirmalariIlerlet },
   {
     // Test: her gün rastgele bir şehrin nüfusu 0–2 artar (rastgelelik akışını her gün kullanır)
     id: "test-nufus",

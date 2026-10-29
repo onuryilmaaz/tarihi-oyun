@@ -4,7 +4,7 @@ Son güncelleme: **2026-10-29, Claude (Opus 5.5)** — Codex'in 4b/4c/5a işinde
 
 ## 1. İlk okunacaklar
 
-1. Bu belge, `AGENTS.md`, `MASTER_SPEC.md` tamamen ve `DECISIONS.md` (DEC-0001 … DEC-0032).
+1. Bu belge, `AGENTS.md`, `MASTER_SPEC.md` tamamen ve `DECISIONS.md` (DEC-0001 … DEC-0035).
 2. Aktif görev `tasks/TASK-0008.md`, aşama `docs/milestones/ASAMA-5.md`; önceki görev TASK-0007.
 3. Son rapor `docs/qa/ASAMA-5A-TEST.md`; birlikte test edilecek `docs/qa/ASAMA-4C-TEST.md`.
 
@@ -14,8 +14,12 @@ Son güncelleme: **2026-10-29, Claude (Opus 5.5)** — Codex'in 4b/4c/5a işinde
 - Kullanıcı kararları (DEC-0033): 4c/5a "az çok" test edildi, ayrıntılı test sonraki turlarda;
   **5b kapsamı onaylandı** ve **5b tamamlandı**: şehir yatırımları (tarla/pazar/sur), `packages/sim/src/yatirim.ts`,
   kayıt şeması **6**, 101 test. Kullanıcı testi bekliyor: `docs/qa/ASAMA-5B-TEST.md`.
-- 5b kullanıcı tarafından kabul edildi ve commit edildi (DEC-0034). **5c onaylandı**; teknoloji listesi
-  taslağı `tasks/TASK-0008.md` → "5c" bölümünde, **kullanıcının liste onayını bekliyor**; onaydan sonra kodla.
+- 5b kullanıcı tarafından kabul edildi ve commit edildi (DEC-0034).
+- **5c teknoloji ağacı tamamlandı ve kabul edildi** (DEC-0035, DEC-0036): `packages/sim/src/teknoloji.ts`,
+  `arastir` emri, kayıt şeması **7**, 109 test, üst çubukta "Teknoloji" penceresi. Commit + push edildi.
+- **Sıradaki:** kullanıcı 4c/5a ayrıntılı testini 5173'te yapıyor (adımlar kullanıcıya verildi:
+  bütçe → savaş → kuşatma → barış → kayıt/yükle). Sonuç gelince Aşama 4 ve Aşama 5 kapanışını
+  kullanıcıya sor. Kullanıcı onayı olmadan Aşama 6'ya geçme.
 - Aşağıdaki 2–3. bölümler Codex'in notlarıdır; "5b/5c sorusuna yanıt yok" bilgisi artık geçersiz (DEC-0033).
 - Arayüz notu: Ordu işaretinin olduğu şehre tıklamak orduyu seçer; şehir paneline sol paneldeki
   "Şehir yatırımları → Şehri aç" ile de ulaşılır.
@@ -151,8 +155,8 @@ Ayrıntılı adımlar ve doğrulanmış sonuçlar `docs/qa/ASAMA-4C-TEST.md` iç
 
 ## 7. Komutlar ve değişmez kurallar
 
-- `npm test`, `npm run typecheck`; kod değişince `npm run build` ile 4175 güncellenir.
-- **4175** kullanıcı önizlemesi, **5173** agent denemesi; kullanıcı sunucularını kapatma.
+- `npm test`, `npm run typecheck`, `npm run build` (derleme denetimi).
+- **5173** hem kullanıcı hem agent için (DEC-0036); 4175 kullanılmaz. Kullanıcı sunucularını kapatma.
 - Türkçe, sade iletişim; karar soruları numaralı ve önerili. Tarayıcı alert/confirm/prompt yok.
 - Yalnızca onaylı görev kapsamında üretim kodu. Kapılar açık kullanıcı onayıyla geçilir.
 - Commit/push öncesi ayrıca sor (DEC-0017). Main üzerinde çalışma yetkisi commit yetkisi değildir.

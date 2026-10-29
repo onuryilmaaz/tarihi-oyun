@@ -5,6 +5,7 @@ import { DENGE } from "./denge";
 import { kullanilabilirHazine } from "./emirler";
 import { devletMaasi } from "./ordu";
 import { sehirYapiGeliri } from "./yatirim";
+import { araziGeliriBirimBasina } from "./teknoloji";
 
 export interface ButceOzeti {
   hazine: number;
@@ -22,14 +23,15 @@ export interface ButceOzeti {
 /** Arazi test geliri (yasal sahip başına). */
 export function araziGelirleri(d: DunyaDurumu): number[] {
   const gelir = new Array<number>(d.devletler.length).fill(0);
-  for (const b of d.birimler) if (b.sahip >= 0) gelir[b.sahip] += DENGE.TEST_GELIR_BIRIM_BASINA;
+  const birimBasina = d.devletler.map((_, i) => araziGeliriBirimBasina(d, i)); // Para ve Vergi Reformu (5c)
+  for (const b of d.birimler) if (b.sahip >= 0) gelir[b.sahip] += birimBasina[b.sahip];
   return gelir;
 }
 
 /** Şehir yapılarından gelen gelir (TASK-0008/5b). */
 export function yapiGelirleri(d: DunyaDurumu): number[] {
   const gelir = new Array<number>(d.devletler.length).fill(0);
-  for (const s of d.sehirler) gelir[s.devlet] += sehirYapiGeliri(s);
+  for (const s of d.sehirler) gelir[s.devlet] += sehirYapiGeliri(d, s);
   return gelir;
 }
 

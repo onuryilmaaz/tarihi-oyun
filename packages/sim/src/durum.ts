@@ -6,6 +6,7 @@ import type { Emir } from "./emirler";
 import { HAREKET, type AgVerisi, type RotaAdimi } from "./hareket";
 import { DENGE } from "./denge";
 import type { Insaat } from "./yatirim";
+import type { Arastirma, TeknolojiId } from "./teknoloji";
 
 export type TurSuresi = "hafta" | "ay" | "ceyrek" | "yil";
 export const TUR_SURESI_ADLARI: Record<TurSuresi, string> = {
@@ -17,6 +18,7 @@ export interface DevletDurumu {
   ad: string;
   hazine: number; // tam sayı; eksi olabilir (DEC-0002), borç değildir
   baskent: number | null; // şehir indeksi
+  teknolojiler: TeknolojiId[]; // bitmiş araştırmalar (TASK-0008/5c)
 }
 
 // MASTER_SPEC §9.1: yasal sahip ile askerî kontrol ayrı tutulur
@@ -156,6 +158,7 @@ export interface DunyaDurumu {
   sonrakiOrduId: number;
   askerToplamalar: AskerToplama[];
   insaatlar: Insaat[];
+  arastirmalar: Arastirma[];
   kusatmalar: Kusatma[];
   isgalHazirliklari: IsgalHazirligi[];
   barislar: BarisKaydi[];
@@ -188,7 +191,7 @@ export interface SenaryoVerisi {
 // 2: ordular ve şehir kontrolü (TASK-0006); 3: savaş, muharebe, moral, garnizon orduları (TASK-0007/4a)
 // 4: insan gücü ve asker toplama (TASK-0007/4b); şema 3 için eklemeli dönüşüm var.
 // 5: kuşatma, gerçek işgal ve barış (TASK-0007/4c); şema 3–4 için eklemeli dönüşüm var.
-export const SEMA_SURUMU = 6; // 6: şehir yatırımları (TASK-0008/5b)
+export const SEMA_SURUMU = 7; // 6: şehir yatırımları (TASK-0008/5b); 7: teknoloji (5c)
 
 export function baslangicDurumu(s: SenaryoVerisi, secenek: { tohum: number; oyuncu?: string }): DunyaDurumu {
   const indeks = new Map(s.devletler.map((d, i) => [d.id, i]));
@@ -232,6 +235,7 @@ export function baslangicDurumu(s: SenaryoVerisi, secenek: { tohum: number; oyun
     ad: d.ad,
     hazine: birimSayisi[i] * DENGE.BASLANGIC_HAZINE_BIRIM_BASINA,
     baskent: (() => { const k = sehirler.findIndex((c) => c.devlet === i && c.baskent); return k >= 0 ? k : null; })(),
+    teknolojiler: [],
   }));
   return {
     sema: SEMA_SURUMU,
@@ -248,6 +252,7 @@ export function baslangicDurumu(s: SenaryoVerisi, secenek: { tohum: number; oyun
     sonrakiOrduId: ordular.length + 1,
     askerToplamalar: [],
     insaatlar: [],
+    arastirmalar: [],
     kusatmalar: [],
     isgalHazirliklari: [],
     barislar: [],
@@ -335,13 +340,22 @@ export function degismezler(d: DunyaDurumu): string[] {
   d.sehirler.forEach((c, i) => {
     const y = c.yapilar;
     if (!y || !tam(y.tarla) || !tam(y.pazar) || y.tarla < 0 || y.pazar < 0
-      || y.tarla > DENGE.YAPI_EN_YUKSEK.tarla || y.pazar > DENGE.YAPI_EN_YUKSEK.pazar) h.push(`şehir ${i} yapıları geçersiz`);
+      || y.tarla > DENGE.YAPI_EN_YUKSEK_TEKNOLOJIYLE.tarla || y.pazar > DENGE.YAPI_EN_YUKSEK_TEKNOLOJIYLE.pazar) h.push(`şehir ${i} yapıları geçersiz`);
   });
   const insaatSehirleri = new Set<number>();
   d.insaatlar.forEach((x, i) => {
     if (!d.sehirler[x.sehir] || insaatSehirleri.has(x.sehir)) h.push(`inşaat ${i} şehri geçersiz ya da tekrar ediyor`);
     insaatSehirleri.add(x.sehir);
-    if (!["tarla", "pazar", "sur"].includes(x.yapi) || !tam(x.hedef) || x.hedef > DENGE.YAPI_EN_YUKSEK[x.yapi] || !tam(x.kalanGun) || x.kalanGun <= 0) h.push(`inşaat ${i} geçersiz`);
+    if (!["tarla", "pazar", "sur"].includes(x.yapi) || !tam(x.hedef) || x.hedef > DENGE.YAPI_EN_YUKSEK_TEKNOLOJIYLE[x.yapi] || !tam(x.kalanGun) || x.kalanGun <= 0) h.push(`inşaat ${i} geçersiz`);
+  });
+  d.devletler.forEach((v, i) => {
+    if (!Array.isArray(v.teknolojiler) || v.teknolojiler.some((t) => !(t in DENGE.TEKNOLOJI)) || new Set(v.teknolojiler).size !== v.teknolojiler.length) h.push(`devlet ${i} teknolojileri geçersiz`);
+  });
+  const arastiran = new Set<string>();
+  d.arastirmalar.forEach((a, i) => {
+    if (!d.devletler[a.devlet] || !(a.teknoloji in DENGE.TEKNOLOJI) || !tam(a.kalanGun) || a.kalanGun <= 0
+      || d.devletler[a.devlet].teknolojiler.includes(a.teknoloji) || arastiran.has(`${a.devlet}:${a.teknoloji}`)) h.push(`araştırma ${i} geçersiz`);
+    arastiran.add(`${a.devlet}:${a.teknoloji}`);
   });
   if (d.ayarlar.oyuncu < 0 || d.ayarlar.oyuncu >= n) h.push("oyuncu devleti geçersiz");
   return h;

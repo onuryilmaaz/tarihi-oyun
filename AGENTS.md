@@ -17,10 +17,11 @@ kaynak: `MASTER_SPEC.md` §21 ve §27.
 
 ## Mevcut durum
 
-- **Aşama:** 5 (ekonomi, şehirler, teknoloji) — 5a ve 5b tamamlandı (5b kullanıcı testi bekliyor);
-  sıradaki 5c. Aşama 4 kod olarak tamam, resmî kapanışı ayrıntılı testle (DEC-0033). Durum için `DEVIR-TESLIM.md`.
-- **Yerel sunucular:** Kullanıcı oyunu 4175'te (`vite preview`) dener; agent denemelerini 5173'teki
-  geliştirme sunucusunda yapar (kullanıcı başlattı, kapatılmaz). Aşama 2 kapandı
+- **Aşama:** 5 (ekonomi, şehirler, teknoloji) — 5a, 5b, 5c tamamlandı; 5b ve 5c kabul edildi (DEC-0036);
+  sıradaki: 4c/5a ayrıntılı kullanıcı testi, ardından Aşama 4 ve 5 kapanışı. Aşama 4 kod olarak tamam, resmî kapanışı ayrıntılı testle (DEC-0033). Durum için `DEVIR-TESLIM.md`.
+- **Yerel sunucu (DEC-0036):** Kullanıcı da agent da **5173**'teki geliştirme sunucusunu kullanır
+  (kullanıcı başlattı, kapatılmaz; kod değişince kendini yeniler). Kullanıcıya test adımı 5173 ile verilir;
+  4175 önizlemesi kullanılmaz. Aşama 2 kapandı
   (DEC-0024), Aşama 1 kapandı (DEC-0019). Görsel yön: Tarihî atlas (DEC-0018).
   TASK-0003 kapandı (DEC-0021). TASK-0004 (v0.2 harita verisi) kabul edildi (DEC-0022).
 - **Depo:** github.com/onuryilmaaz/tarihi-oyun (özel). Çalışma doğrudan
@@ -84,4 +85,4 @@ modül geliştirmek.
 - Tarayıcının kendi pencereleri (alert/confirm/prompt) kullanılmaz; oyunun kendi tasarımı kullanılır (DEC-0028).
 - Kullanıcıyla Türkçe konuşulur. Kararlar numaralı sorulur ve her birine öneri yazılır.
 - Kullanıcıya test adımları sade ve tıklama tıklama verilir; önce agent akışı kendisi dener.
-- Kod değişince `npm run build` ile 4175'teki önizleme güncellenir.
+- `npm run build` derleme hatası denetimi için çalıştırılır; kullanıcı testi 5173'te yapılır (DEC-0036).

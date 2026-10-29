@@ -1,5 +1,19 @@
 # CHANGELOG
 
+## 2026-10-29 — TASK-0008 / 5c: teknoloji ağacı (Claude)
+
+### Eklendi
+- DEC-0035: 9 teknolojilik liste onaylandı. DEC-0036: 5c kabul edildi; kullanıcı testleri 5173'te.
+- `packages/sim/src/teknoloji.ts`: üç alan (ekonomik, askerî, idari), ön koşullar, en çok 2 eş zamanlı
+  araştırma (farklı alanlarda), bedel emirde ayrılır ve tur başında ödenir (borç yok); `arastir` emri,
+  günlük `arastirma` sistemi. Kayıt şeması 7 (6 → 7 dönüşümü).
+- Etkiler: tarla/pazar 4. seviye, pazar +5, arazi geliri 11; top ×1,5 garnizon kaybı; Daimî Ordu
+  muharebe gücü +%10; asker toplama −%25 bedel ve 20 gün; inşaat süresi −%20; insan gücü +%50
+  (bir defa); sur 6. seviye ve −%25 bedel. Değerler `denge.ts`'te [TASLAK].
+- İstemci: üst çubukta **Teknoloji** düğmesi ve oyunun kendi penceresi (3 sütun, kartlar, Araştır +
+  onay); sol panelde **Araştırmalar** listesi; toplama ve yatırım bilgileri teknolojiye göre.
+- `packages/sim/test/teknoloji.test.ts` (7 test; toplam 109), `docs/qa/ASAMA-5C-TEST.md`.
+
 ## 2026-10-29 — TASK-0008 / 5b: şehir yatırımları (Claude)
 
 ### Eklendi

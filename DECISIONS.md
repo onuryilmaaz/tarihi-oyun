@@ -479,3 +479,23 @@ Kaynak belge: `MASTER_SPEC.md` (v1.3). Orijinal keşif çıktısı:
      kullanıcıya sunulur (TASK-0008 / 5c), onaydan sonra kodlanır (OPEN-011'in ilk kapsamı).
 - **Onay kaydı:** Kullanıcı: "uygun", "yap", "onaylıyorum" (2026-10-29)
 - **Durum:** GEÇERLİ
+
+## DEC-0035 — 5c teknoloji listesi onayı
+
+- **Tarih:** 2026-10-29
+- **Seçilen karar:** TASK-0008 / 5c'deki 9 teknolojilik liste (askerî, ekonomik, idari; bedel, süre,
+  ön koşul ve etkileri) ve kurallar (en çok 2 eş zamanlı araştırma, farklı alanlarda; bedel başta
+  ödenir, borç yok) onaylandı. Sayılar `denge.ts`'te [TASLAK]; OPEN-011'in ilk kapsamı kapanır.
+- **Onay kaydı:** Kullanıcı: "uygun uygun başla" (2026-10-29)
+- **Durum:** GEÇERLİ
+
+## DEC-0036 — 5c kabulü ve test sunucusu
+
+- **Tarih:** 2026-10-29
+- **Seçilen karar:**
+  1. 5c (teknoloji ağacı) kullanıcı tarafından test edildi ve kabul edildi; commit + push onaylandı.
+  2. Kullanıcı testleri de **5173**'teki geliştirme sunucusunda yapılır; 4175 önizlemesi kullanılmaz
+     (AGENTS.md'deki eski "kullanıcı 4175" kuralının yerine geçer).
+  3. Sıradaki: 4c/5a ayrıntılı kullanıcı testi; sonra Aşama 4 ve 5 kapanış onayı istenir.
+- **Onay kaydı:** Kullanıcı: "pushla", "başarılı", "neden tekrardan 4175 portuna geçtik. 5173 açık oradan devam edecektik" (2026-10-29)
+- **Durum:** GEÇERLİ

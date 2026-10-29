@@ -113,6 +113,22 @@
     .yatirimlar { list-style: none; margin: 6px 0 0; padding: 0; display: grid; gap: 6px; }
     .yatirimlar li { display: flex; justify-content: space-between; align-items: center; gap: 8px; }
     .yatirimlar small { display: block; color: var(--soluk); font-size: 11px; }
+    #teknoloji { position: fixed; inset: 0; display: grid; place-items: center; background: rgba(15,12,9,.6); z-index: 11; }
+    #teknoloji .panel { position: static; width: min(980px, calc(100% - 32px)); max-height: calc(100% - 48px); overflow: auto; padding: 22px; }
+    #teknoloji h3 { font-family: "Cinzel", serif; margin: 0 0 4px; }
+    .tek-sutunlar { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin-top: 14px; }
+    @media (max-width: 760px) { .tek-sutunlar { grid-template-columns: 1fr; } }
+    .tek-sutunlar h4 { margin: 0 0 8px; font-size: 12px; text-transform: uppercase; letter-spacing: .08em; color: var(--soluk); }
+    .tek-kart { border: 1px solid var(--cizgi); border-radius: 6px; padding: 10px; margin-bottom: 10px; font-size: 12px; }
+    .tek-kart b { font-size: 13px; display: block; margin-bottom: 4px; }
+    .tek-kart p { margin: 4px 0; }
+    .tek-kart small { color: var(--soluk); display: block; }
+    .tek-kart.biliniyor { border-color: #9fcf7a; } .tek-kart.biliniyor .durum { color: #9fcf7a; }
+    .tek-kart.suruyor, .tek-kart.emir { border-color: var(--vurgu); } .tek-kart .durum { color: var(--uyari); margin-top: 6px; }
+    .tek-kart.kapali { opacity: .72; }
+    .tek-kart button { margin-top: 6px; width: 100%; }
+    #arastirmaListesi { list-style: none; margin: 0; padding: 0; display: grid; gap: 4px; font-size: 12px; }
+    #arastirmaListesi .bos { color: var(--soluk); }
     #onay { position: fixed; inset: 0; display: grid; place-items: center; background: rgba(15, 12, 9, .5); z-index: 12; }
     #onay .panel { position: static; width: min(440px, calc(100% - 32px)); padding: 22px; text-align: center; }
     #onay h3 { font-family: "Cinzel", serif; margin: 0 0 8px; font-size: 18px; }
@@ -211,6 +227,7 @@
       <button data-sure="ceyrek">3 Ay</button>
       <button data-sure="yil">Yıl</button>
     </div>
+    <button id="teknolojiAc">Teknoloji</button>
     <button id="ilerleBtn" title="Boşluk tuşu">Turu ilerlet</button>
     <div id="kayitlar">
       <button id="kaydetBtn">Kaydet<small>manuel</small></button>
@@ -239,6 +256,8 @@
     <h2>Şehir yatırımları</h2>
     <div class="satir"><select id="yatirimSehir" aria-label="Yatırım yapılacak şehir"></select><button id="yatirimAc">Şehri aç</button></div>
     <ul id="insaatListesi"></ul>
+    <h2>Araştırmalar</h2>
+    <ul id="arastirmaListesi"></ul>
     <h2>Ordu giderleri</h2>
     <p id="orduGideri" class="not"></p>
     <details id="butceOzeti" open>
@@ -301,6 +320,15 @@
     <div class="panel" role="dialog" aria-label="Muharebe raporu">
       <div id="raporIcerik"></div>
       <div class="satir" style="margin-top:14px"><button id="raporKapat">Kapat</button></div>
+    </div>
+  </div>
+
+  <div id="teknoloji" hidden>
+    <div class="panel" role="dialog" aria-modal="true" aria-labelledby="teknolojiBaslik">
+      <h3 id="teknolojiBaslik">Teknoloji</h3>
+      <p id="teknolojiBilgi" class="not"></p>
+      <div id="teknolojiIcerik" class="tek-sutunlar"></div>
+      <div class="satir" style="margin-top:6px"><button id="teknolojiKapat">Kapat</button></div>
     </div>
   </div>
 

@@ -9,7 +9,8 @@ import { toplamaMaliyeti } from "./ordu";
 import { DENGE } from "./denge";
 import { kusatmadanCikar, orduKusatmasi, sehirMenzilinde } from "./kusatma";
 import { barisDogrula, barisiUygula } from "./baris";
-import { YAPI_ADLARI, insaatMaliyeti, sehirdeInsaatVar, yapiSeviyesi, type YapiTuru } from "./yatirim";
+import { YAPI_ADLARI, insaatMaliyeti, insaatSuresi, sehirdeInsaatVar, yapiSeviyesi, type YapiTuru } from "./yatirim";
+import { arastirmaEngeli, teknolojiBul, teknolojiGecerli, toplamaBedelYuzde, toplamaSuresi, type TeknolojiId } from "./teknoloji";
 
 /** Statik senaryo verisi (dünya durumuna girmez, kayda yazılmaz). */
 export interface Baglam {
@@ -39,7 +40,9 @@ export type Emir =
   | { tur: "kusatmaBirak"; ordu: number }
   | ({ tur: "baris" } & BarisTalebi)
   // Şehir yatırımı (TASK-0008/5b, DEC-0033)
-  | { tur: "insaat"; sehir: number; yapi: YapiTuru };
+  | { tur: "insaat"; sehir: number; yapi: YapiTuru }
+  // Teknoloji araştırması (TASK-0008/5c, DEC-0035); her zaman oyuncu devleti için
+  | { tur: "arastir"; teknoloji: TeknolojiId };
 
 export type Dogrulama = { gecerli: true } | { gecerli: false; neden: string };
 
@@ -47,8 +50,9 @@ function bekleyenHarcama(d: DunyaDurumu, devlet: number): number {
   let s = 0;
   for (const e of d.emirKuyrugu) {
     if (e.tur === "harca" && e.devlet === devlet) s += e.miktar;
-    if (e.tur === "askerTopla" && d.sehirler[e.sehir]?.devlet === devlet) s += toplamaMaliyeti(e.asker);
-    if (e.tur === "insaat" && d.sehirler[e.sehir]?.devlet === devlet) s += insaatMaliyeti(d.sehirler[e.sehir], e.yapi) ?? 0;
+    if (e.tur === "askerTopla" && d.sehirler[e.sehir]?.devlet === devlet) s += toplamaMaliyeti(e.asker, toplamaBedelYuzde(d, devlet));
+    if (e.tur === "insaat" && d.sehirler[e.sehir]?.devlet === devlet) s += insaatMaliyeti(d, d.sehirler[e.sehir], e.yapi) ?? 0;
+    if (e.tur === "arastir" && d.ayarlar.oyuncu === devlet && teknolojiGecerli(e.teknoloji)) s += DENGE.TEKNOLOJI[e.teknoloji].bedel;
   }
   return s;
 }
@@ -100,9 +104,19 @@ export function emirDogrula(d: DunyaDurumu, e: Emir, b: Baglam = BOS_BAGLAM, kuy
       if (!["tarla", "pazar", "sur"].includes(e.yapi)) return { gecerli: false, neden: "Geçersiz yapı türü." };
       if (d.kusatmalar.some((k) => k.sehir === e.sehir)) return { gecerli: false, neden: "Kuşatma altındaki şehirde inşaat başlatılamaz." };
       if (sehirdeInsaatVar(d, e.sehir, kuyrukHaric)) return { gecerli: false, neden: `${s.ad} şehrinde zaten bir inşaat sürüyor ya da bekliyor; aynı anda tek inşaat yapılır.` };
-      const bedel = insaatMaliyeti(s, e.yapi);
+      const bedel = insaatMaliyeti(d, s, e.yapi);
       if (bedel === null) return { gecerli: false, neden: `${YAPI_ADLARI[e.yapi]} en yüksek seviyede (${yapiSeviyesi(s, e.yapi)}).` };
       const para = kuyrukHaric ? d.devletler[s.devlet].hazine : kullanilabilirHazine(d, s.devlet);
+      if (para < 0 || bedel > para) return { gecerli: false, neden: `Hazine yetersiz: ${para} kullanılabilir, ${bedel} gerekli. Borçlanma yoktur.` };
+      return { gecerli: true };
+    }
+    case "arastir": {
+      if (!teknolojiGecerli(e.teknoloji)) return { gecerli: false, neden: "Geçersiz teknoloji." };
+      const oyuncu = d.ayarlar.oyuncu;
+      const engel = arastirmaEngeli(d, oyuncu, e.teknoloji, kuyrukHaric);
+      if (engel) return { gecerli: false, neden: engel };
+      const bedel = DENGE.TEKNOLOJI[e.teknoloji].bedel;
+      const para = kuyrukHaric ? d.devletler[oyuncu].hazine : kullanilabilirHazine(d, oyuncu);
       if (para < 0 || bedel > para) return { gecerli: false, neden: `Hazine yetersiz: ${para} kullanılabilir, ${bedel} gerekli. Borçlanma yoktur.` };
       return { gecerli: true };
     }
@@ -115,7 +129,7 @@ export function emirDogrula(d: DunyaDurumu, e: Emir, b: Baglam = BOS_BAGLAM, kuy
       const havuz = kuyrukHaric ? s.insanGucu : kullanilabilirInsanGucu(d, e.sehir);
       if (e.asker > havuz) return { gecerli: false, neden: `İnsan gücü yetersiz: ${havuz} asker toplanabilir.` };
       const para = kuyrukHaric ? d.devletler[s.devlet].hazine : kullanilabilirHazine(d, s.devlet);
-      if (para < 0 || toplamaMaliyeti(e.asker) > para) return { gecerli: false, neden: `Hazine yetersiz: ${para} kullanılabilir. Borçlanma yoktur.` };
+      if (para < 0 || toplamaMaliyeti(e.asker, toplamaBedelYuzde(d, s.devlet)) > para) return { gecerli: false, neden: `Hazine yetersiz: ${para} kullanılabilir. Borçlanma yoktur.` };
       return { gecerli: true };
     }
     case "orduBol":
@@ -250,21 +264,30 @@ export function emirleriUygula(d: DunyaDurumu, b: Baglam = BOS_BAGLAM): void {
         break;
       case "insaat": {
         const s = d.sehirler[e.sehir];
-        const bedel = insaatMaliyeti(s, e.yapi)!;
+        const bedel = insaatMaliyeti(d, s, e.yapi)!;
         const hedef = yapiSeviyesi(s, e.yapi) + 1;
+        const sure = insaatSuresi(d, s.devlet, e.yapi);
         d.devletler[s.devlet].hazine -= bedel;
-        d.insaatlar.push({ sehir: e.sehir, devlet: s.devlet, yapi: e.yapi, hedef, kalanGun: DENGE.YAPI_SURE_GUN[e.yapi] });
+        d.insaatlar.push({ sehir: e.sehir, devlet: s.devlet, yapi: e.yapi, hedef, kalanGun: sure });
         olayEkle(d, { tur: "insaat-basladi", devlet: s.devlet,
-          metin: `${s.ad}: ${YAPI_ADLARI[e.yapi]} ${hedef}. seviye inşaatı başladı (${DENGE.YAPI_SURE_GUN[e.yapi]} gün). Bedel: −${bedel}.` });
+          metin: `${s.ad}: ${YAPI_ADLARI[e.yapi]} ${hedef}. seviye inşaatı başladı (${sure} gün). Bedel: −${bedel}.` });
+        break;
+      }
+      case "arastir": {
+        const devlet = d.ayarlar.oyuncu, t = DENGE.TEKNOLOJI[e.teknoloji];
+        d.devletler[devlet].hazine -= t.bedel;
+        d.arastirmalar.push({ devlet, teknoloji: e.teknoloji, kalanGun: t.sure });
+        olayEkle(d, { tur: "arastirma-basladi", devlet, metin: `${teknolojiBul(e.teknoloji).ad} araştırması başladı (${t.sure} gün). Bedel: −${t.bedel}.` });
         break;
       }
       case "askerTopla": {
         const s = d.sehirler[e.sehir];
-        const bedel = toplamaMaliyeti(e.asker);
+        const bedel = toplamaMaliyeti(e.asker, toplamaBedelYuzde(d, s.devlet));
+        const sure = toplamaSuresi(d, s.devlet);
         d.devletler[s.devlet].hazine -= bedel;
         s.insanGucu -= e.asker;
-        d.askerToplamalar.push({ sehir: e.sehir, devlet: s.devlet, asker: e.asker, kalanGun: DENGE.TOPLAMA_GUN });
-        olayEkle(d, { tur: "asker-toplama", devlet: s.devlet, metin: `${s.ad}: ${e.asker} asker toplanıyor (${DENGE.TOPLAMA_GUN} gün). Bedel: −${bedel}.` });
+        d.askerToplamalar.push({ sehir: e.sehir, devlet: s.devlet, asker: e.asker, kalanGun: sure });
+        olayEkle(d, { tur: "asker-toplama", devlet: s.devlet, metin: `${s.ad}: ${e.asker} asker toplanıyor (${sure} gün). Bedel: −${bedel}.` });
         break;
       }
       case "orduBol": {

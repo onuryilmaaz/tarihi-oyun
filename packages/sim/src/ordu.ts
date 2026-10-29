@@ -5,7 +5,8 @@ import { HAREKET, type HareketAgi } from "./hareket";
 import { savasta } from "./savas";
 import type { Baglam } from "./emirler";
 
-export const toplamaMaliyeti = (asker: number): number => Math.ceil(asker * DENGE.TOPLAMA_ASKER_BASINA_MALIYET_BINDE / 1000);
+// yuzde: teknoloji indirimi (Asker Kayıt Defterleri, 5c); varsayılan indirimsiz
+export const toplamaMaliyeti = (asker: number, yuzde = 100): number => Math.ceil(asker * DENGE.TOPLAMA_ASKER_BASINA_MALIYET_BINDE * yuzde / 100000);
 // Devlet toplamı üzerinden yuvarlanır: orduyu bölmek maaşı değiştirmez.
 export const aylikMaas = (asker: number): number => Math.ceil(asker * DENGE.AYLIK_ASKER_MAASI_BINDE / 1000);
 export function devletMaasi(d: DunyaDurumu, devlet: number): number {

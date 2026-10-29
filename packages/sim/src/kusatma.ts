@@ -3,6 +3,7 @@ import { olayEkle, type DunyaDurumu, type IsgalHazirligi, type Kusatma, type Ord
 import { DENGE } from "./denge";
 import type { Baglam } from "./emirler";
 import { savasta } from "./savas";
+import { kusatmaSaldiriYuzde } from "./teknoloji";
 
 export function sehirMenzilinde(d: DunyaDurumu, b: Baglam, o: OrduDurumu, sehir: number): boolean {
   const s = d.sehirler[sehir], n = s && b.ag?.dugumler[s.dugum];
@@ -94,7 +95,7 @@ export function kusatmalariIlerlet(d: DunyaDurumu, b: Baglam): void {
     k.erzak = Math.max(0, k.erzak - DENGE.KUSATMA_ERZAK_AZALMA[k.yontem]);
     if (k.yontem === "saldiri") {
       const garnizonKaybi = Math.min(s.garnizon, Math.max(1,
-        Math.floor(guc.guc * DENGE.KUSATMA_SALDIRI_GARNIZON_YUZDE / (100 * (s.sur + 1)))));
+        Math.floor(guc.guc * DENGE.KUSATMA_SALDIRI_GARNIZON_YUZDE * kusatmaSaldiriYuzde(d, k.devlet) / (10000 * (s.sur + 1)))));
       const askerKaybi = Math.min(ordular.reduce((t, o) => t + o.asker, 0), Math.ceil(s.garnizon * (s.sur + 1) * DENGE.KUSATMA_SALDIRI_ASKER_KAYIP_BINDE / 1000));
       kaybiPaylastir(ordular, askerKaybi);
       s.garnizon -= garnizonKaybi;

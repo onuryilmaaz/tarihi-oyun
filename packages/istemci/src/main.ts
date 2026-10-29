@@ -152,12 +152,30 @@ async function baslat() {
     const insaatlar = ozet.sehirYatirimlari.filter((s) => s.insaat);
     $("insaatListesi").innerHTML = insaatlar.map((s) => `<li><button class="bag" data-sehir-sec="${s.indeks}">${kacis(s.ad)}</button>: ${kacis(s.insaat!.ad)} ${s.insaat!.hedef}. seviye · ${s.insaat!.emir ? "emir bekliyor" : s.insaat!.durdu ? "kuşatma nedeniyle durdu" : `${s.insaat!.kalanGun} gün kaldı`}</li>`).join("")
       || '<li class="bos">Süren inşaat yok. Bir şehir seçip “Şehri aç”a basın ya da haritada şehrinize tıklayın.</li>';
+    const suren = ozet.teknoloji.kartlar.filter((t) => t.durum === "suruyor" || t.durum === "emir");
+    $("arastirmaListesi").innerHTML = suren.map((t) => `<li>${kacis(t.ad)} · ${t.durum === "emir" ? "emir bekliyor" : `${t.kalanGun} gün kaldı`}</li>`).join("")
+      || '<li class="bos">Süren araştırma yok. Üst çubuktaki “Teknoloji” düğmesinden başlatın.</li>';
+    if (!$("teknoloji").hidden) teknolojiCiz();
     $("raporListesi").innerHTML = [...ozet.raporlar].reverse().map((r) => {
       const biz = r.kazanan === ozet.oyuncu.indeks;
       const karsi = r.taraflar.find((t) => t.devlet !== ozet.oyuncu.indeks)!;
       return `<li><button class="rapor-satir" data-rapor="${r.id}"><b class="${biz ? "zafer" : "yenilgi"}">${biz ? "Zafer" : "Yenilgi"}</b>
         ${kacis(h.paket.devletler[karsi.devlet].ad)}<small>${kacis(birimAdi(r.birim))} · ${kacis(tarihMetni(r.bitis))}</small></button></li>`;
     }).join("") || '<li class="bos">Henüz muharebe yok.</li>';
+  };
+  const teknolojiCiz = () => {
+    const tk = ozet.teknoloji, para = (n: number) => n.toLocaleString("tr-TR");
+    $("teknolojiBilgi").textContent = `Aynı anda en çok ${tk.yuva} araştırma yürür ve her biri farklı alanda olmalı. Bedel başta ödenir; borçlanma yoktur. Kullanılabilir hazine: ${para(ozet.kullanilabilirHazine)}. Değerler denge taslağıdır.`;
+    const durumMetni = (t: typeof tk.kartlar[number]) => ({
+      biliniyor: "✓ Biliniyor", suruyor: `Araştırılıyor · ${t.kalanGun} gün kaldı`, emir: "Emir bekliyor · bir sonraki tur başlar",
+      acik: "", kapali: t.neden ?? "",
+    })[t.durum];
+    const alanlar = [...new Map(tk.kartlar.map((t) => [t.alan, t.alanAdi])).entries()];
+    $("teknolojiIcerik").innerHTML = alanlar.map(([alan, ad]) => `<section><h4>${kacis(ad)}</h4>${tk.kartlar.filter((t) => t.alan === alan).map((t) =>
+      `<div class="tek-kart ${t.durum}"><b>${kacis(t.ad)}</b><p>${kacis(t.etki)}</p>
+        <small>Bedel ${para(t.bedel)} · ${t.sure} gün${t.onKosul.length ? ` · Ön koşul: ${kacis(t.onKosul.join(", "))}` : ""}</small>
+        ${t.durum === "acik" || t.durum === "kapali" ? `${t.durum === "kapali" ? `<p class="durum">${kacis(durumMetni(t))}</p>` : ""}<button data-arastir="${t.id}"${t.uygun && !mesgul ? "" : " disabled"}>Araştır</button>`
+          : `<p class="durum">${kacis(durumMetni(t))}</p>`}</div>`).join("")}</section>`).join("");
   };
   const birimAdi = (b: number) => (b >= 0 ? h.paket.birimler[b].ad : "bilinmeyen yer");
   const emirGonder = async (emir: Emir, mesaj: string) => {
@@ -190,9 +208,9 @@ async function baslat() {
     const sehir = ozet.askerSehirleri.find((s) => s.indeks === Number($<HTMLSelectElement>("toplamaSehir").value));
     const asker = $<HTMLInputElement>("toplamaAsker").valueAsNumber;
     const sayiUygun = Number.isSafeInteger(asker) && asker > 0;
-    const bedel = sayiUygun ? toplamaMaliyeti(asker) : 0;
+    const bedel = sayiUygun ? toplamaMaliyeti(asker, ozet.toplamaKurali.bedelYuzde) : 0;
     $("toplamaBilgi").textContent = sehir
-      ? `Kullanılabilir insan gücü: ${sehir.insanGucu.toLocaleString("tr-TR")}. ${DENGE.TOPLAMA_GUN} gün; bedel: ${bedel.toLocaleString("tr-TR")}.`
+      ? `Kullanılabilir insan gücü: ${sehir.insanGucu.toLocaleString("tr-TR")}. ${ozet.toplamaKurali.gun} gün; bedel: ${bedel.toLocaleString("tr-TR")}.`
         + (!sehir.uygun ? " Şehir ve çevresi kontrolünüzde olmalı." : !sayiUygun ? " Pozitif tam sayı girin." : asker > sehir.insanGucu ? " İnsan gücü yetersiz." : ozet.kullanilabilirHazine < bedel ? " Hazine yetersiz; borçlanma yoktur." : " Yeni ordu şehirde kurulur.")
       : "Asker toplanabilecek şehriniz yok.";
     $<HTMLButtonElement>("toplaBtn").disabled = mesgul || !sehir?.uygun || !sayiUygun || asker > sehir.insanGucu || ozet.kullanilabilirHazine < bedel;
@@ -216,6 +234,15 @@ async function baslat() {
     $("rapor").hidden = false;
   };
   $("raporKapat").onclick = () => { $("rapor").hidden = true; };
+  $("teknolojiAc").onclick = () => { teknolojiCiz(); $("teknoloji").hidden = false; };
+  $("teknolojiKapat").onclick = () => { $("teknoloji").hidden = true; };
+  $("teknolojiIcerik").addEventListener("click", async (e) => {
+    const b = (e.target as HTMLElement).closest<HTMLButtonElement>("[data-arastir]");
+    const t = b && ozet.teknoloji.kartlar.find((x) => x.id === b.dataset.arastir);
+    if (!t || b.disabled) return;
+    if (!await onayIste("Araştırma", `${t.ad} araştırılsın mı? Bedel (${t.bedel.toLocaleString("tr-TR")}) emir verilince ayrılır, tur başında hazineden düşülür. Süre ${t.sure} gün.`, "Araştır")) return;
+    await emirGonder({ tur: "arastir", teknoloji: t.id }, `${t.ad} araştırması emri verildi; bir sonraki tur başlar.`);
+  });
   $("yatirimAc").onclick = () => {
     const v = $<HTMLSelectElement>("yatirimSehir").value;
     if (v !== "") gorunum.secVeGit({ tur: "sehir", id: Number(v) });
@@ -473,7 +500,8 @@ async function baslat() {
   $("yukleManuel").onclick = () => yukle("manuel");
   $("yukleOtomatik").onclick = () => yukle("otomatik");
   window.addEventListener("keydown", (e) => {
-    if (e.code !== "Space" || !$("kesinti").hidden || !$("rapor").hidden || !$("onay").hidden || !$("baris").hidden) return;
+    if (e.key === "Escape" && !$("teknoloji").hidden && $("onay").hidden) { $("teknoloji").hidden = true; return; }
+    if (e.code !== "Space" || !$("kesinti").hidden || !$("rapor").hidden || !$("onay").hidden || !$("baris").hidden || !$("teknoloji").hidden) return;
     const etiket = (e.target as HTMLElement).tagName;
     if (etiket === "INPUT" || etiket === "SELECT" || etiket === "TEXTAREA") return;
     e.preventDefault();

@@ -68,6 +68,12 @@ export function yukle(metin: string, beklenenSenaryo?: string): DunyaDurumu {
     // 5b: yapısı olmayan şehirler ve boş inşaat listesi; mevcut sur seviyeleri korunur
     for (const s of d.sehirler) s.yapilar = { tarla: 0, pazar: 0 };
     d.insaatlar = [];
+    d.sema = 6;
+  }
+  if (d.sema === 6) {
+    // Şema 6 → 7 (TASK-0008/5c): teknoloji yok, araştırma yok
+    for (const v of d.devletler) v.teknolojiler = [];
+    d.arastirmalar = [];
     d.sema = SEMA_SURUMU;
   }
   if (d.sema !== SEMA_SURUMU) throw new KayitHatasi("Kayıt tutarsız: dünya şema sürümü uyuşmuyor.");

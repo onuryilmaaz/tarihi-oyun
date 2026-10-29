@@ -64,7 +64,30 @@ export const DENGE = {
   // 5b — şehir yatırımları (DEC-0033); tarihî veri değildir, ilk oynanışla ayarlanacak
   YAPI_EN_YUKSEK: { tarla: 3, pazar: 3, sur: 5 },
   // Hedef seviyeye göre bedel: indeks = hedef seviye − 1 (sur 1. seviyeden başlar, 0. indeks kullanılmaz)
-  YAPI_MALIYET: { tarla: [300, 600, 1200], pazar: [400, 800, 1600], sur: [0, 800, 1200, 1800, 2500] },
+  YAPI_MALIYET: { tarla: [300, 600, 1200, 2000], pazar: [400, 800, 1600, 2600], sur: [0, 800, 1200, 1800, 2500, 3500] }, // son basamak teknolojiyle açılır (5c)
   YAPI_SURE_GUN: { tarla: 60, pazar: 90, sur: 120 },
   YAPI_AYLIK_GELIR: { tarla: 15, pazar: 20 }, // seviye başına, şehir kontrolünüzdeyken
+  // 5c — teknoloji ağacı (DEC-0035); bedel hazine, süre takvim günü
+  ARASTIRMA_YUVASI: 2,
+  TEKNOLOJI: {
+    sulama: { bedel: 800, sure: 180 },
+    kervan: { bedel: 900, sure: 180 },
+    vergi: { bedel: 1500, sure: 270 },
+    top: { bedel: 1200, sure: 240 },
+    daimiOrdu: { bedel: 1000, sure: 180 },
+    kayit: { bedel: 1200, sure: 240 },
+    yargi: { bedel: 700, sure: 150 },
+    sayim: { bedel: 900, sure: 180 },
+    bayindirlik: { bedel: 1400, sure: 240 },
+  },
+  YAPI_EN_YUKSEK_TEKNOLOJIYLE: { tarla: 4, pazar: 4, sur: 6 }, // sulama / kervan / bayındırlık
+  KERVAN_PAZAR_EK_GELIR: 5,
+  VERGI_ARAZI_GELIRI: 11,
+  TOP_SALDIRI_YUZDE: 150,
+  DAIMI_ORDU_GUC_YUZDE: 110,
+  KAYIT_TOPLAMA_BEDEL_YUZDE: 75,
+  KAYIT_TOPLAMA_GUN: 20,
+  YARGI_INSAAT_SURE_YUZDE: 80,
+  SAYIM_INSAN_GUCU_YUZDE: 50,
+  BAYINDIRLIK_SUR_BEDEL_YUZDE: 75,
 };

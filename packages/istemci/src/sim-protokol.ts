@@ -1,6 +1,6 @@
 // Ana iş parçacığı ↔ simülasyon Worker'ı mesaj protokolü.
 
-import type { YapiTuru, BarisKaydi, BarisTalebi, ButceOzeti, Dogrulama, Emir, KusatmaYontemi, MuharebeRaporu, OlayKaydi, RotaKirilimi, SenaryoVerisi, Tutum, TurSonucu, TurSuresi, YabanciOrdu } from "@tarihi/sim";
+import type { Alan, TeknolojiId, YapiTuru, BarisKaydi, BarisTalebi, ButceOzeti, Dogrulama, Emir, KusatmaYontemi, MuharebeRaporu, OlayKaydi, RotaKirilimi, SenaryoVerisi, Tutum, TurSonucu, TurSuresi, YabanciOrdu } from "@tarihi/sim";
 
 export type Istek = { id: number } & (
   | { tip: "yeniOyun"; senaryo: SenaryoVerisi; tohum: number; oyuncu?: string }
@@ -61,6 +61,8 @@ export interface Ozet {
   aylikMaas: number;
   butce: ButceOzeti;
   sehirYatirimlari: SehirYatirimi[]; // oyuncunun şehirleri (TASK-0008/5b)
+  teknoloji: TeknolojiOzeti; // TASK-0008/5c
+  toplamaKurali: { bedelYuzde: number; gun: number }; // teknolojiyle değişir (Asker Kayıt Defterleri)
   askerSehirleri: { indeks: number; ad: string; insanGucu: number; uygun: boolean }[];
   toplamalar: { sehir: string; asker: number; kalanGun: number; bekliyor: boolean; emir: boolean }[];
   planliKesinti: { tarih: string; neden: string }[];
@@ -119,6 +121,26 @@ export interface YatirimSecenegi {
   gelirArtisi: number; // aylık; sur için 0
   uygun: boolean;
   neden: string | null;
+}
+
+export interface TeknolojiKarti {
+  id: TeknolojiId;
+  ad: string;
+  alan: Alan;
+  alanAdi: string;
+  onKosul: string[]; // ad olarak
+  etki: string;
+  bedel: number;
+  sure: number;
+  durum: "biliniyor" | "suruyor" | "emir" | "acik" | "kapali";
+  kalanGun: number | null;
+  uygun: boolean;
+  neden: string | null;
+}
+
+export interface TeknolojiOzeti {
+  kartlar: TeknolojiKarti[];
+  yuva: number; // aynı anda en çok araştırma
 }
 
 export interface SehirYatirimi {

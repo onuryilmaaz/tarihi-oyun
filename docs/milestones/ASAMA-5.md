@@ -1,8 +1,9 @@
 # Aşama 5 — Ekonomi, şehirler ve teknoloji
 
-**Durum:** Başlandı (DEC-0032). TASK-0008 / 5a tamamlandı; kullanıcı testi 4c ile birlikte.
-5b/5c önerisinin yanıtı bekleniyor. Aşama 4 resmî kabulü açık; kullanıcı test beklemeden
-ilerleme izni verdi. Aşama 5 kapısı henüz değerlendirilmedi.
+**Durum:** Başlandı (DEC-0032). 5a tamamlandı (kullanıcı testi 4c ile birlikte); 5b tamamlandı ve
+kabul edildi (DEC-0034); 5c teknoloji ağacı tamamlandı, kullanıcı testi bekliyor
+(`docs/qa/ASAMA-5C-TEST.md`). Aşama 4 resmî kabulü açık. Aşama 5 kapısı henüz değerlendirilmedi;
+kapanış için kullanıcının açık onayı gerekir.
 
 ## 5a — Mevcut bütçenin görünürlüğü
 

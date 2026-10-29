@@ -6,7 +6,8 @@ import {
   tarihMetni, turSuresiAyarla, turuIlerlet, yukle, TUR_SURESI_ADLARI, type Baglam, type DunyaDurumu,
   aylikMaas, devletMaasi, emirDogrula, ikmalDurumu, kullanilabilirHazine, kullanilabilirInsanGucu, DENGE,
   barisBedeli, barisDogrula, kusatmaGucu, orduKusatmasi, savasSkoru,
-  butceOzeti, insaatMaliyeti, sehirYapiGeliri, yapiSeviyesi, YAPI_ADLARI, YAPI_TURLERI,
+  butceOzeti, insaatMaliyeti, insaatSuresi, sehirYapiGeliri, yapiSeviyesi, yapiEnYuksek, pazarGeliriSeviyeBasina, YAPI_ADLARI, YAPI_TURLERI,
+  ALAN_ADLARI, TEKNOLOJILER, teknolojiBul, biliyor, toplamaBedelYuzde, toplamaSuresi,
 } from "@tarihi/sim";
 import type { Istek, Ozet, Yanit } from "./sim-protokol";
 
@@ -35,21 +36,36 @@ function ozet(durum: DunyaDurumu): Ozet {
         ? { yapi: suren.yapi, ad: YAPI_ADLARI[suren.yapi], hedef: suren.hedef, kalanGun: suren.kalanGun, emir: false,
           durdu: durum.kusatmalar.some((k) => k.sehir === indeks) }
         : emir && emir.tur === "insaat"
-          ? { yapi: emir.yapi, ad: YAPI_ADLARI[emir.yapi], hedef: yapiSeviyesi(s, emir.yapi) + 1, kalanGun: DENGE.YAPI_SURE_GUN[emir.yapi], emir: true, durdu: false }
+          ? { yapi: emir.yapi, ad: YAPI_ADLARI[emir.yapi], hedef: yapiSeviyesi(s, emir.yapi) + 1, kalanGun: insaatSuresi(durum, s.devlet, emir.yapi), emir: true, durdu: false }
           : null;
       return [{
-        indeks, ad: s.ad, aylikGelir: sehirYapiGeliri(s), insaat,
+        indeks, ad: s.ad, aylikGelir: sehirYapiGeliri(durum, s), insaat,
         secenekler: YAPI_TURLERI.map((yapi) => {
           const dog = emirDogrula(durum, { tur: "insaat", sehir: indeks, yapi }, baglam);
           return {
-            yapi, ad: YAPI_ADLARI[yapi], seviye: yapiSeviyesi(s, yapi), enYuksek: DENGE.YAPI_EN_YUKSEK[yapi],
-            maliyet: insaatMaliyeti(s, yapi), sure: DENGE.YAPI_SURE_GUN[yapi],
-            gelirArtisi: yapi === "sur" ? 0 : DENGE.YAPI_AYLIK_GELIR[yapi],
+            yapi, ad: YAPI_ADLARI[yapi], seviye: yapiSeviyesi(s, yapi), enYuksek: yapiEnYuksek(durum, s.devlet, yapi),
+            maliyet: insaatMaliyeti(durum, s, yapi), sure: insaatSuresi(durum, s.devlet, yapi),
+            gelirArtisi: yapi === "sur" ? 0 : yapi === "pazar" ? pazarGeliriSeviyeBasina(durum, s.devlet) : DENGE.YAPI_AYLIK_GELIR[yapi],
             uygun: dog.gecerli, neden: dog.gecerli ? null : dog.neden,
           };
         }),
       }];
     }),
+    teknoloji: {
+      yuva: DENGE.ARASTIRMA_YUVASI,
+      kartlar: TEKNOLOJILER.map((t) => {
+        const oyuncu = durum.ayarlar.oyuncu;
+        const suren = durum.arastirmalar.find((a) => a.devlet === oyuncu && a.teknoloji === t.id);
+        const emir = durum.emirKuyrugu.some((e) => e.tur === "arastir" && e.teknoloji === t.id);
+        const dog = emirDogrula(durum, { tur: "arastir", teknoloji: t.id }, baglam);
+        const durumu = biliyor(durum, oyuncu, t.id) ? "biliniyor" : suren ? "suruyor" : emir ? "emir" : dog.gecerli ? "acik" : "kapali";
+        return { id: t.id, ad: t.ad, alan: t.alan, alanAdi: ALAN_ADLARI[t.alan], onKosul: t.onKosul.map((k) => teknolojiBul(k).ad),
+          etki: t.etki, bedel: DENGE.TEKNOLOJI[t.id].bedel, sure: DENGE.TEKNOLOJI[t.id].sure, durum: durumu,
+          kalanGun: suren ? suren.kalanGun : emir ? DENGE.TEKNOLOJI[t.id].sure : null,
+          uygun: dog.gecerli, neden: dog.gecerli ? null : dog.neden } as const;
+      }),
+    },
+    toplamaKurali: { bedelYuzde: toplamaBedelYuzde(durum, durum.ayarlar.oyuncu), gun: toplamaSuresi(durum, durum.ayarlar.oyuncu) },
     askerSehirleri: durum.sehirler.flatMap((s, indeks) => s.devlet !== durum.ayarlar.oyuncu ? [] : [{
       indeks, ad: s.ad, insanGucu: kullanilabilirInsanGucu(durum, indeks),
       uygun: s.kontrol === s.devlet && !!baglam.ag?.dugumler[s.dugum]
@@ -63,7 +79,7 @@ function ozet(durum: DunyaDurumu): Ozet {
           bekliyor: !n || s.kontrol !== t.devlet || durum.birimler[n.b]?.kontrol !== t.devlet, emir: false };
       }),
       ...durum.emirKuyrugu.flatMap((e) => e.tur !== "askerTopla" ? [] : [{ sehir: durum.sehirler[e.sehir].ad,
-        asker: e.asker, kalanGun: DENGE.TOPLAMA_GUN, bekliyor: false, emir: true }]),
+        asker: e.asker, kalanGun: toplamaSuresi(durum, durum.ayarlar.oyuncu), bekliyor: false, emir: true }]),
     ],
     planliKesinti: durum.planliKesintiler.map((k) => ({ tarih: tarihMetni(k.gun), neden: k.neden })),
     hash: durumOzeti(durum),
