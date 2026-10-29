@@ -47,6 +47,8 @@ describe("donanma ve deniz (8a)", () => {
     d.devletler[A].hazine = 1000;
     expect(emirVer(d, { tur: "gemiInsa", sehir: 1, gemi: "kalyon", adet: 1 }, B).gecerli).toBe(false); // yabancı liman
     expect(emirVer(d, { tur: "gemiInsa", sehir: 0, gemi: "kalyon", adet: 6 }, B).gecerli).toBe(false); // hazine
+    expect(emirVer(d, { tur: "gemiInsa", sehir: 0, gemi: "kalyon", adet: 2 }, B).gecerli).toBe(false); // teknoloji yok (DEC-0052)
+    d.devletler[A].teknolojiler.push("kalyon");
     expect(emirVer(d, { tur: "gemiInsa", sehir: 0, gemi: "kalyon", adet: 2 }, B).gecerli).toBe(true);
     expect(kullanilabilirHazine(d, A)).toBe(1000 - 2 * DENGE.GEMI.kalyon.bedel);
     emirleriUygula(d, B);

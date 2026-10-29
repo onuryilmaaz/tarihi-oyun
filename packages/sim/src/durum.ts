@@ -4,6 +4,7 @@
 import { tarihtenGun, type Tarih } from "./takvim";
 import { bosIstikrar, type Istikrar } from "./istikrar";
 import { bosYerelYonetim, type YerelYonetim } from "./yonetim";
+import type { Ambargo } from "./ticaret";
 import { baslangicDenizi, GEMI_TURLERI, type DenizHaritasi, type Donanma, type GemiInsasi } from "./deniz";
 import type { Emir } from "./emirler";
 import { HAREKET, type AgVerisi, type RotaAdimi } from "./hareket";
@@ -193,6 +194,7 @@ export interface DunyaDurumu {
   donanmalar: Donanma[];
   sonrakiDonanmaId: number;
   gemiInsalari: GemiInsasi[];
+  ambargolar: Ambargo[]; // 8b
   kusatmalar: Kusatma[];
   isgalHazirliklari: IsgalHazirligi[];
   barislar: BarisKaydi[];
@@ -231,7 +233,7 @@ export interface SenaryoVerisi {
   // 1453 nüfus grupları (7b; tahmini, [TASLAK]): karışım [din, kültür, binde]
   // Deniz bölgeleri, limanlar, boğazlar, başlangıç donanmaları (8a; tahmini, [TASLAK])
   deniz?: {
-    bolgeler: { id: string; ad: string; lon: number; lat: number; komsu: string[] }[];
+    bolgeler: { id: string; ad: string; lon: number; lat: number; komsu: string[]; ticaretGecidi?: string }[];
     limanlar: Record<string, string[]>;
     bogazlar: { ad: string; bolge: string }[];
     donanmalar: { devlet: string; bolge: string; ad: string; kadirga: number; kalyon: number }[];
@@ -249,7 +251,7 @@ export interface SenaryoVerisi {
 // 5: kuşatma, gerçek işgal ve barış (TASK-0007/4c); şema 3–4 için eklemeli dönüşüm var.
 // Şema geçmişi: 6 şehir yatırımları (5b), 7 teknoloji (5c), 8 diplomasi (6a), 9 AI ekonomi (6b), 10 AI savaş/barış (6c),
 // 11 hükümdar ve veraset (7a), 12 nüfus grupları ve iskân (7b), 13 istikrar (7c), 14 yerel yönetim (7d)
-export const SEMA_SURUMU = 15; // 15 donanma ve deniz (8a)
+export const SEMA_SURUMU = 16; // 15 donanma ve deniz (8a), 16 ticaret ve ambargo (8b)
 
 export function baslangicDurumu(s: SenaryoVerisi, secenek: { tohum: number; oyuncu?: string }): DunyaDurumu {
   const indeks = new Map(s.devletler.map((d, i) => [d.id, i]));
@@ -333,6 +335,7 @@ export function baslangicDurumu(s: SenaryoVerisi, secenek: { tohum: number; oyun
     donanmalar: deniz.donanmalar,
     sonrakiDonanmaId: deniz.donanmalar.length + 1,
     gemiInsalari: [],
+    ambargolar: [],
     ittifaklar: (s.ittifaklar ?? []).map((r) => {
       const [a, b] = [bul(r.a), bul(r.b)].sort((x, y) => x - y);
       return { a, b, baslangic: tarihtenGun(s.baslangic) };
@@ -479,6 +482,12 @@ export function degismezler(d: DunyaDurumu): string[] {
       || f.rota.some((x) => !tam(x) || x < 0 || x >= B) || !tam(f.kalanGun) || f.kalanGun < 0
       || (f.yuk !== null && (f.yuk.devlet !== f.devlet || d.ordular.some((o) => o.id === f.yuk!.id)))) h.push(`donanma ${f.id} geçersiz`);
     donanmaId.add(f.id);
+  }
+  for (const b of d.deniz.bolgeler) if (!tam(b.gecit) || b.gecit < -1 || b.gecit >= B) h.push(`deniz bölgesi ${b.id} geçidi geçersiz`);
+  const amb = new Set<string>();
+  for (const a of d.ambargolar) {
+    if (!d.devletler[a.devlet] || !d.devletler[a.hedef] || a.devlet === a.hedef || amb.has(`${a.devlet}:${a.hedef}`)) h.push("ambargo geçersiz");
+    amb.add(`${a.devlet}:${a.hedef}`);
   }
   for (const g of d.gemiInsalari) if (!d.sehirler[g.sehir] || (d.deniz.limanlar[g.sehir] ?? -1) < 0 || !GEMI_TURLERI.includes(g.gemi)
     || !tam(g.adet) || g.adet <= 0 || !tam(g.kalanGun) || g.kalanGun <= 0) h.push("gemi inşası geçersiz");

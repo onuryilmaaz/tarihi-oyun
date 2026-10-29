@@ -26,6 +26,7 @@ export const TEKNOLOJILER: Teknoloji[] = [
   { id: "vergi", ad: "Para ve Vergi Reformu", alan: "ekonomik", onKosul: ["sulama", "kervan"], etki: "Arazi geliri birim başına 10 → 11." },
   { id: "top", ad: "Büyük Top Dökümü", alan: "askeri", onKosul: [], etki: "Surlara saldırıda garnizon kaybı ×1,5." },
   { id: "daimiOrdu", ad: "Daimî Ordu", alan: "askeri", onKosul: [], etki: "Ordularınız muharebede %10 daha güçlü." },
+  { id: "kalyon", ad: "Kalyon İnşası", alan: "askeri", onKosul: ["top"], etki: "Tersanelerde kalyon yapılabilir (DEC-0052)." },
   { id: "kayit", ad: "Asker Kayıt Defterleri", alan: "askeri", onKosul: ["daimiOrdu"], etki: "Asker toplama %25 ucuz, 30 yerine 20 gün." },
   { id: "yargi", ad: "Yargı Teşkilatı", alan: "idari", onKosul: [], etki: "Yeni inşaatlar %20 daha kısa sürer." },
   { id: "sayim", ad: "Nüfus ve Vergi Sayımı", alan: "idari", onKosul: [], etki: "Şehirlerin insan gücü havuzu bir defaya mahsus +%50." },

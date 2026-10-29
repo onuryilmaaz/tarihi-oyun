@@ -14,7 +14,7 @@ import { aralik } from "./rastgele";
 export type GemiTuru = keyof typeof DENGE.GEMI;
 export const GEMI_TURLERI: GemiTuru[] = ["kadirga", "kalyon"];
 
-export interface DenizBolgesi { id: string; ad: string; komsu: number[] }
+export interface DenizBolgesi { id: string; ad: string; komsu: number[]; gecit: number } // gecit: ticaretin geçtiği bölge (−1 yok, 8b)
 export interface DenizHaritasi { bolgeler: DenizBolgesi[]; limanlar: number[]; bogazlar: { ad: string; bolge: number }[] } // limanlar: şehir → bölge (−1 değil)
 export interface Donanma {
   id: number; ad: string; devlet: number; bolge: number;
@@ -31,7 +31,7 @@ export function baslangicDenizi(s: SenaryoVerisi, devletIndeksi: (id: string) =>
   const v = s.deniz;
   if (!v) return { deniz: { ...BOS_DENIZ, limanlar: s.sehirler.map(() => -1) }, donanmalar: [] };
   const sira = new Map(v.bolgeler.map((b, i) => [b.id, i]));
-  const bolgeler = v.bolgeler.map((b) => ({ id: b.id, ad: b.ad, komsu: b.komsu.map((k) => sira.get(k)!) }));
+  const bolgeler = v.bolgeler.map((b) => ({ id: b.id, ad: b.ad, komsu: b.komsu.map((k) => sira.get(k)!), gecit: b.ticaretGecidi ? sira.get(b.ticaretGecidi)! : -1 }));
   const limanlar = s.sehirler.map((c) => {
     const e = Object.entries(v.limanlar).find(([, l]) => l.includes(c.ad));
     return e ? sira.get(e[0])! : -1;

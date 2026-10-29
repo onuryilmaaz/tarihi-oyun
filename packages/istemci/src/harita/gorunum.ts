@@ -34,6 +34,8 @@ export interface HaritaGorunumu {
   git(ad: keyof typeof KONUMLAR): void;
   istek(): void;
   devletRenkKutusu(d: number): string;
+  /** Devletin harita rengi (#rrggbb) */
+  devletRengiHex(d: number): string;
   oyuncuyuAyarla(devletIndeksi: number): void;
   /** Diplomasi harita modu (MASTER_SPEC §7.3): devlet başına renk (#rrggbb); null = siyasi harita */
   haritaRenkleri(renkler: string[] | null): void;
@@ -419,6 +421,7 @@ export function haritaGorunumuKur(h: Harita, wikidata: Record<string, WdDevlet>,
     git,
     istek,
     devletRenkKutusu,
+    devletRengiHex: (d: number) => `#${devletRengi(tema, h.paket.devletler[d].ton, d).getHexString(THREE.SRGBColorSpace)}`,
     mulkiyetGoster(birimler, sehirler) {
       let degisti = false;
       birimler.forEach((d, i) => { if (h.paket.birimler[i].d !== d) { h.paket.birimler[i].d = d; degisti = true; } });

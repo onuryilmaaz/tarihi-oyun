@@ -102,6 +102,7 @@ export const DENGE = {
     yargi: { bedel: 700, sure: 150 },
     sayim: { bedel: 900, sure: 180 },
     bayindirlik: { bedel: 1400, sure: 240 },
+    kalyon: { bedel: 1600, sure: 300 }, // 8a, DEC-0052
   },
   YAPI_EN_YUKSEK_TEKNOLOJIYLE: { tarla: 4, pazar: 4, sur: 6 }, // sulama / kervan / bayındırlık
   KERVAN_PAZAR_EK_GELIR: 5,
@@ -192,4 +193,12 @@ export const DENGE = {
   DENIZ_MORAL_TOPARLANMA: 20, // günlük, çatışma dışında
   ABLUKA_ERZAK_CARPANI: 2, // denizden ablukadaki liman kuşatmasında erzak bu kat hızlı biter
   YZ_DONANMA_GUC_YUZDE: 120, // AI donanması karşı tarafın en az bu yüzdesi güçlüyse saldırır
+  // 8b — ticaret (DEC-0051/0052); hepsi [TASLAK]
+  TICARET_NUFUS_BINDE: 1, // liman şehrinin aylık ticaret geliri: nüfusun binde biri (40.000 → 40)
+  TICARET_SAVAS_DENIZI_YUZDE: 50, // limanın denizinde savaştığınız bir donanma varsa
+  TICARET_GECIT_YUZDE: 50, // denizin ticaret geçidi (boğaz) düşman kontrolündeyse
+  AMBARGO_HEDEF_YUZDE: 10, // her ambargo hedefin ticaretinden düşer (en çok %50)
+  AMBARGO_HEDEF_EN_COK: 50,
+  AMBARGO_KOYAN_YUZDE: 5, // koyanın kendi ticaret kaybı (ambargo başına)
+  AMBARGO_ILISKI: -20, // hedefin koyana bakışı
 };

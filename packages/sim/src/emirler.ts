@@ -12,9 +12,10 @@ import { barisDogrula, barisiUygula } from "./baris";
 import { YAPI_ADLARI, insaatMaliyeti, insaatSuresi, sehirdeInsaatVar, yapiSeviyesi, type YapiTuru } from "./yatirim";
 import { bekleyenVerasetiCoz, tahtaCikar } from "./hanedan";
 import { iskanBedeli, nufusCikar } from "./nufus";
+import { ambargoVar } from "./ticaret";
 import { bolgeGunu, denizYolu, GEMI_TURLERI, kapasite, type GemiTuru } from "./deniz";
 import { diplomasiOnHesap, etkiEkle, hediyePuani, ittifakBoz, ittifakDegerlendir, ittifakKur, muttefik, muttefikleri, savasIlaniSonuclari } from "./diplomasi";
-import { arastirmaEngeli, teknolojiBul, teknolojiGecerli, toplamaBedelYuzde, toplamaSuresi, type TeknolojiId } from "./teknoloji";
+import { biliyor, arastirmaEngeli, teknolojiBul, teknolojiGecerli, toplamaBedelYuzde, toplamaSuresi, type TeknolojiId } from "./teknoloji";
 
 /** Statik senaryo verisi (dünya durumuna girmez, kayda yazılmaz). */
 export interface Baglam {
@@ -62,7 +63,9 @@ export type Emir =
   // Donanma (TASK-0011/8a): limanda gemi inşası, bölgeye yelken, çıkarma (ordu gemiye alınıp hedef limana indirilir)
   | { tur: "gemiInsa"; sehir: number; gemi: GemiTuru; adet: number; devlet?: number }
   | { tur: "donanmaHedef"; donanma: number; bolge: number }
-  | { tur: "cikarma"; donanma: number; ordu: number; sehir: number };
+  | { tur: "cikarma"; donanma: number; ordu: number; sehir: number }
+  // Ambargo koy/kaldır (TASK-0011/8b); oyuncu adına
+  | { tur: "ambargo"; hedef: number; acik: boolean };
 
 export type Dogrulama = { gecerli: true } | { gecerli: false; neden: string };
 
@@ -157,10 +160,19 @@ export function emirDogrula(d: DunyaDurumu, e: Emir, b: Baglam = BOS_BAGLAM, kuy
       if (para < 0 || bedel > para) return { gecerli: false, neden: `Hazine yetersiz: ${para} kullanılabilir, ${bedel} gerekli. Borçlanma yoktur.` };
       return { gecerli: true };
     }
+    case "ambargo": {
+      const oyuncu = d.ayarlar.oyuncu, v = d.devletler[e.hedef];
+      if (!Number.isSafeInteger(e.hedef) || !v || e.hedef === oyuncu) return { gecerli: false, neden: "Geçersiz hedef devlet." };
+      if (e.acik && muttefik(d, oyuncu, e.hedef)) return { gecerli: false, neden: `${v.ad} müttefikiniz; önce ittifaktan çıkın.` };
+      if (e.acik === ambargoVar(d, oyuncu, e.hedef)) return { gecerli: false, neden: e.acik ? `${v.ad}'na zaten ambargo var.` : `${v.ad}'na ambargo yok.` };
+      if (!kuyrukHaric && d.emirKuyrugu.some((x) => x.tur === "ambargo" && x.hedef === e.hedef)) return { gecerli: false, neden: "Bu devlet için bekleyen ambargo emri var." };
+      return { gecerli: true };
+    }
     case "gemiInsa": {
       const s = d.sehirler[e.sehir], devlet = e.devlet ?? d.ayarlar.oyuncu;
       if (!s || s.devlet !== devlet || s.kontrol !== devlet || (d.deniz.limanlar[e.sehir] ?? -1) < 0) return { gecerli: false, neden: "Gemi yalnızca kontrolünüzdeki kendi liman şehrinizde yapılır." };
       if (!GEMI_TURLERI.includes(e.gemi)) return { gecerli: false, neden: "Geçersiz gemi türü." };
+      if (e.gemi === "kalyon" && !biliyor(d, devlet, "kalyon")) return { gecerli: false, neden: "Kalyon yapmak için önce \"Kalyon İnşası\" teknolojisini araştırın." };
       if (d.kusatmalar.some((k) => k.sehir === e.sehir)) return { gecerli: false, neden: "Kuşatma altındaki limanda gemi yapılamaz." };
       if (!Number.isSafeInteger(e.adet) || e.adet <= 0 || e.adet > DENGE.GEMI_INSA_EN_COK) return { gecerli: false, neden: `Adet 1 ile ${DENGE.GEMI_INSA_EN_COK} arasında olmalı.` };
       const para = kuyrukHaric ? d.devletler[devlet].hazine : kullanilabilirHazine(d, devlet);
@@ -484,6 +496,15 @@ export function emirUygula(d: DunyaDurumu, e: Emir, b: Baglam = BOS_BAGLAM): voi
       }
       savasIlaniSonuclari(d, b.ag, e.devlet, e.hedef);
       break;
+    case "ambargo": {
+      const oyuncu = d.ayarlar.oyuncu, ad = d.devletler[e.hedef].ad;
+      if (e.acik) d.ambargolar.push({ devlet: oyuncu, hedef: e.hedef });
+      else d.ambargolar = d.ambargolar.filter((a) => !(a.devlet === oyuncu && a.hedef === e.hedef));
+      olayEkle(d, { tur: "ambargo", devlet: oyuncu, metin: e.acik
+        ? `${ad}'na ticaret ambargosu kondu: onların ticareti %${DENGE.AMBARGO_HEDEF_YUZDE}, sizinki %${DENGE.AMBARGO_KOYAN_YUZDE} azalır; size bakışları ${DENGE.AMBARGO_ILISKI}.`
+        : `${ad}'na uygulanan ambargo kaldırıldı.` });
+      break;
+    }
     case "gemiInsa": {
       const s = d.sehirler[e.sehir], devlet = s.devlet, g = DENGE.GEMI[e.gemi], bedel = e.adet * g.bedel;
       d.devletler[devlet].hazine -= bedel;

@@ -9,7 +9,7 @@ import {
   butceOzeti, insaatMaliyeti, insaatSuresi, sehirYapiGeliri, yapiSeviyesi, yapiEnYuksek, pazarGeliriSeviyeBasina, YAPI_ADLARI, YAPI_TURLERI,
   diplomasiOnHesap, etkiDegeri, hediyePuanBedeli, iliski, iliskiBilesenleri, ittifakDegerlendir, komsuMu, muttefik, muttefikleri, savasta,
   asayisAskeri, gerekenAsayis,
-  hukumdarYasi, VERASET_ADLARI, yerelYonetimAyarla, bolgeKontrolu, gorunurDonanmalar, kapasite, sehirMenzilinde, type Hukumdar,
+  hukumdarYasi, VERASET_ADLARI, yerelYonetimAyarla, bolgeKontrolu, gorunurDonanmalar, kapasite, sehirMenzilinde, sehirTicareti, type Hukumdar,
   ALAN_ADLARI, TEKNOLOJILER, teknolojiBul, biliyor, toplamaBedelYuzde, toplamaSuresi,
 } from "@tarihi/sim";
 import type { Istek, Ozet, Yanit } from "./sim-protokol";
@@ -82,6 +82,9 @@ function ozet(durum: DunyaDurumu): Ozet {
         && c.kontrol === f.devlet && sehirMenzilinde(durum, baglam, o, i))).map((o) => ({ id: o.id, ad: o.ad, asker: o.asker })),
     })),
     yabanciDonanmalar: gorunurDonanmalar(durum, durum.ayarlar.oyuncu),
+    ticaret: durum.sehirler.map((s, i) => (s.devlet === durum.ayarlar.oyuncu && durum.deniz.limanlar[i] >= 0 ? sehirTicareti(durum, i) : null)),
+    ambargolarim: durum.ambargolar.filter((a) => a.devlet === durum.ayarlar.oyuncu).map((a) => a.hedef),
+    bizeAmbargo: durum.ambargolar.filter((a) => a.hedef === durum.ayarlar.oyuncu).map((a) => a.devlet),
     gemiInsalari: [
       ...durum.gemiInsalari.filter((g) => g.devlet === durum.ayarlar.oyuncu).map((g) => ({ sehir: g.sehir, gemi: g.gemi, adet: g.adet, kalanGun: g.kalanGun, emir: false })),
       ...durum.emirKuyrugu.flatMap((e) => (e.tur === "gemiInsa" ? [{ sehir: e.sehir, gemi: e.gemi, adet: e.adet, kalanGun: DENGE.GEMI[e.gemi].sure, emir: true }] : [])),

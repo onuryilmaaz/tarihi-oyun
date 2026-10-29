@@ -7,6 +7,7 @@
   <style>
     :root {
       --panel: rgba(28, 24, 20, 0.9);
+      --yan-genislik: 340px; /* sol panel (DEC-0052) */
       --metin: #efe6d4;
       --soluk: #ab9f8a;
       --vurgu: #e2b356;
@@ -43,10 +44,22 @@
       margin: 14px 0 6px; font-weight: 700; }
     h2:first-child { margin-top: 0; }
     label { display: flex; align-items: center; gap: 8px; padding: 2px 0; cursor: pointer; }
-    input[type=checkbox] { accent-color: var(--vurgu); }
-    input[type=number], select { font: inherit; color: var(--metin); background: #29231d;
-      border: 1px solid var(--cizgi); border-radius: 6px; padding: 5px; max-width: 100%; }
-    input[type=number] { width: 95px; }
+    /* Form alanları: oyunun koyu/altın teması (tarayıcı varsayılanı yerine, DEC-0052) */
+    input[type=number], input[type=text], select { -webkit-appearance: none; appearance: none; font: inherit; font-size: 13px;
+      color: var(--metin); background: linear-gradient(#2e2721, #241e19); border: 1px solid rgba(239, 230, 212, .2);
+      border-radius: 6px; padding: 0 10px; height: 32px; box-sizing: border-box; max-width: 100%;
+      box-shadow: inset 0 1px 2px rgba(0, 0, 0, .35); transition: border-color .15s, box-shadow .15s; }
+    select { padding-right: 28px; cursor: pointer; text-overflow: ellipsis;
+      background: url("data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 10 6%22%3E%3Cpath d=%22M1 1l4 4 4-4%22 fill=%22none%22 stroke=%22%23e2b356%22 stroke-width=%221.6%22/%3E%3C/svg%3E") no-repeat right 10px center / 10px 6px, linear-gradient(#2e2721, #241e19); }
+    input[type=number]:hover, input[type=text]:hover, select:hover { border-color: rgba(226, 179, 86, .5); }
+    input[type=number]:focus, input[type=text]:focus, select:focus { outline: none; border-color: var(--vurgu); box-shadow: 0 0 0 2px rgba(226, 179, 86, .22); }
+    input[type=number] { width: 110px; font-variant-numeric: tabular-nums; -moz-appearance: textfield; }
+    input[type=number]::-webkit-inner-spin-button, input[type=number]::-webkit-outer-spin-button { -webkit-appearance: none; margin: 0; }
+    select option { background: #241e19; color: var(--metin); }
+    input[type=checkbox] { -webkit-appearance: none; appearance: none; width: 16px; height: 16px; flex: none; margin: 0; cursor: pointer;
+      border: 1px solid rgba(239, 230, 212, .35); border-radius: 4px; background: #241e19; display: inline-grid; place-content: center; }
+    input[type=checkbox]:checked { background: var(--vurgu) url("data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 12 10%22%3E%3Cpath d=%22M1 5l3.5 3.5L11 1.5%22 fill=%22none%22 stroke=%22%231c1814%22 stroke-width=%222%22/%3E%3C/svg%3E") no-repeat center / 10px 8px; border-color: var(--vurgu); }
+    input[type=checkbox]:focus-visible { outline: 2px solid rgba(226, 179, 86, .5); outline-offset: 1px; }
     #toplamaSehir { width: 100%; }
     #butceOzeti { margin-top: 10px; }
     #butceOzeti summary { cursor: pointer; color: var(--vurgu); }
@@ -134,7 +147,7 @@
     #haritaModlari button:first-child { border-radius: 6px 0 0 6px; margin-left: 0; }
     #haritaModlari button:last-child { border-radius: 0 6px 6px 0; }
     #haritaModlari button[aria-pressed="true"] { border-color: var(--vurgu); color: var(--vurgu); }
-    #nufusLejant { position: fixed; left: 296px; bottom: 132px; z-index: 5; padding: 10px 12px; font-size: 12px; display: grid; gap: 4px; max-height: 50vh; overflow: auto; }
+    #nufusLejant { position: fixed; left: calc(var(--yan-genislik) + 24px); bottom: 132px; z-index: 5; padding: 10px 12px; font-size: 12px; display: grid; gap: 4px; max-height: 50vh; overflow: auto; }
     #nufusLejant span { display: inline-block; width: 12px; height: 12px; border-radius: 3px; margin-right: 6px; vertical-align: -2px; }
     .nufus-cubuk { display: flex; height: 8px; border-radius: 4px; overflow: hidden; margin: 6px 0; }
     .nufus-liste { list-style: none; margin: 0 0 8px; padding: 0; font-size: 12px; display: grid; gap: 2px; }
@@ -142,7 +155,7 @@
     .nufus-liste span.renk { width: 10px; height: 10px; border-radius: 2px; display: inline-block; margin-right: 6px; }
     .iskan-satir { display: flex; gap: 6px; align-items: center; flex-wrap: wrap; }
     .iskan-satir input { width: 90px; }
-    #diplomasiLejant { position: fixed; left: 296px; bottom: 132px; z-index: 5; padding: 10px 12px; font-size: 12px; display: grid; gap: 4px; }
+    #diplomasiLejant { position: fixed; left: calc(var(--yan-genislik) + 24px); bottom: 132px; z-index: 5; padding: 10px 12px; font-size: 12px; display: grid; gap: 4px; }
     #diplomasiLejant span { display: inline-block; width: 12px; height: 12px; border-radius: 3px; margin-right: 6px; vertical-align: -2px; }
     .iliski-bilesen { list-style: none; margin: 4px 0 8px; padding: 0; font-size: 12px; display: grid; gap: 2px; }
     .iliski-bilesen li { display: flex; justify-content: space-between; gap: 8px; }
@@ -166,6 +179,29 @@
     #donanmaPaneli { border: 1px solid var(--cizgi); border-radius: 6px; padding: 8px; margin-top: 6px; font-size: 12px; display: grid; gap: 6px; }
     #donanmaPaneli select { max-width: 100%; }
     .ordu.donanma .renk { border-radius: 50%; }
+    /* Sol panel: başlık + sekmeler; içerik kendi içinde kayar, yatay taşma yok */
+    #yan { display: flex; flex-direction: column; overflow: hidden !important; padding: 0 !important; height: calc(100% - var(--ust) - 36px); }
+    #devletBaslik { display: flex; gap: 10px; align-items: center; padding: 12px 14px 8px; border-bottom: 1px solid var(--cizgi); }
+    #devletBaslik b { display: block; font-family: "Cinzel", serif; font-size: 15px; }
+    #devletBaslik small { display: block; color: var(--soluk); font-size: 11px; line-height: 1.35; }
+    #devletArmasi { width: 40px; height: 48px; flex: none; }
+    #devletArmasi svg, .arma svg { width: 100%; height: 100%; display: block; }
+    .arma { width: 34px; height: 41px; float: right; margin: 0 0 6px 8px; }
+    #sekmeler { display: grid; grid-template-columns: repeat(7, 1fr); border-bottom: 1px solid var(--cizgi); }
+    #sekmeler button { border: 0; border-radius: 0; background: none; padding: 7px 0 6px; font-size: 10.5px; color: var(--soluk);
+      display: flex; flex-direction: column; align-items: center; gap: 1px; position: relative; min-width: 0; }
+    #sekmeler button i { font-style: normal; font-size: 15px; line-height: 1; }
+    #sekmeler button[aria-selected="true"] { color: var(--vurgu); box-shadow: inset 0 -2px 0 var(--vurgu); }
+    .rozet-sayi { position: absolute; top: 2px; right: 4px; background: var(--hata); color: #fff; border-radius: 8px; font-size: 9px; padding: 0 4px; }
+    #sekmeIcerik { overflow-y: auto; overflow-x: hidden; padding: 4px 14px 14px; flex: 1; min-height: 0; }
+    #sekmeIcerik select, #sekmeIcerik input:not([type="checkbox"]) { max-width: 100%; box-sizing: border-box; }
+    #sekmeIcerik label { display: flex; }
+    /* Sayı/liste alanı olan etiketler: başlık üstte, alan tam genişlikte */
+    #sekmeIcerik label:has(input[type=number]), #sekmeIcerik label:has(select) { display: grid; gap: 4px; font-size: 12px; color: var(--soluk); margin-top: 6px; }
+    #sekmeIcerik label:has(input[type=number]) input, #sekmeIcerik label:has(select) select, #sekmeIcerik > section > select, #toplamaSehir { width: 100%; }
+    #sekmeIcerik .satir select { flex: 1; min-width: 0; }
+    #donanmaPaneli label select { width: 100%; margin-top: 2px; }
+    #sekmeIcerik .ordu-satir { width: 100%; text-align: left; }
     #onay { position: fixed; inset: 0; display: grid; place-items: center; background: rgba(15, 12, 9, .5); z-index: 12; }
     #onay .panel { position: static; width: min(440px, calc(100% - 32px)); padding: 22px; text-align: center; }
     #onay h3 { font-family: "Cinzel", serif; margin: 0 0 8px; font-size: 18px; }
@@ -204,7 +240,7 @@
     #kayitlar small { color: var(--soluk); font-size: 10px; }
 
     /* Sol panel */
-    #yan { top: calc(var(--ust) + 24px); left: 12px; width: 272px; max-height: calc(100% - var(--ust) - 36px);
+    #yan { top: calc(var(--ust) + 24px); left: 12px; width: var(--yan-genislik); max-height: calc(100% - var(--ust) - 36px);
       overflow: auto; overscroll-behavior: contain; }
     #gunluk { list-style: none; margin: 0; padding: 0; display: grid; gap: 6px; }
     #gunluk li { font-size: 12px; border-left: 2px solid var(--cizgi); padding-left: 8px; }
@@ -240,7 +276,7 @@
     #kesinti h3 { font-family: "Cinzel", serif; margin: 0 0 4px; font-size: 18px; color: var(--uyari); }
     #kesinti p { margin: 8px 0 16px; }
 
-    #lejant { left: 296px; bottom: 12px; padding: 8px 12px; font-size: 11.5px; color: var(--soluk); max-width: 560px; pointer-events: none; }
+    #lejant { left: calc(var(--yan-genislik) + 24px); bottom: 12px; padding: 8px 12px; font-size: 11.5px; color: var(--soluk); max-width: 560px; pointer-events: none; }
     #lejant b { color: var(--metin); font-weight: 600; }
     #ipucu { position: fixed; left: 0; top: 0; pointer-events: none; background: var(--panel); color: var(--metin);
       border: 1px solid var(--cizgi); border-radius: 5px; padding: 3px 8px; font-size: 12px; white-space: nowrap; }
@@ -280,74 +316,103 @@
   </header>
 
   <aside id="yan" class="panel">
-    <h2>Hükümdar</h2>
-    <div id="hukumdarKarti" class="not"></div>
-    <h2>Ordular</h2>
-    <ul id="orduListesi"></ul>
-    <div id="orduDetay" hidden></div>
-    <h2>Donanmalar</h2>
-    <ul id="donanmaListesi"></ul>
-    <div id="donanmaPaneli" hidden></div>
-    <h2>Kuşatma</h2>
-    <div id="kusatmaPaneli"></div>
-    <ul id="kusatmaListesi"></ul>
-    <h2>Asker toplama</h2>
-    <div id="askerToplama">
-      <label for="toplamaSehir">Şehir</label>
-      <select id="toplamaSehir" aria-label="Asker toplanacak şehir"></select>
-      <label for="toplamaAsker">Asker sayısı <input id="toplamaAsker" type="number" min="1" step="1" value="1000" /></label>
-      <p id="toplamaBilgi" class="not"></p>
-      <button id="toplaBtn" style="margin-top:6px">Asker topla</button>
-      <p class="not">İnsan gücü ve denge değerleri tahminidir. Havuz bu sürümde kendiliğinden yenilenmez.</p>
-      <ul id="toplamaListesi"></ul>
+    <header id="devletBaslik">
+      <div id="devletArmasi" aria-hidden="true"></div>
+      <div><b id="devletAdi">—</b><small id="devletAlt"></small></div>
+    </header>
+    <nav id="sekmeler" role="tablist" aria-label="Sol panel">
+      <button role="tab" data-sekme="devlet" title="Devlet: hükümdar, bütçe, araştırma, yerel yönetim"><i>👑</i>Devlet</button>
+      <button role="tab" data-sekme="ordu" title="Ordular, kuşatma, asker toplama"><i>⚔</i>Ordu</button>
+      <button role="tab" data-sekme="deniz" title="Donanmalar"><i>⚓</i>Deniz</button>
+      <button role="tab" data-sekme="sehir" title="Şehir yatırımları, inşaat, iskân, tersane"><i>🏰</i>Şehir</button>
+      <button role="tab" data-sekme="savas" title="Savaşlar, barış, muharebe raporları"><i>🏳</i>Savaş<span class="rozet-sayi" id="savasRozet" hidden></span></button>
+      <button role="tab" data-sekme="gunluk" title="Olay günlüğü"><i>📜</i>Günlük</button>
+      <button role="tab" data-sekme="ayar" title="Katmanlar, git, geliştirici"><i>⚙</i>Ayar</button>
+    </nav>
+    <div id="sekmeIcerik">
+      <section data-sekme="devlet">
+        <h2>Hükümdar</h2>
+        <div id="hukumdarKarti" class="not"></div>
+        <details id="butceOzeti" open>
+          <summary>Aylık bütçe</summary>
+          <dl id="butceKalemleri"></dl>
+          <p id="orduGideri" class="not"></p>
+          <p class="not">Gelir hâlâ prototip hesabıdır. Aylık fark, mevcut arazi ve ordular korunursa geçerlidir; toplama ve tazminat gibi tek seferlik işlemler bu farka dahil değildir.</p>
+        </details>
+        <h2>Araştırmalar</h2>
+        <ul id="arastirmaListesi"></ul>
+        <h2>Yerel yönetim</h2>
+        <div id="yerelYonetim">
+          <label for="yonetimButce">Aylık bütçe tavanı <input id="yonetimButce" type="number" min="0" step="50" value="0" /></label>
+          <label for="yonetimAlt">Hazine alt sınırı <input id="yonetimAlt" type="number" min="0" step="100" value="0" /></label>
+          <button id="yonetimKaydet" style="margin-top:6px">Ayarı uygula</button>
+          <p id="yonetimBilgi" class="not"></p>
+        </div>
+      </section>
+      <section data-sekme="ordu" hidden>
+        <h2>Ordular</h2>
+        <ul id="orduListesi"></ul>
+        <div id="orduDetay" hidden></div>
+        <h2>Kuşatma</h2>
+        <div id="kusatmaPaneli"></div>
+        <ul id="kusatmaListesi"></ul>
+        <h2>Asker toplama</h2>
+        <div id="askerToplama">
+          <label for="toplamaSehir">Şehir</label>
+          <select id="toplamaSehir" aria-label="Asker toplanacak şehir"></select>
+          <label for="toplamaAsker">Asker sayısı <input id="toplamaAsker" type="number" min="1" step="1" value="1000" /></label>
+          <p id="toplamaBilgi" class="not"></p>
+          <button id="toplaBtn" style="margin-top:6px">Asker topla</button>
+          <p class="not">İnsan gücü ve denge değerleri tahminidir. Havuz bu sürümde kendiliğinden yenilenmez.</p>
+          <ul id="toplamaListesi"></ul>
+        </div>
+      </section>
+      <section data-sekme="deniz" hidden>
+        <h2>Donanmalar</h2>
+        <ul id="donanmaListesi"></ul>
+        <div id="donanmaPaneli" hidden></div>
+        <p class="not">Haritadaki ⚓ işaretine tıklayarak da donanma seçebilirsiniz. Gemi yapmak için liman şehrinizin panelindeki Tersane bölümünü kullanın.</p>
+      </section>
+      <section data-sekme="sehir" hidden>
+        <h2>Şehir yatırımları</h2>
+        <div class="satir"><select id="yatirimSehir" aria-label="Yatırım yapılacak şehir"></select><button id="yatirimAc">Şehri aç</button></div>
+        <ul id="insaatListesi"></ul>
+      </section>
+      <section data-sekme="savas" hidden>
+        <h2>Savaşlar</h2>
+        <ul id="savasListesi"></ul>
+        <ul id="barisGecmisi"></ul>
+        <h2>Muharebe raporları</h2>
+        <ul id="raporListesi"></ul>
+      </section>
+      <section data-sekme="gunluk" hidden>
+        <h2>Olay günlüğü</h2>
+        <ul id="gunluk"></ul>
+        <p class="not" id="bekleyen"></p>
+        <ul id="planli"></ul>
+      </section>
+      <section data-sekme="ayar" hidden>
+        <h2>Katmanlar</h2>
+        <label><input type="checkbox" id="kEtiket" checked /> Devlet adları</label>
+        <label><input type="checkbox" id="kSehir" checked /> Şehirler</label>
+        <label><input type="checkbox" id="kArazi" checked /> Arazi birimi sınırları</label>
+        <label><input type="checkbox" id="kNehir" checked /> Nehirler</label>
+        <label><input type="checkbox" id="kGuven" /> Kaynak güveni (tahmin sınırları kesikli)</label>
+        <h2>Git</h2>
+        <div class="satir">
+          <button data-git="dunya">Dünya</button>
+          <button data-git="avrupa">Avrupa ve Yakındoğu</button>
+          <button data-git="konstantiniyye">Konstantiniyye</button>
+        </div>
+        <h2>Geliştirici denemeleri</h2>
+        <div class="satir">
+          <button id="testKesinti">Test kesintisi (10 gün)</button>
+          <button id="testHarca">Test harcaması (50.000)</button>
+        </div>
+        <p class="not">Aşama 2 altyapısını sınamak içindir; gerçek oyun mekaniği değildir. Gelir ve nüfus değerleri test değeridir.</p>
+        <p class="not"><span id="sonTur"></span><br />Durum özeti: <span id="ozetHash"></span></p>
+      </section>
     </div>
-    <h2>Yerel yönetim</h2>
-    <div id="yerelYonetim">
-      <label for="yonetimButce">Aylık bütçe tavanı <input id="yonetimButce" type="number" min="0" step="50" value="0" /></label>
-      <label for="yonetimAlt">Hazine alt sınırı <input id="yonetimAlt" type="number" min="0" step="100" value="0" /></label>
-      <button id="yonetimKaydet" style="margin-top:6px">Ayarı uygula</button>
-      <p id="yonetimBilgi" class="not"></p>
-    </div>
-    <h2>Şehir yatırımları</h2>
-    <div class="satir"><select id="yatirimSehir" aria-label="Yatırım yapılacak şehir"></select><button id="yatirimAc">Şehri aç</button></div>
-    <ul id="insaatListesi"></ul>
-    <h2>Araştırmalar</h2>
-    <ul id="arastirmaListesi"></ul>
-    <h2>Ordu giderleri</h2>
-    <p id="orduGideri" class="not"></p>
-    <details id="butceOzeti" open>
-      <summary>Aylık bütçe özeti</summary>
-      <dl id="butceKalemleri"></dl>
-      <p class="not">Gelir hâlâ prototip hesabıdır. Aylık fark, mevcut arazi ve ordular korunursa geçerlidir; toplama ve tazminat gibi tek seferlik işlemler bu farka dahil değildir.</p>
-    </details>
-    <h2>Savaşlar</h2>
-    <ul id="savasListesi"></ul>
-    <ul id="barisGecmisi"></ul>
-    <h2>Muharebe raporları</h2>
-    <ul id="raporListesi"></ul>
-    <h2>Olay günlüğü</h2>
-    <ul id="gunluk"></ul>
-    <p class="not" id="bekleyen"></p>
-    <ul id="planli"></ul>
-    <h2>Katmanlar</h2>
-    <label><input type="checkbox" id="kEtiket" checked /> Devlet adları</label>
-    <label><input type="checkbox" id="kSehir" checked /> Şehirler</label>
-    <label><input type="checkbox" id="kArazi" checked /> Arazi birimi sınırları</label>
-    <label><input type="checkbox" id="kNehir" checked /> Nehirler</label>
-    <label><input type="checkbox" id="kGuven" /> Kaynak güveni (tahmin sınırları kesikli)</label>
-    <h2>Git</h2>
-    <div class="satir">
-      <button data-git="dunya">Dünya</button>
-      <button data-git="avrupa">Avrupa ve Yakındoğu</button>
-      <button data-git="konstantiniyye">Konstantiniyye</button>
-    </div>
-    <h2>Geliştirici denemeleri</h2>
-    <div class="satir">
-      <button id="testKesinti">Test kesintisi (10 gün)</button>
-      <button id="testHarca">Test harcaması (50.000)</button>
-    </div>
-    <p class="not">Aşama 2 altyapısını sınamak içindir; gerçek oyun mekaniği değildir. Gelir ve nüfus değerleri test değeridir.</p>
-    <p class="not"><span id="sonTur"></span><br />Durum özeti: <span id="ozetHash"></span></p>
   </aside>
 
   <aside id="bilgi" class="panel" hidden></aside>

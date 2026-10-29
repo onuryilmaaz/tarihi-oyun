@@ -134,6 +134,12 @@ export function yukle(metin: string, beklenenSenaryo?: string): DunyaDurumu {
     // Şema 14 → 15 (TASK-0011/8a): eski kayıtta deniz verisi yok; deniz sistemi bu kayıtta kapalı kalır
     d.deniz = { bolgeler: [], limanlar: d.sehirler.map(() => -1), bogazlar: [] };
     d.donanmalar = []; d.sonrakiDonanmaId = 1; d.gemiInsalari = [];
+    d.sema = 15;
+  }
+  if (d.sema === 15) {
+    // Şema 15 → 16 (TASK-0011/8b): ambargo yok; eski kayıtta ticaret geçidi bilinmiyor (etkisiz)
+    for (const b of d.deniz.bolgeler) b.gecit = -1;
+    d.ambargolar = [];
     d.sema = SEMA_SURUMU;
   }
   if (d.sema !== SEMA_SURUMU) throw new KayitHatasi("Kayıt tutarsız: dünya şema sürümü uyuşmuyor.");

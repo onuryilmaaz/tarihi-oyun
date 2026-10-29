@@ -82,6 +82,7 @@ export function iliskiBilesenleri(d: DunyaDurumu, o: DiplomasiOnHesap, a: number
   if (ortak) r.push({ ad: "Ortak düşman", deger: DENGE.ILISKI_ORTAK_DUSMAN });
   const dip = hukumdarDiplomasiPuani(d, b);
   if (dip) r.push({ ad: "Hükümdarının diplomasisi", deger: dip });
+  if (d.ambargolar?.some((x) => x.devlet === b && x.hedef === a)) r.push({ ad: "Ambargo uyguluyor", deger: DENGE.AMBARGO_ILISKI });
   const din = dinBileseni(d, a, b);
   if (din) r.push({ ad: din > 0 ? "Aynı din" : "Farklı din", deger: din });
   return r;

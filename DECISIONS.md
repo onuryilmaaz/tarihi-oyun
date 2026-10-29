@@ -678,3 +678,14 @@ Kaynak belge: `MASTER_SPEC.md` (v1.3). Orijinal keşif çıktısı:
   5. 8b (ticaret yolları) başlar.
 - **Onay kaydı:** Kullanıcı: "1- başarılı 2- uygun 3- b 4- pushla 5- evet"; "sol paneli daha kullanışlı yap … sekme bazlı devlet armaları falan olsun seçili devlete ait" (2026-10-29)
 - **Durum:** GEÇERLİ
+
+## DEC-0053 — Panel geri bildirimi, 8b kabulü, 8c'ye geçiş
+
+- **Tarih:** 2026-10-29
+- **Seçilen karar:**
+  1. Sol panel "daha iyi olabilir": genişlik 272 → 340 px; form alanları (sayı, liste, onay kutusu) tarayıcı varsayılanı yerine
+     oyunun koyu/altın temasıyla. Lejantlar panel genişliğine göre konumlanır.
+  2. 8b (ticaret) ve kalyon teknolojisi testleri tamam sayıldı; commit + push onaylandı.
+  3. 8c (casusluk) başlar.
+- **Onay kaydı:** Kullanıcı: "1- daha iyi olabilir. panel biraz daha geniş olsun. input alanları default olmasın orayı da bizim tasarımı kullan. 2- evet 3- evet" (2026-10-29)
+- **Durum:** GEÇERLİ

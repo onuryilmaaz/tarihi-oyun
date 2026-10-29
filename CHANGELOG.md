@@ -1,5 +1,18 @@
 # CHANGELOG
 
+## 2026-10-29 — Sol panel düzeni, kalyon teknolojisi, TASK-0011 / 8b ticaret (Claude)
+
+- DEC-0052: 8a kabul; deniz tablosu onayı; kalyon teknolojiye bağlandı; sol panel düzeni.
+- DEC-0053: panel 340 px; sayı/liste/onay kutuları oyunun temasıyla (tarayıcı varsayılanı değil); 8b kabul.
+- İstemci: sol panel sekmeli (Devlet, Ordu, Deniz, Şehir, Savaş, Günlük, Ayar; son sekme hatırlanır), üstte devlet
+  arması + ad + hükümdar; seçili yabancı devletin paneline de arma. Armalar oyunun ürettiği SVG kalkanlardır
+  (devlet rengi + resmî din simgesi; lisanslı görsel yok). Yatay kaymalar giderildi. Ordu/donanma seçilince ilgili sekme açılır.
+- `teknoloji.ts`: "Kalyon İnşası" (askerî, ön koşul Büyük Top Dökümü); kalyon yapımı bu teknolojiyi ister.
+- `packages/sim/src/ticaret.ts`: liman ticaret geliri; abluka, savaş denizi, ticaret geçidi (boğazlar), ambargo
+  (`ambargo` emri, ilişki bileşeni). Bütçede "ticaret" satırı, şehir panelinde ticaret ve nedenleri, devlet panelinde
+  "Ambargo koy/kaldır". `deniz.json`'a ticaret geçitleri eklendi. Kayıt şeması 16.
+- `packages/sim/test/ticaret.test.ts` (5 test; toplam 179), `docs/qa/ASAMA-8B-TEST.md`.
+
 ## 2026-10-29 — TASK-0011 / 8a: donanma ve deniz kontrolü (Claude)
 
 - DEC-0050: 7d kabul, Aşama 7 kapandı. DEC-0051: Aşama 8 kartı; gemi türleri kadırga ve kalyon.

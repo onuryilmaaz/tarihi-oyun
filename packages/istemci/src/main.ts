@@ -7,6 +7,7 @@ import "@fontsource/inter/500.css";
 import "@fontsource/inter/700.css";
 import { type YapiTuru, DENGE, tarihMetni, toplamaMaliyeti, type Emir, type MuharebeRaporu, type SenaryoVerisi, type Tutum, type TurSuresi } from "@tarihi/sim";
 import { Color } from "three";
+import { armaSvg } from "./arma";
 import { haritaYukle } from "./harita/veri";
 import { haritaGorunumuKur, kacis, KONUMLAR, type Katmanlar, type WdDevlet } from "./harita/gorunum";
 import { SimIstemcisi, type Ozet, type RotaOnizleme } from "./sim-protokol";
@@ -213,7 +214,27 @@ async function baslat() {
         → <select id="cikarmaSehir">${limanlar.map((i) => `<option value="${i}">${kacis(senaryo.sehirler[i].ad)} (${kacis(bolgeAdi(ozet.limanlar[i]))})</option>`).join("")}</select></label>
         <button id="cikarmaBtn">Çıkarma yap</button>` : '<span class="not">Çıkarma için bir ordunuzu bu denizdeki kendi limanınıza götürün.</span>'}`}`;
   };
-  const donanmaSec = (id: number | null) => { seciliDonanma = id; donanmaArayuzu(); };
+  const donanmaSec = (id: number | null) => { seciliDonanma = id; if (id !== null) sekmeAc("deniz"); donanmaArayuzu(); };
+  // Sol panel sekmeleri (DEC-0052); son açılan sekme tarayıcıda hatırlanır
+  const sekmeAc = (ad: string) => {
+    document.querySelectorAll<HTMLElement>("#sekmeler [data-sekme]").forEach((b) => b.setAttribute("aria-selected", String(b.dataset.sekme === ad)));
+    document.querySelectorAll<HTMLElement>("#sekmeIcerik > section").forEach((s) => { s.hidden = s.dataset.sekme !== ad; });
+    try { localStorage.setItem("tarihi-sol-sekme", ad); } catch { /* depolama kapalı olabilir */ }
+  };
+  $("sekmeler").addEventListener("click", (e) => {
+    const b = (e.target as HTMLElement).closest<HTMLElement>("[data-sekme]");
+    if (b) sekmeAc(b.dataset.sekme!);
+  });
+  sekmeAc((() => { try { return localStorage.getItem("tarihi-sol-sekme") ?? "devlet"; } catch { return "devlet"; } })());
+  const devletBasligi = () => {
+    const i = ozet.oyuncu.indeks, hk = ozet.hukumdar;
+    $("devletArmasi").innerHTML = armaSvg(gorunum.devletRengiHex(i), ozet.din, ozet.oyuncu.ad);
+    $("devletAdi").textContent = ozet.oyuncu.ad;
+    $("devletAlt").textContent = `${hk ? `${hk.ad} · ${hk.yas} yaşında` : "Taht boş"} · ${dinAdi(ozet.din)}`;
+    const n = ozet.savaslar.length + ozet.barisTeklifleri.filter((t) => t.cevap === null).length;
+    $("savasRozet").hidden = n === 0;
+    $("savasRozet").textContent = String(n);
+  };
   const arayuzuGuncelle = () => {
     if (seciliOrdu !== null && !ozet.ordular.some((o) => o.id === seciliOrdu)) seciliOrdu = null;
     $("oyuncu").innerHTML = `${gorunum.devletRenkKutusu(ozet.oyuncu.indeks)}<span>${kacis(ozet.oyuncu.ad)}</span>`;
@@ -247,7 +268,7 @@ async function baslat() {
     const para = (n: number) => n.toLocaleString("tr-TR");
     $("butceKalemleri").innerHTML = `<dt>Hazine</dt><dd>${para(butce.hazine)}</dd>
       <dt>Emirlere ayrılan</dt><dd>${para(butce.ayrilan)}</dd><dt>Kullanılabilir</dt><dd>${para(butce.kullanilabilir)}</dd>
-      <dt>Aylık gelir (prototip)</dt><dd>+${para(butce.aylikGelir)}<small class="not"> · arazi ${para(butce.aylikAraziGeliri)} (${para(butce.araziSayisi)} arazi) + yapılar ${para(butce.aylikYapiGeliri)}</small></dd>
+      <dt>Aylık gelir (prototip)</dt><dd>+${para(butce.aylikGelir)}<small class="not"> · arazi ${para(butce.aylikAraziGeliri)} (${para(butce.araziSayisi)} arazi) + yapılar ${para(butce.aylikYapiGeliri)} + ticaret ${para(butce.aylikTicaretGeliri)}</small></dd>
       <dt>Aylık ordu maaşı</dt><dd>−${para(butce.aylikMaas)}<small class="not"> · ${para(butce.askerSayisi)} asker</small></dd>
       <dt>Aylık fark</dt><dd id="butceNet" class="${butce.aylikNet < 0 ? "eksi" : "artı"}">${butce.aylikNet > 0 ? "+" : ""}${para(butce.aylikNet)}</dd>`;
     $("savasListesi").innerHTML = ozet.savaslar.map((s) =>
@@ -272,6 +293,7 @@ async function baslat() {
     if (!$("teknoloji").hidden) teknolojiCiz();
     diplomasiHaritasi();
     hukumdarKarti();
+    devletBasligi();
     const yy = ozet.yerelYonetim, acikSehir = ozet.sehirYatirimlari.filter((x) => x.yonetici);
     if (document.activeElement?.id !== "yonetimButce") $<HTMLInputElement>("yonetimButce").value = String(yy.butce);
     if (document.activeElement?.id !== "yonetimAlt") $<HTMLInputElement>("yonetimAlt").value = String(yy.altSinir);
@@ -423,12 +445,17 @@ async function baslat() {
         ${c.devlet === ozet.oyuncu.indeks ? `<p class="not">Asayiş: ${st.asayis}/${st.gerekenAsker} asker. Yardım indirimi kalan: ${st.bagis} puan.</p>
         <button data-bagis="${s.id}" ${st.bagisUygun ? "" : "disabled"}>Bağış / imar yardımı (${DENGE.IST_BAGIS_BEDEL})</button>
         <p class="not">${kacis(st.bagisNedeni ?? `Sonraki aylık hesapta −${DENGE.IST_BAGIS_INDIRIM} puan; ayda ${DENGE.IST_BAGIS_SONUM} puan söner. Borçlanma yoktur.`)}</p>` : ""}</section>`;
+      const tic = ozet.ticaret[s.id];
+      const ticaret = !tic ? "" : `<h4>Ticaret</h4><p class="not">Aylık ticaret geliri: <b>${tic.gelir}</b> (taban ${tic.taban}, %${tic.yuzde}).${tic.nedenler.length ? `<br />${tic.nedenler.map(kacis).join("<br />")}` : " Ticaret yolları açık."}</p>`;
       const tersane = !y || (ozet.limanlar[s.id] ?? -1) < 0 ? "" : `<h4>Tersane (${kacis(bolgeAdi(ozet.limanlar[s.id]))})</h4><div class="iskan-satir">
-          <select id="gemiTuru" aria-label="Gemi türü">${(["kadirga", "kalyon"] as const).map((t) => `<option value="${t}">${DENGE.GEMI[t].ad} — ${DENGE.GEMI[t].bedel}, ${DENGE.GEMI[t].sure} gün</option>`).join("")}</select>
+          <select id="gemiTuru" aria-label="Gemi türü">${(["kadirga", "kalyon"] as const).map((t) => {
+            const kapali = t === "kalyon" && ozet.teknoloji.kartlar.find((k) => k.id === "kalyon")?.durum !== "biliniyor";
+            return `<option value="${t}"${kapali ? " disabled" : ""}>${DENGE.GEMI[t].ad} — ${DENGE.GEMI[t].bedel}, ${DENGE.GEMI[t].sure} gün${kapali ? " (Kalyon İnşası gerekli)" : ""}</option>`;
+          }).join("")}</select>
           <input id="gemiAdet" type="number" min="1" max="${DENGE.GEMI_INSA_EN_COK}" value="5" aria-label="Adet" />
           <button data-eylem="gemi" data-sehir="${s.id}">Gemi yap</button></div>
         <p class="not">Kadırga: güç ${DENGE.GEMI.kadirga.guc}, ${DENGE.GEMI.kadirga.kapasite} asker taşır, bölgeyi ${DENGE.GEMI.kadirga.hizGun} günde geçer. Kalyon: güç ${DENGE.GEMI.kalyon.guc}, ${DENGE.GEMI.kalyon.kapasite} asker, ${DENGE.GEMI.kalyon.hizGun} gün. Aylık bakım ${DENGE.GEMI.kadirga.bakim} / ${DENGE.GEMI.kalyon.bakim}.</p>`;
-      return `${istikrar}${nufus}${iskan}${tersane}<h4>Şehir savunması (prototip değerleri)</h4><dl><dt>Sur seviyesi</dt><dd>${c.sur}</dd>
+      return `${istikrar}${nufus}${iskan}${ticaret}${tersane}<h4>Şehir savunması (prototip değerleri)</h4><dl><dt>Sur seviyesi</dt><dd>${c.sur}</dd>
         <dt>Garnizon</dt><dd>${c.garnizonTahmin ? "Yaklaşık " : ""}${c.garnizon.toLocaleString("tr-TR")}</dd></dl>
         <p class="not">${k ? `${k.gun} etkin gündür kuşatma altında.` : c.kontrol === ozet.oyuncu.indeks
           ? c.devlet === ozet.oyuncu.indeks ? "Şehir size ait ve askerî kontrolünüzde." : "Şehir askerî kontrolünüzde; yasal sahiplik barış antlaşmasıyla değişir."
@@ -446,7 +473,10 @@ async function baslat() {
     if (savas) return `<p class="savas-durumu">⚔ Savaştasınız (${kacis(savas.baslangic)}) · Skor ${savas.skor}</p><button data-eylem="baris" data-savas="${savas.id}">Barış teklif et</button>${dip}`;
     if (bekleyenSavas.has(s.id)) return `<p class="savas-durumu">Savaş ilan edildi; bir sonraki turda başlar.</p>${dip}`;
     const k = ozet.diplomasi[s.id];
-    return `${dip}<div class="satir eylem"><button class="tehlike" data-eylem="savas" data-devlet="${s.id}"${k?.muttefik ? ' disabled title="Müttefikinize savaş ilan edemezsiniz; önce ittifaktan çıkın."' : ""}>Savaş ilan et</button></div>`;
+    const amb = ozet.ambargolarim.includes(s.id);
+    const ambargo = `<button data-eylem="ambargo" data-devlet="${s.id}" data-acik="${amb ? 0 : 1}"${!amb && k?.muttefik ? " disabled" : ""}>${amb ? "Ambargoyu kaldır" : "Ambargo koy"}</button>`;
+    return `${dip}<div class="satir eylem">${ambargo}<button class="tehlike" data-eylem="savas" data-devlet="${s.id}"${k?.muttefik ? ' disabled title="Müttefikinize savaş ilan edemezsiniz; önce ittifaktan çıkın."' : ""}>Savaş ilan et</button></div>
+      ${ozet.bizeAmbargo.includes(s.id) ? '<p class="not">Bu devlet size ticaret ambargosu uyguluyor.</p>' : ""}`;
   };
   const isaretli = (n: number) => `<span class="${n > 0 ? "arti" : n < 0 ? "eksi" : ""}">${n > 0 ? "+" : ""}${n}</span>`;
   const iliskiAdi = (p: number) => (p >= 50 ? "Dostane" : p >= 15 ? "İyi" : p > -15 ? "Tarafsız" : p > -50 ? "Soğuk" : "Düşmanca");
@@ -463,8 +493,9 @@ async function baslat() {
         <button data-eylem="hediye" data-devlet="${devlet}"${k.hediyeKalan ? "" : " disabled"}>Hediye gönder</button></div>
       <p class="not">1 ilişki puanı ≈ ${k.hediyePuanBedeli.toLocaleString("tr-TR")} · ${k.hediyeKalan ? `en çok ${k.hediyeKalan} puan daha eklenebilir` : "hediye etkisi dolu"}; zamanla söner.</p>`;
     const inanc = `<p class="not">Resmî din: ${kacis(dinAdi(ozet.devletDinleri[devlet]))}</p>`;
+    const arma = `<div class="arma">${armaSvg(gorunum.devletRengiHex(devlet), ozet.devletDinleri[devlet], h.paket.devletler[devlet].ad)}</div>`;
     const huk = k.hukumdar ? `<h4>Hükümdar</h4><p class="not"><b>${kacis(k.hukumdar.ad)}</b>${kurguRozeti(k.hukumdar)} · ${k.hukumdar.yas} yaşında · ${kacis(k.hukumdar.hanedan)}<br />${yetenekMetni(k.hukumdar)} · meşruiyet ${k.hukumdar.mesruiyet}</p>` : "";
-    return `${huk}${inanc}<h4>Diplomasi</h4><dl><dt>Size bakışı</dt><dd>${isaretli(k.bakisi)} · ${iliskiAdi(k.bakisi)}</dd>
+    return `${arma}${huk}${inanc}<h4>Diplomasi</h4><dl><dt>Size bakışı</dt><dd>${isaretli(k.bakisi)} · ${iliskiAdi(k.bakisi)}</dd>
       <dt>Sizin bakışınız</dt><dd>${isaretli(k.bakisimiz)} · ${iliskiAdi(k.bakisimiz)}</dd></dl>
       ${k.bilesenler.length ? `<ul class="iliski-bilesen">${k.bilesenler.map((b) => `<li><span>${kacis(b.ad)}</span>${isaretli(b.deger)}</li>`).join("")}</ul>` : '<p class="not">Aranızda özel bir etken yok.</p>'}
       ${durum ? `<p class="not">${durum}</p>` : ""}${ittifak}${hediye}`;
@@ -489,6 +520,13 @@ async function baslat() {
     }
     const baris = (e.target as HTMLElement).closest<HTMLElement>('[data-eylem="baris"]');
     if (baris) { savasUI.barisAc(Number(baris.dataset.savas)); return; }
+    const amb = (e.target as HTMLElement).closest<HTMLElement>('[data-eylem="ambargo"]');
+    if (amb) {
+      const hedef = Number(amb.dataset.devlet), acik = amb.dataset.acik === "1", ad = h.paket.devletler[hedef].ad;
+      if (acik && !await onayIste("Ambargo", `${ad}'na ticaret ambargosu konsun mu? Onların liman ticareti %${DENGE.AMBARGO_HEDEF_YUZDE}, sizinki %${DENGE.AMBARGO_KOYAN_YUZDE} azalır; size bakışları ${DENGE.AMBARGO_ILISKI} puan bozulur.`, "Ambargo koy", true)) return;
+      await emirGonder({ tur: "ambargo", hedef, acik }, acik ? `${ad}'na ambargo emri verildi (bir sonraki tur).` : `${ad} ambargosunun kaldırılması emri verildi.`);
+      return;
+    }
     const gemi = (e.target as HTMLElement).closest<HTMLElement>('[data-eylem="gemi"]');
     if (gemi) {
       const sehir = Number(gemi.dataset.sehir), tur = $<HTMLSelectElement>("gemiTuru").value as "kadirga" | "kalyon";
@@ -610,6 +648,7 @@ async function baslat() {
   };
   const orduSec = (id: number | null) => {
     seciliOrdu = seciliOrdu === id ? null : id;
+    if (seciliOrdu !== null) sekmeAc("ordu");
     arayuzuGuncelle();
   };
   $("orduListesi").addEventListener("click", (e) => {

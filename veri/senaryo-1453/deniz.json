@@ -1,5 +1,5 @@
 {
- "aciklama": "1453 deniz bölgeleri, limanlar ve başlangıç donanmaları — agent'ın tahmini, [TASLAK] (DEC-0051). Bölge merkezleri boylam/enlem (harita işareti için); limanlar senaryo şehir adlarıdır.",
+ "aciklama": "1453 deniz bölgeleri, limanlar ve başlangıç donanmaları — agent'ın tahmini, [TASLAK] (DEC-0051). Bölge merkezleri boylam/enlem (harita işareti için); limanlar senaryo şehir adlarıdır. ticaretGecidi: o denizin ticaretinin geçtiği komşu bölge (ör. Karadeniz → Marmara/İstanbul Boğazı); 8b.",
  "bolgeler": [
   {
    "id": "karadeniz",
@@ -9,7 +9,8 @@
    "komsu": [
     "marmara",
     "azak"
-   ]
+   ],
+   "ticaretGecidi": "marmara"
   },
   {
    "id": "azak",
@@ -18,7 +19,8 @@
    "lat": 46.0,
    "komsu": [
     "karadeniz"
-   ]
+   ],
+   "ticaretGecidi": "karadeniz"
   },
   {
    "id": "marmara",
@@ -28,7 +30,8 @@
    "komsu": [
     "karadeniz",
     "ege"
-   ]
+   ],
+   "ticaretGecidi": "ege"
   },
   {
    "id": "ege",
@@ -199,7 +202,8 @@
    "lat": 56.5,
    "komsu": [
     "kattegat"
-   ]
+   ],
+   "ticaretGecidi": "kattegat"
   },
   {
    "id": "kizildeniz",
@@ -208,7 +212,8 @@
    "lat": 21.0,
    "komsu": [
     "aden"
-   ]
+   ],
+   "ticaretGecidi": "aden"
   },
   {
    "id": "aden",
@@ -228,7 +233,8 @@
    "lat": 27.0,
    "komsu": [
     "arap-denizi"
-   ]
+   ],
+   "ticaretGecidi": "arap-denizi"
   },
   {
    "id": "arap-denizi",

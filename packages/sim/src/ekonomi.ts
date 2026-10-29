@@ -5,6 +5,7 @@ import { DENGE } from "./denge";
 import { kullanilabilirHazine } from "./emirler";
 import { devletMaasi } from "./ordu";
 import { sehirYapiGeliri } from "./yatirim";
+import { ticaretGelirleri } from "./ticaret";
 import { araziGeliriBirimBasina } from "./teknoloji";
 import { birimGelirYuzdeleri } from "./istikrar";
 import { hukumdarGelirYuzde } from "./hanedan";
@@ -16,6 +17,7 @@ export interface ButceOzeti {
   aylikGelir: number; // arazi + yapı
   aylikAraziGeliri: number;
   aylikYapiGeliri: number;
+  aylikTicaretGeliri: number; // liman ticareti (8b)
   aylikMaas: number;
   aylikNet: number;
   araziSayisi: number;
@@ -40,17 +42,17 @@ export function yapiGelirleri(d: DunyaDurumu): number[] {
 
 /** Ay başındaki gelirle arayüzün aynı hesabı kullanmasını sağlar (arazi + yapı). */
 export function prototipGelirleri(d: DunyaDurumu): number[] {
-  const a = araziGelirleri(d), y = yapiGelirleri(d);
-  return a.map((x, i) => x + y[i]);
+  const a = araziGelirleri(d), y = yapiGelirleri(d), t = ticaretGelirleri(d);
+  return a.map((x, i) => x + y[i] + t[i]);
 }
 
 /** O anki arazi ve ordular korunursa aylık düzenli fark; gerçekleşmiş işlem dökümü değildir. */
 export function butceOzeti(d: DunyaDurumu, devlet: number): ButceOzeti {
   const hazine = d.devletler[devlet].hazine;
   const kullanilabilir = kullanilabilirHazine(d, devlet);
-  const aylikAraziGeliri = araziGelirleri(d)[devlet], aylikYapiGeliri = yapiGelirleri(d)[devlet];
-  const aylikGelir = aylikAraziGeliri + aylikYapiGeliri, aylikMaas = devletMaasi(d, devlet);
-  return { hazine, ayrilan: hazine - kullanilabilir, kullanilabilir, aylikGelir, aylikAraziGeliri, aylikYapiGeliri, aylikMaas,
+  const aylikAraziGeliri = araziGelirleri(d)[devlet], aylikYapiGeliri = yapiGelirleri(d)[devlet], aylikTicaretGeliri = ticaretGelirleri(d)[devlet];
+  const aylikGelir = aylikAraziGeliri + aylikYapiGeliri + aylikTicaretGeliri, aylikMaas = devletMaasi(d, devlet);
+  return { hazine, ayrilan: hazine - kullanilabilir, kullanilabilir, aylikGelir, aylikAraziGeliri, aylikYapiGeliri, aylikTicaretGeliri, aylikMaas,
     aylikNet: aylikGelir - aylikMaas,
     araziSayisi: d.birimler.filter((b) => b.sahip === devlet).length,
     askerSayisi: d.ordular.filter((o) => o.devlet === devlet).reduce((s, o) => s + o.asker, 0) };

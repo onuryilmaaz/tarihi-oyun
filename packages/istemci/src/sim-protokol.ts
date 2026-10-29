@@ -80,6 +80,8 @@ export interface Ozet {
     kapasite: number; yuk: { ad: string; asker: number } | null; cikarmaHedef: number | null; emirBekliyor: boolean;
     binebilir: { id: number; ad: string; asker: number }[] }[];
   yabanciDonanmalar: { id: number; ad: string; devlet: number; bolge: number; yaklasikGemi: number }[];
+  ticaret: ({ taban: number; gelir: number; yuzde: number; nedenler: string[] } | null)[]; // kendi liman şehirleri (8b)
+  ambargolarim: number[]; bizeAmbargo: number[];
   gemiInsalari: { sehir: number; gemi: string; adet: number; kalanGun: number; emir: boolean }[];
   devletKulturleri: string[];
   iskanlar: { kaynak: number; hedef: number; miktar: number; kalanGun: number; emir: boolean }[];
