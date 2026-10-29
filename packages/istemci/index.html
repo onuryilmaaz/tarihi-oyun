@@ -108,6 +108,11 @@
     .savas-durumu { color: var(--uyari); margin: 10px 0 0; }
     .eylem { margin-top: 12px; }
     button.tehlike { border-color: var(--hata); color: #ffd9d2; }
+    #insaatListesi { list-style: none; margin: 0; padding: 0; display: grid; gap: 4px; font-size: 12px; }
+    #insaatListesi .bos { color: var(--soluk); }
+    .yatirimlar { list-style: none; margin: 6px 0 0; padding: 0; display: grid; gap: 6px; }
+    .yatirimlar li { display: flex; justify-content: space-between; align-items: center; gap: 8px; }
+    .yatirimlar small { display: block; color: var(--soluk); font-size: 11px; }
     #onay { position: fixed; inset: 0; display: grid; place-items: center; background: rgba(15, 12, 9, .5); z-index: 12; }
     #onay .panel { position: static; width: min(440px, calc(100% - 32px)); padding: 22px; text-align: center; }
     #onay h3 { font-family: "Cinzel", serif; margin: 0 0 8px; font-size: 18px; }
@@ -231,6 +236,9 @@
       <p class="not">İnsan gücü ve denge değerleri tahminidir. Havuz bu sürümde kendiliğinden yenilenmez.</p>
       <ul id="toplamaListesi"></ul>
     </div>
+    <h2>Şehir yatırımları</h2>
+    <div class="satir"><select id="yatirimSehir" aria-label="Yatırım yapılacak şehir"></select><button id="yatirimAc">Şehri aç</button></div>
+    <ul id="insaatListesi"></ul>
     <h2>Ordu giderleri</h2>
     <p id="orduGideri" class="not"></p>
     <details id="butceOzeti" open>

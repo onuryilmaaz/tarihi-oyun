@@ -1,6 +1,6 @@
 // Ana iş parçacığı ↔ simülasyon Worker'ı mesaj protokolü.
 
-import type { BarisKaydi, BarisTalebi, ButceOzeti, Dogrulama, Emir, KusatmaYontemi, MuharebeRaporu, OlayKaydi, RotaKirilimi, SenaryoVerisi, Tutum, TurSonucu, TurSuresi, YabanciOrdu } from "@tarihi/sim";
+import type { YapiTuru, BarisKaydi, BarisTalebi, ButceOzeti, Dogrulama, Emir, KusatmaYontemi, MuharebeRaporu, OlayKaydi, RotaKirilimi, SenaryoVerisi, Tutum, TurSonucu, TurSuresi, YabanciOrdu } from "@tarihi/sim";
 
 export type Istek = { id: number } & (
   | { tip: "yeniOyun"; senaryo: SenaryoVerisi; tohum: number; oyuncu?: string }
@@ -60,6 +60,7 @@ export interface Ozet {
   kullanilabilirHazine: number;
   aylikMaas: number;
   butce: ButceOzeti;
+  sehirYatirimlari: SehirYatirimi[]; // oyuncunun şehirleri (TASK-0008/5b)
   askerSehirleri: { indeks: number; ad: string; insanGucu: number; uygun: boolean }[];
   toplamalar: { sehir: string; asker: number; kalanGun: number; bekliyor: boolean; emir: boolean }[];
   planliKesinti: { tarih: string; neden: string }[];
@@ -106,4 +107,24 @@ export class SimIstemcisi {
     if (!y.tamam) throw new Error(y.hata);
     return y;
   }
+}
+
+export interface YatirimSecenegi {
+  yapi: YapiTuru;
+  ad: string;
+  seviye: number;
+  enYuksek: number;
+  maliyet: number | null; // en yüksek seviyede null
+  sure: number;
+  gelirArtisi: number; // aylık; sur için 0
+  uygun: boolean;
+  neden: string | null;
+}
+
+export interface SehirYatirimi {
+  indeks: number;
+  ad: string;
+  aylikGelir: number;
+  insaat: { yapi: YapiTuru; ad: string; hedef: number; kalanGun: number; emir: boolean; durdu: boolean } | null;
+  secenekler: YatirimSecenegi[];
 }

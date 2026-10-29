@@ -1,6 +1,6 @@
 # DEVİR TESLİM — agent değişiminde kaldığın yer
 
-Son güncelleme: **2026-10-29, Codex**. Bağlayıcı kurallar: `AGENTS.md`, `MASTER_SPEC.md`, `DECISIONS.md`.
+Son güncelleme: **2026-10-29, Claude (Opus 5.5)** — Codex'in 4b/4c/5a işinden sonra devraldı. Bağlayıcı kurallar: `AGENTS.md`, `MASTER_SPEC.md`, `DECISIONS.md`.
 
 ## 1. İlk okunacaklar
 
@@ -8,7 +8,19 @@ Son güncelleme: **2026-10-29, Codex**. Bağlayıcı kurallar: `AGENTS.md`, `MAS
 2. Aktif görev `tasks/TASK-0008.md`, aşama `docs/milestones/ASAMA-5.md`; önceki görev TASK-0007.
 3. Son rapor `docs/qa/ASAMA-5A-TEST.md`; birlikte test edilecek `docs/qa/ASAMA-4C-TEST.md`.
 
-## 2. Mevcut durum
+## 0. En son (Claude oturumu)
+
+- Codex'in 4b/4c/5a işi doğrulandı (94 test, tip, derleme, tarayıcı) ve kullanıcı onayıyla commit edildi (`312b2d9`).
+- Kullanıcı kararları (DEC-0033): 4c/5a "az çok" test edildi, ayrıntılı test sonraki turlarda;
+  **5b kapsamı onaylandı** ve **5b tamamlandı**: şehir yatırımları (tarla/pazar/sur), `packages/sim/src/yatirim.ts`,
+  kayıt şeması **6**, 101 test. Kullanıcı testi bekliyor: `docs/qa/ASAMA-5B-TEST.md`.
+- 5b kullanıcı tarafından kabul edildi ve commit edildi (DEC-0034). **5c onaylandı**; teknoloji listesi
+  taslağı `tasks/TASK-0008.md` → "5c" bölümünde, **kullanıcının liste onayını bekliyor**; onaydan sonra kodla.
+- Aşağıdaki 2–3. bölümler Codex'in notlarıdır; "5b/5c sorusuna yanıt yok" bilgisi artık geçersiz (DEC-0033).
+- Arayüz notu: Ordu işaretinin olduğu şehre tıklamak orduyu seçer; şehir paneline sol paneldeki
+  "Şehir yatırımları → Şehri aç" ile de ulaşılır.
+
+## 2. Mevcut durum (Codex notları)
 
 - **Aşama 5 başladı (DEC-0032). 5a bütçe özeti tamamlandı.**
 - Aşama 4: 4a, 4b ve 4c kod olarak tamamlandı.

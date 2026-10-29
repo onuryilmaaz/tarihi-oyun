@@ -468,3 +468,14 @@ Kaynak belge: `MASTER_SPEC.md` (v1.3). Orijinal keşif çıktısı:
   3. Codex'in 4b/4c/5a çalışması kullanıcı onayıyla commit edildi.
 - **Onay kaydı:** Kullanıcı: "commitle", "az çok yaptım diğer turlarda daha detaylı yaparız", "yap" (2026-10-29)
 - **Durum:** GEÇERLİ
+
+## DEC-0034 — 5b kabulü ve 5c teknoloji ağacına başlama
+
+- **Tarih:** 2026-10-29
+- **Seçilen karar:**
+  1. 5b (şehir yatırımları) kullanıcı tarafından test edildi ve kabul edildi.
+  2. 5c onaylandı: üç alanlı (askerî, ekonomik, idari) küçük teknoloji ağacı, aynı anda iki araştırma,
+     her teknoloji somut bir içerik açar. Teknoloji listesi, bedel ve süreleri önce taslak olarak
+     kullanıcıya sunulur (TASK-0008 / 5c), onaydan sonra kodlanır (OPEN-011'in ilk kapsamı).
+- **Onay kaydı:** Kullanıcı: "uygun", "yap", "onaylıyorum" (2026-10-29)
+- **Durum:** GEÇERLİ

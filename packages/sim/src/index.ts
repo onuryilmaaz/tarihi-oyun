@@ -8,6 +8,7 @@ export * from "./hareket";
 export * from "./denge";
 export * from "./ordu";
 export * from "./ekonomi";
+export * from "./yatirim";
 export * from "./kusatma";
 export * from "./baris";
 export * from "./savas";

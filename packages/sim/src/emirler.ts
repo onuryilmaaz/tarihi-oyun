@@ -9,6 +9,7 @@ import { toplamaMaliyeti } from "./ordu";
 import { DENGE } from "./denge";
 import { kusatmadanCikar, orduKusatmasi, sehirMenzilinde } from "./kusatma";
 import { barisDogrula, barisiUygula } from "./baris";
+import { YAPI_ADLARI, insaatMaliyeti, sehirdeInsaatVar, yapiSeviyesi, type YapiTuru } from "./yatirim";
 
 /** Statik senaryo verisi (dünya durumuna girmez, kayda yazılmaz). */
 export interface Baglam {
@@ -36,7 +37,9 @@ export type Emir =
   | { tur: "orduBirlestir"; ordu: number; diger: number }
   | { tur: "kusat"; ordu: number; sehir: number; yontem: KusatmaYontemi }
   | { tur: "kusatmaBirak"; ordu: number }
-  | ({ tur: "baris" } & BarisTalebi);
+  | ({ tur: "baris" } & BarisTalebi)
+  // Şehir yatırımı (TASK-0008/5b, DEC-0033)
+  | { tur: "insaat"; sehir: number; yapi: YapiTuru };
 
 export type Dogrulama = { gecerli: true } | { gecerli: false; neden: string };
 
@@ -45,6 +48,7 @@ function bekleyenHarcama(d: DunyaDurumu, devlet: number): number {
   for (const e of d.emirKuyrugu) {
     if (e.tur === "harca" && e.devlet === devlet) s += e.miktar;
     if (e.tur === "askerTopla" && d.sehirler[e.sehir]?.devlet === devlet) s += toplamaMaliyeti(e.asker);
+    if (e.tur === "insaat" && d.sehirler[e.sehir]?.devlet === devlet) s += insaatMaliyeti(d.sehirler[e.sehir], e.yapi) ?? 0;
   }
   return s;
 }
@@ -89,6 +93,18 @@ export function emirDogrula(d: DunyaDurumu, e: Emir, b: Baglam = BOS_BAGLAM, kuy
     case "kusatmaBirak": {
       const o = orduBul(d, e.ordu);
       return o?.devlet === d.ayarlar.oyuncu && orduKusatmasi(d, o.id) ? { gecerli: true } : { gecerli: false, neden: "Ordu kuşatmada değil." };
+    }
+    case "insaat": {
+      const s = d.sehirler[e.sehir];
+      if (!s || s.devlet !== d.ayarlar.oyuncu || s.kontrol !== s.devlet) return { gecerli: false, neden: "Yalnızca kontrolünüzdeki kendi şehrinize yatırım yapabilirsiniz." };
+      if (!["tarla", "pazar", "sur"].includes(e.yapi)) return { gecerli: false, neden: "Geçersiz yapı türü." };
+      if (d.kusatmalar.some((k) => k.sehir === e.sehir)) return { gecerli: false, neden: "Kuşatma altındaki şehirde inşaat başlatılamaz." };
+      if (sehirdeInsaatVar(d, e.sehir, kuyrukHaric)) return { gecerli: false, neden: `${s.ad} şehrinde zaten bir inşaat sürüyor ya da bekliyor; aynı anda tek inşaat yapılır.` };
+      const bedel = insaatMaliyeti(s, e.yapi);
+      if (bedel === null) return { gecerli: false, neden: `${YAPI_ADLARI[e.yapi]} en yüksek seviyede (${yapiSeviyesi(s, e.yapi)}).` };
+      const para = kuyrukHaric ? d.devletler[s.devlet].hazine : kullanilabilirHazine(d, s.devlet);
+      if (para < 0 || bedel > para) return { gecerli: false, neden: `Hazine yetersiz: ${para} kullanılabilir, ${bedel} gerekli. Borçlanma yoktur.` };
+      return { gecerli: true };
     }
     case "askerTopla": {
       const s = d.sehirler[e.sehir];
@@ -232,6 +248,16 @@ export function emirleriUygula(d: DunyaDurumu, b: Baglam = BOS_BAGLAM): void {
       case "kusatmaBirak":
         kusatmadanCikar(d, e.ordu);
         break;
+      case "insaat": {
+        const s = d.sehirler[e.sehir];
+        const bedel = insaatMaliyeti(s, e.yapi)!;
+        const hedef = yapiSeviyesi(s, e.yapi) + 1;
+        d.devletler[s.devlet].hazine -= bedel;
+        d.insaatlar.push({ sehir: e.sehir, devlet: s.devlet, yapi: e.yapi, hedef, kalanGun: DENGE.YAPI_SURE_GUN[e.yapi] });
+        olayEkle(d, { tur: "insaat-basladi", devlet: s.devlet,
+          metin: `${s.ad}: ${YAPI_ADLARI[e.yapi]} ${hedef}. seviye inşaatı başladı (${DENGE.YAPI_SURE_GUN[e.yapi]} gün). Bedel: −${bedel}.` });
+        break;
+      }
       case "askerTopla": {
         const s = d.sehirler[e.sehir];
         const bedel = toplamaMaliyeti(e.asker);

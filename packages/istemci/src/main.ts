@@ -5,7 +5,7 @@ import "@fontsource/cinzel/600.css";
 import "@fontsource/cormorant-garamond/700-italic.css";
 import "@fontsource/inter/500.css";
 import "@fontsource/inter/700.css";
-import { DENGE, tarihMetni, toplamaMaliyeti, type Emir, type MuharebeRaporu, type SenaryoVerisi, type Tutum, type TurSuresi } from "@tarihi/sim";
+import { type YapiTuru, DENGE, tarihMetni, toplamaMaliyeti, type Emir, type MuharebeRaporu, type SenaryoVerisi, type Tutum, type TurSuresi } from "@tarihi/sim";
 import { haritaYukle } from "./harita/veri";
 import { haritaGorunumuKur, kacis, KONUMLAR, type Katmanlar, type WdDevlet } from "./harita/gorunum";
 import { SimIstemcisi, type Ozet, type RotaOnizleme } from "./sim-protokol";
@@ -138,7 +138,7 @@ async function baslat() {
     const para = (n: number) => n.toLocaleString("tr-TR");
     $("butceKalemleri").innerHTML = `<dt>Hazine</dt><dd>${para(butce.hazine)}</dd>
       <dt>Emirlere ayrılan</dt><dd>${para(butce.ayrilan)}</dd><dt>Kullanılabilir</dt><dd>${para(butce.kullanilabilir)}</dd>
-      <dt>Aylık gelir (prototip)</dt><dd>+${para(butce.aylikGelir)}<small class="not"> · ${para(butce.araziSayisi)} arazi</small></dd>
+      <dt>Aylık gelir (prototip)</dt><dd>+${para(butce.aylikGelir)}<small class="not"> · arazi ${para(butce.aylikAraziGeliri)} (${para(butce.araziSayisi)} arazi) + yapılar ${para(butce.aylikYapiGeliri)}</small></dd>
       <dt>Aylık ordu maaşı</dt><dd>−${para(butce.aylikMaas)}<small class="not"> · ${para(butce.askerSayisi)} asker</small></dd>
       <dt>Aylık fark</dt><dd id="butceNet" class="${butce.aylikNet < 0 ? "eksi" : "artı"}">${butce.aylikNet > 0 ? "+" : ""}${para(butce.aylikNet)}</dd>`;
     $("savasListesi").innerHTML = ozet.savaslar.map((s) =>
@@ -146,6 +146,12 @@ async function baslat() {
       + [...bekleyenSavas].map((d) => `<li>${gorunum.devletRenkKutusu(d)}<span>${kacis(h.paket.devletler[d].ad)}<small>İlan edildi · bir sonraki turda başlar</small></span></li>`).join("")
       || '<li class="bos">Savaş yok. Bir devleti seçip savaş ilan edebilirsiniz.</li>';
     savasUI.guncelle();
+    const yatirimSecim = $<HTMLSelectElement>("yatirimSehir"), oncekiSehir = yatirimSecim.value;
+    yatirimSecim.innerHTML = ozet.sehirYatirimlari.map((s) => `<option value="${s.indeks}">${kacis(s.ad)}${s.insaat ? " · inşaat var" : ""}</option>`).join("");
+    if (ozet.sehirYatirimlari.some((s) => String(s.indeks) === oncekiSehir)) yatirimSecim.value = oncekiSehir;
+    const insaatlar = ozet.sehirYatirimlari.filter((s) => s.insaat);
+    $("insaatListesi").innerHTML = insaatlar.map((s) => `<li><button class="bag" data-sehir-sec="${s.indeks}">${kacis(s.ad)}</button>: ${kacis(s.insaat!.ad)} ${s.insaat!.hedef}. seviye · ${s.insaat!.emir ? "emir bekliyor" : s.insaat!.durdu ? "kuşatma nedeniyle durdu" : `${s.insaat!.kalanGun} gün kaldı`}</li>`).join("")
+      || '<li class="bos">Süren inşaat yok. Bir şehir seçip “Şehri aç”a basın ya da haritada şehrinize tıklayın.</li>';
     $("raporListesi").innerHTML = [...ozet.raporlar].reverse().map((r) => {
       const biz = r.kazanan === ozet.oyuncu.indeks;
       const karsi = r.taraflar.find((t) => t.devlet !== ozet.oyuncu.indeks)!;
@@ -210,6 +216,14 @@ async function baslat() {
     $("rapor").hidden = false;
   };
   $("raporKapat").onclick = () => { $("rapor").hidden = true; };
+  $("yatirimAc").onclick = () => {
+    const v = $<HTMLSelectElement>("yatirimSehir").value;
+    if (v !== "") gorunum.secVeGit({ tur: "sehir", id: Number(v) });
+  };
+  $("insaatListesi").addEventListener("click", (e) => {
+    const b = (e.target as HTMLElement).closest<HTMLElement>("[data-sehir-sec]");
+    if (b) gorunum.secVeGit({ tur: "sehir", id: Number(b.dataset.sehirSec) });
+  });
   $("raporListesi").addEventListener("click", (e) => {
     const b = (e.target as HTMLElement).closest<HTMLElement>("[data-rapor]");
     const r = b && ozet.raporlar.find((x) => x.id === Number(b.dataset.rapor));
@@ -220,12 +234,20 @@ async function baslat() {
   gorunum.olaylar.ekBilgi = (s) => {
     if (s.tur === "sehir") {
       const c = ozet.sehirDurumlari[s.id], k = ozet.kusatmalar.find((v) => v.sehir === s.id);
+      const y = ozet.sehirYatirimlari.find((v) => v.indeks === s.id);
+      const yatirim = !y ? "" : `<h4>Şehir yatırımları (prototip değerleri)</h4>
+        <p class="not">Yapıların aylık geliri: +${y.aylikGelir.toLocaleString("tr-TR")}${y.insaat ? ` · ${kacis(y.insaat.ad)} ${y.insaat.hedef}. seviye ${y.insaat.emir ? "emri bekliyor" : y.insaat.durdu ? "kuşatma nedeniyle durdu" : `yapılıyor (${y.insaat.kalanGun} gün kaldı)`}` : ""}</p>
+        <ul class="yatirimlar">${y.secenekler.map((o) => `<li><span><b>${kacis(o.ad)}</b> ${o.seviye}/${o.enYuksek}
+          <small>${o.maliyet === null ? "En yüksek seviye" : `${o.seviye + 1}. seviye: ${o.maliyet.toLocaleString("tr-TR")} · ${o.sure} gün · ${o.yapi === "sur" ? "kuşatma direnci artar" : `aylık +${o.gelirArtisi}`}`}</small></span>
+          ${o.maliyet === null ? "" : `<button data-insaat="${s.id}:${o.yapi}" ${o.uygun ? "" : `disabled title="${kacis(o.neden ?? "")}"`}>Geliştir</button>`}</li>`).join("")}</ul>
+        ${y.secenekler.every((o) => !o.uygun) && y.secenekler[0].neden ? `<p class="not">${kacis(y.secenekler.find((o) => o.maliyet !== null)?.neden ?? "")}</p>` : ""}`;
       return `<h4>Şehir savunması (prototip değerleri)</h4><dl><dt>Sur seviyesi</dt><dd>${c.sur}</dd>
         <dt>Garnizon</dt><dd>${c.garnizonTahmin ? "Yaklaşık " : ""}${c.garnizon.toLocaleString("tr-TR")}</dd></dl>
         <p class="not">${k ? `${k.gun} etkin gündür kuşatma altında.` : c.kontrol === ozet.oyuncu.indeks
           ? c.devlet === ozet.oyuncu.indeks ? "Şehir size ait ve askerî kontrolünüzde." : "Şehir askerî kontrolünüzde; yasal sahiplik barış antlaşmasıyla değişir."
           : "Şehir hareketle ele geçirilmez; kuşatma emri gerekir."}</p>
-        ${seciliOrdu !== null ? `<button data-sehir-hedef="${s.id}">Şehre yürü</button>` : '<p class="not">Şehre yürümek için önce ordunuzu seçin.</p>'}`;
+        ${seciliOrdu !== null ? `<button data-sehir-hedef="${s.id}">Şehre yürü</button>` : '<p class="not">Şehre yürümek için önce ordunuzu seçin.</p>'}
+        ${yatirim}`;
     }
     if (s.tur === "birim") {
       const p = ozet.isgalHazirliklari.find((v) => v.birim === s.id);
@@ -242,6 +264,12 @@ async function baslat() {
     if (sehir) {
       const c = senaryo.sehirler[Number(sehir.dataset.sehirHedef)];
       if (c.x !== undefined && c.y !== undefined) await gorunum.olaylar.hedef?.(c.x / 1e4, c.y / 1e4, c.birim);
+      return;
+    }
+    const insaat = (e.target as HTMLElement).closest<HTMLElement>("[data-insaat]");
+    if (insaat) {
+      const [sehirNo, yapi] = insaat.dataset.insaat!.split(":");
+      await emirGonder({ tur: "insaat", sehir: Number(sehirNo), yapi: yapi as YapiTuru }, "İnşaat emri verildi; bedel ayrıldı, bir sonraki turda başlar.");
       return;
     }
     const baris = (e.target as HTMLElement).closest<HTMLElement>('[data-eylem="baris"]');

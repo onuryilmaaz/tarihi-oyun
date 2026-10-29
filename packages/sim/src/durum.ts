@@ -5,6 +5,7 @@ import { tarihtenGun, type Tarih } from "./takvim";
 import type { Emir } from "./emirler";
 import { HAREKET, type AgVerisi, type RotaAdimi } from "./hareket";
 import { DENGE } from "./denge";
+import type { Insaat } from "./yatirim";
 
 export type TurSuresi = "hafta" | "ay" | "ceyrek" | "yil";
 export const TUR_SURESI_ADLARI: Record<TurSuresi, string> = {
@@ -37,6 +38,7 @@ export interface SehirDurumu {
   baskent: boolean;
   sur: number; // prototip seviye; tarihî doğrulanmış sur verisi değildir
   garnizon: number; // şehirdeki savunucular; hareketli ordudan ayrıdır
+  yapilar: { tarla: number; pazar: number }; // 5b şehir yatırımları (seviye 0–en yüksek)
 }
 
 export type KusatmaYontemi = "abluka" | "saldiri" | "bekle";
@@ -153,6 +155,7 @@ export interface DunyaDurumu {
   ordular: OrduDurumu[];
   sonrakiOrduId: number;
   askerToplamalar: AskerToplama[];
+  insaatlar: Insaat[];
   kusatmalar: Kusatma[];
   isgalHazirliklari: IsgalHazirligi[];
   barislar: BarisKaydi[];
@@ -185,7 +188,7 @@ export interface SenaryoVerisi {
 // 2: ordular ve şehir kontrolü (TASK-0006); 3: savaş, muharebe, moral, garnizon orduları (TASK-0007/4a)
 // 4: insan gücü ve asker toplama (TASK-0007/4b); şema 3 için eklemeli dönüşüm var.
 // 5: kuşatma, gerçek işgal ve barış (TASK-0007/4c); şema 3–4 için eklemeli dönüşüm var.
-export const SEMA_SURUMU = 5;
+export const SEMA_SURUMU = 6; // 6: şehir yatırımları (TASK-0008/5b)
 
 export function baslangicDurumu(s: SenaryoVerisi, secenek: { tohum: number; oyuncu?: string }): DunyaDurumu {
   const indeks = new Map(s.devletler.map((d, i) => [d.id, i]));
@@ -207,7 +210,7 @@ export function baslangicDurumu(s: SenaryoVerisi, secenek: { tohum: number; oyun
     return { ad: c.ad, devlet, kontrol: devlet, isgalBaslangic: null, birim: c.birim, dugum: c.dugum ?? -1, nufus: c.nufus,
       insanGucu: Math.floor(c.nufus * DENGE.INSAN_GUCU_YUZDE / 100), baskent: c.baskent,
       sur: c.baskent ? DENGE.BASKENT_SUR : DENGE.SEHIR_SUR,
-      garnizon: c.baskent ? DENGE.BASKENT_GARNIZON : DENGE.SEHIR_GARNIZON };
+      garnizon: c.baskent ? DENGE.BASKENT_GARNIZON : DENGE.SEHIR_GARNIZON, yapilar: { tarla: 0, pazar: 0 } };
   });
   const yeniOrdu = (id: number, ad: string, devlet: number, asker: number, dugum: number, x: number, y: number): OrduDurumu => ({
     id, ad, devlet, asker, dugum, x, y, hiz: HAREKET.TEMEL_HIZ, rota: [], ilerleme: 0, hedef: null,
@@ -244,6 +247,7 @@ export function baslangicDurumu(s: SenaryoVerisi, secenek: { tohum: number; oyun
     ordular,
     sonrakiOrduId: ordular.length + 1,
     askerToplamalar: [],
+    insaatlar: [],
     kusatmalar: [],
     isgalHazirliklari: [],
     barislar: [],
@@ -328,6 +332,17 @@ export function degismezler(d: DunyaDurumu): string[] {
       || !Array.isArray(p.sehirler) || p.sehirler.some((i) => !tam(i) || !d.sehirler[i])) h.push("barış kaydı geçersiz");
   }
   for (const s of d.savaslar) if (s.saldiran === s.savunan || !d.devletler[s.saldiran] || !d.devletler[s.savunan]) h.push(`savaş ${s.id} geçersiz`);
+  d.sehirler.forEach((c, i) => {
+    const y = c.yapilar;
+    if (!y || !tam(y.tarla) || !tam(y.pazar) || y.tarla < 0 || y.pazar < 0
+      || y.tarla > DENGE.YAPI_EN_YUKSEK.tarla || y.pazar > DENGE.YAPI_EN_YUKSEK.pazar) h.push(`şehir ${i} yapıları geçersiz`);
+  });
+  const insaatSehirleri = new Set<number>();
+  d.insaatlar.forEach((x, i) => {
+    if (!d.sehirler[x.sehir] || insaatSehirleri.has(x.sehir)) h.push(`inşaat ${i} şehri geçersiz ya da tekrar ediyor`);
+    insaatSehirleri.add(x.sehir);
+    if (!["tarla", "pazar", "sur"].includes(x.yapi) || !tam(x.hedef) || x.hedef > DENGE.YAPI_EN_YUKSEK[x.yapi] || !tam(x.kalanGun) || x.kalanGun <= 0) h.push(`inşaat ${i} geçersiz`);
+  });
   if (d.ayarlar.oyuncu < 0 || d.ayarlar.oyuncu >= n) h.push("oyuncu devleti geçersiz");
   return h;
 }

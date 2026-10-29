@@ -42,6 +42,8 @@ export interface HaritaGorunumu {
   mulkiyetGoster(birimler: number[], sehirler: { devlet: number; baskent: boolean }[]): void;
   orduyaOdaklan(o: OrduOzeti): void;
   seciliOge(): Secim;
+  /** Dışarıdan seçim (ör. listeden bir şehre gitmek); şehirde haritayı oraya kaydırır */
+  secVeGit(s: Secim): void;
   olaylar: {
     orduSec?: (id: number) => void;
     hedef?: (x: number, y: number, birim: number) => void; // Miller derece
@@ -431,6 +433,14 @@ export function haritaGorunumuKur(h: Harita, wikidata: Record<string, WdDevlet>,
     oyuncuyuAyarla(d) { oyuncu = d; bilgiGoster(); },
     olaylar,
     seciliOge: () => secim,
+    secVeGit(s) {
+      sec(s);
+      if (s?.tur === "sehir") {
+        const c = h.paket.sehirler[s.id];
+        g.cx = c.x; g.cy = c.y; g.z = Math.max(g.z, 40);
+        istek();
+      }
+    },
     orduyaOdaklan(o) {
       g.cx = o.x / 1e4; g.cy = o.y / 1e4; g.z = Math.max(g.z, 40);
       istek();

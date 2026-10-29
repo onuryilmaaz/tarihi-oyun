@@ -6,7 +6,7 @@ import {
   tarihMetni, turSuresiAyarla, turuIlerlet, yukle, TUR_SURESI_ADLARI, type Baglam, type DunyaDurumu,
   aylikMaas, devletMaasi, emirDogrula, ikmalDurumu, kullanilabilirHazine, kullanilabilirInsanGucu, DENGE,
   barisBedeli, barisDogrula, kusatmaGucu, orduKusatmasi, savasSkoru,
-  butceOzeti,
+  butceOzeti, insaatMaliyeti, sehirYapiGeliri, yapiSeviyesi, YAPI_ADLARI, YAPI_TURLERI,
 } from "@tarihi/sim";
 import type { Istek, Ozet, Yanit } from "./sim-protokol";
 
@@ -27,6 +27,29 @@ function ozet(durum: DunyaDurumu): Ozet {
     kullanilabilirHazine: kullanilabilirHazine(durum, durum.ayarlar.oyuncu),
     aylikMaas: devletMaasi(durum, durum.ayarlar.oyuncu),
     butce: butceOzeti(durum, durum.ayarlar.oyuncu),
+    sehirYatirimlari: durum.sehirler.flatMap((s, indeks) => {
+      if (s.devlet !== durum.ayarlar.oyuncu) return [];
+      const suren = durum.insaatlar.find((i) => i.sehir === indeks);
+      const emir = durum.emirKuyrugu.find((e) => e.tur === "insaat" && e.sehir === indeks);
+      const insaat = suren
+        ? { yapi: suren.yapi, ad: YAPI_ADLARI[suren.yapi], hedef: suren.hedef, kalanGun: suren.kalanGun, emir: false,
+          durdu: durum.kusatmalar.some((k) => k.sehir === indeks) }
+        : emir && emir.tur === "insaat"
+          ? { yapi: emir.yapi, ad: YAPI_ADLARI[emir.yapi], hedef: yapiSeviyesi(s, emir.yapi) + 1, kalanGun: DENGE.YAPI_SURE_GUN[emir.yapi], emir: true, durdu: false }
+          : null;
+      return [{
+        indeks, ad: s.ad, aylikGelir: sehirYapiGeliri(s), insaat,
+        secenekler: YAPI_TURLERI.map((yapi) => {
+          const dog = emirDogrula(durum, { tur: "insaat", sehir: indeks, yapi }, baglam);
+          return {
+            yapi, ad: YAPI_ADLARI[yapi], seviye: yapiSeviyesi(s, yapi), enYuksek: DENGE.YAPI_EN_YUKSEK[yapi],
+            maliyet: insaatMaliyeti(s, yapi), sure: DENGE.YAPI_SURE_GUN[yapi],
+            gelirArtisi: yapi === "sur" ? 0 : DENGE.YAPI_AYLIK_GELIR[yapi],
+            uygun: dog.gecerli, neden: dog.gecerli ? null : dog.neden,
+          };
+        }),
+      }];
+    }),
     askerSehirleri: durum.sehirler.flatMap((s, indeks) => s.devlet !== durum.ayarlar.oyuncu ? [] : [{
       indeks, ad: s.ad, insanGucu: kullanilabilirInsanGucu(durum, indeks),
       uygun: s.kontrol === s.devlet && !!baglam.ag?.dugumler[s.dugum]

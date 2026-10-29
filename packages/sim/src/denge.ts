@@ -61,4 +61,10 @@ export const DENGE = {
   GARNIZON_EN_COK: 40000,
   // Görünürlük (DEC-0027/2)
   GORUS_DUGUM: 2,
+  // 5b — şehir yatırımları (DEC-0033); tarihî veri değildir, ilk oynanışla ayarlanacak
+  YAPI_EN_YUKSEK: { tarla: 3, pazar: 3, sur: 5 },
+  // Hedef seviyeye göre bedel: indeks = hedef seviye − 1 (sur 1. seviyeden başlar, 0. indeks kullanılmaz)
+  YAPI_MALIYET: { tarla: [300, 600, 1200], pazar: [400, 800, 1600], sur: [0, 800, 1200, 1800, 2500] },
+  YAPI_SURE_GUN: { tarla: 60, pazar: 90, sur: 120 },
+  YAPI_AYLIK_GELIR: { tarla: 15, pazar: 20 }, // seviye başına, şehir kontrolünüzdeyken
 };

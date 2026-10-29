@@ -1,5 +1,16 @@
 # CHANGELOG
 
+## 2026-10-29 — TASK-0008 / 5b: şehir yatırımları (Claude)
+
+### Eklendi
+- DEC-0033 (4c/5a kısmi test, 5b kapsamı); Codex'in 4b/4c/5a işi commit edildi (`312b2d9`).
+- `packages/sim/src/yatirim.ts`: tarla, pazar, sur; bedel rezervi, yapım süresi, kuşatmada
+  durma, el değiştirince iptal; yapı geliri. `insaat` emri; kayıt şeması 6 (5 → 6 dönüşümü).
+- Bütçe özeti: arazi ve yapı geliri ayrı.
+- İstemci: şehir panelinde yatırımlar, sol panelde şehir seçici ve süren inşaatlar.
+- `packages/sim/test/yatirim.test.ts` (6 test; toplam 101), `docs/qa/ASAMA-5B-TEST.md`.
+- DEC-0034: 5b kabul edildi; 5c teknoloji ağacı taslağı TASK-0008'e yazıldı (onay bekliyor).
+
 ## 2026-10-29 — TASK-0008 / 5a: bütçe görünürlüğü ve devir
 
 - DEC-0032: kullanıcı 4c testini sonraki teslimle birleştirdi, Aşama 5'e geçişi yetkilendirdi;

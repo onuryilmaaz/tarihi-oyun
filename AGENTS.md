@@ -17,10 +17,8 @@ kaynak: `MASTER_SPEC.md` §21 ve §27.
 
 ## Mevcut durum
 
-- **Aşama:** 5 (ekonomi, şehirler, teknoloji) — geçiş kullanıcı tarafından testler ertelenerek
-  onaylandı (DEC-0032). TASK-0008 / 5a bütçe özeti tamamlandı; 5b/5c kapsam önerisi yanıt bekliyor.
-  4c testi 5a ile birlikte yapılacak; Aşama 4 resmî kabulü açık. 4b kabul edildi (DEC-0030).
-  Aşama 3 kapandı (DEC-0026). Denge değerleri yalnızca `packages/sim/src/denge.ts` içinde tutulur.
+- **Aşama:** 5 (ekonomi, şehirler, teknoloji) — 5a ve 5b tamamlandı (5b kullanıcı testi bekliyor);
+  sıradaki 5c. Aşama 4 kod olarak tamam, resmî kapanışı ayrıntılı testle (DEC-0033). Durum için `DEVIR-TESLIM.md`.
 - **Yerel sunucular:** Kullanıcı oyunu 4175'te (`vite preview`) dener; agent denemelerini 5173'teki
   geliştirme sunucusunda yapar (kullanıcı başlattı, kapatılmaz). Aşama 2 kapandı
   (DEC-0024), Aşama 1 kapandı (DEC-0019). Görsel yön: Tarihî atlas (DEC-0018).
