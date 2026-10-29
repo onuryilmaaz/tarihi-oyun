@@ -2,7 +2,7 @@
 
 ## 2026-10-29 — TASK-0009 / 6c: AI savaş ilanı, sefer, kuşatma, barış (Claude)
 
-- DEC-0040: 6b kabul edildi; garnizon tabanı 0.
+- DEC-0040: 6b kabul edildi; garnizon tabanı 0. DEC-0041: 6c kabul edildi, Aşama 6 kapandı.
 - `packages/sim/src/yz-savas.ts`: gerekçeli AI savaş ilanı (komşu, kötü ilişki, görünür bilgiye dayalı güç tahmini,
   olasılık, ateşkes), sefer (kuşatma, başkent savunması, işgal, en yakın hedef), AI-AI barış ve oyuncuya barış teklifi.
 - Barış/kuşatma doğrulaması oyuncudan bağımsızlaştırıldı (`barisDogrula/barisiUygula(…, devlet)`); oyuncu yalnızca

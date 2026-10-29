@@ -10,6 +10,8 @@
   kendi penceresi (Konya, Mersin, Karaman, Nevşehir, Kırşehir size geçer) → Kabul et → bir sonraki tur barış uygulandı.
   Yıllık turlarda AI savaş ilanları ve barışları günlükte dünya haberi olarak çıktı. Hata yok, tarayıcı penceresi yok.
 
+**Sonuç:** Kullanıcı testi başarılı (DEC-0041).
+
 ## Kullanıcı için test adımları (http://localhost:5173)
 
 1. Sayfayı yenileyin. Üstte **Yıl** → **Turu ilerlet**'e 2–3 kez basın.
