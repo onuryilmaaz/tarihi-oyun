@@ -147,4 +147,14 @@ export const DENGE = {
   KURGUSAL_YAS: [20, 55] as [number, number], // başlangıçta kurgusal hükümdar yaş aralığı
   HALEF_YAS: [16, 45] as [number, number], // kurgusal aday yaş aralığı
   VERASET_DUNYA_HABERI_ARAZI: 20, // bu büyüklükteki devletlerde tahta çıkış dünya haberidir
+  // 7b — nüfus, göç, iskân (DEC-0045); hepsi [TASLAK]
+  NUFUS_ARTIS_BINDE: 5, // yıllık doğal artış (%0,5)
+  NUFUS_KUSATMA_KAYIP_BINDE: 10, // kuşatılan şehirde aylık kayıp (%1); yarısı göç eder
+  NUFUS_ISGAL_KAYIP_BINDE: 5, // işgal altındaki (kuşatılmayan) şehirde aylık kayıp; yarısı göç eder
+  GOC_PAYI_YUZDE: 50, // kaybın göç eden kısmı (kalanı ölür/dağılır)
+  ISKAN_BEDEL_BINDE: 50, // kişi başına binde (1.000 kişi = 50)
+  ISKAN_GUN: 60,
+  ISKAN_EN_COK_YUZDE: 20, // bir iskânda kaynak şehir nüfusunun en çok bu yüzdesi
+  DIN_AYNI: 10, // aynı din ilişki bileşeni
+  DIN_FARKLI_AILE: -10, // farklı din ailesi
 };

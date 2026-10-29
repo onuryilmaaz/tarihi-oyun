@@ -4,6 +4,7 @@
 import { SEMA_SURUMU, degismezler, type DunyaDurumu } from "./durum";
 import { DENGE } from "./denge";
 import { kurgusalHukumdar } from "./hanedan";
+import { BILINMIYOR } from "./nufus";
 import { gundenTarih } from "./takvim";
 
 export interface KayitPaketi {
@@ -105,6 +106,13 @@ export function yukle(metin: string, beklenenSenaryo?: string): DunyaDurumu {
       v.veraset = "babadan"; v.adHavuzu = "latin"; v.tarihiHalef = null;
     });
     d.verasetSecimi = null;
+    d.sema = 11;
+  }
+  if (d.sema === 11) {
+    // Şema 11 → 12 (TASK-0010/7b): eski kayıtta tablo yok; her şehir tek "bilinmiyor" grubu
+    for (const s of d.sehirler) s.gruplar = s.nufus > 0 ? [{ din: BILINMIYOR.din, kultur: BILINMIYOR.kultur, nufus: s.nufus }] : [];
+    for (const v of d.devletler) { v.din = BILINMIYOR.din; v.kultur = BILINMIYOR.kultur; }
+    d.iskanlar = [];
     d.sema = SEMA_SURUMU;
   }
   if (d.sema !== SEMA_SURUMU) throw new KayitHatasi("Kayıt tutarsız: dünya şema sürümü uyuşmuyor.");

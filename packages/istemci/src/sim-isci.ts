@@ -61,6 +61,15 @@ function ozet(durum: DunyaDurumu): Ozet {
     verasetSecimi: durum.verasetSecimi && { onceki: durum.verasetSecimi.onceki, veraset: VERASET_ADLARI[o.veraset],
       adaylar: durum.verasetSecimi.adaylar.map((a) => ({ ...hukumdarOzeti(durum, a)!, tarihi: a.tarihi, gelenek: a.gelenek })) },
     veraset: VERASET_ADLARI[o.veraset], tarihiHalef: o.tarihiHalef?.ad ?? null,
+    din: o.din, kultur: o.kultur,
+    sehirNufuslari: durum.sehirler.map((s) => ({ nufus: s.nufus, gruplar: s.gruplar.map((g) => [g.din, g.kultur, g.nufus] as [string, string, number]) })),
+    devletDinleri: durum.devletler.map((v) => v.din),
+    devletKulturleri: durum.devletler.map((v) => v.kultur),
+    iskanlar: [
+      ...durum.iskanlar.filter((k) => k.devlet === durum.ayarlar.oyuncu).map((k) => ({ kaynak: k.kaynak, hedef: k.hedef,
+        miktar: k.gruplar.reduce((t, g) => t + g.nufus, 0), kalanGun: k.kalanGun, emir: false })),
+      ...durum.emirKuyrugu.flatMap((e) => (e.tur === "iskan" ? [{ kaynak: e.kaynak, hedef: e.hedef, miktar: e.miktar, kalanGun: DENGE.ISKAN_GUN, emir: true }] : [])),
+    ],
     teknoloji: {
       yuva: DENGE.ARASTIRMA_YUVASI,
       kartlar: TEKNOLOJILER.map((t) => {

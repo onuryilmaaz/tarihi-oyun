@@ -65,6 +65,11 @@ export interface Ozet {
   hukumdar: HukumdarOzeti | null; // oyuncunun hükümdarı (7a); null = halef bekleniyor
   verasetSecimi: { onceki: string; veraset: string; adaylar: (HukumdarOzeti & { tarihi: boolean; gelenek: boolean })[] } | null;
   veraset: string; tarihiHalef: string | null;
+  din: string; kultur: string; // oyuncu devletinin resmî dini ve baskın kültürü (7b)
+  sehirNufuslari: { nufus: number; gruplar: [string, string, number][] }[]; // şehir başına din × kültür
+  devletDinleri: string[]; // harita modu için
+  devletKulturleri: string[];
+  iskanlar: { kaynak: number; hedef: number; miktar: number; kalanGun: number; emir: boolean }[];
   diplomasi: (DiplomasiKarti | null)[]; // devlet başına; oyuncunun kendisi null (TASK-0009/6a)
   saldirganlik: number; // oyuncunun saldırganlığı
   barisTeklifleri: { id: number; devlet: number; gerekce: string; size: boolean; birimler: number[]; sehirler: number[]; kalanGun: number; cevap: boolean | null }[]; // 6c

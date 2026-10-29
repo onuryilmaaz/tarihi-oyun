@@ -2,7 +2,7 @@
 // yeniden doğrulanıp uygulanır (MASTER_SPEC §3.2, evre 1). Tur ilerlemeden dünya değişmez (AT-004).
 
 import { olayEkle, type BarisTalebi, type DunyaDurumu, type KusatmaYontemi, type OrduDurumu, type Tutum } from "./durum";
-import { savasta } from "./savas";
+import { sayiMetni, savasta } from "./savas";
 import { orduKonumu, rotaBul, type HareketAgi, type RotaSonucu } from "./hareket";
 import { tarihMetni } from "./takvim";
 import { toplamaMaliyeti } from "./ordu";
@@ -11,6 +11,7 @@ import { kusatmadanCikar, orduKusatmasi, sehirMenzilinde } from "./kusatma";
 import { barisDogrula, barisiUygula } from "./baris";
 import { YAPI_ADLARI, insaatMaliyeti, insaatSuresi, sehirdeInsaatVar, yapiSeviyesi, type YapiTuru } from "./yatirim";
 import { bekleyenVerasetiCoz, tahtaCikar } from "./hanedan";
+import { iskanBedeli, nufusCikar } from "./nufus";
 import { diplomasiOnHesap, etkiEkle, hediyePuani, ittifakBoz, ittifakDegerlendir, ittifakKur, muttefik, muttefikleri, savasIlaniSonuclari } from "./diplomasi";
 import { arastirmaEngeli, teknolojiBul, teknolojiGecerli, toplamaBedelYuzde, toplamaSuresi, type TeknolojiId } from "./teknoloji";
 
@@ -53,7 +54,9 @@ export type Emir =
   // AI barış teklifine cevap (TASK-0009/6c)
   | { tur: "barisCevap"; teklif: number; kabul: boolean }
   // Oyuncu hükümdarı ölünce halef seçimi (TASK-0010/7a)
-  | { tur: "halefSec"; aday: number };
+  | { tur: "halefSec"; aday: number }
+  // İskân: oyuncunun bir şehrinden diğerine nüfus taşıma (TASK-0010/7b)
+  | { tur: "iskan"; kaynak: number; hedef: number; miktar: number };
 
 export type Dogrulama = { gecerli: true } | { gecerli: false; neden: string };
 
@@ -64,6 +67,7 @@ function bekleyenHarcama(d: DunyaDurumu, devlet: number): number {
     if (e.tur === "askerTopla" && d.sehirler[e.sehir]?.devlet === devlet) s += toplamaMaliyeti(e.asker, toplamaBedelYuzde(d, devlet));
     if (e.tur === "insaat" && d.sehirler[e.sehir]?.devlet === devlet) s += insaatMaliyeti(d, d.sehirler[e.sehir], e.yapi) ?? 0;
     if (e.tur === "hediye" && d.ayarlar.oyuncu === devlet) s += e.miktar;
+    if (e.tur === "iskan" && d.ayarlar.oyuncu === devlet) s += iskanBedeli(e.miktar);
     if (e.tur === "arastir" && d.ayarlar.oyuncu === devlet && teknolojiGecerli(e.teknoloji)) s += DENGE.TEKNOLOJI[e.teknoloji].bedel;
   }
   return s;
@@ -119,6 +123,19 @@ export function emirDogrula(d: DunyaDurumu, e: Emir, b: Baglam = BOS_BAGLAM, kuy
       const bedel = insaatMaliyeti(d, s, e.yapi);
       if (bedel === null) return { gecerli: false, neden: `${YAPI_ADLARI[e.yapi]} en yüksek seviyede (${yapiSeviyesi(s, e.yapi)}).` };
       const para = kuyrukHaric ? d.devletler[s.devlet].hazine : kullanilabilirHazine(d, s.devlet);
+      if (para < 0 || bedel > para) return { gecerli: false, neden: `Hazine yetersiz: ${para} kullanılabilir, ${bedel} gerekli. Borçlanma yoktur.` };
+      return { gecerli: true };
+    }
+    case "iskan": {
+      const oyuncu = d.ayarlar.oyuncu, k = d.sehirler[e.kaynak], h = d.sehirler[e.hedef];
+      const benim = (c: typeof k, i: number) => c && c.devlet === oyuncu && c.kontrol === oyuncu && !d.kusatmalar.some((x) => x.sehir === i);
+      if (!benim(k, e.kaynak) || !benim(h, e.hedef) || e.kaynak === e.hedef) return { gecerli: false, neden: "İskân yalnızca kontrolünüzdeki, kuşatma altında olmayan iki farklı şehriniz arasında yapılır." };
+      if (!kuyrukHaric && d.emirKuyrugu.some((x) => x.tur === "iskan" && x.kaynak === e.kaynak)) return { gecerli: false, neden: "Bu şehirden bekleyen bir iskân emri var." };
+      if (d.iskanlar.some((x) => x.kaynak === e.kaynak)) return { gecerli: false, neden: "Bu şehirden süren bir iskân var." };
+      const enCok = Math.floor((k.nufus * DENGE.ISKAN_EN_COK_YUZDE) / 100);
+      if (!Number.isSafeInteger(e.miktar) || e.miktar <= 0 || e.miktar > enCok) return { gecerli: false, neden: `İskân miktarı 1 ile ${enCok} (nüfusun %${DENGE.ISKAN_EN_COK_YUZDE}'si) arasında olmalı.` };
+      const para = kuyrukHaric ? d.devletler[oyuncu].hazine : kullanilabilirHazine(d, oyuncu);
+      const bedel = iskanBedeli(e.miktar);
       if (para < 0 || bedel > para) return { gecerli: false, neden: `Hazine yetersiz: ${para} kullanılabilir, ${bedel} gerekli. Borçlanma yoktur.` };
       return { gecerli: true };
     }
@@ -408,6 +425,14 @@ export function emirUygula(d: DunyaDurumu, e: Emir, b: Baglam = BOS_BAGLAM): voi
     case "halefSec":
       tahtaCikar(d, d.ayarlar.oyuncu, d.verasetSecimi!.adaylar[e.aday], "oyuncu");
       break;
+    case "iskan": {
+      const oyuncu = d.ayarlar.oyuncu, bedel = iskanBedeli(e.miktar);
+      d.devletler[oyuncu].hazine -= bedel;
+      const gruplar = nufusCikar(d.sehirler[e.kaynak], e.miktar);
+      d.iskanlar.push({ kaynak: e.kaynak, hedef: e.hedef, devlet: oyuncu, gruplar, kalanGun: DENGE.ISKAN_GUN });
+      olayEkle(d, { tur: "iskan", devlet: oyuncu, metin: `${sayiMetni(e.miktar)} kişi ${d.sehirler[e.kaynak].ad} → ${d.sehirler[e.hedef].ad} yola çıktı (${DENGE.ISKAN_GUN} gün). Bedel: −${bedel}.` });
+      break;
+    }
     case "barisCevap": {
       const t = d.barisTeklifleri.find((x) => x.id === e.teklif)!;
       d.barisTeklifleri = d.barisTeklifleri.filter((x) => x !== t);

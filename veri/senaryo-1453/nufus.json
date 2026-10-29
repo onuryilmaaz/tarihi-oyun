@@ -1,0 +1,2594 @@
+{
+ "aciklama": "1453 nüfus grupları (din × kültür, binde) — agent'ın tarihî tahmini, [TASLAK] (DEC-0045). Devlet varsayılanı her şehre uygulanır; listedeki şehirler ayrıca düzeltilmiştir. Toplam nüfus değerleri hâlâ test değeridir.",
+ "dinler": {
+  "sunni": "Sünnî İslam",
+  "sii": "Şiî İslam",
+  "ortodoks": "Ortodoks",
+  "katolik": "Katolik",
+  "ermeni": "Doğu kiliseleri",
+  "yahudi": "Yahudilik",
+  "budist": "Budizm ve Uzak Doğu inançları",
+  "hindu": "Hinduizm",
+  "yerel": "Yerel inançlar"
+ },
+ "dinAileleri": {
+  "sunni": "islam",
+  "sii": "islam",
+  "ortodoks": "hristiyan",
+  "katolik": "hristiyan",
+  "ermeni": "hristiyan",
+  "yahudi": "yahudi",
+  "budist": "dogu",
+  "hindu": "dogu",
+  "yerel": "yerel"
+ },
+ "kulturler": {
+  "turk": "Türk",
+  "turkmen": "Türkmen",
+  "arap": "Arap",
+  "fars": "Fars",
+  "kurt": "Kürt",
+  "rum": "Rum",
+  "ermeni": "Ermeni",
+  "suryani": "Süryani",
+  "kipti": "Kıpti",
+  "gurcu": "Gürcü",
+  "kafkas": "Kafkas",
+  "sirp": "Sırp",
+  "hirvat": "Hırvat",
+  "bulgar": "Bulgar",
+  "arnavut": "Arnavut",
+  "ulah": "Ulah",
+  "macar": "Macar",
+  "italyan": "İtalyan",
+  "alman": "Alman",
+  "felemenk": "Felemenk",
+  "fransiz": "Fransız",
+  "iber": "İber",
+  "ingiliz": "İngiliz",
+  "kelt": "Kelt",
+  "iskandinav": "İskandinav",
+  "baltik": "Baltık",
+  "litvan": "Litvan",
+  "rus": "Rus",
+  "leh": "Leh",
+  "cek": "Çek",
+  "tatar": "Tatar",
+  "gotlar": "Kırım Gotu",
+  "yahudi": "Yahudi",
+  "berberi": "Berberi",
+  "afrika": "Afrikalı",
+  "mogol": "Moğol",
+  "tibet": "Tibetli",
+  "cin": "Çin",
+  "kore": "Koreli",
+  "japon": "Japon",
+  "guneydogu": "Güneydoğu Asyalı",
+  "malay": "Malay",
+  "hint": "Hint",
+  "amerika": "Amerikan yerlisi"
+ },
+ "devletler": {
+  "osm": {
+   "din": "sunni",
+   "kultur": "turk",
+   "karisim": [
+    [
+     "sunni",
+     "turk",
+     750
+    ],
+    [
+     "ortodoks",
+     "rum",
+     150
+    ],
+    [
+     "ermeni",
+     "ermeni",
+     50
+    ],
+    [
+     "yahudi",
+     "yahudi",
+     50
+    ]
+   ]
+  },
+  "biz": {
+   "din": "ortodoks",
+   "kultur": "rum",
+   "karisim": [
+    [
+     "ortodoks",
+     "rum",
+     850
+    ],
+    [
+     "katolik",
+     "italyan",
+     80
+    ],
+    [
+     "yahudi",
+     "yahudi",
+     40
+    ],
+    [
+     "ermeni",
+     "ermeni",
+     30
+    ]
+   ]
+  },
+  "mor": {
+   "din": "ortodoks",
+   "kultur": "rum",
+   "karisim": [
+    [
+     "ortodoks",
+     "rum",
+     900
+    ],
+    [
+     "katolik",
+     "italyan",
+     50
+    ],
+    [
+     "ortodoks",
+     "arnavut",
+     50
+    ]
+   ]
+  },
+  "atn": {
+   "din": "katolik",
+   "kultur": "rum",
+   "karisim": [
+    [
+     "ortodoks",
+     "rum",
+     900
+    ],
+    [
+     "katolik",
+     "italyan",
+     50
+    ],
+    [
+     "ortodoks",
+     "arnavut",
+     50
+    ]
+   ]
+  },
+  "trb": {
+   "din": "ortodoks",
+   "kultur": "rum",
+   "karisim": [
+    [
+     "ortodoks",
+     "rum",
+     750
+    ],
+    [
+     "ortodoks",
+     "gurcu",
+     100
+    ],
+    [
+     "sunni",
+     "turk",
+     100
+    ],
+    [
+     "ermeni",
+     "ermeni",
+     50
+    ]
+   ]
+  },
+  "kar": {
+   "din": "sunni",
+   "kultur": "turk",
+   "karisim": [
+    [
+     "sunni",
+     "turk",
+     850
+    ],
+    [
+     "ortodoks",
+     "rum",
+     100
+    ],
+    [
+     "ermeni",
+     "ermeni",
+     50
+    ]
+   ]
+  },
+  "can": {
+   "din": "sunni",
+   "kultur": "turk",
+   "karisim": [
+    [
+     "sunni",
+     "turk",
+     850
+    ],
+    [
+     "ortodoks",
+     "rum",
+     100
+    ],
+    [
+     "ermeni",
+     "ermeni",
+     50
+    ]
+   ]
+  },
+  "dul": {
+   "din": "sunni",
+   "kultur": "turk",
+   "karisim": [
+    [
+     "sunni",
+     "turk",
+     850
+    ],
+    [
+     "ortodoks",
+     "rum",
+     100
+    ],
+    [
+     "ermeni",
+     "ermeni",
+     50
+    ]
+   ]
+  },
+  "ram": {
+   "din": "sunni",
+   "kultur": "turk",
+   "karisim": [
+    [
+     "sunni",
+     "turk",
+     850
+    ],
+    [
+     "ortodoks",
+     "rum",
+     100
+    ],
+    [
+     "ermeni",
+     "ermeni",
+     50
+    ]
+   ]
+  },
+  "akk": {
+   "din": "sunni",
+   "kultur": "turkmen",
+   "karisim": [
+    [
+     "sunni",
+     "turkmen",
+     450
+    ],
+    [
+     "sunni",
+     "kurt",
+     250
+    ],
+    [
+     "ermeni",
+     "ermeni",
+     200
+    ],
+    [
+     "ermeni",
+     "suryani",
+     100
+    ]
+   ]
+  },
+  "kkk": {
+   "din": "sii",
+   "kultur": "turkmen",
+   "karisim": [
+    [
+     "sii",
+     "turkmen",
+     300
+    ],
+    [
+     "sunni",
+     "fars",
+     350
+    ],
+    [
+     "sunni",
+     "kurt",
+     150
+    ],
+    [
+     "ermeni",
+     "ermeni",
+     100
+    ],
+    [
+     "sunni",
+     "arap",
+     100
+    ]
+   ]
+  },
+  "mem": {
+   "din": "sunni",
+   "kultur": "arap",
+   "karisim": [
+    [
+     "sunni",
+     "arap",
+     850
+    ],
+    [
+     "ermeni",
+     "kipti",
+     100
+    ],
+    [
+     "yahudi",
+     "yahudi",
+     30
+    ],
+    [
+     "ortodoks",
+     "arap",
+     20
+    ]
+   ]
+  },
+  "grc": {
+   "din": "ortodoks",
+   "kultur": "gurcu",
+   "karisim": [
+    [
+     "ortodoks",
+     "gurcu",
+     1000
+    ]
+   ]
+  },
+  "sir": {
+   "din": "sunni",
+   "kultur": "fars",
+   "karisim": [
+    [
+     "sunni",
+     "fars",
+     500
+    ],
+    [
+     "sunni",
+     "turkmen",
+     300
+    ],
+    [
+     "ermeni",
+     "ermeni",
+     200
+    ]
+   ]
+  },
+  "dag": {
+   "din": "sunni",
+   "kultur": "kafkas",
+   "karisim": [
+    [
+     "sunni",
+     "kafkas",
+     1000
+    ]
+   ]
+  },
+  "cer": {
+   "din": "ortodoks",
+   "kultur": "kafkas",
+   "karisim": [
+    [
+     "ortodoks",
+     "kafkas",
+     600
+    ],
+    [
+     "yerel",
+     "kafkas",
+     400
+    ]
+   ]
+  },
+  "ser": {
+   "din": "ortodoks",
+   "kultur": "sirp",
+   "karisim": [
+    [
+     "ortodoks",
+     "sirp",
+     950
+    ],
+    [
+     "ortodoks",
+     "ulah",
+     50
+    ]
+   ]
+  },
+  "zet": {
+   "din": "ortodoks",
+   "kultur": "sirp",
+   "karisim": [
+    [
+     "ortodoks",
+     "sirp",
+     950
+    ],
+    [
+     "ortodoks",
+     "ulah",
+     50
+    ]
+   ]
+  },
+  "bos": {
+   "din": "katolik",
+   "kultur": "sirp",
+   "karisim": [
+    [
+     "katolik",
+     "sirp",
+     450
+    ],
+    [
+     "ortodoks",
+     "sirp",
+     450
+    ],
+    [
+     "katolik",
+     "italyan",
+     100
+    ]
+   ]
+  },
+  "hrc": {
+   "din": "ortodoks",
+   "kultur": "sirp",
+   "karisim": [
+    [
+     "ortodoks",
+     "sirp",
+     600
+    ],
+    [
+     "katolik",
+     "sirp",
+     400
+    ]
+   ]
+  },
+  "arn": {
+   "din": "katolik",
+   "kultur": "arnavut",
+   "karisim": [
+    [
+     "katolik",
+     "arnavut",
+     500
+    ],
+    [
+     "ortodoks",
+     "arnavut",
+     500
+    ]
+   ]
+  },
+  "rag": {
+   "din": "katolik",
+   "kultur": "italyan",
+   "karisim": [
+    [
+     "katolik",
+     "sirp",
+     600
+    ],
+    [
+     "katolik",
+     "italyan",
+     400
+    ]
+   ]
+  },
+  "hun": {
+   "din": "katolik",
+   "kultur": "macar",
+   "karisim": [
+    [
+     "katolik",
+     "macar",
+     700
+    ],
+    [
+     "katolik",
+     "alman",
+     100
+    ],
+    [
+     "ortodoks",
+     "ulah",
+     100
+    ],
+    [
+     "katolik",
+     "sirp",
+     100
+    ]
+   ]
+  },
+  "efl": {
+   "din": "ortodoks",
+   "kultur": "ulah",
+   "karisim": [
+    [
+     "ortodoks",
+     "ulah",
+     1000
+    ]
+   ]
+  },
+  "bog": {
+   "din": "ortodoks",
+   "kultur": "ulah",
+   "karisim": [
+    [
+     "ortodoks",
+     "ulah",
+     900
+    ],
+    [
+     "ermeni",
+     "ermeni",
+     100
+    ]
+   ]
+  },
+  "ven": {
+   "din": "katolik",
+   "kultur": "italyan",
+   "karisim": [
+    [
+     "katolik",
+     "italyan",
+     900
+    ],
+    [
+     "yahudi",
+     "yahudi",
+     30
+    ],
+    [
+     "ortodoks",
+     "rum",
+     70
+    ]
+   ]
+  },
+  "cen": {
+   "din": "katolik",
+   "kultur": "italyan",
+   "karisim": [
+    [
+     "katolik",
+     "italyan",
+     900
+    ],
+    [
+     "ortodoks",
+     "rum",
+     100
+    ]
+   ]
+  },
+  "rod": {
+   "din": "katolik",
+   "kultur": "italyan",
+   "karisim": [
+    [
+     "ortodoks",
+     "rum",
+     800
+    ],
+    [
+     "katolik",
+     "italyan",
+     200
+    ]
+   ]
+  },
+  "nax": {
+   "din": "katolik",
+   "kultur": "italyan",
+   "karisim": [
+    [
+     "ortodoks",
+     "rum",
+     800
+    ],
+    [
+     "katolik",
+     "italyan",
+     200
+    ]
+   ]
+  },
+  "kib": {
+   "din": "katolik",
+   "kultur": "fransiz",
+   "karisim": [
+    [
+     "ortodoks",
+     "rum",
+     800
+    ],
+    [
+     "katolik",
+     "fransiz",
+     100
+    ],
+    [
+     "ermeni",
+     "ermeni",
+     100
+    ]
+   ]
+  },
+  "kir": {
+   "din": "sunni",
+   "kultur": "tatar",
+   "karisim": [
+    [
+     "sunni",
+     "tatar",
+     1000
+    ]
+   ]
+  },
+  "alt": {
+   "din": "sunni",
+   "kultur": "tatar",
+   "karisim": [
+    [
+     "sunni",
+     "tatar",
+     1000
+    ]
+   ]
+  },
+  "kaz": {
+   "din": "sunni",
+   "kultur": "tatar",
+   "karisim": [
+    [
+     "sunni",
+     "tatar",
+     1000
+    ]
+   ]
+  },
+  "nog": {
+   "din": "sunni",
+   "kultur": "tatar",
+   "karisim": [
+    [
+     "sunni",
+     "tatar",
+     1000
+    ]
+   ]
+  },
+  "teo": {
+   "din": "ortodoks",
+   "kultur": "rum",
+   "karisim": [
+    [
+     "ortodoks",
+     "rum",
+     600
+    ],
+    [
+     "ortodoks",
+     "gotlar",
+     400
+    ]
+   ]
+  },
+  "mos": {
+   "din": "ortodoks",
+   "kultur": "rus",
+   "karisim": [
+    [
+     "ortodoks",
+     "rus",
+     1000
+    ]
+   ]
+  },
+  "nov": {
+   "din": "ortodoks",
+   "kultur": "rus",
+   "karisim": [
+    [
+     "ortodoks",
+     "rus",
+     1000
+    ]
+   ]
+  },
+  "psk": {
+   "din": "ortodoks",
+   "kultur": "rus",
+   "karisim": [
+    [
+     "ortodoks",
+     "rus",
+     1000
+    ]
+   ]
+  },
+  "tvr": {
+   "din": "ortodoks",
+   "kultur": "rus",
+   "karisim": [
+    [
+     "ortodoks",
+     "rus",
+     1000
+    ]
+   ]
+  },
+  "rya": {
+   "din": "ortodoks",
+   "kultur": "rus",
+   "karisim": [
+    [
+     "ortodoks",
+     "rus",
+     1000
+    ]
+   ]
+  },
+  "lit": {
+   "din": "katolik",
+   "kultur": "rus",
+   "karisim": [
+    [
+     "ortodoks",
+     "rus",
+     650
+    ],
+    [
+     "katolik",
+     "litvan",
+     250
+    ],
+    [
+     "yahudi",
+     "yahudi",
+     50
+    ],
+    [
+     "katolik",
+     "leh",
+     50
+    ]
+   ]
+  },
+  "pol": {
+   "din": "katolik",
+   "kultur": "leh",
+   "karisim": [
+    [
+     "katolik",
+     "leh",
+     800
+    ],
+    [
+     "ortodoks",
+     "rus",
+     100
+    ],
+    [
+     "yahudi",
+     "yahudi",
+     50
+    ],
+    [
+     "katolik",
+     "alman",
+     50
+    ]
+   ]
+  },
+  "tos": {
+   "din": "katolik",
+   "kultur": "alman",
+   "karisim": [
+    [
+     "katolik",
+     "alman",
+     1000
+    ]
+   ]
+  },
+  "liv": {
+   "din": "katolik",
+   "kultur": "alman",
+   "karisim": [
+    [
+     "katolik",
+     "baltik",
+     700
+    ],
+    [
+     "katolik",
+     "alman",
+     300
+    ]
+   ]
+  },
+  "avs": {
+   "din": "katolik",
+   "kultur": "alman",
+   "karisim": [
+    [
+     "katolik",
+     "alman",
+     1000
+    ]
+   ]
+  },
+  "bav": {
+   "din": "katolik",
+   "kultur": "alman",
+   "karisim": [
+    [
+     "katolik",
+     "alman",
+     1000
+    ]
+   ]
+  },
+  "sak": {
+   "din": "katolik",
+   "kultur": "alman",
+   "karisim": [
+    [
+     "katolik",
+     "alman",
+     1000
+    ]
+   ]
+  },
+  "bra": {
+   "din": "katolik",
+   "kultur": "alman",
+   "karisim": [
+    [
+     "katolik",
+     "alman",
+     1000
+    ]
+   ]
+  },
+  "pal": {
+   "din": "katolik",
+   "kultur": "alman",
+   "karisim": [
+    [
+     "katolik",
+     "alman",
+     1000
+    ]
+   ]
+  },
+  "pom": {
+   "din": "katolik",
+   "kultur": "alman",
+   "karisim": [
+    [
+     "katolik",
+     "alman",
+     1000
+    ]
+   ]
+  },
+  "kra": {
+   "din": "katolik",
+   "kultur": "alman",
+   "karisim": [
+    [
+     "katolik",
+     "alman",
+     1000
+    ]
+   ]
+  },
+  "boh": {
+   "din": "katolik",
+   "kultur": "cek",
+   "karisim": [
+    [
+     "katolik",
+     "cek",
+     750
+    ],
+    [
+     "katolik",
+     "alman",
+     250
+    ]
+   ]
+  },
+  "isv": {
+   "din": "katolik",
+   "kultur": "alman",
+   "karisim": [
+    [
+     "katolik",
+     "alman",
+     800
+    ],
+    [
+     "katolik",
+     "fransiz",
+     200
+    ]
+   ]
+  },
+  "pap": {
+   "din": "katolik",
+   "kultur": "italyan",
+   "karisim": [
+    [
+     "katolik",
+     "italyan",
+     1000
+    ]
+   ]
+  },
+  "nap": {
+   "din": "katolik",
+   "kultur": "italyan",
+   "karisim": [
+    [
+     "katolik",
+     "italyan",
+     1000
+    ]
+   ]
+  },
+  "mil": {
+   "din": "katolik",
+   "kultur": "italyan",
+   "karisim": [
+    [
+     "katolik",
+     "italyan",
+     1000
+    ]
+   ]
+  },
+  "flo": {
+   "din": "katolik",
+   "kultur": "italyan",
+   "karisim": [
+    [
+     "katolik",
+     "italyan",
+     1000
+    ]
+   ]
+  },
+  "sie": {
+   "din": "katolik",
+   "kultur": "italyan",
+   "karisim": [
+    [
+     "katolik",
+     "italyan",
+     1000
+    ]
+   ]
+  },
+  "fer": {
+   "din": "katolik",
+   "kultur": "italyan",
+   "karisim": [
+    [
+     "katolik",
+     "italyan",
+     1000
+    ]
+   ]
+  },
+  "man": {
+   "din": "katolik",
+   "kultur": "italyan",
+   "karisim": [
+    [
+     "katolik",
+     "italyan",
+     1000
+    ]
+   ]
+  },
+  "sav": {
+   "din": "katolik",
+   "kultur": "fransiz",
+   "karisim": [
+    [
+     "katolik",
+     "fransiz",
+     700
+    ],
+    [
+     "katolik",
+     "italyan",
+     300
+    ]
+   ]
+  },
+  "fra": {
+   "din": "katolik",
+   "kultur": "fransiz",
+   "karisim": [
+    [
+     "katolik",
+     "fransiz",
+     1000
+    ]
+   ]
+  },
+  "brg": {
+   "din": "katolik",
+   "kultur": "fransiz",
+   "karisim": [
+    [
+     "katolik",
+     "fransiz",
+     600
+    ],
+    [
+     "katolik",
+     "felemenk",
+     400
+    ]
+   ]
+  },
+  "bre": {
+   "din": "katolik",
+   "kultur": "fransiz",
+   "karisim": [
+    [
+     "katolik",
+     "fransiz",
+     1000
+    ]
+   ]
+  },
+  "lor": {
+   "din": "katolik",
+   "kultur": "fransiz",
+   "karisim": [
+    [
+     "katolik",
+     "fransiz",
+     1000
+    ]
+   ]
+  },
+  "pro": {
+   "din": "katolik",
+   "kultur": "fransiz",
+   "karisim": [
+    [
+     "katolik",
+     "fransiz",
+     1000
+    ]
+   ]
+  },
+  "kas": {
+   "din": "katolik",
+   "kultur": "iber",
+   "karisim": [
+    [
+     "katolik",
+     "iber",
+     930
+    ],
+    [
+     "yahudi",
+     "yahudi",
+     50
+    ],
+    [
+     "sunni",
+     "arap",
+     20
+    ]
+   ]
+  },
+  "ara": {
+   "din": "katolik",
+   "kultur": "iber",
+   "karisim": [
+    [
+     "katolik",
+     "iber",
+     800
+    ],
+    [
+     "katolik",
+     "italyan",
+     150
+    ],
+    [
+     "yahudi",
+     "yahudi",
+     50
+    ]
+   ]
+  },
+  "por": {
+   "din": "katolik",
+   "kultur": "iber",
+   "karisim": [
+    [
+     "katolik",
+     "iber",
+     1000
+    ]
+   ]
+  },
+  "nav": {
+   "din": "katolik",
+   "kultur": "iber",
+   "karisim": [
+    [
+     "katolik",
+     "iber",
+     1000
+    ]
+   ]
+  },
+  "gir": {
+   "din": "sunni",
+   "kultur": "arap",
+   "karisim": [
+    [
+     "sunni",
+     "arap",
+     950
+    ],
+    [
+     "yahudi",
+     "yahudi",
+     50
+    ]
+   ]
+  },
+  "ing": {
+   "din": "katolik",
+   "kultur": "ingiliz",
+   "karisim": [
+    [
+     "katolik",
+     "ingiliz",
+     850
+    ],
+    [
+     "katolik",
+     "fransiz",
+     100
+    ],
+    [
+     "katolik",
+     "kelt",
+     50
+    ]
+   ]
+  },
+  "isk": {
+   "din": "katolik",
+   "kultur": "kelt",
+   "karisim": [
+    [
+     "katolik",
+     "kelt",
+     1000
+    ]
+   ]
+  },
+  "irl": {
+   "din": "katolik",
+   "kultur": "kelt",
+   "karisim": [
+    [
+     "katolik",
+     "kelt",
+     1000
+    ]
+   ]
+  },
+  "dan": {
+   "din": "katolik",
+   "kultur": "iskandinav",
+   "karisim": [
+    [
+     "katolik",
+     "iskandinav",
+     1000
+    ]
+   ]
+  },
+  "isw": {
+   "din": "katolik",
+   "kultur": "iskandinav",
+   "karisim": [
+    [
+     "katolik",
+     "iskandinav",
+     1000
+    ]
+   ]
+  },
+  "fas": {
+   "din": "sunni",
+   "kultur": "arap",
+   "karisim": [
+    [
+     "sunni",
+     "arap",
+     600
+    ],
+    [
+     "sunni",
+     "berberi",
+     350
+    ],
+    [
+     "yahudi",
+     "yahudi",
+     50
+    ]
+   ]
+  },
+  "tle": {
+   "din": "sunni",
+   "kultur": "arap",
+   "karisim": [
+    [
+     "sunni",
+     "arap",
+     600
+    ],
+    [
+     "sunni",
+     "berberi",
+     350
+    ],
+    [
+     "yahudi",
+     "yahudi",
+     50
+    ]
+   ]
+  },
+  "haf": {
+   "din": "sunni",
+   "kultur": "arap",
+   "karisim": [
+    [
+     "sunni",
+     "arap",
+     600
+    ],
+    [
+     "sunni",
+     "berberi",
+     350
+    ],
+    [
+     "yahudi",
+     "yahudi",
+     50
+    ]
+   ]
+  },
+  "mli": {
+   "din": "sunni",
+   "kultur": "afrika",
+   "karisim": [
+    [
+     "sunni",
+     "afrika",
+     600
+    ],
+    [
+     "yerel",
+     "afrika",
+     400
+    ]
+   ]
+  },
+  "son": {
+   "din": "sunni",
+   "kultur": "afrika",
+   "karisim": [
+    [
+     "sunni",
+     "afrika",
+     600
+    ],
+    [
+     "yerel",
+     "afrika",
+     400
+    ]
+   ]
+  },
+  "kan": {
+   "din": "sunni",
+   "kultur": "afrika",
+   "karisim": [
+    [
+     "sunni",
+     "afrika",
+     600
+    ],
+    [
+     "yerel",
+     "afrika",
+     400
+    ]
+   ]
+  },
+  "bnn": {
+   "din": "yerel",
+   "kultur": "afrika",
+   "karisim": [
+    [
+     "yerel",
+     "afrika",
+     1000
+    ]
+   ]
+  },
+  "kon": {
+   "din": "yerel",
+   "kultur": "afrika",
+   "karisim": [
+    [
+     "yerel",
+     "afrika",
+     1000
+    ]
+   ]
+  },
+  "mut": {
+   "din": "yerel",
+   "kultur": "afrika",
+   "karisim": [
+    [
+     "yerel",
+     "afrika",
+     1000
+    ]
+   ]
+  },
+  "kil": {
+   "din": "sunni",
+   "kultur": "afrika",
+   "karisim": [
+    [
+     "sunni",
+     "afrika",
+     700
+    ],
+    [
+     "sunni",
+     "arap",
+     300
+    ]
+   ]
+  },
+  "etp": {
+   "din": "ortodoks",
+   "kultur": "afrika",
+   "karisim": [
+    [
+     "ortodoks",
+     "afrika",
+     900
+    ],
+    [
+     "sunni",
+     "afrika",
+     100
+    ]
+   ]
+  },
+  "ada": {
+   "din": "sunni",
+   "kultur": "afrika",
+   "karisim": [
+    [
+     "sunni",
+     "afrika",
+     1000
+    ]
+   ]
+  },
+  "ymn": {
+   "din": "sunni",
+   "kultur": "arap",
+   "karisim": [
+    [
+     "sunni",
+     "arap",
+     600
+    ],
+    [
+     "sii",
+     "arap",
+     400
+    ]
+   ]
+  },
+  "hrm": {
+   "din": "sunni",
+   "kultur": "fars",
+   "karisim": [
+    [
+     "sunni",
+     "fars",
+     600
+    ],
+    [
+     "sunni",
+     "arap",
+     400
+    ]
+   ]
+  },
+  "tim": {
+   "din": "sunni",
+   "kultur": "fars",
+   "karisim": [
+    [
+     "sunni",
+     "fars",
+     600
+    ],
+    [
+     "sunni",
+     "turk",
+     400
+    ]
+   ]
+  },
+  "ozb": {
+   "din": "sunni",
+   "kultur": "turk",
+   "karisim": [
+    [
+     "sunni",
+     "turk",
+     1000
+    ]
+   ]
+  },
+  "mgl": {
+   "din": "sunni",
+   "kultur": "turk",
+   "karisim": [
+    [
+     "sunni",
+     "turk",
+     1000
+    ]
+   ]
+  },
+  "tum": {
+   "din": "sunni",
+   "kultur": "turk",
+   "karisim": [
+    [
+     "sunni",
+     "turk",
+     1000
+    ]
+   ]
+  },
+  "oir": {
+   "din": "budist",
+   "kultur": "mogol",
+   "karisim": [
+    [
+     "budist",
+     "mogol",
+     1000
+    ]
+   ]
+  },
+  "jur": {
+   "din": "yerel",
+   "kultur": "mogol",
+   "karisim": [
+    [
+     "yerel",
+     "mogol",
+     1000
+    ]
+   ]
+  },
+  "tib": {
+   "din": "budist",
+   "kultur": "tibet",
+   "karisim": [
+    [
+     "budist",
+     "tibet",
+     1000
+    ]
+   ]
+  },
+  "min": {
+   "din": "budist",
+   "kultur": "cin",
+   "karisim": [
+    [
+     "budist",
+     "cin",
+     1000
+    ]
+   ]
+  },
+  "jos": {
+   "din": "budist",
+   "kultur": "kore",
+   "karisim": [
+    [
+     "budist",
+     "kore",
+     1000
+    ]
+   ]
+  },
+  "jap": {
+   "din": "budist",
+   "kultur": "japon",
+   "karisim": [
+    [
+     "budist",
+     "japon",
+     1000
+    ]
+   ]
+  },
+  "dai": {
+   "din": "budist",
+   "kultur": "guneydogu",
+   "karisim": [
+    [
+     "budist",
+     "guneydogu",
+     1000
+    ]
+   ]
+  },
+  "cha": {
+   "din": "hindu",
+   "kultur": "guneydogu",
+   "karisim": [
+    [
+     "hindu",
+     "guneydogu",
+     1000
+    ]
+   ]
+  },
+  "khm": {
+   "din": "budist",
+   "kultur": "guneydogu",
+   "karisim": [
+    [
+     "budist",
+     "guneydogu",
+     1000
+    ]
+   ]
+  },
+  "lan": {
+   "din": "budist",
+   "kultur": "guneydogu",
+   "karisim": [
+    [
+     "budist",
+     "guneydogu",
+     1000
+    ]
+   ]
+  },
+  "lnn": {
+   "din": "budist",
+   "kultur": "guneydogu",
+   "karisim": [
+    [
+     "budist",
+     "guneydogu",
+     1000
+    ]
+   ]
+  },
+  "aut": {
+   "din": "budist",
+   "kultur": "guneydogu",
+   "karisim": [
+    [
+     "budist",
+     "guneydogu",
+     1000
+    ]
+   ]
+  },
+  "ava": {
+   "din": "budist",
+   "kultur": "guneydogu",
+   "karisim": [
+    [
+     "budist",
+     "guneydogu",
+     1000
+    ]
+   ]
+  },
+  "peg": {
+   "din": "budist",
+   "kultur": "guneydogu",
+   "karisim": [
+    [
+     "budist",
+     "guneydogu",
+     1000
+    ]
+   ]
+  },
+  "ark": {
+   "din": "budist",
+   "kultur": "guneydogu",
+   "karisim": [
+    [
+     "budist",
+     "guneydogu",
+     1000
+    ]
+   ]
+  },
+  "mlk": {
+   "din": "sunni",
+   "kultur": "malay",
+   "karisim": [
+    [
+     "sunni",
+     "malay",
+     1000
+    ]
+   ]
+  },
+  "bru": {
+   "din": "sunni",
+   "kultur": "malay",
+   "karisim": [
+    [
+     "sunni",
+     "malay",
+     1000
+    ]
+   ]
+  },
+  "mjp": {
+   "din": "hindu",
+   "kultur": "malay",
+   "karisim": [
+    [
+     "hindu",
+     "malay",
+     1000
+    ]
+   ]
+  },
+  "del": {
+   "din": "sunni",
+   "kultur": "hint",
+   "karisim": [
+    [
+     "hindu",
+     "hint",
+     700
+    ],
+    [
+     "sunni",
+     "hint",
+     300
+    ]
+   ]
+  },
+  "jau": {
+   "din": "sunni",
+   "kultur": "hint",
+   "karisim": [
+    [
+     "hindu",
+     "hint",
+     700
+    ],
+    [
+     "sunni",
+     "hint",
+     300
+    ]
+   ]
+  },
+  "ben": {
+   "din": "sunni",
+   "kultur": "hint",
+   "karisim": [
+    [
+     "hindu",
+     "hint",
+     700
+    ],
+    [
+     "sunni",
+     "hint",
+     300
+    ]
+   ]
+  },
+  "guc": {
+   "din": "sunni",
+   "kultur": "hint",
+   "karisim": [
+    [
+     "hindu",
+     "hint",
+     700
+    ],
+    [
+     "sunni",
+     "hint",
+     300
+    ]
+   ]
+  },
+  "mal": {
+   "din": "sunni",
+   "kultur": "hint",
+   "karisim": [
+    [
+     "hindu",
+     "hint",
+     700
+    ],
+    [
+     "sunni",
+     "hint",
+     300
+    ]
+   ]
+  },
+  "bah": {
+   "din": "sunni",
+   "kultur": "hint",
+   "karisim": [
+    [
+     "hindu",
+     "hint",
+     700
+    ],
+    [
+     "sunni",
+     "hint",
+     300
+    ]
+   ]
+  },
+  "ksm": {
+   "din": "sunni",
+   "kultur": "hint",
+   "karisim": [
+    [
+     "hindu",
+     "hint",
+     700
+    ],
+    [
+     "sunni",
+     "hint",
+     300
+    ]
+   ]
+  },
+  "mlt": {
+   "din": "sunni",
+   "kultur": "hint",
+   "karisim": [
+    [
+     "hindu",
+     "hint",
+     700
+    ],
+    [
+     "sunni",
+     "hint",
+     300
+    ]
+   ]
+  },
+  "sin": {
+   "din": "sunni",
+   "kultur": "hint",
+   "karisim": [
+    [
+     "hindu",
+     "hint",
+     700
+    ],
+    [
+     "sunni",
+     "hint",
+     300
+    ]
+   ]
+  },
+  "vij": {
+   "din": "hindu",
+   "kultur": "hint",
+   "karisim": [
+    [
+     "hindu",
+     "hint",
+     1000
+    ]
+   ]
+  },
+  "mew": {
+   "din": "hindu",
+   "kultur": "hint",
+   "karisim": [
+    [
+     "hindu",
+     "hint",
+     1000
+    ]
+   ]
+  },
+  "ori": {
+   "din": "hindu",
+   "kultur": "hint",
+   "karisim": [
+    [
+     "hindu",
+     "hint",
+     1000
+    ]
+   ]
+  },
+  "ahm": {
+   "din": "hindu",
+   "kultur": "hint",
+   "karisim": [
+    [
+     "hindu",
+     "hint",
+     1000
+    ]
+   ]
+  },
+  "kot": {
+   "din": "budist",
+   "kultur": "hint",
+   "karisim": [
+    [
+     "budist",
+     "hint",
+     1000
+    ]
+   ]
+  },
+  "azt": {
+   "din": "yerel",
+   "kultur": "amerika",
+   "karisim": [
+    [
+     "yerel",
+     "amerika",
+     1000
+    ]
+   ]
+  },
+  "tlx": {
+   "din": "yerel",
+   "kultur": "amerika",
+   "karisim": [
+    [
+     "yerel",
+     "amerika",
+     1000
+    ]
+   ]
+  },
+  "pur": {
+   "din": "yerel",
+   "kultur": "amerika",
+   "karisim": [
+    [
+     "yerel",
+     "amerika",
+     1000
+    ]
+   ]
+  },
+  "may": {
+   "din": "yerel",
+   "kultur": "amerika",
+   "karisim": [
+    [
+     "yerel",
+     "amerika",
+     1000
+    ]
+   ]
+  },
+  "inka": {
+   "din": "yerel",
+   "kultur": "amerika",
+   "karisim": [
+    [
+     "yerel",
+     "amerika",
+     1000
+    ]
+   ]
+  },
+  "chi": {
+   "din": "yerel",
+   "kultur": "amerika",
+   "karisim": [
+    [
+     "yerel",
+     "amerika",
+     1000
+    ]
+   ]
+  }
+ },
+ "sehirler": {
+  "Edirne": [
+   [
+    "sunni",
+    "turk",
+    550
+   ],
+   [
+    "ortodoks",
+    "rum",
+    250
+   ],
+   [
+    "ortodoks",
+    "bulgar",
+    150
+   ],
+   [
+    "yahudi",
+    "yahudi",
+    50
+   ]
+  ],
+  "Selanik": [
+   [
+    "ortodoks",
+    "rum",
+    650
+   ],
+   [
+    "sunni",
+    "turk",
+    250
+   ],
+   [
+    "yahudi",
+    "yahudi",
+    100
+   ]
+  ],
+  "Üsküp": [
+   [
+    "sunni",
+    "turk",
+    400
+   ],
+   [
+    "ortodoks",
+    "sirp",
+    300
+   ],
+   [
+    "ortodoks",
+    "bulgar",
+    200
+   ],
+   [
+    "ortodoks",
+    "arnavut",
+    100
+   ]
+  ],
+  "Sofya": [
+   [
+    "ortodoks",
+    "bulgar",
+    700
+   ],
+   [
+    "sunni",
+    "turk",
+    300
+   ]
+  ],
+  "Filibe": [
+   [
+    "ortodoks",
+    "bulgar",
+    600
+   ],
+   [
+    "sunni",
+    "turk",
+    350
+   ],
+   [
+    "ortodoks",
+    "rum",
+    50
+   ]
+  ],
+  "Tırnova": [
+   [
+    "ortodoks",
+    "bulgar",
+    800
+   ],
+   [
+    "sunni",
+    "turk",
+    200
+   ]
+  ],
+  "Gelibolu": [
+   [
+    "sunni",
+    "turk",
+    600
+   ],
+   [
+    "ortodoks",
+    "rum",
+    400
+   ]
+  ],
+  "İzmir": [
+   [
+    "sunni",
+    "turk",
+    600
+   ],
+   [
+    "ortodoks",
+    "rum",
+    350
+   ],
+   [
+    "yahudi",
+    "yahudi",
+    50
+   ]
+  ],
+  "Bursa": [
+   [
+    "sunni",
+    "turk",
+    800
+   ],
+   [
+    "ortodoks",
+    "rum",
+    100
+   ],
+   [
+    "ermeni",
+    "ermeni",
+    50
+   ],
+   [
+    "yahudi",
+    "yahudi",
+    50
+   ]
+  ],
+  "Konstantiniyye": [
+   [
+    "ortodoks",
+    "rum",
+    800
+   ],
+   [
+    "katolik",
+    "italyan",
+    120
+   ],
+   [
+    "yahudi",
+    "yahudi",
+    40
+   ],
+   [
+    "ermeni",
+    "ermeni",
+    40
+   ]
+  ],
+  "Kahire": [
+   [
+    "sunni",
+    "arap",
+    800
+   ],
+   [
+    "ermeni",
+    "kipti",
+    150
+   ],
+   [
+    "yahudi",
+    "yahudi",
+    50
+   ]
+  ],
+  "Kudüs": [
+   [
+    "sunni",
+    "arap",
+    700
+   ],
+   [
+    "ortodoks",
+    "arap",
+    200
+   ],
+   [
+    "yahudi",
+    "yahudi",
+    100
+   ]
+  ],
+  "Bağdat": [
+   [
+    "sunni",
+    "arap",
+    450
+   ],
+   [
+    "sii",
+    "arap",
+    400
+   ],
+   [
+    "yahudi",
+    "yahudi",
+    80
+   ],
+   [
+    "ermeni",
+    "suryani",
+    70
+   ]
+  ],
+  "Tebriz": [
+   [
+    "sii",
+    "turkmen",
+    500
+   ],
+   [
+    "sunni",
+    "fars",
+    400
+   ],
+   [
+    "ermeni",
+    "ermeni",
+    100
+   ]
+  ],
+  "Diyarbakır": [
+   [
+    "sunni",
+    "turkmen",
+    400
+   ],
+   [
+    "sunni",
+    "kurt",
+    300
+   ],
+   [
+    "ermeni",
+    "ermeni",
+    300
+   ]
+  ],
+  "Erzurum": [
+   [
+    "ermeni",
+    "ermeni",
+    500
+   ],
+   [
+    "sunni",
+    "turkmen",
+    500
+   ]
+  ],
+  "Kefe": [
+   [
+    "katolik",
+    "italyan",
+    400
+   ],
+   [
+    "ermeni",
+    "ermeni",
+    300
+   ],
+   [
+    "sunni",
+    "tatar",
+    300
+   ]
+  ],
+  "Sakız": [
+   [
+    "ortodoks",
+    "rum",
+    700
+   ],
+   [
+    "katolik",
+    "italyan",
+    300
+   ]
+  ],
+  "Kandiye": [
+   [
+    "ortodoks",
+    "rum",
+    850
+   ],
+   [
+    "katolik",
+    "italyan",
+    150
+   ]
+  ],
+  "Korfu": [
+   [
+    "ortodoks",
+    "rum",
+    850
+   ],
+   [
+    "katolik",
+    "italyan",
+    150
+   ]
+  ],
+  "Zara": [
+   [
+    "katolik",
+    "sirp",
+    600
+   ],
+   [
+    "katolik",
+    "italyan",
+    400
+   ]
+  ],
+  "Belgrad": [
+   [
+    "ortodoks",
+    "sirp",
+    700
+   ],
+   [
+    "katolik",
+    "macar",
+    300
+   ]
+  ],
+  "Zagreb": [
+   [
+    "katolik",
+    "hirvat",
+    1000
+   ]
+  ],
+  "Kolojvar": [
+   [
+    "katolik",
+    "macar",
+    500
+   ],
+   [
+    "katolik",
+    "alman",
+    300
+   ],
+   [
+    "ortodoks",
+    "ulah",
+    200
+   ]
+  ],
+  "Palermo": [
+   [
+    "katolik",
+    "italyan",
+    1000
+   ]
+  ],
+  "Kiev": [
+   [
+    "ortodoks",
+    "rus",
+    900
+   ],
+   [
+    "yahudi",
+    "yahudi",
+    100
+   ]
+  ],
+  "Lviv": [
+   [
+    "katolik",
+    "leh",
+    400
+   ],
+   [
+    "ortodoks",
+    "rus",
+    300
+   ],
+   [
+    "ermeni",
+    "ermeni",
+    150
+   ],
+   [
+    "yahudi",
+    "yahudi",
+    150
+   ]
+  ],
+  "Danzig": [
+   [
+    "katolik",
+    "alman",
+    900
+   ],
+   [
+    "katolik",
+    "leh",
+    100
+   ]
+  ],
+  "Brugge": [
+   [
+    "katolik",
+    "felemenk",
+    1000
+   ]
+  ],
+  "Dublin": [
+   [
+    "katolik",
+    "kelt",
+    600
+   ],
+   [
+    "katolik",
+    "ingiliz",
+    400
+   ]
+  ],
+  "Bordo": [
+   [
+    "katolik",
+    "fransiz",
+    1000
+   ]
+  ],
+  "Bergen": [
+   [
+    "katolik",
+    "iskandinav",
+    800
+   ],
+   [
+    "katolik",
+    "alman",
+    200
+   ]
+  ],
+  "Sevilla": [
+   [
+    "katolik",
+    "iber",
+    850
+   ],
+   [
+    "yahudi",
+    "yahudi",
+    100
+   ],
+   [
+    "sunni",
+    "arap",
+    50
+   ]
+  ],
+  "Toledo": [
+   [
+    "katolik",
+    "iber",
+    850
+   ],
+   [
+    "yahudi",
+    "yahudi",
+    150
+   ]
+  ],
+  "Semerkant": [
+   [
+    "sunni",
+    "turk",
+    500
+   ],
+   [
+    "sunni",
+    "fars",
+    500
+   ]
+  ],
+  "Buhara": [
+   [
+    "sunni",
+    "fars",
+    600
+   ],
+   [
+    "sunni",
+    "turk",
+    300
+   ],
+   [
+    "yahudi",
+    "yahudi",
+    100
+   ]
+  ],
+  "Kaşgar": [
+   [
+    "sunni",
+    "turk",
+    1000
+   ]
+  ],
+  "Timbuktu": [
+   [
+    "sunni",
+    "afrika",
+    800
+   ],
+   [
+    "sunni",
+    "berberi",
+    200
+   ]
+  ],
+  "Akkirman": [
+   [
+    "ortodoks",
+    "ulah",
+    500
+   ],
+   [
+    "ermeni",
+    "ermeni",
+    250
+   ],
+   [
+    "ortodoks",
+    "rum",
+    250
+   ]
+  ],
+  "Hürmüz": [
+   [
+    "sunni",
+    "fars",
+    500
+   ],
+   [
+    "sunni",
+    "arap",
+    300
+   ],
+   [
+    "hindu",
+    "hint",
+    200
+   ]
+  ],
+  "Malakka": [
+   [
+    "sunni",
+    "malay",
+    800
+   ],
+   [
+    "budist",
+    "cin",
+    100
+   ],
+   [
+    "hindu",
+    "hint",
+    100
+   ]
+  ]
+ }
+}

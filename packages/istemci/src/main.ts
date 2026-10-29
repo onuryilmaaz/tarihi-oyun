@@ -6,6 +6,7 @@ import "@fontsource/cormorant-garamond/700-italic.css";
 import "@fontsource/inter/500.css";
 import "@fontsource/inter/700.css";
 import { type YapiTuru, DENGE, tarihMetni, toplamaMaliyeti, type Emir, type MuharebeRaporu, type SenaryoVerisi, type Tutum, type TurSuresi } from "@tarihi/sim";
+import { Color } from "three";
 import { haritaYukle } from "./harita/veri";
 import { haritaGorunumuKur, kacis, KONUMLAR, type Katmanlar, type WdDevlet } from "./harita/gorunum";
 import { SimIstemcisi, type Ozet, type RotaOnizleme } from "./sim-protokol";
@@ -107,9 +108,41 @@ async function baslat() {
   });
 
   // Diplomasi harita modu (MASTER_SPEC §7.3): siz, müttefik, savaş, tarafsızlar bakışa göre
-  let diplomasiAcik = false;
+  let haritaModu: "siyasi" | "diplomasi" | "din" | "kultur" = "siyasi";
+  // Din/kültür renkleri (7b): dinler sabit, kültürler sırasına göre altın oranla dağıtılmış tonlar
+  const DIN_RENK: Record<string, string> = { sunni: "#4f8f4a", sii: "#2e6b5e", ortodoks: "#8a5fa8", katolik: "#3f6fb5", ermeni: "#b5603f",
+    yahudi: "#d8c36a", budist: "#e08a3c", hindu: "#c94f7c", yerel: "#8c8c7a", bilinmiyor: "#cfc6b0" };
+  const kulturListesi = Object.keys(senaryo.nufus?.kulturler ?? {});
+  const kulturRengi = (k: string) => {
+    const i = kulturListesi.indexOf(k);
+    if (i < 0) return "#cfc6b0";
+    const c = new Color().setHSL(((i * 137.508) % 360) / 360, 0.45, 0.58);
+    return `#${c.getHexString()}`;
+  };
+  const dinAdi = (x: string) => senaryo.nufus?.dinler[x] ?? (x === "bilinmiyor" ? "Bilinmiyor" : x);
+  const kulturAdi = (x: string) => senaryo.nufus?.kulturler[x] ?? (x === "diger" ? "Diğer" : x);
+  const nufusHaritasi = () => {
+    if (haritaModu !== "din" && haritaModu !== "kultur") { gorunum.birimRenkleri(null); $("nufusLejant").hidden = true; return; }
+    const din = haritaModu === "din";
+    // Şehri olan arazi o şehrin baskın grubuyla, şehri olmayan arazi sahibinin resmî din/kültürüyle boyanır
+    const sehirBirim = new Map<number, number>();
+    senaryo.sehirler.forEach((s, i) => { if (s.birim >= 0) sehirBirim.set(s.birim, i); });
+    const renk = (k: string) => (din ? DIN_RENK[k] ?? "#cfc6b0" : kulturRengi(k));
+    const kullanilan = new Set<string>();
+    gorunum.birimRenkleri(ozet.birimSahipleri.map((sahip, b) => {
+      const si = sehirBirim.get(b);
+      const g = si !== undefined ? ozet.sehirNufuslari[si].gruplar[0] : undefined;
+      const k = g ? (din ? g[0] : g[1]) : sahip < 0 ? "bilinmiyor" : (din ? ozet.devletDinleri[sahip] : ozet.devletKulturleri[sahip]);
+      if (sahip >= 0) kullanilan.add(k);
+      return sahip < 0 ? "#e6dcc6" : renk(k);
+    }));
+    $("nufusLejant").innerHTML = `<b>${din ? "Baskın din" : "Baskın kültür"}</b>` + [...kullanilan].sort().map((k) =>
+      `<div><span style="background:${renk(k)}"></span>${kacis(din ? dinAdi(k) : kulturAdi(k))}</div>`).join("");
+    $("nufusLejant").hidden = false;
+  };
   const diplomasiHaritasi = () => {
-    if (!diplomasiAcik) return gorunum.haritaRenkleri(null);
+    nufusHaritasi();
+    if (haritaModu !== "diplomasi") return gorunum.haritaRenkleri(null);
     const karis = (a: number[], b: number[], t: number) => a.map((x, i) => Math.round(x + (b[i] - x) * t));
     const hex = (c: number[]) => `#${c.map((x) => x.toString(16).padStart(2, "0")).join("")}`;
     const kotu = [0xc9, 0x8a, 0x7e], notr = [0xd8, 0xcd, 0xb5], iyi = [0x9c, 0xc0, 0x8f];
@@ -186,6 +219,7 @@ async function baslat() {
     const insaatlar = ozet.sehirYatirimlari.filter((s) => s.insaat);
     $("insaatListesi").innerHTML = insaatlar.map((s) => `<li><button class="bag" data-sehir-sec="${s.indeks}">${kacis(s.ad)}</button>: ${kacis(s.insaat!.ad)} ${s.insaat!.hedef}. seviye · ${s.insaat!.emir ? "emir bekliyor" : s.insaat!.durdu ? "kuşatma nedeniyle durdu" : `${s.insaat!.kalanGun} gün kaldı`}</li>`).join("")
       || '<li class="bos">Süren inşaat yok. Bir şehir seçip “Şehri aç”a basın ya da haritada şehrinize tıklayın.</li>';
+    $("insaatListesi").insertAdjacentHTML("beforeend", ozet.iskanlar.map((k) => `<li>İskân: ${kacis(senaryo.sehirler[k.kaynak].ad)} → ${kacis(senaryo.sehirler[k.hedef].ad)} · ${k.miktar.toLocaleString("tr-TR")} kişi · ${k.emir ? "emir bekliyor" : `${k.kalanGun} gün kaldı`}</li>`).join(""));
     const suren = ozet.teknoloji.kartlar.filter((t) => t.durum === "suruyor" || t.durum === "emir");
     $("arastirmaListesi").innerHTML = suren.map((t) => `<li>${kacis(t.ad)} · ${t.durum === "emir" ? "emir bekliyor" : `${t.kalanGun} gün kaldı`}</li>`).join("")
       || '<li class="bos">Süren araştırma yok. Üst çubuktaki “Teknoloji” düğmesinden başlatın.</li>';
@@ -272,12 +306,15 @@ async function baslat() {
     $("rapor").hidden = false;
   };
   $("raporKapat").onclick = () => { $("rapor").hidden = true; };
-  $("diplomasiModu").onclick = () => {
-    diplomasiAcik = !diplomasiAcik;
-    $("diplomasiModu").setAttribute("aria-pressed", String(diplomasiAcik));
-    $("diplomasiLejant").hidden = !diplomasiAcik;
+  $("haritaModlari").addEventListener("click", (e) => {
+    const b = (e.target as HTMLElement).closest<HTMLElement>("[data-harita-modu]");
+    if (!b) return;
+    const m = b.dataset.haritaModu as typeof haritaModu;
+    haritaModu = haritaModu === m ? "siyasi" : m;
+    document.querySelectorAll("[data-harita-modu]").forEach((x) => x.setAttribute("aria-pressed", String((x as HTMLElement).dataset.haritaModu === haritaModu)));
+    $("diplomasiLejant").hidden = haritaModu !== "diplomasi";
     diplomasiHaritasi();
-  };
+  });
   $("teknolojiAc").onclick = () => { teknolojiCiz(); $("teknoloji").hidden = false; };
   $("teknolojiKapat").onclick = () => { $("teknoloji").hidden = true; };
   $("teknolojiIcerik").addEventListener("click", async (e) => {
@@ -312,7 +349,17 @@ async function baslat() {
           <small>${o.maliyet === null ? "En yüksek seviye" : `${o.seviye + 1}. seviye: ${o.maliyet.toLocaleString("tr-TR")} · ${o.sure} gün · ${o.yapi === "sur" ? "kuşatma direnci artar" : `aylık +${o.gelirArtisi}`}`}</small></span>
           ${o.maliyet === null ? "" : `<button data-insaat="${s.id}:${o.yapi}" ${o.uygun ? "" : `disabled title="${kacis(o.neden ?? "")}"`}>Geliştir</button>`}</li>`).join("")}</ul>
         ${y.secenekler.every((o) => !o.uygun) && y.secenekler[0].neden ? `<p class="not">${kacis(y.secenekler.find((o) => o.maliyet !== null)?.neden ?? "")}</p>` : ""}`;
-      return `<h4>Şehir savunması (prototip değerleri)</h4><dl><dt>Sur seviyesi</dt><dd>${c.sur}</dd>
+      const n = ozet.sehirNufuslari[s.id], para = (x: number) => x.toLocaleString("tr-TR");
+      const nufus = !n ? "" : `<h4>Nüfus (tahmini)</h4><p class="not">${para(n.nufus)} kişi</p>
+        <div class="nufus-cubuk">${n.gruplar.map(([dn, , x]) => `<span style="flex:${x};background:${DIN_RENK[dn] ?? "#cfc6b0"}" title="${kacis(dinAdi(dn))}"></span>`).join("")}</div>
+        <ul class="nufus-liste">${n.gruplar.slice(0, 6).map(([dn, kl, x]) => `<li><span><span class="renk" style="background:${DIN_RENK[dn] ?? "#cfc6b0"}"></span>${kacis(dinAdi(dn))} · ${kacis(kulturAdi(kl))}</span><span>%${Math.round((x * 100) / Math.max(1, n.nufus))}</span></li>`).join("")}</ul>`;
+      const hedefler = ozet.sehirYatirimlari.filter((x) => x.indeks !== s.id);
+      const iskan = !y || !hedefler.length ? "" : `<h4>İskân</h4><div class="iskan-satir">
+          <input id="iskanMiktar" type="number" min="1" step="100" value="${Math.max(1, Math.floor(n.nufus * 0.1))}" aria-label="Taşınacak kişi" />
+          <span>kişi →</span><select id="iskanHedef" aria-label="Hedef şehir">${hedefler.map((x) => `<option value="${x.indeks}">${kacis(x.ad)}</option>`).join("")}</select>
+          <button data-eylem="iskan" data-sehir="${s.id}">Taşı</button></div>
+        <p class="not">Bedel: 1.000 kişi için ${DENGE.ISKAN_BEDEL_BINDE}; ${DENGE.ISKAN_GUN} gün sürer; en çok nüfusun %${DENGE.ISKAN_EN_COK_YUZDE}'si. Gruplar oranıyla taşınır.</p>`;
+      return `${nufus}${iskan}<h4>Şehir savunması (prototip değerleri)</h4><dl><dt>Sur seviyesi</dt><dd>${c.sur}</dd>
         <dt>Garnizon</dt><dd>${c.garnizonTahmin ? "Yaklaşık " : ""}${c.garnizon.toLocaleString("tr-TR")}</dd></dl>
         <p class="not">${k ? `${k.gun} etkin gündür kuşatma altında.` : c.kontrol === ozet.oyuncu.indeks
           ? c.devlet === ozet.oyuncu.indeks ? "Şehir size ait ve askerî kontrolünüzde." : "Şehir askerî kontrolünüzde; yasal sahiplik barış antlaşmasıyla değişir."
@@ -346,8 +393,9 @@ async function baslat() {
     const hediye = k.savasta ? "" : `<div class="hediye-satir"><input id="hediyeMiktar" type="number" min="1" step="1" value="${k.hediyePuanBedeli * 5}" aria-label="Hediye miktarı" />
         <button data-eylem="hediye" data-devlet="${devlet}"${k.hediyeKalan ? "" : " disabled"}>Hediye gönder</button></div>
       <p class="not">1 ilişki puanı ≈ ${k.hediyePuanBedeli.toLocaleString("tr-TR")} · ${k.hediyeKalan ? `en çok ${k.hediyeKalan} puan daha eklenebilir` : "hediye etkisi dolu"}; zamanla söner.</p>`;
+    const inanc = `<p class="not">Resmî din: ${kacis(dinAdi(ozet.devletDinleri[devlet]))}</p>`;
     const huk = k.hukumdar ? `<h4>Hükümdar</h4><p class="not"><b>${kacis(k.hukumdar.ad)}</b>${kurguRozeti(k.hukumdar)} · ${k.hukumdar.yas} yaşında · ${kacis(k.hukumdar.hanedan)}<br />${yetenekMetni(k.hukumdar)} · meşruiyet ${k.hukumdar.mesruiyet}</p>` : "";
-    return `${huk}<h4>Diplomasi</h4><dl><dt>Size bakışı</dt><dd>${isaretli(k.bakisi)} · ${iliskiAdi(k.bakisi)}</dd>
+    return `${huk}${inanc}<h4>Diplomasi</h4><dl><dt>Size bakışı</dt><dd>${isaretli(k.bakisi)} · ${iliskiAdi(k.bakisi)}</dd>
       <dt>Sizin bakışınız</dt><dd>${isaretli(k.bakisimiz)} · ${iliskiAdi(k.bakisimiz)}</dd></dl>
       ${k.bilesenler.length ? `<ul class="iliski-bilesen">${k.bilesenler.map((b) => `<li><span>${kacis(b.ad)}</span>${isaretli(b.deger)}</li>`).join("")}</ul>` : '<p class="not">Aranızda özel bir etken yok.</p>'}
       ${durum ? `<p class="not">${durum}</p>` : ""}${ittifak}${hediye}`;
@@ -367,6 +415,13 @@ async function baslat() {
     }
     const baris = (e.target as HTMLElement).closest<HTMLElement>('[data-eylem="baris"]');
     if (baris) { savasUI.barisAc(Number(baris.dataset.savas)); return; }
+    const isk = (e.target as HTMLElement).closest<HTMLElement>('[data-eylem="iskan"]');
+    if (isk) {
+      const kaynak = Number(isk.dataset.sehir), hedef = Number($<HTMLSelectElement>("iskanHedef").value);
+      const miktar = $<HTMLInputElement>("iskanMiktar").valueAsNumber;
+      await emirGonder({ tur: "iskan", kaynak, hedef, miktar }, `${miktar.toLocaleString("tr-TR")} kişi ${senaryo.sehirler[kaynak].ad} → ${senaryo.sehirler[hedef].ad} iskân emri verildi; bedel ayrıldı.`);
+      return;
+    }
     const dip = (e.target as HTMLElement).closest<HTMLButtonElement>('[data-eylem="ittifak"], [data-eylem="ittifakBoz"], [data-eylem="hediye"]');
     if (dip) {
       const hedef = Number(dip.dataset.devlet), ad = h.paket.devletler[hedef].ad;

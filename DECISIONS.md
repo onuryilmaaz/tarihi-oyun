@@ -603,3 +603,13 @@ Kaynak belge: `MASTER_SPEC.md` (v1.3). Orijinal keşif çıktısı:
   Test amaçlı günlük rastgele nüfus artışı kaldırılır.
 - **Onay kaydı:** Kullanıcı: "1- evet 2- evet 3- evet 4- evet" (2026-10-29)
 - **Durum:** GEÇERLİ
+
+## DEC-0046 — 7b kabulü ve nüfus tablosu
+
+- **Tarih:** 2026-10-29
+- **Seçilen karar:**
+  1. 7b (nüfus grupları, din/kültür, göç, iskân, Din/Kültür harita modları) kullanıcı tarafından test edildi ve kabul edildi.
+  2. `veri/senaryo-1453/nufus.json` (132 devlet varsayılanı, 41 şehir düzeltmesi, 9 din, 44 kültür) onaylandı; [TASLAK].
+  3. 7b commit + push onaylandı; 7c (istikrar ve isyan riski) kapsamı önce onaya sunulur.
+- **Onay kaydı:** Kullanıcı: "1- başarılı 2- uygun 3- evet 4- evet" (2026-10-29)
+- **Durum:** GEÇERLİ

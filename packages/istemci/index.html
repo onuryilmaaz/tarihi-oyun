@@ -129,8 +129,20 @@
     .tek-kart button { margin-top: 6px; width: 100%; }
     #arastirmaListesi { list-style: none; margin: 0; padding: 0; display: grid; gap: 4px; font-size: 12px; }
     #arastirmaListesi .bos { color: var(--soluk); }
-    #diplomasiModu[aria-pressed="true"] { border-color: var(--vurgu); color: var(--vurgu); }
-    #diplomasiLejant { position: fixed; right: 16px; bottom: 16px; z-index: 5; padding: 10px 12px; font-size: 12px; display: grid; gap: 4px; }
+    #haritaModlari { display: flex; }
+    #haritaModlari button { border-radius: 0; margin-left: -1px; }
+    #haritaModlari button:first-child { border-radius: 6px 0 0 6px; margin-left: 0; }
+    #haritaModlari button:last-child { border-radius: 0 6px 6px 0; }
+    #haritaModlari button[aria-pressed="true"] { border-color: var(--vurgu); color: var(--vurgu); }
+    #nufusLejant { position: fixed; left: 296px; bottom: 132px; z-index: 5; padding: 10px 12px; font-size: 12px; display: grid; gap: 4px; max-height: 50vh; overflow: auto; }
+    #nufusLejant span { display: inline-block; width: 12px; height: 12px; border-radius: 3px; margin-right: 6px; vertical-align: -2px; }
+    .nufus-cubuk { display: flex; height: 8px; border-radius: 4px; overflow: hidden; margin: 6px 0; }
+    .nufus-liste { list-style: none; margin: 0 0 8px; padding: 0; font-size: 12px; display: grid; gap: 2px; }
+    .nufus-liste li { display: flex; justify-content: space-between; gap: 8px; }
+    .nufus-liste span.renk { width: 10px; height: 10px; border-radius: 2px; display: inline-block; margin-right: 6px; }
+    .iskan-satir { display: flex; gap: 6px; align-items: center; flex-wrap: wrap; }
+    .iskan-satir input { width: 90px; }
+    #diplomasiLejant { position: fixed; left: 296px; bottom: 132px; z-index: 5; padding: 10px 12px; font-size: 12px; display: grid; gap: 4px; }
     #diplomasiLejant span { display: inline-block; width: 12px; height: 12px; border-radius: 3px; margin-right: 6px; vertical-align: -2px; }
     .iliski-bilesen { list-style: none; margin: 4px 0 8px; padding: 0; font-size: 12px; display: grid; gap: 2px; }
     .iliski-bilesen li { display: flex; justify-content: space-between; gap: 8px; }
@@ -248,7 +260,11 @@
       <button data-sure="yil">Yıl</button>
     </div>
     <button id="teknolojiAc">Teknoloji</button>
-    <button id="diplomasiModu" aria-pressed="false" title="Haritayı ilişkilere göre boya">Diplomasi</button>
+    <div id="haritaModlari" role="group" aria-label="Harita modu">
+      <button data-harita-modu="diplomasi" aria-pressed="false" title="Haritayı ilişkilere göre boya">Diplomasi</button>
+      <button data-harita-modu="din" aria-pressed="false" title="Baskın dine göre boya">Din</button>
+      <button data-harita-modu="kultur" aria-pressed="false" title="Baskın kültüre göre boya">Kültür</button>
+    </div>
     <button id="ilerleBtn" title="Boşluk tuşu">Turu ilerlet</button>
     <div id="kayitlar">
       <button id="kaydetBtn">Kaydet<small>manuel</small></button>
@@ -345,6 +361,8 @@
       <div class="satir" style="margin-top:14px"><button id="raporKapat">Kapat</button></div>
     </div>
   </div>
+
+  <div id="nufusLejant" class="panel" hidden></div>
 
   <div id="diplomasiLejant" class="panel" hidden>
     <b>Diplomasi haritası</b>

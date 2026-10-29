@@ -19,6 +19,7 @@ import { diplomasiSonumu } from "./diplomasi";
 import { yzKararlari, yzYillikOzet } from "./yz";
 import { seferKararlari, teklifSureleri } from "./yz-savas";
 import { hukumdarlariIlerlet } from "./hanedan";
+import { iskanlariIlerlet, nufusArtisi, savasGocu } from "./nufus";
 
 export type Siklik = "gunluk" | "aylik" | "yillik";
 
@@ -63,16 +64,8 @@ export const SISTEMLER: Sistem[] = [
   // 6c: savaştaki AI orduları birkaç günde bir yeni hedef alır; oyuncuya gelen teklifler 30 gün geçerli
   { id: "yz-sefer", siklik: "gunluk", calistir: seferKararlari },
   { id: "baris-teklif-suresi", siklik: "gunluk", calistir: teklifSureleri },
-  {
-    // Test: her gün rastgele bir şehrin nüfusu 0–2 artar (rastgelelik akışını her gün kullanır)
-    id: "test-nufus",
-    siklik: "gunluk",
-    calistir(d) {
-      if (!d.sehirler.length) return;
-      const s = d.sehirler[aralik(d, d.sehirler.length)];
-      s.nufus += aralik(d, 3);
-    },
-  },
+  // 7b: yoldaki iskânlar; aylık savaş kaybı/göçü; yıllık doğal artış (test amaçlı günlük rastgele artış kaldırıldı, DEC-0045)
+  { id: "iskan", siklik: "gunluk", calistir: iskanlariIlerlet },
   {
     // Test: her ayın başında devlet, yasal sahibi olduğu birim başına 10 gelir alır
     id: "test-gelir",
@@ -86,6 +79,8 @@ export const SISTEMLER: Sistem[] = [
   { id: "diplomasi-sonumu", siklik: "aylik", calistir: diplomasiSonumu },
   { id: "yz-yillik-ozet", siklik: "yillik", calistir: yzYillikOzet },
   { id: "hukumdarlar", siklik: "aylik", calistir: hukumdarlariIlerlet }, // 7a: ölüm, veraset, meşruiyet
+  { id: "savas-gocu", siklik: "aylik", calistir: savasGocu },
+  { id: "nufus-artisi", siklik: "yillik", calistir: nufusArtisi },
   {
     // Test: yılbaşında oyuncu için yıllık özet olayı
     id: "test-yillik-ozet",

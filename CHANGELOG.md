@@ -1,5 +1,15 @@
 # CHANGELOG
 
+## 2026-10-29 — TASK-0010 / 7b: nüfus grupları, din/kültür, göç, iskân (Claude)
+
+- DEC-0044: 7a kabul. DEC-0045: 7b kapsamı.
+- `packages/sim/src/nufus.ts`: şehir başına din × kültür grupları (toplam = nüfus, değişmez denetimi), yıllık doğal
+  artış, kuşatma/işgal kaybı ve en yakın güvenli şehre göç, `iskan` emri (bedel, 60 gün, en çok %20), resmî din ve
+  aynı din +10 / farklı din ailesi −10 ilişki bileşeni. Test amaçlı günlük rastgele nüfus artışı kaldırıldı. Şema 12.
+- `veri/senaryo-1453/nufus.json`: 1453 nüfus grupları tahmini ([TASLAK]); senaryo üreticisi gömer.
+- İstemci: şehir panelinde nüfus dağılımı ve iskân; devlet panelinde resmî din; Din ve Kültür harita modları (lejantlı).
+- `packages/sim/test/nufus.test.ts` (6 test; toplam 143), `docs/qa/ASAMA-7B-TEST.md`.
+
 ## 2026-10-29 — TASK-0010 / 7a: hükümdar ve veraset (Claude)
 
 - DEC-0041: Aşama 6 kapandı. DEC-0042: Aşama 7 başladı. DEC-0043: 7a kapsamı.

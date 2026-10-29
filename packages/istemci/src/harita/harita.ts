@@ -30,6 +30,8 @@ export interface Katmanlar {
   temelRenk: Float32Array;
   /** Harita modu (ör. diplomasi): devlet başına dolgu rengi; null = siyasi renkler */
   ozelRenk: THREE.Color[] | null;
+  /** Arazi birimi başına dolgu rengi (ör. din/kültür modu); ozelRenk'ten önce gelir */
+  ozelBirimRenk: THREE.Color[] | null;
   ucgenSayisi: number;
 }
 
@@ -152,6 +154,7 @@ export function katmanlariKur(h: Harita): Katmanlar {
     birimUcgen,
     temelRenk: new Float32Array(konum.length),
     ozelRenk: null,
+    ozelBirimRenk: null,
     ucgenSayisi: indeks.length / 3,
   };
 }
@@ -239,7 +242,7 @@ export function temaUygula(k: Katmanlar, h: Harita, t: Tema, sahne: THREE.Scene)
   const bos = new THREE.Color(t.bosKara);
   const devletRenkleri = k.ozelRenk ?? h.paket.devletler.map((d, i) => devletRengi(t, d.ton, i));
   h.paket.birimler.forEach((b, bi) => {
-    const c = b.d >= 0 ? devletRenkleri[b.d] : bos;
+    const c = k.ozelBirimRenk?.[bi] ?? (b.d >= 0 ? devletRenkleri[b.d] : bos);
     const bas = k.birimKose[2 * bi], n = k.birimKose[2 * bi + 1];
     for (let v = bas; v < bas + n; v++) { dizi[3 * v] = c.r; dizi[3 * v + 1] = c.g; dizi[3 * v + 2] = c.b; }
   });

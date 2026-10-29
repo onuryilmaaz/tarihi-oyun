@@ -30,5 +30,5 @@ describe("1453 senaryosu", () => {
     const b = yukle(kaydet(a), a.senaryo);
     turuIlerlet(a); turuIlerlet(b);
     expect(durumOzeti(b)).toBe(durumOzeti(a));
-  });
+  }, 60000); // 132 AI devletiyle 21 oyun yılı (6b–7b) birkaç saniye sürer
 });
