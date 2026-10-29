@@ -62,7 +62,7 @@ Konstantiniyye korundu. Sonuçta 500 birim OHM sınırına göre ayarlandı, 353
 | Sırp Despotluğu | düşük | %0 | %100 | Bosnia %66 | Ottoman Empire %100 |
 | Venedik Cumhuriyeti | düşük | %60 | %95 | HRE %40; Byzantine %18 | Venice %41 |
 | Papalık Devleti | orta | %100 | %99 | Papal States %91 | Papal States %100 |
-| Napoli Krallığı | orta | %100 | %86 | Sicily %65 | Aragón %65 |
+| Napoli Krallığı | orta | %100 | %95 | Sicily %93 | Aragón %93 |
 | Kıbrıs Krallığı | orta | %100 | %62 | Cyprus %97 | Cyprus %97 |
 | Atina Dükalığı | orta | %100 | %42 | Byzantine Empire %100 | Ottoman Empire %100 |
 | Teodoro Prensliği | orta | %100 | yeni | Blue Horde %100 | Crimean Khanate %100 |
@@ -76,12 +76,12 @@ değil, yalnızca büyük çelişkileri yakalamak için kullanıldı.
 
 | Değişiklik | Alan (derece², projeksiyonlu) | Değerlendirme |
 |---|---|---|
-| Napoli Krallığı → Aragon Krallığı | 8,25 | ⚠ OHM, V. Alfonso'nun iki tacını tek kayıtta topluyor. **Soru 1** |
+| ~~Napoli Krallığı → Aragon Krallığı~~ | 8,25 | ✔ DEC-0022/1 ile geri alındı: Napoli ayrı devlet |
 | Çerkes Beylikleri → Kırım Hanlığı | 5,56 | ⚠ OHM'nin Kırım poligonu Kuban'a uzanıyor; Kuban'ın 1453'te Kırım'a bağlı olması tartışmalı |
-| Gazikumuk Şamhallığı → Büyük Orda | 4,73 | ⚠ Dağıstan'ın Büyük Orda'ya verilmesi şüpheli. **Soru 2** |
+| ~~Gazikumuk Şamhallığı → Büyük Orda~~ | 4,73 | ✔ DEC-0022/2 ile geri alındı |
 | Büyük Orda → Kırım Hanlığı | 4,55 | Bozkır sınırı; iki kaynak da belirsiz |
 | Nogay Ordası → Büyük Orda | 2,99 | Bozkır sınırı |
-| Akkoyunlular / Dulkadiroğulları → Memlûk | 2,35 | ⚠ Malatya ve Antep için makul; Urfa ve çevresi tartışmalı. **Soru 3** |
+| Akkoyunlular / Dulkadiroğulları → Memlûk | 2,35 → 1,79 | ✔ DEC-0022/3: Malatya ve Antep Memlûk'te, Urfa Akkoyunlu'ya döndü |
 | Litvanya → Lehistan (Podolya) | 0,81 | ✔ Batı Podolya 1434'ten beri Leh eyaleti |
 | Osmanlı → Atina Dükalığı (Beotya, Teb) | 0,57 | ✔ Wikidata da 1453 başkentini Teb gösteriyor |
 | Kırım Hanlığı → Cenova (Gazarya), Teodoro | 0,60 | ✔ Kefe ve Kırım kıyısındaki Cenova kolonileri; Mangup merkezli Teodoro |
@@ -134,7 +134,7 @@ Arazi seçimi ve kaynak bilgisi:
 
 ![Eflak arazisi](v02/v02-eflak-arazi.jpg)
 
-## Kullanıcıdan istenen kararlar
+## Kullanıcı kararları (DEC-0022 ile uygulandı)
 
 1. **Napoli:** Ayrı bir krallık olarak mı kalsın (v0.1), yoksa OHM'deki gibi Aragon'un parçası
    mı olsun? 1453'te iki tacı da V. Alfonso taşıyordu. **Önerim:** ayrı devlet; ortak hükümdar

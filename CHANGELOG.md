@@ -15,6 +15,9 @@
 - Başkentler Wikidata ile düzeltildi: Candaroğulları → Sinop, Atina Dükalığı → Teb.
 - Devlet etiket noktası: OHM parçaları için topojson merge yerine poligon birleşimi.
 - v0.1 verisi (`dunya-1453.json`) değiştirilmedi.
+- DEC-0022: Napoli ayrı devlet, Dağıstan Gazikumuk'ta, Urfa Akkoyunlu'da (`OHM_DUZELTME`).
+- Prototip: lejant sol menünün sağına taşındı; menünün altını örtüp kaydırmayı
+  engelliyordu.
 
 ## 2026-10-29 — Aşama 1 kapandı, TASK-0003
 
