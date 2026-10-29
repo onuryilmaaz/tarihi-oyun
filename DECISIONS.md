@@ -700,3 +700,15 @@ Kaynak belge: `MASTER_SPEC.md` (v1.3). Orijinal keşif çıktısı:
   4. Açılır listelerin (select) **açılan kısmı** da tarayıcı varsayılanı değil, oyunun kendi tasarımıyla olur.
 - **Onay kaydı:** Kullanıcı: "1- başarılı 2- evet 3- evet 4- evet … dropdownların açılan kısmını da bizim tasarımla yap. default bişey istemiyorum" (2026-10-29)
 - **Durum:** GEÇERLİ
+
+## DEC-0055 — Aşama 9 görev kartı (TASK-0012) onayı
+
+- **Tarih:** 2026-10-29
+- **Seçilen karar:**
+  1. 9a ana menü/devlet seçimi/oyun içi menü/kayıt yuvaları → 9b tarihî veri ve denge → 9c rehber → 9d kaynaklar/lisans →
+     9e performans/erişilebilirlik sırası ve kapsamı onaylandı.
+  2. Devlet seçimi: 132 devletin hepsi seçilebilir; tarihî verisi olmayanlar "kurgusal hükümdar" etiketiyle gösterilir.
+  3. Mobil arayüz Aşama 9 dışında, sonraya (DEC-0013); yalnızca küçük ekranlarda bozulmama.
+  4. Açılır liste tasarımı ve Aşama 9 taslağı commit + push edilir.
+- **Onay kaydı:** Kullanıcı: "1- evet 2- uygundur 3- önerin gayet iyi 4- evet" (2026-10-29)
+- **Durum:** GEÇERLİ

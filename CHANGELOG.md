@@ -1,5 +1,12 @@
 # CHANGELOG
 
+## 2026-10-29 — Oyunun kendi açılır liste penceresi; Aşama 9 taslağı (Claude)
+
+- DEC-0054: 8c kabul, Aşama 8 kapandı.
+- `packages/istemci/src/secim.ts`: bütün açılır listelerde (select) tarayıcının liste penceresi yerine oyunun temalı listesi
+  (fare, klavye: ↑ ↓ Home End Enter Boşluk Esc, harfle arama); select öğesi ve olayları aynen korunur.
+- `tasks/TASK-0012.md`, `docs/milestones/ASAMA-9.md`: Aşama 9 kapsam taslağı (onay bekliyor).
+
 ## 2026-10-29 — TASK-0011 / 8c: casusluk (Claude)
 
 - `packages/sim/src/casusluk.ts`: askerî ve diplomatik istihbarat, isyanı destekleme (7c risk bileşeni "Yabancı kışkırtma"),

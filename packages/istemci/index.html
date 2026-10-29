@@ -56,6 +56,20 @@
     input[type=number] { width: 110px; font-variant-numeric: tabular-nums; -moz-appearance: textfield; }
     input[type=number]::-webkit-inner-spin-button, input[type=number]::-webkit-outer-spin-button { -webkit-appearance: none; margin: 0; }
     select option { background: #241e19; color: var(--metin); }
+    select[aria-expanded="true"] { border-color: var(--vurgu); box-shadow: 0 0 0 2px rgba(226, 179, 86, .22); }
+    /* Oyunun kendi açılır liste penceresi (DEC-0054) */
+    .secim-liste { position: fixed; z-index: 60; overflow-y: auto; overscroll-behavior: contain; padding: 4px;
+      background: linear-gradient(#2a231d, #211b16); border: 1px solid rgba(226, 179, 86, .55); border-radius: 8px;
+      box-shadow: 0 12px 28px rgba(0, 0, 0, .55), 0 0 0 1px rgba(0, 0, 0, .4); font-size: 13px; color: var(--metin);
+      max-width: min(460px, calc(100vw - 16px)); }
+    .secim-oge { padding: 6px 10px 6px 26px; border-radius: 5px; cursor: pointer; white-space: nowrap; overflow: hidden;
+      text-overflow: ellipsis; position: relative; line-height: 1.35; }
+    .secim-oge.vurgulu { background: rgba(226, 179, 86, .16); }
+    .secim-oge.secili { color: var(--vurgu); font-weight: 600; }
+    .secim-oge.secili::before { content: "✓"; position: absolute; left: 9px; color: var(--vurgu); }
+    .secim-oge.kapali { color: var(--soluk); opacity: .55; cursor: default; }
+    .secim-liste::-webkit-scrollbar { width: 8px; }
+    .secim-liste::-webkit-scrollbar-thumb { background: rgba(226, 179, 86, .35); border-radius: 4px; }
     input[type=checkbox] { -webkit-appearance: none; appearance: none; width: 16px; height: 16px; flex: none; margin: 0; cursor: pointer;
       border: 1px solid rgba(239, 230, 212, .35); border-radius: 4px; background: #241e19; display: inline-grid; place-content: center; }
     input[type=checkbox]:checked { background: var(--vurgu) url("data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 12 10%22%3E%3Cpath d=%22M1 5l3.5 3.5L11 1.5%22 fill=%22none%22 stroke=%22%231c1814%22 stroke-width=%222%22/%3E%3C/svg%3E") no-repeat center / 10px 8px; border-color: var(--vurgu); }

@@ -8,6 +8,9 @@ import "@fontsource/inter/700.css";
 import { type YapiTuru, DENGE, tarihMetni, toplamaMaliyeti, type Emir, type MuharebeRaporu, type SenaryoVerisi, type Tutum, type TurSuresi } from "@tarihi/sim";
 import { Color } from "three";
 import { armaSvg } from "./arma";
+import { ozelSecimleriKur } from "./secim";
+
+ozelSecimleriKur();
 import { haritaYukle } from "./harita/veri";
 import { haritaGorunumuKur, kacis, KONUMLAR, type Katmanlar, type WdDevlet } from "./harita/gorunum";
 import { SimIstemcisi, type Ozet, type RotaOnizleme } from "./sim-protokol";

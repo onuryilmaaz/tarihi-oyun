@@ -17,8 +17,8 @@ kaynak: `MASTER_SPEC.md` §21 ve §27.
 
 ## Mevcut durum
 
-- **Aşama:** 0–8 kapandı (Aşama 8: DEC-0054). Aşama 9 (tarihî içerik, UX, optimizasyon) başlıyor; TASK-0012
-  kapsamı onay bekliyor. Kayıt şeması 17. Durum için `DEVIR-TESLIM.md`.
+- **Aşama:** 0–8 kapandı (Aşama 8: DEC-0054). Aşama 9 (tarihî içerik, UX, optimizasyon) sürüyor; TASK-0012
+  onaylandı (DEC-0055), 9a uygulanıyor. Kayıt şeması 17. Durum için `DEVIR-TESLIM.md`.
 - **Yerel sunucu (DEC-0036):** Kullanıcı da agent da **5173**'teki geliştirme sunucusunu kullanır
   (kullanıcı başlattı, kapatılmaz; kod değişince kendini yeniler). Kullanıcıya test adımı 5173 ile verilir;
   4175 önizlemesi kullanılmaz. Aşama 2 kapandı
