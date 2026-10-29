@@ -92,6 +92,8 @@ const senaryo = {
   hukumdarlar: (({ hukumdarlar, veraset, adHavuzu }) => ({ hukumdarlar, veraset, adHavuzu }))(JSON.parse(fs.readFileSync(new URL("hukumdarlar.json", hedef), "utf8"))),
   // 1453 nüfus grupları: din × kültür (TASK-0010/7b): elle tutulan tahmini tablo
   nufus: (({ dinler, dinAileleri, kulturler, devletler, sehirler }) => ({ dinler, dinAileleri, kulturler, devletler, sehirler }))(JSON.parse(fs.readFileSync(new URL("nufus.json", hedef), "utf8"))),
+  // Deniz bölgeleri, limanlar, boğazlar ve başlangıç donanmaları (TASK-0011/8a): elle tutulan tahmini tablo
+  deniz: (({ bolgeler, limanlar, bogazlar, donanmalar }) => ({ bolgeler, limanlar, bogazlar, donanmalar }))(JSON.parse(fs.readFileSync(new URL("deniz.json", hedef), "utf8"))),
 };
 
 fs.writeFileSync(new URL("harita.json", hedef), haritaMetni);

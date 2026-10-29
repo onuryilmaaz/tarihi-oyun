@@ -664,3 +664,17 @@ Kaynak belge: `MASTER_SPEC.md` (v1.3). Orijinal keşif çıktısı:
   4. Aşama 8 taslak belgeleri commit + push edilir.
 - **Onay kaydı:** Kullanıcı: "1- evet 2- önerin iyi 3- kadırga ve dev kalyonlar 4- evet" (2026-10-29)
 - **Durum:** GEÇERLİ
+
+## DEC-0052 — 8a kabulü, kalyon teknolojisi, sol panel düzeni
+
+- **Tarih:** 2026-10-29
+- **Seçilen karar:**
+  1. 8a (donanma ve deniz kontrolü) kullanıcı tarafından test edildi ve kabul edildi; commit + push onaylandı.
+  2. `veri/senaryo-1453/deniz.json` (29 bölge, 70 liman, 6 boğaz, 15 başlangıç donanması) onaylandı; [TASLAK].
+  3. Kalyon yeni **"Kalyon İnşası"** teknolojisine bağlanır (askerî alan); araştırmadan kalyon yapılamaz.
+     Başlangıç donanmalarındaki kalyonlar korunur.
+  4. Sol panel sekmeli ve daha düzenli olur; seçili devletin (oyuncunun) arması üstte görünür; yatay kaymalar giderilir.
+     Armalar lisanslı görsel değil, oyunun kendi ürettiği simgelerdir (renk + din/kültür sembolü).
+  5. 8b (ticaret yolları) başlar.
+- **Onay kaydı:** Kullanıcı: "1- başarılı 2- uygun 3- b 4- pushla 5- evet"; "sol paneli daha kullanışlı yap … sekme bazlı devlet armaları falan olsun seçili devlete ait" (2026-10-29)
+- **Durum:** GEÇERLİ

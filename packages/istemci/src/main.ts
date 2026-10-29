@@ -91,6 +91,7 @@ async function baslat() {
   let ozet: Ozet = (await sim.gonder({ tip: "yeniOyun", senaryo, tohum: TOHUM, oyuncu: parametreler.get("devlet") ?? undefined })).ozet;
   let mesgul = false;
   let seciliOrdu: number | null = null;
+  let seciliDonanma: number | null = null;
   const bekleyenSavas = new Set<number>(); // ilan edildi, bir sonraki turda başlayacak
   const bekleyenTutum = new Map<number, Tutum>();
   const gorulenRaporlar = new Set<number>();
@@ -177,6 +178,42 @@ async function baslat() {
       <button data-aday="${i}"${secilenAday !== null ? " disabled" : ""}>${secilenAday === i ? "Seçildi" : "Tahta çıkar"}</button></div>`).join("");
   };
   const verasetAc = () => { if (ozet.verasetSecimi) { verasetCiz(); $("verasetPencere").hidden = false; } };
+  // Donanma (TASK-0011/8a): bölge merkezleri boylam/enlemden Miller × 10⁴'e
+  const millerY = (lat: number) => 1.25 * Math.log(Math.tan(Math.PI / 4 + (0.4 * lat * Math.PI) / 180)) * 180 / Math.PI;
+  const bolgeNoktasi = (b: number) => { const z = senaryo.deniz!.bolgeler[b]; return { x: Math.round(z.lon * 1e4), y: Math.round(millerY(z.lat) * 1e4) }; };
+  const bolgeAdi = (b: number) => ozet.denizBolgeleri[b]?.ad ?? "?";
+  const gemiMetni = (k: number, l: number) => [k ? `${k} kadırga` : "", l ? `${l} kalyon` : ""].filter(Boolean).join(", ");
+  const donanmaArayuzu = () => {
+    if (seciliDonanma !== null && !ozet.donanmalar.some((f) => f.id === seciliDonanma)) seciliDonanma = null;
+    if (senaryo.deniz) {
+      gorunum.donanmalariGoster([
+        ...ozet.donanmalar.map((f) => ({ anahtar: `d${f.id}`, ...bolgeNoktasi(f.bolge), donanma: f.id,
+          sinif: `ordu donanma${f.id === seciliDonanma ? " secili" : ""}${f.rota.length ? " yuruyor" : ""}`,
+          html: `${gorunum.devletRenkKutusu(ozet.oyuncu.indeks)}<b>⚓ ${f.kadirga + f.kalyon}</b>${f.yuk ? " 🛡" : ""}` })),
+        ...ozet.yabanciDonanmalar.map((f) => ({ anahtar: `y${f.id}`, ...bolgeNoktasi(f.bolge), donanma: null,
+          sinif: "ordu donanma yabanci", html: `${gorunum.devletRenkKutusu(f.devlet)}<b>⚓ ~${f.yaklasikGemi}</b>` })),
+      ]);
+    }
+    $("donanmaListesi").innerHTML = ozet.donanmalar.map((f) => `<li><button class="ordu-satir${f.id === seciliDonanma ? " etkin" : ""}" data-donanma="${f.id}">
+        ${gorunum.devletRenkKutusu(ozet.oyuncu.indeks)}<span><b>${kacis(f.ad)}</b> · ${gemiMetni(f.kadirga, f.kalyon)}<small>${kacis(bolgeAdi(f.bolge))}${f.rota.length ? ` → ${kacis(bolgeAdi(f.rota[f.rota.length - 1]))}` : ""}${f.yuk ? ` · gemide ${kacis(f.yuk.ad)}` : ""}</small></span></button></li>`).join("")
+      || '<li class="bos">Donanmanız yok. Liman şehrinizde gemi yapabilirsiniz.</li>';
+    const f = ozet.donanmalar.find((x) => x.id === seciliDonanma);
+    $("donanmaPaneli").hidden = !f;
+    if (!f) return;
+    const kontrol = (b: number) => { const k = ozet.denizBolgeleri[b].kontrol; return k === null ? "" : ` (${k === ozet.oyuncu.indeks ? "sizde" : h.paket.devletler[k].ad})`; };
+    const limanlar = ozet.limanlar.flatMap((b, i) => (b >= 0 ? [i] : []));
+    $("donanmaPaneli").innerHTML = `<b>${kacis(f.ad)}</b>
+      <span>${gemiMetni(f.kadirga, f.kalyon)} · moral ${Math.round(f.moral / 10)} · taşıma ${f.kapasite.toLocaleString("tr-TR")} asker</span>
+      <span>Konum: ${kacis(bolgeAdi(f.bolge))}${kontrol(f.bolge)}${f.rota.length ? ` · yolda: ${f.rota.map((b) => kacis(bolgeAdi(b))).join(" → ")} (${f.kalanGun + (f.rota.length - 1) * (f.kalyon ? DENGE.GEMI.kalyon.hizGun : DENGE.GEMI.kadirga.hizGun)} gün)` : ""}</span>
+      ${f.yuk ? `<span>Gemide: ${kacis(f.yuk.ad)} (${f.yuk.asker.toLocaleString("tr-TR")} asker) → ${f.cikarmaHedef !== null ? kacis(senaryo.sehirler[f.cikarmaHedef].ad) : "hedef yok"}</span>` : ""}
+      ${f.emirBekliyor ? '<span class="not">Emir bekliyor; bir sonraki tur uygulanır.</span>' : `
+      <label>Yelken aç: <select id="donanmaBolge">${ozet.denizBolgeleri.map((b, i) => i === f.bolge ? "" : `<option value="${i}">${kacis(b.ad)}${kontrol(i)}</option>`).join("")}</select></label>
+      <button id="donanmaYelken">Yelken aç</button>
+      ${f.yuk ? "" : f.binebilir.length ? `<label>Çıkarma: <select id="cikarmaOrdu">${f.binebilir.map((o) => `<option value="${o.id}">${kacis(o.ad)} (${o.asker.toLocaleString("tr-TR")})</option>`).join("")}</select>
+        → <select id="cikarmaSehir">${limanlar.map((i) => `<option value="${i}">${kacis(senaryo.sehirler[i].ad)} (${kacis(bolgeAdi(ozet.limanlar[i]))})</option>`).join("")}</select></label>
+        <button id="cikarmaBtn">Çıkarma yap</button>` : '<span class="not">Çıkarma için bir ordunuzu bu denizdeki kendi limanınıza götürün.</span>'}`}`;
+  };
+  const donanmaSec = (id: number | null) => { seciliDonanma = id; donanmaArayuzu(); };
   const arayuzuGuncelle = () => {
     if (seciliOrdu !== null && !ozet.ordular.some((o) => o.id === seciliOrdu)) seciliOrdu = null;
     $("oyuncu").innerHTML = `${gorunum.devletRenkKutusu(ozet.oyuncu.indeks)}<span>${kacis(ozet.oyuncu.ad)}</span>`;
@@ -201,6 +238,7 @@ async function baslat() {
     for (const [id, r] of planli) if (r.noktalar) plan.set(id, r.noktalar);
     gorunum.ordulariGoster(ozet.ordular, ozet.yabanciOrdular, seciliOrdu, plan);
     gorunum.isgalGoster(ozet.birimIsgal, ozet.sehirIsgal);
+    donanmaArayuzu();
     ordularPaneli();
     toplamaPaneli();
     $("orduGideri").textContent = `Aylık toplam maaş: ${ozet.aylikMaas.toLocaleString("tr-TR")}. Kullanılabilir hazine: ${ozet.kullanilabilirHazine.toLocaleString("tr-TR")}.`
@@ -226,6 +264,7 @@ async function baslat() {
     const insaatlar = ozet.sehirYatirimlari.filter((s) => s.insaat);
     $("insaatListesi").innerHTML = insaatlar.map((s) => `<li><button class="bag" data-sehir-sec="${s.indeks}">${kacis(s.ad)}</button>: ${kacis(s.insaat!.ad)} ${s.insaat!.hedef}. seviye · ${s.insaat!.emir ? "emir bekliyor" : s.insaat!.durdu ? "kuşatma/ayaklanma nedeniyle durdu" : `${s.insaat!.kalanGun} gün kaldı`}</li>`).join("")
       || '<li class="bos">Süren inşaat yok. Bir şehir seçip “Şehri aç”a basın ya da haritada şehrinize tıklayın.</li>';
+    $("insaatListesi").insertAdjacentHTML("beforeend", ozet.gemiInsalari.map((g) => `<li>Tersane: ${kacis(senaryo.sehirler[g.sehir].ad)} · ${g.adet} ${DENGE.GEMI[g.gemi as "kadirga" | "kalyon"].ad.toLowerCase()} · ${g.emir ? "emir bekliyor" : `${g.kalanGun} gün kaldı`}</li>`).join(""));
     $("insaatListesi").insertAdjacentHTML("beforeend", ozet.iskanlar.map((k) => `<li>İskân: ${kacis(senaryo.sehirler[k.kaynak].ad)} → ${kacis(senaryo.sehirler[k.hedef].ad)} · ${k.miktar.toLocaleString("tr-TR")} kişi · ${k.emir ? "emir bekliyor" : `${k.kalanGun} gün kaldı`}</li>`).join(""));
     const suren = ozet.teknoloji.kartlar.filter((t) => t.durum === "suruyor" || t.durum === "emir");
     $("arastirmaListesi").innerHTML = suren.map((t) => `<li>${kacis(t.ad)} · ${t.durum === "emir" ? "emir bekliyor" : `${t.kalanGun} gün kaldı`}</li>`).join("")
@@ -384,7 +423,12 @@ async function baslat() {
         ${c.devlet === ozet.oyuncu.indeks ? `<p class="not">Asayiş: ${st.asayis}/${st.gerekenAsker} asker. Yardım indirimi kalan: ${st.bagis} puan.</p>
         <button data-bagis="${s.id}" ${st.bagisUygun ? "" : "disabled"}>Bağış / imar yardımı (${DENGE.IST_BAGIS_BEDEL})</button>
         <p class="not">${kacis(st.bagisNedeni ?? `Sonraki aylık hesapta −${DENGE.IST_BAGIS_INDIRIM} puan; ayda ${DENGE.IST_BAGIS_SONUM} puan söner. Borçlanma yoktur.`)}</p>` : ""}</section>`;
-      return `${istikrar}${nufus}${iskan}<h4>Şehir savunması (prototip değerleri)</h4><dl><dt>Sur seviyesi</dt><dd>${c.sur}</dd>
+      const tersane = !y || (ozet.limanlar[s.id] ?? -1) < 0 ? "" : `<h4>Tersane (${kacis(bolgeAdi(ozet.limanlar[s.id]))})</h4><div class="iskan-satir">
+          <select id="gemiTuru" aria-label="Gemi türü">${(["kadirga", "kalyon"] as const).map((t) => `<option value="${t}">${DENGE.GEMI[t].ad} — ${DENGE.GEMI[t].bedel}, ${DENGE.GEMI[t].sure} gün</option>`).join("")}</select>
+          <input id="gemiAdet" type="number" min="1" max="${DENGE.GEMI_INSA_EN_COK}" value="5" aria-label="Adet" />
+          <button data-eylem="gemi" data-sehir="${s.id}">Gemi yap</button></div>
+        <p class="not">Kadırga: güç ${DENGE.GEMI.kadirga.guc}, ${DENGE.GEMI.kadirga.kapasite} asker taşır, bölgeyi ${DENGE.GEMI.kadirga.hizGun} günde geçer. Kalyon: güç ${DENGE.GEMI.kalyon.guc}, ${DENGE.GEMI.kalyon.kapasite} asker, ${DENGE.GEMI.kalyon.hizGun} gün. Aylık bakım ${DENGE.GEMI.kadirga.bakim} / ${DENGE.GEMI.kalyon.bakim}.</p>`;
+      return `${istikrar}${nufus}${iskan}${tersane}<h4>Şehir savunması (prototip değerleri)</h4><dl><dt>Sur seviyesi</dt><dd>${c.sur}</dd>
         <dt>Garnizon</dt><dd>${c.garnizonTahmin ? "Yaklaşık " : ""}${c.garnizon.toLocaleString("tr-TR")}</dd></dl>
         <p class="not">${k ? `${k.gun} etkin gündür kuşatma altında.` : c.kontrol === ozet.oyuncu.indeks
           ? c.devlet === ozet.oyuncu.indeks ? "Şehir size ait ve askerî kontrolünüzde." : "Şehir askerî kontrolünüzde; yasal sahiplik barış antlaşmasıyla değişir."
@@ -445,6 +489,13 @@ async function baslat() {
     }
     const baris = (e.target as HTMLElement).closest<HTMLElement>('[data-eylem="baris"]');
     if (baris) { savasUI.barisAc(Number(baris.dataset.savas)); return; }
+    const gemi = (e.target as HTMLElement).closest<HTMLElement>('[data-eylem="gemi"]');
+    if (gemi) {
+      const sehir = Number(gemi.dataset.sehir), tur = $<HTMLSelectElement>("gemiTuru").value as "kadirga" | "kalyon";
+      const adet = $<HTMLInputElement>("gemiAdet").valueAsNumber;
+      await emirGonder({ tur: "gemiInsa", sehir, gemi: tur, adet }, `${senaryo.sehirler[sehir].ad}: ${adet} ${DENGE.GEMI[tur].ad.toLowerCase()} yapım emri verildi; bedel ayrıldı.`);
+      return;
+    }
     const yon = (e.target as HTMLElement).closest<HTMLElement>('[data-eylem="yonetici"]');
     if (yon) {
       const acik = yon.dataset.acik === "1", sehir = Number(yon.dataset.sehir);
@@ -632,6 +683,22 @@ async function baslat() {
     if (y.dogrulama && !y.dogrulama.gecerli) bildir(y.dogrulama.neden, "uyari");
     else bildir(`Yerel yönetim: aylık tavan ${butce.toLocaleString("tr-TR")}, hazine alt sınırı ${altSinir.toLocaleString("tr-TR")}.`);
   };
+  gorunum.olaylar.donanmaSec = (id) => donanmaSec(id);
+  $("donanmaListesi").addEventListener("click", (e) => {
+    const b = (e.target as HTMLElement).closest<HTMLElement>("[data-donanma]");
+    if (b) donanmaSec(Number(b.dataset.donanma) === seciliDonanma ? null : Number(b.dataset.donanma));
+  });
+  $("donanmaPaneli").addEventListener("click", async (e) => {
+    const id = (e.target as HTMLElement).id;
+    if (seciliDonanma === null) return;
+    if (id === "donanmaYelken") {
+      const bolge = Number($<HTMLSelectElement>("donanmaBolge").value);
+      await emirGonder({ tur: "donanmaHedef", donanma: seciliDonanma, bolge }, `Donanma ${ozet.denizBolgeleri[bolge].ad} yönüne yelken açacak (bir sonraki tur).`);
+    } else if (id === "cikarmaBtn") {
+      const ordu = Number($<HTMLSelectElement>("cikarmaOrdu").value), sehir = Number($<HTMLSelectElement>("cikarmaSehir").value);
+      await emirGonder({ tur: "cikarma", donanma: seciliDonanma, ordu, sehir }, `Çıkarma emri verildi: hedef ${senaryo.sehirler[sehir].ad}.`);
+    }
+  });
   $("verasetKapat").onclick = () => { $("verasetPencere").hidden = true; };
   $("hukumdarKarti").addEventListener("click", (e) => { if ((e.target as HTMLElement).id === "verasetAc") verasetAc(); });
   $("verasetAdaylar").addEventListener("click", async (e) => {

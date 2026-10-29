@@ -1,0 +1,564 @@
+{
+ "aciklama": "1453 deniz bölgeleri, limanlar ve başlangıç donanmaları — agent'ın tahmini, [TASLAK] (DEC-0051). Bölge merkezleri boylam/enlem (harita işareti için); limanlar senaryo şehir adlarıdır.",
+ "bolgeler": [
+  {
+   "id": "karadeniz",
+   "ad": "Karadeniz",
+   "lon": 34.0,
+   "lat": 43.2,
+   "komsu": [
+    "marmara",
+    "azak"
+   ]
+  },
+  {
+   "id": "azak",
+   "ad": "Azak Denizi",
+   "lon": 36.5,
+   "lat": 46.0,
+   "komsu": [
+    "karadeniz"
+   ]
+  },
+  {
+   "id": "marmara",
+   "ad": "Marmara Denizi",
+   "lon": 28.0,
+   "lat": 40.7,
+   "komsu": [
+    "karadeniz",
+    "ege"
+   ]
+  },
+  {
+   "id": "ege",
+   "ad": "Ege Denizi",
+   "lon": 25.0,
+   "lat": 38.5,
+   "komsu": [
+    "marmara",
+    "dogu-akdeniz",
+    "iyon"
+   ]
+  },
+  {
+   "id": "dogu-akdeniz",
+   "ad": "Doğu Akdeniz",
+   "lon": 31.0,
+   "lat": 34.0,
+   "komsu": [
+    "ege",
+    "iyon",
+    "orta-akdeniz"
+   ]
+  },
+  {
+   "id": "iyon",
+   "ad": "İyon Denizi",
+   "lon": 19.0,
+   "lat": 37.5,
+   "komsu": [
+    "ege",
+    "adriyatik",
+    "orta-akdeniz",
+    "dogu-akdeniz"
+   ]
+  },
+  {
+   "id": "adriyatik",
+   "ad": "Adriyatik Denizi",
+   "lon": 15.5,
+   "lat": 43.0,
+   "komsu": [
+    "iyon"
+   ]
+  },
+  {
+   "id": "orta-akdeniz",
+   "ad": "Orta Akdeniz (Sicilya–Tunus)",
+   "lon": 14.0,
+   "lat": 35.5,
+   "komsu": [
+    "iyon",
+    "tiren",
+    "bati-akdeniz",
+    "dogu-akdeniz"
+   ]
+  },
+  {
+   "id": "tiren",
+   "ad": "Tiren Denizi",
+   "lon": 11.8,
+   "lat": 40.0,
+   "komsu": [
+    "orta-akdeniz",
+    "ligurya",
+    "bati-akdeniz"
+   ]
+  },
+  {
+   "id": "ligurya",
+   "ad": "Ligurya Denizi",
+   "lon": 8.0,
+   "lat": 43.3,
+   "komsu": [
+    "tiren",
+    "bati-akdeniz"
+   ]
+  },
+  {
+   "id": "bati-akdeniz",
+   "ad": "Batı Akdeniz",
+   "lon": 3.0,
+   "lat": 39.0,
+   "komsu": [
+    "ligurya",
+    "tiren",
+    "orta-akdeniz",
+    "alboran"
+   ]
+  },
+  {
+   "id": "alboran",
+   "ad": "Alboran Denizi",
+   "lon": -3.5,
+   "lat": 36.0,
+   "komsu": [
+    "bati-akdeniz",
+    "iber-atlantik"
+   ]
+  },
+  {
+   "id": "iber-atlantik",
+   "ad": "İber Atlantiği",
+   "lon": -11.0,
+   "lat": 38.5,
+   "komsu": [
+    "alboran",
+    "biskay"
+   ]
+  },
+  {
+   "id": "biskay",
+   "ad": "Biskay Körfezi",
+   "lon": -5.0,
+   "lat": 46.0,
+   "komsu": [
+    "iber-atlantik",
+    "mans",
+    "irlanda"
+   ]
+  },
+  {
+   "id": "mans",
+   "ad": "Manş Denizi",
+   "lon": -1.5,
+   "lat": 50.0,
+   "komsu": [
+    "biskay",
+    "kuzey-denizi",
+    "irlanda"
+   ]
+  },
+  {
+   "id": "irlanda",
+   "ad": "İrlanda Denizi",
+   "lon": -5.5,
+   "lat": 53.5,
+   "komsu": [
+    "biskay",
+    "mans",
+    "kuzey-denizi"
+   ]
+  },
+  {
+   "id": "kuzey-denizi",
+   "ad": "Kuzey Denizi",
+   "lon": 3.0,
+   "lat": 56.0,
+   "komsu": [
+    "mans",
+    "irlanda",
+    "kattegat"
+   ]
+  },
+  {
+   "id": "kattegat",
+   "ad": "Kattegat ve Öresund",
+   "lon": 11.5,
+   "lat": 57.0,
+   "komsu": [
+    "kuzey-denizi",
+    "baltik"
+   ]
+  },
+  {
+   "id": "baltik",
+   "ad": "Baltık Denizi",
+   "lon": 18.5,
+   "lat": 56.5,
+   "komsu": [
+    "kattegat"
+   ]
+  },
+  {
+   "id": "kizildeniz",
+   "ad": "Kızıldeniz",
+   "lon": 38.0,
+   "lat": 21.0,
+   "komsu": [
+    "aden"
+   ]
+  },
+  {
+   "id": "aden",
+   "ad": "Aden Körfezi",
+   "lon": 47.0,
+   "lat": 12.5,
+   "komsu": [
+    "kizildeniz",
+    "arap-denizi",
+    "dogu-afrika"
+   ]
+  },
+  {
+   "id": "basra",
+   "ad": "Basra Körfezi",
+   "lon": 51.5,
+   "lat": 27.0,
+   "komsu": [
+    "arap-denizi"
+   ]
+  },
+  {
+   "id": "arap-denizi",
+   "ad": "Arap Denizi",
+   "lon": 64.0,
+   "lat": 16.0,
+   "komsu": [
+    "aden",
+    "basra",
+    "dogu-afrika",
+    "bengal"
+   ]
+  },
+  {
+   "id": "dogu-afrika",
+   "ad": "Doğu Afrika kıyıları",
+   "lon": 45.0,
+   "lat": -5.0,
+   "komsu": [
+    "aden",
+    "arap-denizi"
+   ]
+  },
+  {
+   "id": "bengal",
+   "ad": "Bengal Körfezi ve Seylan",
+   "lon": 86.0,
+   "lat": 13.0,
+   "komsu": [
+    "arap-denizi",
+    "malakka"
+   ]
+  },
+  {
+   "id": "malakka",
+   "ad": "Malakka Boğazı",
+   "lon": 99.0,
+   "lat": 4.0,
+   "komsu": [
+    "bengal",
+    "guney-cin",
+    "cava"
+   ]
+  },
+  {
+   "id": "cava",
+   "ad": "Cava Denizi",
+   "lon": 112.0,
+   "lat": -5.5,
+   "komsu": [
+    "malakka"
+   ]
+  },
+  {
+   "id": "guney-cin",
+   "ad": "Güney Çin Denizi",
+   "lon": 113.0,
+   "lat": 15.0,
+   "komsu": [
+    "malakka",
+    "dogu-cin"
+   ]
+  },
+  {
+   "id": "dogu-cin",
+   "ad": "Doğu Çin ve Japon denizleri",
+   "lon": 126.0,
+   "lat": 33.0,
+   "komsu": [
+    "guney-cin"
+   ]
+  }
+ ],
+ "limanlar": {
+  "karadeniz": [
+   "Sinop",
+   "Trabzon",
+   "Kefe",
+   "Akkirman",
+   "Mangup"
+  ],
+  "marmara": [
+   "Konstantiniyye",
+   "Gelibolu"
+  ],
+  "ege": [
+   "Selanik",
+   "İzmir",
+   "Sakız",
+   "Nakşa",
+   "Atina",
+   "Mistra",
+   "Kandiye"
+  ],
+  "dogu-akdeniz": [
+   "Rodos",
+   "Lefkoşa",
+   "Antalya",
+   "Adana",
+   "Trablusşam",
+   "İskenderiye"
+  ],
+  "iyon": [
+   "Korfu"
+  ],
+  "adriyatik": [
+   "Venedik",
+   "Zara",
+   "Ragusa"
+  ],
+  "orta-akdeniz": [
+   "Palermo",
+   "Tunus"
+  ],
+  "tiren": [
+   "Napoli",
+   "Roma"
+  ],
+  "ligurya": [
+   "Cenova",
+   "Aix"
+  ],
+  "bati-akdeniz": [
+   "Barselona",
+   "Valensiya",
+   "Tlemsen"
+  ],
+  "alboran": [
+   "Gırnata"
+  ],
+  "iber-atlantik": [
+   "Lizbon",
+   "Sevilla"
+  ],
+  "biskay": [
+   "Bordo",
+   "Nantes"
+  ],
+  "irlanda": [
+   "Dublin"
+  ],
+  "kuzey-denizi": [
+   "Londra",
+   "Brugge",
+   "Edinburgh",
+   "Bergen"
+  ],
+  "kattegat": [
+   "Kopenhag"
+  ],
+  "baltik": [
+   "Lübeck",
+   "Stettin",
+   "Danzig",
+   "Riga",
+   "Stockholm"
+  ],
+  "kizildeniz": [
+   "Mekke"
+  ],
+  "aden": [
+   "Zeyla",
+   "Zebid"
+  ],
+  "basra": [
+   "Hürmüz"
+  ],
+  "arap-denizi": [
+   "Thatta",
+   "Ahmedabad"
+  ],
+  "dogu-afrika": [
+   "Kilva"
+  ],
+  "bengal": [
+   "Gaur",
+   "Mrauk U",
+   "Pegu",
+   "Cuttack",
+   "Kotte"
+  ],
+  "malakka": [
+   "Malakka"
+  ],
+  "cava": [
+   "Trowulan"
+  ],
+  "guney-cin": [
+   "Kanton",
+   "Thăng Long",
+   "Vijaya",
+   "Brunei"
+  ],
+  "dogu-cin": [
+   "Nankin",
+   "Hanseong",
+   "Kyoto"
+  ]
+ },
+ "bogazlar": [
+  {
+   "ad": "İstanbul Boğazı",
+   "bolge": "marmara"
+  },
+  {
+   "ad": "Çanakkale Boğazı",
+   "bolge": "marmara"
+  },
+  {
+   "ad": "Messina Boğazı",
+   "bolge": "tiren"
+  },
+  {
+   "ad": "Kerç Boğazı",
+   "bolge": "azak"
+  },
+  {
+   "ad": "Öresund",
+   "bolge": "kattegat"
+  },
+  {
+   "ad": "Cebelitarık Boğazı",
+   "bolge": "alboran"
+  }
+ ],
+ "donanmalar": [
+  {
+   "devlet": "osm",
+   "bolge": "marmara",
+   "ad": "Osmanlı Donanması",
+   "kadirga": 100,
+   "kalyon": 0
+  },
+  {
+   "devlet": "biz",
+   "bolge": "marmara",
+   "ad": "Bizans Donanması",
+   "kadirga": 10,
+   "kalyon": 0
+  },
+  {
+   "devlet": "ven",
+   "bolge": "adriyatik",
+   "ad": "Venedik Donanması",
+   "kadirga": 40,
+   "kalyon": 5
+  },
+  {
+   "devlet": "cen",
+   "bolge": "ligurya",
+   "ad": "Ceneviz Donanması",
+   "kadirga": 20,
+   "kalyon": 5
+  },
+  {
+   "devlet": "ara",
+   "bolge": "bati-akdeniz",
+   "ad": "Aragon Donanması",
+   "kadirga": 15,
+   "kalyon": 3
+  },
+  {
+   "devlet": "nap",
+   "bolge": "tiren",
+   "ad": "Napoli Donanması",
+   "kadirga": 10,
+   "kalyon": 0
+  },
+  {
+   "devlet": "mem",
+   "bolge": "dogu-akdeniz",
+   "ad": "Memlûk Donanması",
+   "kadirga": 15,
+   "kalyon": 0
+  },
+  {
+   "devlet": "rod",
+   "bolge": "dogu-akdeniz",
+   "ad": "Rodos Şövalyeleri Donanması",
+   "kadirga": 8,
+   "kalyon": 0
+  },
+  {
+   "devlet": "kas",
+   "bolge": "iber-atlantik",
+   "ad": "Kastilya Donanması",
+   "kadirga": 10,
+   "kalyon": 4
+  },
+  {
+   "devlet": "por",
+   "bolge": "iber-atlantik",
+   "ad": "Portekiz Donanması",
+   "kadirga": 4,
+   "kalyon": 6
+  },
+  {
+   "devlet": "ing",
+   "bolge": "mans",
+   "ad": "İngiliz Donanması",
+   "kadirga": 0,
+   "kalyon": 8
+  },
+  {
+   "devlet": "fra",
+   "bolge": "biskay",
+   "ad": "Fransız Donanması",
+   "kadirga": 0,
+   "kalyon": 6
+  },
+  {
+   "devlet": "kra",
+   "bolge": "baltik",
+   "ad": "Hansa Donanması",
+   "kadirga": 0,
+   "kalyon": 10
+  },
+  {
+   "devlet": "dan",
+   "bolge": "kattegat",
+   "ad": "Danimarka Donanması",
+   "kadirga": 4,
+   "kalyon": 4
+  },
+  {
+   "devlet": "min",
+   "bolge": "dogu-cin",
+   "ad": "Ming Donanması",
+   "kadirga": 30,
+   "kalyon": 10
+  }
+ ]
+}

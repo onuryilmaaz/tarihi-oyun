@@ -12,7 +12,8 @@ Son güncelleme: **2026-10-29, Codex — 7c tamamlandı; kullanıcı kabulü bek
 
 Son güncelleme: **2026-10-29, Claude** (Codex'ten devraldı). **7c kullanıcı tarafından kabul edildi (DEC-0048).**
 7c ve 7d kabul edildi, commit edildi. **Aşama 7 kapandı (DEC-0050).** Aşama 8 başladı; TASK-0011 onaylandı (DEC-0051).
-**8a (donanma, deniz bölgeleri, abluka, çıkarma) uygulanıyor**; deniz bölgesi/liman tablosu onaya sunulacak.
+**8a kabul edildi ve commit edildi (DEC-0052).** Sıradaki işler (DEC-0052): sol panel sekmeli + devlet arması,
+kalyon → "Kalyon İnşası" teknolojisi, ardından 8b (ticaret yolları).
 
 - Aşama 0–6 kapalı. 7a kabul DEC-0044, 7b kabul DEC-0046 (son commit `0192de4`).
 - **7c kapsamı DEC-0047 ile onaylı; uygulandı.** Yeni `packages/sim/src/istikrar.ts`;

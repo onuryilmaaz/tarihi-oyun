@@ -128,6 +128,12 @@ export function yukle(metin: string, beklenenSenaryo?: string): DunyaDurumu {
     // Şema 13 → 14 (TASK-0010/7d): yöneticiler kapalı, bütçe 0 (DEC-0049 varsayılanı)
     for (const s of d.sehirler) s.yonetici = false;
     d.yerelYonetim = { butce: 0, altSinir: 0, harcanan: 0 };
+    d.sema = 14;
+  }
+  if (d.sema === 14) {
+    // Şema 14 → 15 (TASK-0011/8a): eski kayıtta deniz verisi yok; deniz sistemi bu kayıtta kapalı kalır
+    d.deniz = { bolgeler: [], limanlar: d.sehirler.map(() => -1), bogazlar: [] };
+    d.donanmalar = []; d.sonrakiDonanmaId = 1; d.gemiInsalari = [];
     d.sema = SEMA_SURUMU;
   }
   if (d.sema !== SEMA_SURUMU) throw new KayitHatasi("Kayıt tutarsız: dünya şema sürümü uyuşmuyor.");

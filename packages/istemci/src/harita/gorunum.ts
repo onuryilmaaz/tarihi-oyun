@@ -45,11 +45,14 @@ export interface HaritaGorunumu {
   isgalGoster(birimler: [number, number, number][], sehirler: [number, number, number][]): void;
   mulkiyetGoster(birimler: number[], sehirler: { devlet: number; baskent: boolean }[]): void;
   orduyaOdaklan(o: OrduOzeti): void;
+  /** Donanma ve deniz bölgesi işaretleri (8a): x,y Miller × 10⁴; tıklanınca olaylar.donanmaSec */
+  donanmalariGoster(liste: { anahtar: string; x: number; y: number; html: string; sinif: string; donanma: number | null }[]): void;
   seciliOge(): Secim;
   /** Dışarıdan seçim (ör. listeden bir şehre gitmek); şehirde haritayı oraya kaydırır */
   secVeGit(s: Secim): void;
   olaylar: {
     orduSec?: (id: number) => void;
+    donanmaSec?: (id: number) => void;
     hedef?: (x: number, y: number, birim: number) => void; // Miller derece
     /** Bilgi panelinin altına eklenecek HTML (ör. savaş ilanı düğmesi) */
     ekBilgi?: (s: NonNullable<Secim>) => string;
@@ -99,6 +102,8 @@ export function haritaGorunumuKur(h: Harita, wikidata: Record<string, WdDevlet>,
   let orduListesi: { id: number; x: number; y: number }[] = [];
   let seciliOrdu: number | null = null;
   const orduOgeleri = new Map<number, HTMLDivElement>();
+  let denizListesi: { anahtar: string; x: number; y: number; donanma: number | null }[] = [];
+  const denizOgeleri = new Map<string, HTMLDivElement>();
   let kirli = true;
   const istek = () => { kirli = true; };
 
@@ -385,6 +390,15 @@ export function haritaGorunumuKur(h: Harita, wikidata: Record<string, WdDevlet>,
       yerlesen.push([sx, sy]);
       el.style.transform = `translate(${sx.toFixed(1)}px,${sy.toFixed(1)}px)`;
     }
+    for (const o of denizListesi) {
+      const el = denizOgeleri.get(o.anahtar);
+      if (!el) continue;
+      const [sx, x0] = dunyadanEkrana(o.x / 10000, o.y / 10000);
+      let sy = x0;
+      while (yerlesen.some(([ax, ay]) => Math.abs(ax - sx) < 46 && Math.abs(ay - sy) < 20)) sy += 21;
+      yerlesen.push([sx, sy]);
+      el.style.transform = `translate(${sx.toFixed(1)}px,${sy.toFixed(1)}px)`;
+    }
   };
   requestAnimationFrame(kare);
 
@@ -465,6 +479,27 @@ export function haritaGorunumuKur(h: Harita, wikidata: Record<string, WdDevlet>,
     },
     orduyaOdaklan(o) {
       g.cx = o.x / 1e4; g.cy = o.y / 1e4; g.z = Math.max(g.z, 40);
+      istek();
+    },
+    donanmalariGoster(liste) {
+      denizListesi = liste;
+      for (const [k, el] of denizOgeleri) if (!liste.some((x) => x.anahtar === k)) { el.remove(); denizOgeleri.delete(k); }
+      for (const x of liste) {
+        let el = denizOgeleri.get(x.anahtar);
+        if (!el) {
+          el = document.createElement("div");
+          el.addEventListener("pointerdown", (e) => e.stopPropagation());
+          el.addEventListener("click", (e) => {
+            e.stopPropagation();
+            const g = denizListesi.find((y) => y.anahtar === x.anahtar);
+            if (g?.donanma != null) olaylar.donanmaSec?.(g.donanma);
+          });
+          ogeler.orduKap.append(el);
+          denizOgeleri.set(x.anahtar, el);
+        }
+        el.className = x.sinif;
+        if (el.innerHTML !== x.html) el.innerHTML = x.html;
+      }
       istek();
     },
     ordulariGoster(ordular, yabanci, secili, planli) {

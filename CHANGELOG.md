@@ -1,5 +1,16 @@
 # CHANGELOG
 
+## 2026-10-29 — TASK-0011 / 8a: donanma ve deniz kontrolü (Claude)
+
+- DEC-0050: 7d kabul, Aşama 7 kapandı. DEC-0051: Aşama 8 kartı; gemi türleri kadırga ve kalyon.
+- `packages/sim/src/deniz.ts`: deniz bölgeleri ve limanlar; donanma (kadırga/kalyon, moral, bölge rotası); limanda gemi
+  inşası (bedel, süre, borç yok); otomatik deniz muharebesi (çekilme/batma, tur durur); bölge kontrolü; düşman kontrolündeki
+  boğazın ordulara kapanması; denizden abluka (liman kuşatmasında erzak 2 kat hızlı); çıkarma (ordu gemiye binip hedef limana
+  iner); bakım gideri; basit AI donanma davranışı; görünürlük (yaklaşık gemi sayısı). Kayıt şeması 15.
+- `veri/senaryo-1453/deniz.json`: 29 deniz bölgesi, 70 liman, 6 boğaz, 15 başlangıç donanması ([TASLAK]).
+- İstemci: haritada donanma işaretleri, sol panelde Donanmalar (yelken aç, çıkarma), liman şehrinde tersane.
+- `packages/sim/test/deniz.test.ts` (7 test; toplam 173), `docs/qa/ASAMA-8A-TEST.md`.
+
 ## 2026-10-29 — TASK-0010 / 7d: yerel yönetim (Claude)
 
 - DEC-0048: 7c kabul (Codex uygulaması commit edildi, `463b49b`). DEC-0049: 7d kapsamı. DEC-0050: 7d kabul, Aşama 7 kapandı.

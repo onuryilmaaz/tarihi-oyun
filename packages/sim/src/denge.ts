@@ -180,4 +180,16 @@ export const DENGE = {
   ISKAN_EN_COK_YUZDE: 20, // bir iskânda kaynak şehir nüfusunun en çok bu yüzdesi
   DIN_AYNI: 10, // aynı din ilişki bileşeni
   DIN_FARKLI_AILE: -10, // farklı din ailesi
+  // 8a — donanma (DEC-0051); hepsi [TASLAK]. Bakım aylık, gemi başına; kapasite asker
+  GEMI: {
+    kadirga: { ad: "Kadırga", bedel: 60, sure: 60, guc: 10, kapasite: 200, bakim: 1, hizGun: 4 },
+    kalyon: { ad: "Kalyon", bedel: 200, sure: 120, guc: 30, kapasite: 600, bakim: 3, hizGun: 6 },
+  },
+  GEMI_INSA_EN_COK: 20, // bir emirde
+  DENIZ_KAYIP_YUZDE: 12, // karşı tarafın gücünün günlük kayba dönüşen yüzdesi
+  DENIZ_MORAL_KAYIP_CARPANI: 1500, // kaybedilen güç payı → moral (binde)
+  DENIZ_GERI_CEKILME_MORAL: 400,
+  DENIZ_MORAL_TOPARLANMA: 20, // günlük, çatışma dışında
+  ABLUKA_ERZAK_CARPANI: 2, // denizden ablukadaki liman kuşatmasında erzak bu kat hızlı biter
+  YZ_DONANMA_GUC_YUZDE: 120, // AI donanması karşı tarafın en az bu yüzdesi güçlüyse saldırır
 };

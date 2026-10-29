@@ -73,6 +73,14 @@ export interface Ozet {
   sehirNufuslari: { nufus: number; gruplar: [string, string, number][] }[]; // şehir başına din × kültür
   devletDinleri: string[]; // harita modu için
   yerelYonetim: { butce: number; altSinir: number; harcanan: number }; // 7d
+  // 8a — deniz
+  denizBolgeleri: { ad: string; kontrol: number | null; komsu: number[] }[];
+  limanlar: number[]; // şehir → bölge (−1: liman değil)
+  donanmalar: { id: number; ad: string; bolge: number; kadirga: number; kalyon: number; moral: number; rota: number[]; kalanGun: number;
+    kapasite: number; yuk: { ad: string; asker: number } | null; cikarmaHedef: number | null; emirBekliyor: boolean;
+    binebilir: { id: number; ad: string; asker: number }[] }[];
+  yabanciDonanmalar: { id: number; ad: string; devlet: number; bolge: number; yaklasikGemi: number }[];
+  gemiInsalari: { sehir: number; gemi: string; adet: number; kalanGun: number; emir: boolean }[];
   devletKulturleri: string[];
   iskanlar: { kaynak: number; hedef: number; miktar: number; kalanGun: number; emir: boolean }[];
   diplomasi: (DiplomasiKarti | null)[]; // devlet başına; oyuncunun kendisi null (TASK-0009/6a)

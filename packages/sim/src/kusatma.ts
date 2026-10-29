@@ -4,6 +4,7 @@ import { DENGE } from "./denge";
 import type { Baglam } from "./emirler";
 import { savasta } from "./savas";
 import { kusatmaSaldiriYuzde } from "./teknoloji";
+import { denizAblukasi } from "./deniz";
 
 export function sehirMenzilinde(d: DunyaDurumu, b: Baglam, o: OrduDurumu, sehir: number): boolean {
   const s = d.sehirler[sehir], n = s && b.ag?.dugumler[s.dugum];
@@ -92,7 +93,8 @@ export function kusatmalariIlerlet(d: DunyaDurumu, b: Baglam): void {
     const guc = kusatmaGucu(d, k);
     if (!guc.yeterli) continue;
     k.gun++;
-    k.erzak = Math.max(0, k.erzak - DENGE.KUSATMA_ERZAK_AZALMA[k.yontem]);
+    // Denizden abluka (8a): liman ve bölge kuşatanın elindeyse erzak daha hızlı biter
+    k.erzak = Math.max(0, k.erzak - DENGE.KUSATMA_ERZAK_AZALMA[k.yontem] * (denizAblukasi(d, k.sehir, k.devlet) ? DENGE.ABLUKA_ERZAK_CARPANI : 1));
     if (k.yontem === "saldiri") {
       const garnizonKaybi = Math.min(s.garnizon, Math.max(1,
         Math.floor(guc.guc * DENGE.KUSATMA_SALDIRI_GARNIZON_YUZDE * kusatmaSaldiriYuzde(d, k.devlet) / (10000 * (s.sur + 1)))));

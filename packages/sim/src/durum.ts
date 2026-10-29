@@ -4,6 +4,7 @@
 import { tarihtenGun, type Tarih } from "./takvim";
 import { bosIstikrar, type Istikrar } from "./istikrar";
 import { bosYerelYonetim, type YerelYonetim } from "./yonetim";
+import { baslangicDenizi, GEMI_TURLERI, type DenizHaritasi, type Donanma, type GemiInsasi } from "./deniz";
 import type { Emir } from "./emirler";
 import { HAREKET, type AgVerisi, type RotaAdimi } from "./hareket";
 import { DENGE } from "./denge";
@@ -187,6 +188,11 @@ export interface DunyaDurumu {
   verasetSecimi: VerasetSecimi | null; // oyuncunun halef seçimi (7a)
   iskanlar: Iskan[]; // yoldaki iskânlar (7b)
   yerelYonetim: YerelYonetim; // oyuncunun yerel yönetim bütçesi (7d)
+  // 8a: deniz haritası (senaryodan, değişmez), donanmalar ve gemi inşaları
+  deniz: DenizHaritasi;
+  donanmalar: Donanma[];
+  sonrakiDonanmaId: number;
+  gemiInsalari: GemiInsasi[];
   kusatmalar: Kusatma[];
   isgalHazirliklari: IsgalHazirligi[];
   barislar: BarisKaydi[];
@@ -223,6 +229,13 @@ export interface SenaryoVerisi {
     adHavuzu: Partial<Record<AdHavuzu, string[]>>;
   };
   // 1453 nüfus grupları (7b; tahmini, [TASLAK]): karışım [din, kültür, binde]
+  // Deniz bölgeleri, limanlar, boğazlar, başlangıç donanmaları (8a; tahmini, [TASLAK])
+  deniz?: {
+    bolgeler: { id: string; ad: string; lon: number; lat: number; komsu: string[] }[];
+    limanlar: Record<string, string[]>;
+    bogazlar: { ad: string; bolge: string }[];
+    donanmalar: { devlet: string; bolge: string; ad: string; kadirga: number; kalyon: number }[];
+  };
   nufus?: {
     dinler: Record<string, string>; dinAileleri: Record<string, string>; kulturler: Record<string, string>;
     devletler: Record<string, { din: string; kultur: string; karisim: [string, string, number][] }>;
@@ -236,7 +249,7 @@ export interface SenaryoVerisi {
 // 5: kuşatma, gerçek işgal ve barış (TASK-0007/4c); şema 3–4 için eklemeli dönüşüm var.
 // Şema geçmişi: 6 şehir yatırımları (5b), 7 teknoloji (5c), 8 diplomasi (6a), 9 AI ekonomi (6b), 10 AI savaş/barış (6c),
 // 11 hükümdar ve veraset (7a), 12 nüfus grupları ve iskân (7b), 13 istikrar (7c), 14 yerel yönetim (7d)
-export const SEMA_SURUMU = 14;
+export const SEMA_SURUMU = 15; // 15 donanma ve deniz (8a)
 
 export function baslangicDurumu(s: SenaryoVerisi, secenek: { tohum: number; oyuncu?: string }): DunyaDurumu {
   const indeks = new Map(s.devletler.map((d, i) => [d.id, i]));
@@ -277,6 +290,7 @@ export function baslangicDurumu(s: SenaryoVerisi, secenek: { tohum: number; oyun
     ordular.push(yeniOrdu(ordular.length + 1, `${v.ad} Ordusu`, i, asker, c.dugum!, c.x ?? 0, c.y ?? 0));
   });
   const hanedanlar = baslangicHanedanlari(s, secenek.tohum >>> 0, s.baslangic.yil, tarihtenGun(s.baslangic));
+  const deniz = baslangicDenizi(s, (id) => bul(id));
   const devletler: DevletDurumu[] = s.devletler.map((d, i) => ({
     id: d.id,
     ad: d.ad,
@@ -315,6 +329,10 @@ export function baslangicDurumu(s: SenaryoVerisi, secenek: { tohum: number; oyun
     verasetSecimi: null,
     iskanlar: [],
     yerelYonetim: bosYerelYonetim(),
+    deniz: deniz.deniz,
+    donanmalar: deniz.donanmalar,
+    sonrakiDonanmaId: deniz.donanmalar.length + 1,
+    gemiInsalari: [],
     ittifaklar: (s.ittifaklar ?? []).map((r) => {
       const [a, b] = [bul(r.a), bul(r.b)].sort((x, y) => x - y);
       return { a, b, baslangic: tarihtenGun(s.baslangic) };
@@ -452,6 +470,18 @@ export function degismezler(d: DunyaDurumu): string[] {
   for (const v of d.devletler) if (!(v.din in DIN_AILELERI) || typeof v.kultur !== "string") h.push(`${v.id} din/kültür geçersiz`);
   for (const k of d.iskanlar) if (!d.sehirler[k.kaynak] || !d.sehirler[k.hedef] || !tam(k.kalanGun) || k.kalanGun <= 0
     || k.gruplar.some((g) => !tam(g.nufus) || g.nufus <= 0)) h.push("iskân geçersiz");
+  const B = d.deniz.bolgeler.length;
+  if (d.deniz.limanlar.length !== d.sehirler.length || d.deniz.limanlar.some((x) => !tam(x) || x < -1 || x >= B)) h.push("liman listesi geçersiz");
+  const donanmaId = new Set<number>();
+  for (const f of d.donanmalar) {
+    if (!tam(f.id) || f.id >= d.sonrakiDonanmaId || donanmaId.has(f.id) || !d.devletler[f.devlet] || !tam(f.bolge) || f.bolge < 0 || f.bolge >= B
+      || !GEMI_TURLERI.every((t) => tam(f[t]) && f[t] >= 0) || f.kadirga + f.kalyon <= 0 || !tam(f.moral) || f.moral < 0 || f.moral > 1000
+      || f.rota.some((x) => !tam(x) || x < 0 || x >= B) || !tam(f.kalanGun) || f.kalanGun < 0
+      || (f.yuk !== null && (f.yuk.devlet !== f.devlet || d.ordular.some((o) => o.id === f.yuk!.id)))) h.push(`donanma ${f.id} geçersiz`);
+    donanmaId.add(f.id);
+  }
+  for (const g of d.gemiInsalari) if (!d.sehirler[g.sehir] || (d.deniz.limanlar[g.sehir] ?? -1) < 0 || !GEMI_TURLERI.includes(g.gemi)
+    || !tam(g.adet) || g.adet <= 0 || !tam(g.kalanGun) || g.kalanGun <= 0) h.push("gemi inşası geçersiz");
   const yy = d.yerelYonetim;
   if (!yy || ![yy.butce, yy.altSinir, yy.harcanan].every((x) => tam(x) && x >= 0) || yy.harcanan > yy.butce) h.push("yerel yönetim geçersiz");
   d.sehirler.forEach((c, i) => { if (typeof c.yonetici !== "boolean") h.push(`şehir ${i} yönetici alanı geçersiz`); });

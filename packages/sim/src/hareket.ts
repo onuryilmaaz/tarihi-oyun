@@ -4,6 +4,7 @@
 // doğru yuvarlanır, tarayıcıdan bağımsızdır) kullanılır.
 
 import type { DunyaDurumu, OrduDurumu } from "./durum";
+import { bogazKapali } from "./deniz";
 import { HAREKET } from "./denge";
 export { HAREKET } from "./denge";
 
@@ -130,6 +131,7 @@ export function rotaBul(d: DunyaDurumu, ag: HareketAgi, ordu: OrduDurumu, hedef:
       const k = ag.kenarlar[ki];
       const v = k.a === u ? k.b : k.a;
       if (!gecilebilir(d, ag, v, ordu.devlet)) continue;
+      if (k.g && bogazKapali(d, k.ad, ordu.devlet)) continue; // düşman donanması boğazı tutuyor (8a)
       const [s1, s2] = kenarAdimlari(ag, ki, u);
       const yeni = c + s1.m + s2.m;
       if (yeni < maliyet[v]) { maliyet[v] = yeni; onceki[v] = ki; y.ekle(yeni, v); }

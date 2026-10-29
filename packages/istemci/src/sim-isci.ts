@@ -9,7 +9,7 @@ import {
   butceOzeti, insaatMaliyeti, insaatSuresi, sehirYapiGeliri, yapiSeviyesi, yapiEnYuksek, pazarGeliriSeviyeBasina, YAPI_ADLARI, YAPI_TURLERI,
   diplomasiOnHesap, etkiDegeri, hediyePuanBedeli, iliski, iliskiBilesenleri, ittifakDegerlendir, komsuMu, muttefik, muttefikleri, savasta,
   asayisAskeri, gerekenAsayis,
-  hukumdarYasi, VERASET_ADLARI, yerelYonetimAyarla, type Hukumdar,
+  hukumdarYasi, VERASET_ADLARI, yerelYonetimAyarla, bolgeKontrolu, gorunurDonanmalar, kapasite, sehirMenzilinde, type Hukumdar,
   ALAN_ADLARI, TEKNOLOJILER, teknolojiBul, biliyor, toplamaBedelYuzde, toplamaSuresi,
 } from "@tarihi/sim";
 import type { Istek, Ozet, Yanit } from "./sim-protokol";
@@ -72,6 +72,20 @@ function ozet(durum: DunyaDurumu): Ozet {
     sehirNufuslari: durum.sehirler.map((s) => ({ nufus: s.nufus, gruplar: s.gruplar.map((g) => [g.din, g.kultur, g.nufus] as [string, string, number]) })),
     devletDinleri: durum.devletler.map((v) => v.din),
     yerelYonetim: { ...durum.yerelYonetim },
+    denizBolgeleri: durum.deniz.bolgeler.map((b, i) => ({ ad: b.ad, kontrol: bolgeKontrolu(durum, i), komsu: b.komsu })),
+    limanlar: durum.deniz.limanlar,
+    donanmalar: durum.donanmalar.filter((f) => f.devlet === durum.ayarlar.oyuncu).map((f) => ({
+      id: f.id, ad: f.ad, bolge: f.bolge, kadirga: f.kadirga, kalyon: f.kalyon, moral: f.moral, rota: f.rota, kalanGun: f.kalanGun,
+      kapasite: kapasite(f), yuk: f.yuk && { ad: f.yuk.ad, asker: f.yuk.asker }, cikarmaHedef: f.cikarmaHedef,
+      emirBekliyor: durum.emirKuyrugu.some((e) => "donanma" in e && e.donanma === f.id),
+      binebilir: durum.ordular.filter((o) => o.devlet === f.devlet && durum.sehirler.some((c, i) => durum.deniz.limanlar[i] === f.bolge
+        && c.kontrol === f.devlet && sehirMenzilinde(durum, baglam, o, i))).map((o) => ({ id: o.id, ad: o.ad, asker: o.asker })),
+    })),
+    yabanciDonanmalar: gorunurDonanmalar(durum, durum.ayarlar.oyuncu),
+    gemiInsalari: [
+      ...durum.gemiInsalari.filter((g) => g.devlet === durum.ayarlar.oyuncu).map((g) => ({ sehir: g.sehir, gemi: g.gemi, adet: g.adet, kalanGun: g.kalanGun, emir: false })),
+      ...durum.emirKuyrugu.flatMap((e) => (e.tur === "gemiInsa" ? [{ sehir: e.sehir, gemi: e.gemi, adet: e.adet, kalanGun: DENGE.GEMI[e.gemi].sure, emir: true }] : [])),
+    ],
     devletKulturleri: durum.devletler.map((v) => v.kultur),
     iskanlar: [
       ...durum.iskanlar.filter((k) => k.devlet === durum.ayarlar.oyuncu).map((k) => ({ kaynak: k.kaynak, hedef: k.hedef,

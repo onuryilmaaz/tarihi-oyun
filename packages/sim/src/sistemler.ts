@@ -7,6 +7,7 @@
 import { olayEkle, type DunyaDurumu } from "./durum";
 import { istikrarAyi } from "./istikrar";
 import { yerelYoneticiler } from "./yonetim";
+import { denizMuharebeleri, donanmaHareketi, gemiInsalariIlerlet, yzDonanmalari } from "./deniz";
 import { gundenTarih } from "./takvim";
 import { orduIlerlet } from "./hareket";
 import { moralToparla, muharebeGunleri, muharebeleriBaslat } from "./savas";
@@ -59,6 +60,11 @@ export const SISTEMLER: Sistem[] = [
   { id: "gercek-isgal", siklik: "gunluk", calistir: isgalleriIlerlet },
   { id: "kusatma", siklik: "gunluk", calistir: kusatmalariIlerlet },
   { id: "sehir-insaati", siklik: "gunluk", calistir: insaatlariIlerlet },
+  // 8a: gemi inşası, donanma hareketi/çıkarma, deniz muharebesi
+  { id: "gemi-insasi", siklik: "gunluk", calistir: gemiInsalariIlerlet },
+  { id: "donanma-hareketi", siklik: "gunluk", calistir: donanmaHareketi },
+  { id: "deniz-muharebesi", siklik: "gunluk", calistir: denizMuharebeleri },
+  { id: "yz-donanma", siklik: "gunluk", calistir: yzDonanmalari },
   { id: "arastirma", siklik: "gunluk", calistir: arastirmalariIlerlet },
   // AI devletleri (TASK-0009/6b): her devlet 30 günde bir, kendi gününde
   { id: "yz-ekonomi", siklik: "gunluk", calistir: yzKararlari },

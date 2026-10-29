@@ -12,6 +12,7 @@ import { barisDogrula, barisiUygula } from "./baris";
 import { YAPI_ADLARI, insaatMaliyeti, insaatSuresi, sehirdeInsaatVar, yapiSeviyesi, type YapiTuru } from "./yatirim";
 import { bekleyenVerasetiCoz, tahtaCikar } from "./hanedan";
 import { iskanBedeli, nufusCikar } from "./nufus";
+import { bolgeGunu, denizYolu, GEMI_TURLERI, kapasite, type GemiTuru } from "./deniz";
 import { diplomasiOnHesap, etkiEkle, hediyePuani, ittifakBoz, ittifakDegerlendir, ittifakKur, muttefik, muttefikleri, savasIlaniSonuclari } from "./diplomasi";
 import { arastirmaEngeli, teknolojiBul, teknolojiGecerli, toplamaBedelYuzde, toplamaSuresi, type TeknolojiId } from "./teknoloji";
 
@@ -57,7 +58,11 @@ export type Emir =
   | { tur: "halefSec"; aday: number }
   // İskân: oyuncunun bir şehrinden diğerine nüfus taşıma (TASK-0010/7b)
   | { tur: "iskan"; kaynak: number; hedef: number; miktar: number }
-  | { tur: "bagis"; sehir: number; devlet?: number };
+  | { tur: "bagis"; sehir: number; devlet?: number }
+  // Donanma (TASK-0011/8a): limanda gemi inşası, bölgeye yelken, çıkarma (ordu gemiye alınıp hedef limana indirilir)
+  | { tur: "gemiInsa"; sehir: number; gemi: GemiTuru; adet: number; devlet?: number }
+  | { tur: "donanmaHedef"; donanma: number; bolge: number }
+  | { tur: "cikarma"; donanma: number; ordu: number; sehir: number };
 
 export type Dogrulama = { gecerli: true } | { gecerli: false; neden: string };
 
@@ -69,6 +74,7 @@ function bekleyenHarcama(d: DunyaDurumu, devlet: number): number {
     if (e.tur === "askerTopla" && d.sehirler[e.sehir]?.devlet === devlet) s += toplamaMaliyeti(e.asker, toplamaBedelYuzde(d, devlet));
     if (e.tur === "insaat" && d.sehirler[e.sehir]?.devlet === devlet) s += insaatMaliyeti(d, d.sehirler[e.sehir], e.yapi) ?? 0;
     if (e.tur === "hediye" && d.ayarlar.oyuncu === devlet) s += e.miktar;
+    if (e.tur === "gemiInsa" && d.sehirler[e.sehir]?.devlet === devlet && GEMI_TURLERI.includes(e.gemi)) s += e.adet * DENGE.GEMI[e.gemi].bedel;
     if (e.tur === "iskan" && d.ayarlar.oyuncu === devlet) s += iskanBedeli(e.miktar);
     if (e.tur === "arastir" && d.ayarlar.oyuncu === devlet && teknolojiGecerli(e.teknoloji)) s += DENGE.TEKNOLOJI[e.teknoloji].bedel;
   }
@@ -149,6 +155,39 @@ export function emirDogrula(d: DunyaDurumu, e: Emir, b: Baglam = BOS_BAGLAM, kuy
       const para = kuyrukHaric ? d.devletler[oyuncu].hazine : kullanilabilirHazine(d, oyuncu);
       const bedel = iskanBedeli(e.miktar);
       if (para < 0 || bedel > para) return { gecerli: false, neden: `Hazine yetersiz: ${para} kullanılabilir, ${bedel} gerekli. Borçlanma yoktur.` };
+      return { gecerli: true };
+    }
+    case "gemiInsa": {
+      const s = d.sehirler[e.sehir], devlet = e.devlet ?? d.ayarlar.oyuncu;
+      if (!s || s.devlet !== devlet || s.kontrol !== devlet || (d.deniz.limanlar[e.sehir] ?? -1) < 0) return { gecerli: false, neden: "Gemi yalnızca kontrolünüzdeki kendi liman şehrinizde yapılır." };
+      if (!GEMI_TURLERI.includes(e.gemi)) return { gecerli: false, neden: "Geçersiz gemi türü." };
+      if (d.kusatmalar.some((k) => k.sehir === e.sehir)) return { gecerli: false, neden: "Kuşatma altındaki limanda gemi yapılamaz." };
+      if (!Number.isSafeInteger(e.adet) || e.adet <= 0 || e.adet > DENGE.GEMI_INSA_EN_COK) return { gecerli: false, neden: `Adet 1 ile ${DENGE.GEMI_INSA_EN_COK} arasında olmalı.` };
+      const para = kuyrukHaric ? d.devletler[devlet].hazine : kullanilabilirHazine(d, devlet);
+      const bedel = e.adet * DENGE.GEMI[e.gemi].bedel;
+      if (para < 0 || bedel > para) return { gecerli: false, neden: `Hazine yetersiz: ${para} kullanılabilir, ${bedel} gerekli. Borçlanma yoktur.` };
+      return { gecerli: true };
+    }
+    case "donanmaHedef": {
+      const f = d.donanmalar.find((x) => x.id === e.donanma);
+      if (!f) return { gecerli: false, neden: "Donanma bulunamadı." };
+      if (!Number.isSafeInteger(e.bolge) || !d.deniz.bolgeler[e.bolge]) return { gecerli: false, neden: "Geçersiz deniz bölgesi." };
+      if (denizYolu(d, f.bolge, e.bolge) === null) return { gecerli: false, neden: "Bu bölgeye deniz yolu yok." };
+      if (!kuyrukHaric && d.emirKuyrugu.some((x) => "donanma" in x && x.donanma === e.donanma)) return { gecerli: false, neden: "Bu donanma için bekleyen emir var." };
+      return { gecerli: true };
+    }
+    case "cikarma": {
+      const f = d.donanmalar.find((x) => x.id === e.donanma), o = orduBul(d, e.ordu), s = d.sehirler[e.sehir];
+      if (!f || !o || !s || o.devlet !== f.devlet) return { gecerli: false, neden: "Kendi donanmanızı, ordunuzu ve hedef limanı seçin." };
+      if (f.yuk || f.rota.length) return { gecerli: false, neden: "Donanma boş ve demirli olmalı." };
+      if (o.rota.length || o.muharebe !== null || o.cekiliyor || orduKusatmasi(d, o.id)) return { gecerli: false, neden: "Ordu beklemede olmalı (yürüyüş, muharebe ve kuşatma dışında)." };
+      const liman = d.sehirler.findIndex((c, i) => d.deniz.limanlar[i] === f.bolge && c.kontrol === o.devlet && sehirMenzilinde(d, b, o, i));
+      if (liman < 0) return { gecerli: false, neden: "Ordu, donanmanın bulunduğu denizdeki kendi limanınızda olmalı." };
+      if (o.asker > kapasite(f)) return { gecerli: false, neden: `Taşıma kapasitesi yetersiz: ${kapasite(f)} asker taşınabilir.` };
+      const hb = d.deniz.limanlar[e.sehir] ?? -1;
+      if (hb < 0 || e.sehir === liman) return { gecerli: false, neden: "Hedef başka bir liman şehri olmalı." };
+      if (denizYolu(d, f.bolge, hb) === null) return { gecerli: false, neden: "Hedef limana deniz yolu yok." };
+      if (!kuyrukHaric && d.emirKuyrugu.some((x) => ("donanma" in x && x.donanma === e.donanma) || ("ordu" in x && x.ordu === e.ordu))) return { gecerli: false, neden: "Bu donanma ya da ordu için bekleyen emir var." };
       return { gecerli: true };
     }
     case "halefSec": {
@@ -308,7 +347,9 @@ export function emirVer(d: DunyaDurumu, e: Emir, b: Baglam = BOS_BAGLAM): Dogrul
   const oyuncu = d.ayarlar.oyuncu;
   if (((e.tur === "insaat" || e.tur === "arastir" || e.tur === "askerTopla" || e.tur === "bagis") && e.devlet !== undefined && e.devlet !== oyuncu)
     || (e.tur === "savasIlan" && e.devlet !== oyuncu)
-    || ("ordu" in e && orduBul(d, e.ordu) && orduBul(d, e.ordu)!.devlet !== oyuncu)) {
+    || ("ordu" in e && orduBul(d, e.ordu) && orduBul(d, e.ordu)!.devlet !== oyuncu)
+    || ("donanma" in e && d.donanmalar.find((f) => f.id === e.donanma) && d.donanmalar.find((f) => f.id === e.donanma)!.devlet !== oyuncu)
+    || (e.tur === "gemiInsa" && e.devlet !== undefined && e.devlet !== oyuncu)) {
     return { gecerli: false, neden: "Yalnızca kendi devletiniz ve ordularınız adına emir verebilirsiniz." };
   }
   const s = emirDogrula(d, e, b);
@@ -443,6 +484,30 @@ export function emirUygula(d: DunyaDurumu, e: Emir, b: Baglam = BOS_BAGLAM): voi
       }
       savasIlaniSonuclari(d, b.ag, e.devlet, e.hedef);
       break;
+    case "gemiInsa": {
+      const s = d.sehirler[e.sehir], devlet = s.devlet, g = DENGE.GEMI[e.gemi], bedel = e.adet * g.bedel;
+      d.devletler[devlet].hazine -= bedel;
+      d.gemiInsalari.push({ sehir: e.sehir, devlet, gemi: e.gemi, adet: e.adet, kalanGun: g.sure });
+      olayEkle(d, { tur: "gemi-insa", devlet, metin: `${s.ad}: ${e.adet} ${g.ad.toLowerCase()} yapımı başladı (${g.sure} gün). Bedel: −${bedel}.` });
+      break;
+    }
+    case "donanmaHedef": {
+      const f = d.donanmalar.find((x) => x.id === e.donanma)!;
+      f.rota = denizYolu(d, f.bolge, e.bolge)!;
+      f.kalanGun = f.rota.length ? bolgeGunu(f) : 0;
+      f.cikarmaHedef = f.yuk ? f.cikarmaHedef : null;
+      if (f.rota.length) olayEkle(d, { tur: "donanma-yelken", devlet: f.devlet, metin: `${f.ad} ${d.deniz.bolgeler[e.bolge].ad} yönüne yelken açtı (${f.rota.length * bolgeGunu(f)} gün).` });
+      break;
+    }
+    case "cikarma": {
+      const f = d.donanmalar.find((x) => x.id === e.donanma)!, o = orduBul(d, e.ordu)!;
+      d.ordular = d.ordular.filter((x) => x !== o);
+      f.yuk = o; f.cikarmaHedef = e.sehir;
+      f.rota = denizYolu(d, f.bolge, d.deniz.limanlar[e.sehir])!;
+      f.kalanGun = f.rota.length ? bolgeGunu(f) : 0;
+      olayEkle(d, { tur: "cikarma", devlet: f.devlet, metin: `${o.ad} ${f.ad} gemilerine bindi; hedef ${d.sehirler[e.sehir].ad} (${f.rota.length * bolgeGunu(f)} gün).` });
+      break;
+    }
     case "halefSec":
       tahtaCikar(d, d.ayarlar.oyuncu, d.verasetSecimi!.adaylar[e.aday], "oyuncu");
       break;
