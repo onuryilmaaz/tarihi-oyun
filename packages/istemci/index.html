@@ -251,6 +251,20 @@
     #kayitListesi .eylemler { display: flex; gap: 6px; }
     #kayitListesi .bos { display: block; color: var(--soluk); border: 0; }
     #kaynakMetni li { margin: 4px 0; }
+    /* İlk oyun rehberi ve sözlük (9c) */
+    #rehber { position: fixed; inset: 0; z-index: 45; pointer-events: none; }
+    .rehber-isik { position: fixed; border-radius: 8px; border: 2px solid var(--vurgu); box-shadow: 0 0 0 9999px rgba(10, 8, 6, .62);
+      transition: all .2s ease; }
+    .rehber-kutu { position: fixed; pointer-events: auto; padding: 16px 18px; }
+    .rehber-kutu small { color: var(--vurgu); font-size: 11px; letter-spacing: .08em; }
+    .rehber-kutu h3 { font-family: "Cinzel", serif; margin: 4px 0 6px; font-size: 18px; }
+    .rehber-kutu p { margin: 0 0 12px; font-size: 13px; line-height: 1.5; }
+    .rehber-kutu .satir { display: flex; gap: 8px; align-items: center; }
+    .rehber-kutu .satir span { flex: 1; }
+    .nasil-metin p { margin: 8px 0; line-height: 1.5; }
+    #sozluk { margin: 10px 0; max-height: 38vh; overflow: auto; display: grid; grid-template-columns: 170px 1fr; gap: 6px 12px; font-size: 13px; }
+    #sozluk dt { color: var(--vurgu); font-weight: 600; }
+    #sozluk dd { margin: 0; color: var(--metin); }
     #onay { position: fixed; inset: 0; display: grid; place-items: center; background: rgba(15, 12, 9, .5); z-index: 40; } /* menünün (30) de üstünde */
     #onay .panel { position: static; width: min(440px, calc(100% - 32px)); padding: 22px; text-align: center; }
     #onay h3 { font-family: "Cinzel", serif; margin: 0 0 8px; font-size: 18px; }
@@ -531,6 +545,7 @@
           <button id="mDevam" class="birincil" hidden>Devam et<small id="mDevamBilgi"></small></button>
           <button id="mYeni">Yeni oyun</button>
           <button id="mYukle">Kayıt yükle</button>
+          <button id="mNasil">Nasıl oynanır</button>
           <button id="mKaynak">Kaynaklar</button>
           <button id="mKapat" hidden>Oyuna dön</button>
         </div>
@@ -546,6 +561,23 @@
         <h2 class="menu-h" id="kayitBaslik">Kayıtlar</h2>
         <div id="kayitYeni" class="satir"><input id="kayitAdi" type="text" maxlength="40" aria-label="Kayıt adı" /><button id="kayitYeniBtn" class="birincil">Yeni kayıt olarak kaydet</button></div>
         <ul id="kayitListesi"></ul>
+        <div class="menu-alt"><button data-menu-git="geri">‹ Geri</button></div>
+      </section>
+      <section data-menu="nasil" hidden>
+        <h2 class="menu-h">Nasıl oynanır</h2>
+        <div class="satir"><button id="mRehber" class="birincil">Adım adım rehberi başlat</button></div>
+        <div class="nasil-metin not">
+          <p><b>Amaç:</b> Belirlenmiş bir zafer koşulu yok. 1453'ten başlayarak devletinizi büyütün, zenginleştirin ya da ayakta tutun.</p>
+          <p><b>Tur:</b> Tur süresini seçip <b>Turu ilerlet</b>'e (Boşluk) basın. Emirler bir sonraki turun başında uygulanır; dünya
+            gün gün işler. Muharebe, savaş ilanı, barış teklifi, hükümdar ölümü ya da ayaklanma gibi önemli olaylarda tur durur.</p>
+          <p><b>Para:</b> Borç yoktur. İsteğe bağlı harcamalar (inşaat, araştırma, gemi, casusluk, hediye) hazineyi aşamaz; hazine yalnızca
+            zorunlu giderlerle (maaş, gemi bakımı) eksiye düşebilir ve bu durum moral ile istikrarı bozar.</p>
+          <p><b>Savaş:</b> Devlet panelinden savaş ilan edin, ordunuzu seçip haritada sağ tıklayın. Arazi orduyla bekleyerek işgal edilir;
+            şehirler ayrıca kuşatılır. Kazandıklarınızı barış antlaşmasıyla alırsınız.</p>
+        </div>
+        <h2 class="menu-h" style="margin-top:16px">Sözlük</h2>
+        <input id="sozlukAra" type="text" placeholder="Terim ara…" aria-label="Sözlükte ara" style="width:100%" />
+        <dl id="sozluk"></dl>
         <div class="menu-alt"><button data-menu-git="geri">‹ Geri</button></div>
       </section>
       <section data-menu="kaynak" hidden>

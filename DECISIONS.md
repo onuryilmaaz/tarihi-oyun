@@ -733,3 +733,11 @@ Kaynak belge: `MASTER_SPEC.md` (v1.3). Orijinal keşif çıktısı:
   2. 9b commit + push onaylandı; 9c (oyun içi rehber, ipuçları, terimler sözlüğü) başlar.
 - **Onay kaydı:** Kullanıcı: "1- biraz durağan ama okey 2- okey 3- evet 4- evet" (2026-10-29)
 - **Durum:** GEÇERLİ
+
+## DEC-0058 — 9c kabulü ve 9d'ye geçiş
+
+- **Tarih:** 2026-10-29
+- **Seçilen karar:** 9c (ilk oyun rehberi, Nasıl oynanır, sözlük) kabul edildi ("gayet iyi"); commit + push onaylandı; 9d (kaynaklar
+  ve lisans kontrolü) başlar.
+- **Onay kaydı:** Kullanıcı: "1- gayet iyi 2- evet 3- evet" (2026-10-29)
+- **Durum:** GEÇERLİ

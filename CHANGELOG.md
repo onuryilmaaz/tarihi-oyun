@@ -1,5 +1,12 @@
 # CHANGELOG
 
+## 2026-10-29 — TASK-0012 / 9c: oyun içi rehber ve sözlük (Claude)
+
+- DEC-0057: 9b kabul ("biraz durağan ama okey").
+- `packages/istemci/src/rehber.ts`: 12 adımlı ilk oyun rehberi (ilgili öğeyi vurgular, İleri/Geri/Kapat, Esc); ilk yeni oyunda bir
+  kez kendiliğinden açılır. Menü → **Nasıl oynanır**: kısa kurallar, rehberi yeniden başlatma, aranabilir sözlük (`sozluk.ts`, 29 terim).
+- `docs/qa/ASAMA-9C-TEST.md`.
+
 ## 2026-10-29 — TASK-0012 / 9b: tarihî nüfus, arazi verimi, denge (Claude)
 
 - DEC-0056: 9a kabul; onay penceresi menünün üstünde.

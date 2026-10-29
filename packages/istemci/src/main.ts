@@ -9,6 +9,8 @@ import { type YapiTuru, DENGE, tarihMetni, toplamaMaliyeti, type Emir, type Muha
 import { Color } from "three";
 import { armaSvg } from "./arma";
 import { ozelSecimleriKur } from "./secim";
+import { rehberAcik, rehberGoruldu, rehberiBaslat } from "./rehber";
+import { SOZLUK } from "./sozluk";
 
 ozelSecimleriKur();
 import { haritaYukle } from "./harita/veri";
@@ -936,12 +938,21 @@ async function baslat() {
     menuOyunda = true;
     menuKapat();
     bildir(`${ozet.oyuncu.ad} ile yeni oyun: ${ozet.tarih}`);
+    if (!rehberGoruldu()) rehberiBaslat();
   };
   $("mYeni").onclick = () => { secilenDevlet = ozet.oyuncu.indeks; devletleriCiz(); menuGoster("devlet"); };
   $("mYukle").onclick = () => kayitPenceresi("yukle");
   $("mDevam").onclick = async () => { if (await yukle($("mDevam").dataset.yuva!)) { menuOyunda = true; menuKapat(); } };
   $("mKapat").onclick = menuKapat;
   $("mKaynak").onclick = () => menuGoster("kaynak");
+  $("mNasil").onclick = () => { sozlukCiz(); menuGoster("nasil"); };
+  $("mRehber").onclick = () => { menuOyunda = true; menuKapat(); rehberiBaslat(); };
+  const sozlukCiz = () => {
+    const ara = $<HTMLInputElement>("sozlukAra").value.trim().toLocaleLowerCase("tr-TR");
+    $("sozluk").innerHTML = SOZLUK.filter(([t, a]) => !ara || `${t} ${a}`.toLocaleLowerCase("tr-TR").includes(ara))
+      .map(([t, a]) => `<dt>${kacis(t)}</dt><dd>${kacis(a)}</dd>`).join("") || '<dd class="not">Eşleşen terim yok.</dd>';
+  };
+  $("sozlukAra").addEventListener("input", sozlukCiz);
   $("kaynakMetni").innerHTML = `<ul>
     <li><b>Sınırlar:</b> OpenHistoricalMap (CC0) + agent tahmini; tahmin sınırları Ayar → Katmanlar'dan kesikli gösterilebilir.</li>
     <li><b>Kıyı, nehir, göl:</b> Natural Earth (kamu malı).</li>
@@ -962,6 +973,7 @@ async function baslat() {
   $("kaydetBtn").onclick = () => kayitPenceresi("kaydet");
   $("yukleBtn").onclick = () => kayitPenceresi("yukle");
   window.addEventListener("keydown", (e) => {
+    if (rehberAcik()) return;
     if (!$("menuKatmani").hidden) { if (e.key === "Escape" && menuOyunda && $("onay").hidden) menuKapat(); return; }
     if (e.key === "Escape" && !$("teknoloji").hidden && $("onay").hidden) { $("teknoloji").hidden = true; return; }
     if (e.code !== "Space" || !$("verasetPencere").hidden || !$("kesinti").hidden || !$("rapor").hidden || !$("onay").hidden || !$("baris").hidden || !$("teknoloji").hidden || !$("barisTeklifi").hidden) return;
