@@ -1,5 +1,17 @@
 # CHANGELOG
 
+## 2026-10-29 — TASK-0009 / 6a: ilişkiler, ittifak, hediye, diplomasi haritası (Claude)
+
+- DEC-0038: Aşama 6 kartı onaylandı.
+- `packages/sim/src/diplomasi.ts`: yönlü ilişki puanı (tarih, geçmiş savaş, hediye, bozulan ittifak,
+  reddedilen çağrı, müttefiklik, savaş, güçlü komşu kaygısı, saldırganlık, ortak düşman); savunma ittifakı
+  (AI kabul/ret gerekçeli), müttefik çağrısı, hediye (bedel alıcının büyüklüğüne göre, birikme sınırı),
+  aylık sönüm. Emirler: `ittifakTeklif`, `ittifakBoz`, `hediye`; müttefike savaş ilanı engeli. Şema 8.
+- `veri/senaryo-1453/iliskiler.json`: 1453 başlangıç ilişkileri (tahmini, [TASLAK]); senaryo üreticisi gömer.
+- İstemci: devlet panelinde Diplomasi bölümü; üst çubukta Diplomasi harita modu ve lejant; savaş ilanı
+  onayında müttefik ve saldırganlık uyarısı.
+- `packages/sim/test/diplomasi.test.ts` (6 test; toplam 116), `docs/qa/ASAMA-6A-TEST.md`.
+
 ## 2026-10-29 — Aşama 4 ve 5 kapanışı; Aşama 6 taslağı (Claude)
 
 - DEC-0037: kullanıcı testi başarılı; Aşama 4 ve Aşama 5 kapandı (otomasyon Aşama 7'ye ertelendi).

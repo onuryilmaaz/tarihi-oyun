@@ -74,6 +74,13 @@ export function yukle(metin: string, beklenenSenaryo?: string): DunyaDurumu {
     // Şema 6 → 7 (TASK-0008/5c): teknoloji yok, araştırma yok
     for (const v of d.devletler) v.teknolojiler = [];
     d.arastirmalar = [];
+    d.sema = 7;
+  }
+  if (d.sema === 7) {
+    // Şema 7 → 8 (TASK-0009/6a): ilişki etkisi, saldırganlık ve ittifak yok (eski kayıtta tarihî tablo da yok)
+    d.iliskiEtkileri = [];
+    d.saldirganlik = d.devletler.map(() => 0);
+    d.ittifaklar = [];
     d.sema = SEMA_SURUMU;
   }
   if (d.sema !== SEMA_SURUMU) throw new KayitHatasi("Kayıt tutarsız: dünya şema sürümü uyuşmuyor.");

@@ -35,6 +35,8 @@ export interface HaritaGorunumu {
   istek(): void;
   devletRenkKutusu(d: number): string;
   oyuncuyuAyarla(devletIndeksi: number): void;
+  /** Diplomasi harita modu (MASTER_SPEC §7.3): devlet başına renk (#rrggbb); null = siyasi harita */
+  haritaRenkleri(renkler: string[] | null): void;
   /** Ordu işaretleri ve rotaları; planli: emri verilmiş ama yürüyüşe başlamamış rotalar (kesikli) */
   ordulariGoster(ordular: OrduOzeti[], yabanci: YabanciOrdu[], secili: number | null, planli: Map<number, [number, number][]>): void;
   /** [birim, kontrol eden, gün], [şehir, kontrol eden, gün] */
@@ -431,6 +433,15 @@ export function haritaGorunumuKur(h: Harita, wikidata: Record<string, WdDevlet>,
       bilgiGoster(); istek();
     },
     oyuncuyuAyarla(d) { oyuncu = d; bilgiGoster(); },
+    haritaRenkleri(renkler) {
+      const yeni = renkler?.map((r) => new THREE.Color(r)) ?? null;
+      if (!yeni && !k.ozelRenk) return;
+      if (yeni && k.ozelRenk && yeni.every((c, i) => c.equals(k.ozelRenk![i]))) return;
+      k.ozelRenk = yeni;
+      temaUygula(k, h, tema, sahne);
+      secimiCiz(k, h, tema, secim);
+      istek();
+    },
     olaylar,
     seciliOge: () => secim,
     secVeGit(s) {

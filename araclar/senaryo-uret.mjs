@@ -86,6 +86,8 @@ const senaryo = {
     return { ad, devlet: harita.devletler[s.d].id, asker, dugum, x: Math.round(s.x * 10000), y: Math.round(s.y * 10000) };
   }),
   ag,
+  // Başlangıç ilişkileri ve ittifakları (TASK-0009/6a): elle tutulan tahmini tablo
+  ...(({ iliskiler, ittifaklar }) => ({ iliskiler, ittifaklar }))(JSON.parse(fs.readFileSync(new URL("iliskiler.json", hedef), "utf8"))),
 };
 
 fs.writeFileSync(new URL("harita.json", hedef), haritaMetni);

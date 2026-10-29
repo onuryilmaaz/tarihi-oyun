@@ -18,8 +18,9 @@ Son güncelleme: **2026-10-29, Claude (Opus 5.5)** — Codex'in 4b/4c/5a işinde
 - **5c teknoloji ağacı tamamlandı ve kabul edildi** (DEC-0035, DEC-0036): `packages/sim/src/teknoloji.ts`,
   `arastir` emri, kayıt şeması **7**, 109 test, üst çubukta "Teknoloji" penceresi. Commit + push edildi.
 - 4c/5a testi başarılı; **Aşama 4 ve 5 kapandı** (DEC-0037). Şehir yönetimi otomasyonu Aşama 7'ye ertelendi.
-- **Aşama 6: TASK-0009 onaylandı (DEC-0038); 6a (ilişkiler, ittifak, hediye, diplomasi haritası) uygulanıyor.**
-  Başlangıç ilişki tablosu kullanıcı onayına sunulacak.
+- **Aşama 6: TASK-0009 onaylandı (DEC-0038). 6a tamamlandı** (`diplomasi.ts`, şema 8, 116 test, Diplomasi
+  harita modu). 6a ve başlangıç ilişki tablosu kabul edildi, commit edildi (DEC-0039).
+  **Sıradaki: 6b (AI ekonomi ve ordu hazırlığı) — uygulanıyor.**
 - Aşağıdaki 2–3. bölümler Codex'in notlarıdır; "5b/5c sorusuna yanıt yok" bilgisi artık geçersiz (DEC-0033).
 - Arayüz notu: Ordu işaretinin olduğu şehre tıklamak orduyu seçer; şehir paneline sol paneldeki
   "Şehir yatırımları → Şehri aç" ile de ulaşılır.

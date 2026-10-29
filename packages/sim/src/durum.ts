@@ -7,6 +7,7 @@ import { HAREKET, type AgVerisi, type RotaAdimi } from "./hareket";
 import { DENGE } from "./denge";
 import type { Insaat } from "./yatirim";
 import type { Arastirma, TeknolojiId } from "./teknoloji";
+import type { IliskiEtkisi, Ittifak } from "./diplomasi";
 
 export type TurSuresi = "hafta" | "ay" | "ceyrek" | "yil";
 export const TUR_SURESI_ADLARI: Record<TurSuresi, string> = {
@@ -159,6 +160,9 @@ export interface DunyaDurumu {
   askerToplamalar: AskerToplama[];
   insaatlar: Insaat[];
   arastirmalar: Arastirma[];
+  iliskiEtkileri: IliskiEtkisi[]; // TASK-0009/6a
+  saldirganlik: number[]; // devlet başına; ayda söner
+  ittifaklar: Ittifak[];
   kusatmalar: Kusatma[];
   isgalHazirliklari: IsgalHazirligi[];
   barislar: BarisKaydi[];
@@ -185,13 +189,16 @@ export interface SenaryoVerisi {
   birimler: { devlet: string | null }[];
   sehirler: { ad: string; devlet: string; birim: number; baskent: boolean; nufus: number; dugum?: number; x?: number; y?: number }[];
   ordular?: { ad: string; devlet: string; asker: number; dugum: number; x: number; y: number }[];
+  // Başlangıç ilişkileri ve ittifakları (6a; tarihî tahmin, [TASLAK])
+  iliskiler?: { a: string; b: string; deger: number; not?: string }[];
+  ittifaklar?: { a: string; b: string; not?: string }[];
   ag?: AgVerisi;
 }
 
 // 2: ordular ve şehir kontrolü (TASK-0006); 3: savaş, muharebe, moral, garnizon orduları (TASK-0007/4a)
 // 4: insan gücü ve asker toplama (TASK-0007/4b); şema 3 için eklemeli dönüşüm var.
 // 5: kuşatma, gerçek işgal ve barış (TASK-0007/4c); şema 3–4 için eklemeli dönüşüm var.
-export const SEMA_SURUMU = 7; // 6: şehir yatırımları (TASK-0008/5b); 7: teknoloji (5c)
+export const SEMA_SURUMU = 8; // 6: şehir yatırımları (TASK-0008/5b); 7: teknoloji (5c); 8: diplomasi (TASK-0009/6a)
 
 export function baslangicDurumu(s: SenaryoVerisi, secenek: { tohum: number; oyuncu?: string }): DunyaDurumu {
   const indeks = new Map(s.devletler.map((d, i) => [d.id, i]));
@@ -253,6 +260,15 @@ export function baslangicDurumu(s: SenaryoVerisi, secenek: { tohum: number; oyun
     askerToplamalar: [],
     insaatlar: [],
     arastirmalar: [],
+    iliskiEtkileri: (s.iliskiler ?? []).map((r) => {
+      const [a, b] = [bul(r.a), bul(r.b)].sort((x, y) => x - y);
+      return { a, b, neden: "tarih" as const, deger: r.deger };
+    }),
+    saldirganlik: s.devletler.map(() => 0),
+    ittifaklar: (s.ittifaklar ?? []).map((r) => {
+      const [a, b] = [bul(r.a), bul(r.b)].sort((x, y) => x - y);
+      return { a, b, baslangic: tarihtenGun(s.baslangic) };
+    }),
     kusatmalar: [],
     isgalHazirliklari: [],
     barislar: [],
@@ -357,6 +373,18 @@ export function degismezler(d: DunyaDurumu): string[] {
       || d.devletler[a.devlet].teknolojiler.includes(a.teknoloji) || arastiran.has(`${a.devlet}:${a.teknoloji}`)) h.push(`araştırma ${i} geçersiz`);
     arastiran.add(`${a.devlet}:${a.teknoloji}`);
   });
+  if (!Array.isArray(d.saldirganlik) || d.saldirganlik.length !== n || d.saldirganlik.some((x) => !tam(x) || x < 0)) h.push("saldırganlık geçersiz");
+  const etkiler = new Set<string>();
+  for (const e of d.iliskiEtkileri) {
+    const k = `${e.a}:${e.b}:${e.neden}`;
+    if (!d.devletler[e.a] || !d.devletler[e.b] || e.a >= e.b || !tam(e.deger) || e.deger === 0 || etkiler.has(k)) h.push("ilişki etkisi geçersiz");
+    etkiler.add(k);
+  }
+  const ittifak = new Set<string>();
+  for (const i of d.ittifaklar) {
+    if (!d.devletler[i.a] || !d.devletler[i.b] || i.a >= i.b || ittifak.has(`${i.a}:${i.b}`)) h.push("ittifak geçersiz");
+    ittifak.add(`${i.a}:${i.b}`);
+  }
   if (d.ayarlar.oyuncu < 0 || d.ayarlar.oyuncu >= n) h.push("oyuncu devleti geçersiz");
   return h;
 }

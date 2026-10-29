@@ -90,4 +90,24 @@ export const DENGE = {
   YARGI_INSAAT_SURE_YUZDE: 80,
   SAYIM_INSAN_GUCU_YUZDE: 50,
   BAYINDIRLIK_SUR_BEDEL_YUZDE: 75,
+  // 6a — ilişkiler ve diplomasi (DEC-0038); hepsi [TASLAK]
+  ILISKI_ITTIFAK: 30, // müttefikler birbirini daha iyi görür
+  ILISKI_SAVASTA: 50, // savaştaki taraflar
+  ILISKI_ORTAK_DUSMAN: 20, // ikisi de aynı devletle savaşta
+  ILISKI_TEHDIT_EN_COK: 25, // daha büyük komşudan duyulan kaygı (arazi sayısı farkıyla)
+  SALDIRGANLIK_ILAN: 10, // her savaş ilanında saldıranın saldırganlığı artar
+  SALDIRGANLIK_EN_COK: 50,
+  SALDIRGANLIK_SONUM: 1, // aylık
+  SALDIRGANLIK_KOMSU_CARPANI: 2, // komşular saldırganlığı iki kat algılar
+  ETKI_SAVAS_ILANI: -20, // iki devlet arasında; en çok ETKI_SAVAS_EN_AZ'a kadar birikir
+  ETKI_SAVAS_EN_AZ: -40,
+  ETKI_ITTIFAK_BOZMA: -30,
+  ETKI_CAGRI_REDDI: -25,
+  ETKI_SONUM: 1, // tarih dışındaki etkiler ayda 1 puan sıfıra yaklaşır
+  ITTIFAK_ESIGI: 25, // AI'nın ittifak kabulü için gereken ilişki
+  ITTIFAK_EN_COK: 3, // devlet başına
+  CAGRI_ESIGI: 0, // müttefik çağrısına uymak için gereken ilişki
+  HEDIYE_EN_COK: 30, // bir çiftte birikebilecek hediye etkisi
+  HEDIYE_PUAN_EN_AZ: 20, // bir ilişki puanının en düşük bedeli
+  HEDIYE_PUAN_GELIR_BINDE: 100, // puan bedeli: alıcının aylık arazi gelirinin %10'u
 };

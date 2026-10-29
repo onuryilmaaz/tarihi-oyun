@@ -15,6 +15,7 @@ import { prototipGelirleri } from "./ekonomi";
 import { isgalleriIlerlet, kusatmalariIlerlet } from "./kusatma";
 import { insaatlariIlerlet } from "./yatirim";
 import { arastirmalariIlerlet } from "./teknoloji";
+import { diplomasiSonumu } from "./diplomasi";
 
 export type Siklik = "gunluk" | "aylik" | "yillik";
 
@@ -74,6 +75,7 @@ export const SISTEMLER: Sistem[] = [
     },
   },
   { id: "ordu-maasi", siklik: "aylik", calistir: (d) => maaslariOde(d) },
+  { id: "diplomasi-sonumu", siklik: "aylik", calistir: diplomasiSonumu },
   {
     // Test: yılbaşında oyuncu için yıllık özet olayı
     id: "test-yillik-ozet",

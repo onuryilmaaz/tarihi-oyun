@@ -1,6 +1,6 @@
 // Ana iş parçacığı ↔ simülasyon Worker'ı mesaj protokolü.
 
-import type { Alan, TeknolojiId, YapiTuru, BarisKaydi, BarisTalebi, ButceOzeti, Dogrulama, Emir, KusatmaYontemi, MuharebeRaporu, OlayKaydi, RotaKirilimi, SenaryoVerisi, Tutum, TurSonucu, TurSuresi, YabanciOrdu } from "@tarihi/sim";
+import type { Alan, Degerlendirme, IliskiBileseni, TeknolojiId, YapiTuru, BarisKaydi, BarisTalebi, ButceOzeti, Dogrulama, Emir, KusatmaYontemi, MuharebeRaporu, OlayKaydi, RotaKirilimi, SenaryoVerisi, Tutum, TurSonucu, TurSuresi, YabanciOrdu } from "@tarihi/sim";
 
 export type Istek = { id: number } & (
   | { tip: "yeniOyun"; senaryo: SenaryoVerisi; tohum: number; oyuncu?: string }
@@ -62,6 +62,8 @@ export interface Ozet {
   butce: ButceOzeti;
   sehirYatirimlari: SehirYatirimi[]; // oyuncunun şehirleri (TASK-0008/5b)
   teknoloji: TeknolojiOzeti; // TASK-0008/5c
+  diplomasi: (DiplomasiKarti | null)[]; // devlet başına; oyuncunun kendisi null (TASK-0009/6a)
+  saldirganlik: number; // oyuncunun saldırganlığı
   toplamaKurali: { bedelYuzde: number; gun: number }; // teknolojiyle değişir (Asker Kayıt Defterleri)
   askerSehirleri: { indeks: number; ad: string; insanGucu: number; uygun: boolean }[];
   toplamalar: { sehir: string; asker: number; kalanGun: number; bekliyor: boolean; emir: boolean }[];
@@ -121,6 +123,20 @@ export interface YatirimSecenegi {
   gelirArtisi: number; // aylık; sur için 0
   uygun: boolean;
   neden: string | null;
+}
+
+export interface DiplomasiKarti {
+  bakisi: number; // onun size bakışı
+  bakisimiz: number; // sizin ona bakışınız
+  bilesenler: IliskiBileseni[]; // onun bakışının bileşenleri
+  muttefik: boolean;
+  muttefikleri: number[]; // bu devletin müttefikleri (savaş ilanında çağrılabilir)
+  savasta: boolean;
+  komsu: boolean;
+  ittifak: Degerlendirme; // teklif etseniz bugünkü tahmini cevap
+  hediyePuanBedeli: number;
+  hediyeKalan: number; // eklenebilecek en çok hediye puanı
+  bekleyen: "ittifakTeklif" | "ittifakBoz" | null;
 }
 
 export interface TeknolojiKarti {

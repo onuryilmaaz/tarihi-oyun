@@ -129,6 +129,14 @@
     .tek-kart button { margin-top: 6px; width: 100%; }
     #arastirmaListesi { list-style: none; margin: 0; padding: 0; display: grid; gap: 4px; font-size: 12px; }
     #arastirmaListesi .bos { color: var(--soluk); }
+    #diplomasiModu[aria-pressed="true"] { border-color: var(--vurgu); color: var(--vurgu); }
+    #diplomasiLejant { position: fixed; right: 16px; bottom: 16px; z-index: 5; padding: 10px 12px; font-size: 12px; display: grid; gap: 4px; }
+    #diplomasiLejant span { display: inline-block; width: 12px; height: 12px; border-radius: 3px; margin-right: 6px; vertical-align: -2px; }
+    .iliski-bilesen { list-style: none; margin: 4px 0 8px; padding: 0; font-size: 12px; display: grid; gap: 2px; }
+    .iliski-bilesen li { display: flex; justify-content: space-between; gap: 8px; }
+    .arti { color: #9fcf7a; } .eksi { color: var(--hata); }
+    .hediye-satir { display: flex; gap: 6px; align-items: center; margin-top: 6px; }
+    .hediye-satir input { width: 90px; }
     #onay { position: fixed; inset: 0; display: grid; place-items: center; background: rgba(15, 12, 9, .5); z-index: 12; }
     #onay .panel { position: static; width: min(440px, calc(100% - 32px)); padding: 22px; text-align: center; }
     #onay h3 { font-family: "Cinzel", serif; margin: 0 0 8px; font-size: 18px; }
@@ -228,6 +236,7 @@
       <button data-sure="yil">Yıl</button>
     </div>
     <button id="teknolojiAc">Teknoloji</button>
+    <button id="diplomasiModu" aria-pressed="false" title="Haritayı ilişkilere göre boya">Diplomasi</button>
     <button id="ilerleBtn" title="Boşluk tuşu">Turu ilerlet</button>
     <div id="kayitlar">
       <button id="kaydetBtn">Kaydet<small>manuel</small></button>
@@ -321,6 +330,14 @@
       <div id="raporIcerik"></div>
       <div class="satir" style="margin-top:14px"><button id="raporKapat">Kapat</button></div>
     </div>
+  </div>
+
+  <div id="diplomasiLejant" class="panel" hidden>
+    <b>Diplomasi haritası</b>
+    <div><span style="background:#c9a227"></span>Siz</div>
+    <div><span style="background:#4f8f4a"></span>Müttefik</div>
+    <div><span style="background:#a33a2f"></span>Savaştasınız</div>
+    <div><span style="background:linear-gradient(90deg,#c98a7e,#d8cdb5,#9cc08f)"></span>Tarafsız: size bakışı (kötü → iyi)</div>
   </div>
 
   <div id="teknoloji" hidden>

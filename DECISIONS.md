@@ -525,3 +525,14 @@ Kaynak belge: `MASTER_SPEC.md` (v1.3). Orijinal keşif çıktısı:
   4. AI'dan oyuncuya gelen savaş ilanı ve barış teklifi turu durdurur (DEC-0006); ittifak teklifi yalnızca bildirim.
 - **Onay kaydı:** Kullanıcı: "1- evet 2- önerin güzel yap onu 3- a 4- evet 5- evet" (2026-10-29)
 - **Durum:** GEÇERLİ
+
+## DEC-0039 — 6a kabulü ve başlangıç ilişki tablosu
+
+- **Tarih:** 2026-10-29
+- **Seçilen karar:**
+  1. 6a (ilişkiler, savunma ittifakı, hediye, diplomasi haritası) kullanıcı tarafından test edildi ve kabul edildi.
+  2. `veri/senaryo-1453/iliskiler.json` başlangıç tablosu (40 ilişki, 4 ittifak) onaylandı; değerler [TASLAK],
+     denge testlerinde düzeltilebilir.
+  3. 6a commit + push onaylandı; 6b (AI ekonomi ve ordu hazırlığı) başlar.
+- **Onay kaydı:** Kullanıcı: "1- başarılı 2- uygundur 3- evet 4- evet" (2026-10-29)
+- **Durum:** GEÇERLİ

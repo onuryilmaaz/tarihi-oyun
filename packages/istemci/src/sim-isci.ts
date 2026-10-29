@@ -7,6 +7,7 @@ import {
   aylikMaas, devletMaasi, emirDogrula, ikmalDurumu, kullanilabilirHazine, kullanilabilirInsanGucu, DENGE,
   barisBedeli, barisDogrula, kusatmaGucu, orduKusatmasi, savasSkoru,
   butceOzeti, insaatMaliyeti, insaatSuresi, sehirYapiGeliri, yapiSeviyesi, yapiEnYuksek, pazarGeliriSeviyeBasina, YAPI_ADLARI, YAPI_TURLERI,
+  diplomasiOnHesap, etkiDegeri, hediyePuanBedeli, iliski, iliskiBilesenleri, ittifakDegerlendir, komsuMu, muttefik, muttefikleri, savasta,
   ALAN_ADLARI, TEKNOLOJILER, teknolojiBul, biliyor, toplamaBedelYuzde, toplamaSuresi,
 } from "@tarihi/sim";
 import type { Istek, Ozet, Yanit } from "./sim-protokol";
@@ -65,6 +66,21 @@ function ozet(durum: DunyaDurumu): Ozet {
           uygun: dog.gecerli, neden: dog.gecerli ? null : dog.neden } as const;
       }),
     },
+    diplomasi: (() => {
+      const on = diplomasiOnHesap(durum, baglam.ag), p = durum.ayarlar.oyuncu;
+      return durum.devletler.map((_, i) => {
+        if (i === p) return null;
+        const bekleyen = durum.emirKuyrugu.find((e) => (e.tur === "ittifakTeklif" || e.tur === "ittifakBoz") && e.hedef === i);
+        return {
+          bakisi: iliski(durum, on, i, p), bakisimiz: iliski(durum, on, p, i), bilesenler: iliskiBilesenleri(durum, on, i, p),
+          muttefik: muttefik(durum, p, i), muttefikleri: muttefikleri(durum, i), savasta: savasta(durum, p, i), komsu: komsuMu(on, p, i),
+          ittifak: ittifakDegerlendir(durum, on, p, i), hediyePuanBedeli: hediyePuanBedeli(durum, i, on),
+          hediyeKalan: Math.max(0, DENGE.HEDIYE_EN_COK - etkiDegeri(durum, p, i, "hediye")),
+          bekleyen: bekleyen && (bekleyen.tur === "ittifakTeklif" || bekleyen.tur === "ittifakBoz") ? bekleyen.tur : null,
+        };
+      });
+    })(),
+    saldirganlik: durum.saldirganlik[durum.ayarlar.oyuncu],
     toplamaKurali: { bedelYuzde: toplamaBedelYuzde(durum, durum.ayarlar.oyuncu), gun: toplamaSuresi(durum, durum.ayarlar.oyuncu) },
     askerSehirleri: durum.sehirler.flatMap((s, indeks) => s.devlet !== durum.ayarlar.oyuncu ? [] : [{
       indeks, ad: s.ad, insanGucu: kullanilabilirInsanGucu(durum, indeks),

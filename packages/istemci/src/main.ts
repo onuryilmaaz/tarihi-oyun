@@ -106,6 +106,16 @@ async function baslat() {
     birimDugumleri.get(n.b)!.push(i);
   });
 
+  // Diplomasi harita modu (MASTER_SPEC §7.3): siz, müttefik, savaş, tarafsızlar bakışa göre
+  let diplomasiAcik = false;
+  const diplomasiHaritasi = () => {
+    if (!diplomasiAcik) return gorunum.haritaRenkleri(null);
+    const karis = (a: number[], b: number[], t: number) => a.map((x, i) => Math.round(x + (b[i] - x) * t));
+    const hex = (c: number[]) => `#${c.map((x) => x.toString(16).padStart(2, "0")).join("")}`;
+    const kotu = [0xc9, 0x8a, 0x7e], notr = [0xd8, 0xcd, 0xb5], iyi = [0x9c, 0xc0, 0x8f];
+    gorunum.haritaRenkleri(ozet.diplomasi.map((k) => !k ? "#c9a227" : k.savasta ? "#a33a2f" : k.muttefik ? "#4f8f4a"
+      : hex(k.bakisi < 0 ? karis(notr, kotu, Math.min(1, -k.bakisi / 60)) : karis(notr, iyi, Math.min(1, k.bakisi / 60)))));
+  };
   const arayuzuGuncelle = () => {
     if (seciliOrdu !== null && !ozet.ordular.some((o) => o.id === seciliOrdu)) seciliOrdu = null;
     $("oyuncu").innerHTML = `${gorunum.devletRenkKutusu(ozet.oyuncu.indeks)}<span>${kacis(ozet.oyuncu.ad)}</span>`;
@@ -156,6 +166,7 @@ async function baslat() {
     $("arastirmaListesi").innerHTML = suren.map((t) => `<li>${kacis(t.ad)} · ${t.durum === "emir" ? "emir bekliyor" : `${t.kalanGun} gün kaldı`}</li>`).join("")
       || '<li class="bos">Süren araştırma yok. Üst çubuktaki “Teknoloji” düğmesinden başlatın.</li>';
     if (!$("teknoloji").hidden) teknolojiCiz();
+    diplomasiHaritasi();
     $("raporListesi").innerHTML = [...ozet.raporlar].reverse().map((r) => {
       const biz = r.kazanan === ozet.oyuncu.indeks;
       const karsi = r.taraflar.find((t) => t.devlet !== ozet.oyuncu.indeks)!;
@@ -234,6 +245,12 @@ async function baslat() {
     $("rapor").hidden = false;
   };
   $("raporKapat").onclick = () => { $("rapor").hidden = true; };
+  $("diplomasiModu").onclick = () => {
+    diplomasiAcik = !diplomasiAcik;
+    $("diplomasiModu").setAttribute("aria-pressed", String(diplomasiAcik));
+    $("diplomasiLejant").hidden = !diplomasiAcik;
+    diplomasiHaritasi();
+  };
   $("teknolojiAc").onclick = () => { teknolojiCiz(); $("teknoloji").hidden = false; };
   $("teknolojiKapat").onclick = () => { $("teknoloji").hidden = true; };
   $("teknolojiIcerik").addEventListener("click", async (e) => {
@@ -281,10 +298,31 @@ async function baslat() {
       return p ? `<p class="not">Askerî kontrol kuruluyor: ${p.gun}/${DENGE.ISGAL_GUN} gün. Şehir ayrı kuşatılır.</p>` : "";
     }
     if (s.tur !== "devlet" || s.id === ozet.oyuncu.indeks) return "";
+    const dip = diplomasiBolumu(s.id);
     const savas = ozet.savaslar.find((x) => x.karsi === s.id);
-    if (savas) return `<p class="savas-durumu">⚔ Savaştasınız (${kacis(savas.baslangic)}) · Skor ${savas.skor}</p><button data-eylem="baris" data-savas="${savas.id}">Barış teklif et</button>`;
-    if (bekleyenSavas.has(s.id)) return '<p class="savas-durumu">Savaş ilan edildi; bir sonraki turda başlar.</p>';
-    return `<div class="satir eylem"><button class="tehlike" data-eylem="savas" data-devlet="${s.id}">Savaş ilan et</button></div>`;
+    if (savas) return `<p class="savas-durumu">⚔ Savaştasınız (${kacis(savas.baslangic)}) · Skor ${savas.skor}</p><button data-eylem="baris" data-savas="${savas.id}">Barış teklif et</button>${dip}`;
+    if (bekleyenSavas.has(s.id)) return `<p class="savas-durumu">Savaş ilan edildi; bir sonraki turda başlar.</p>${dip}`;
+    const k = ozet.diplomasi[s.id];
+    return `${dip}<div class="satir eylem"><button class="tehlike" data-eylem="savas" data-devlet="${s.id}"${k?.muttefik ? ' disabled title="Müttefikinize savaş ilan edemezsiniz; önce ittifaktan çıkın."' : ""}>Savaş ilan et</button></div>`;
+  };
+  const isaretli = (n: number) => `<span class="${n > 0 ? "arti" : n < 0 ? "eksi" : ""}">${n > 0 ? "+" : ""}${n}</span>`;
+  const iliskiAdi = (p: number) => (p >= 50 ? "Dostane" : p >= 15 ? "İyi" : p > -15 ? "Tarafsız" : p > -50 ? "Soğuk" : "Düşmanca");
+  /** Devlet panelindeki diplomasi bölümü (TASK-0009/6a) */
+  const diplomasiBolumu = (devlet: number) => {
+    const k = ozet.diplomasi[devlet];
+    if (!k) return "";
+    const durum = k.muttefik ? "Savunma ittifakınız var." : k.savasta ? "" : k.komsu ? "Sınır komşunuz." : "";
+    const ittifak = k.savasta ? "" : k.muttefik
+      ? `<button data-eylem="ittifakBoz" data-devlet="${devlet}"${k.bekleyen ? " disabled" : ""}>${k.bekleyen === "ittifakBoz" ? "Ayrılma emri bekliyor" : "İttifaktan çık"}</button>`
+      : `<button data-eylem="ittifak" data-devlet="${devlet}"${k.bekleyen ? " disabled" : ""}>${k.bekleyen === "ittifakTeklif" ? "Teklif bekliyor" : "Savunma ittifakı teklif et"}</button>
+        <p class="not">Tahmini cevap: <b class="${k.ittifak.kabul ? "zafer" : "yenilgi"}">${k.ittifak.kabul ? "kabul" : "ret"}</b> — ${kacis(k.ittifak.nedenler.join(" "))}</p>`;
+    const hediye = k.savasta ? "" : `<div class="hediye-satir"><input id="hediyeMiktar" type="number" min="1" step="1" value="${k.hediyePuanBedeli * 5}" aria-label="Hediye miktarı" />
+        <button data-eylem="hediye" data-devlet="${devlet}"${k.hediyeKalan ? "" : " disabled"}>Hediye gönder</button></div>
+      <p class="not">1 ilişki puanı ≈ ${k.hediyePuanBedeli.toLocaleString("tr-TR")} · ${k.hediyeKalan ? `en çok ${k.hediyeKalan} puan daha eklenebilir` : "hediye etkisi dolu"}; zamanla söner.</p>`;
+    return `<h4>Diplomasi</h4><dl><dt>Size bakışı</dt><dd>${isaretli(k.bakisi)} · ${iliskiAdi(k.bakisi)}</dd>
+      <dt>Sizin bakışınız</dt><dd>${isaretli(k.bakisimiz)} · ${iliskiAdi(k.bakisimiz)}</dd></dl>
+      ${k.bilesenler.length ? `<ul class="iliski-bilesen">${k.bilesenler.map((b) => `<li><span>${kacis(b.ad)}</span>${isaretli(b.deger)}</li>`).join("")}</ul>` : '<p class="not">Aranızda özel bir etken yok.</p>'}
+      ${durum ? `<p class="not">${durum}</p>` : ""}${ittifak}${hediye}`;
   };
   $("bilgi").addEventListener("click", async (e) => {
     const sehir = (e.target as HTMLElement).closest<HTMLElement>("[data-sehir-hedef]");
@@ -301,10 +339,30 @@ async function baslat() {
     }
     const baris = (e.target as HTMLElement).closest<HTMLElement>('[data-eylem="baris"]');
     if (baris) { savasUI.barisAc(Number(baris.dataset.savas)); return; }
+    const dip = (e.target as HTMLElement).closest<HTMLButtonElement>('[data-eylem="ittifak"], [data-eylem="ittifakBoz"], [data-eylem="hediye"]');
+    if (dip) {
+      const hedef = Number(dip.dataset.devlet), ad = h.paket.devletler[hedef].ad;
+      if (dip.dataset.eylem === "ittifak") {
+        await emirGonder({ tur: "ittifakTeklif", hedef }, `${ad}'na ittifak teklifi gönderildi; cevap bir sonraki turun başında gelir.`);
+      } else if (dip.dataset.eylem === "ittifakBoz") {
+        if (!await onayIste("İttifaktan çık", `${ad} ile savunma ittifakından çıkılsın mı? İlişkiniz ${DENGE.ETKI_ITTIFAK_BOZMA} puan bozulur (zamanla söner).`, "İttifaktan çık", true)) return;
+        await emirGonder({ tur: "ittifakBoz", hedef }, `${ad} ile ittifaktan çıkma emri verildi.`);
+      } else {
+        const miktar = $<HTMLInputElement>("hediyeMiktar").valueAsNumber;
+        const k = ozet.diplomasi[hedef]!;
+        const puan = Number.isSafeInteger(miktar) ? Math.min(k.hediyeKalan, Math.floor(miktar / k.hediyePuanBedeli)) : 0;
+        if (!await onayIste("Hediye", `${ad}'na ${miktar.toLocaleString("tr-TR")} hediye gönderilsin mi? Para bir sonraki tur başında hazinenizden çıkar; ilişki yaklaşık +${puan} olur.`, "Gönder")) return;
+        await emirGonder({ tur: "hediye", hedef, miktar }, `${ad}'na hediye emri verildi; bedel ayrıldı.`);
+      }
+      return;
+    }
     const b = (e.target as HTMLElement).closest<HTMLElement>('[data-eylem="savas"]');
     if (!b) return;
     const hedef = Number(b.dataset.devlet);
-    const onay = await onayIste("Savaş ilanı", `${h.paket.devletler[hedef].ad}'na savaş ilan edilsin mi? Savaş bir sonraki turun başında başlar; ordularınız o devletin topraklarına girebilir. Diplomatik sonuçlar ileride (Aşama 6) eklenecek.`, "Savaş ilan et", true);
+    const mutt = ozet.diplomasi[hedef]?.muttefikleri.filter((m) => m !== ozet.oyuncu.indeks) ?? [];
+    const onay = await onayIste("Savaş ilanı", `${h.paket.devletler[hedef].ad}'na savaş ilan edilsin mi? Savaş bir sonraki turun başında başlar; ordularınız o devletin topraklarına girebilir.`
+      + (mutt.length ? ` Müttefikleri (${mutt.map((m) => h.paket.devletler[m].ad).join(", ")}) savaşa katılabilir.` : "")
+      + ` Saldırganlığınız ${DENGE.SALDIRGANLIK_ILAN} artar; bütün devletler, özellikle komşularınız size daha soğuk bakar.`, "Savaş ilan et", true);
     if (!onay) return;
     const y = await sim.gonder({ tip: "emir", emir: { tur: "savasIlan", devlet: ozet.oyuncu.indeks, hedef } });
     ozet = y.ozet;
