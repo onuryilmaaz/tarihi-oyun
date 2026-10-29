@@ -585,7 +585,9 @@
       </section>
       <section data-menu="kayit" hidden>
         <h2 class="menu-h" id="kayitBaslik">Kayıtlar</h2>
-        <div id="kayitYeni" class="satir"><input id="kayitAdi" type="text" maxlength="40" aria-label="Kayıt adı" /><button id="kayitYeniBtn" class="birincil">Yeni kayıt olarak kaydet</button></div>
+        <div id="kayitYeni" class="satir"><input id="kayitAdi" type="text" maxlength="40" aria-label="Kayıt adı" /><button id="kayitYeniBtn" class="birincil">Yeni kayıt olarak kaydet</button><button id="kayitDosyaIndir" title="Bu oyunu bilgisayarınıza dosya olarak indirin">⭳ Dosyaya indir</button></div>
+        <div id="kayitDosya" class="satir"><button id="kayitDosyaAc">⭱ Dosyadan yükle…</button><input id="kayitDosyaGirdi" type="file" accept=".json,application/json" hidden />
+          <span class="not">Dosyaya indirdiğiniz kayıtlar tarayıcı verisi silinse de kaybolmaz.</span></div>
         <ul id="kayitListesi"></ul>
         <div class="menu-alt"><button data-menu-git="geri">‹ Geri</button></div>
       </section>

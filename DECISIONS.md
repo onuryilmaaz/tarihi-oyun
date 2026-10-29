@@ -770,3 +770,14 @@ Kaynak belge: `MASTER_SPEC.md` (v1.3). Orijinal keşif çıktısı:
   3. Test dağıtımı: şimdilik **yalnızca yerel paket (zip)**; dış barındırma/servis kararı yayına yaklaşınca ayrıca verilecek.
 - **Onay kaydı:** Kullanıcı: "1- evet 2- evet 3- a" (2026-10-29)
 - **Durum:** GEÇERLİ
+
+## DEC-0062 — 10a kabulü, otomatik kayıt sıklığı, 10b'ye geçiş
+
+- **Tarih:** 2026-10-29
+- **Seçilen karar:**
+  1. 10a (içerik özeti, dönüşümlü otomatik kayıt, dosyaya indir/dosyadan yükle) kabul edildi; commit + push onaylandı.
+  2. Kullanıcı her tur otomatik kaydı sorguladı: Ayar'a **otomatik kayıt sıklığı** seçeneği eklenir (her tur / oyun takviminde ayda bir /
+     yılda bir / kapalı); varsayılan kullanıcıya sorulur.
+  3. 10b (hata yakalama, kurtarma ekranı, yerel hata raporu) başlar.
+- **Onay kaydı:** Kullanıcı: "1- başarılı, her turu kendi kendine kayıt mı edecek saçma değil mi 2- evet 3- evet" (2026-10-29)
+- **Durum:** GEÇERLİ

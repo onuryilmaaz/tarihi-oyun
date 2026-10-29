@@ -742,7 +742,7 @@ async function baslat() {
       for (const o of y.sonuc?.yeniOlaylar ?? []) {
         if (o.tur === "emir-reddedildi") bildir(`Emir reddedildi: ${o.metin}`, "uyari");
       }
-      await kaydet("otomatik", "Otomatik kayıt", true);
+      await otomatikKaydet();
     } catch (e) {
       bildir(`Tur hesaplanamadı: ${(e as Error).message}`, "hata");
     } finally {
@@ -838,6 +838,28 @@ async function baslat() {
       bildir(`Kayıt yazılamadı: ${(e as Error).message}`, "hata");
     }
   };
+  // Dönüşümlü otomatik kayıt (10a): son tur, 1 tur önce, 2 tur önce
+  const OTOMATIK = ["otomatik", "otomatik-2", "otomatik-3"];
+  const otomatikKaydet = async () => {
+    try {
+      for (let i = OTOMATIK.length - 1; i > 0; i--) {
+        const k = await kayitOku(OTOMATIK[i - 1]);
+        if (k) await kayitYaz(OTOMATIK[i], k);
+      }
+    } catch { /* depolama kapalıysa yalnızca son kayıt denenir */ }
+    await kaydet("otomatik", "Otomatik kayıt", true);
+  };
+  const yuvaAdi = (yuva: string, k: { ad?: string }) => yuva === "otomatik" ? "Otomatik kayıt (son tur)"
+    : yuva === "otomatik-2" ? "Otomatik kayıt (1 tur önce)" : yuva === "otomatik-3" ? "Otomatik kayıt (2 tur önce)" : k.ad ?? "Kayıt";
+  const dosyaAdi = (k: { devlet: string; oyunTarihi: string }) =>
+    `tarihi-1453-${k.devlet}-${k.oyunTarihi}`.toLocaleLowerCase("tr-TR").replace(/[^a-z0-9çğıöşü]+/g, "-").replace(/-+$/, "") + ".json";
+  const dosyayaIndir = (metin: string, ad: string) => {
+    const a = document.createElement("a");
+    a.href = URL.createObjectURL(new Blob([metin], { type: "application/json" }));
+    a.download = ad;
+    a.click();
+    setTimeout(() => URL.revokeObjectURL(a.href), 1000);
+  };
   const yukle = async (yuva: Yuva) => {
     if (mesgul) return false;
     try {
@@ -850,7 +872,7 @@ async function baslat() {
       bildir(`Yüklendi: ${k.ad ?? k.devlet} · ${ozet.tarih}`);
       return true;
     } catch (e) {
-      bildir(`Kayıt yüklenemedi: ${(e as Error).message}`, "hata");
+      bildir(`Kayıt yüklenemedi: ${(e as Error).message}${yuva.startsWith("otomatik") ? " Daha eski bir otomatik kaydı deneyin." : ""}`, "hata");
       return false;
     }
   };
@@ -883,16 +905,41 @@ async function baslat() {
   const kayitlariCiz = async () => {
     $("kayitBaslik").textContent = kayitKipi === "kaydet" ? "Oyunu kaydet" : "Kayıt yükle";
     $("kayitYeni").hidden = kayitKipi !== "kaydet";
+    $("kayitDosya").hidden = kayitKipi !== "yukle";
     if (kayitKipi === "kaydet") $<HTMLInputElement>("kayitAdi").value = `${ozet.oyuncu.ad} · ${ozet.tarih}`;
     let liste: Awaited<ReturnType<typeof kayitlariListele>> = [];
     try { liste = await kayitlariListele(); } catch { bildir("Tarayıcı deposuna erişilemiyor.", "hata"); }
-    $("kayitListesi").innerHTML = liste.map(({ yuva, kayit }) => `<li><span><b>${kacis(kayit.ad ?? (yuva === "otomatik" ? "Otomatik kayıt" : "Kayıt"))}</b>
-        <small>${kacis(kayit.devlet)} · ${kacis(kayit.oyunTarihi)} · ${zamanMetni(kayit.zaman)}${yuva === "otomatik" ? " · her tur sonunda" : ""}</small></span>
-      <span class="eylemler">${kayitKipi === "kaydet" ? (yuva === "otomatik" ? "" : `<button data-kayit-yaz="${kacis(yuva)}">Üzerine yaz</button>`) : `<button class="birincil" data-kayit-yukle="${kacis(yuva)}">Yükle</button>`}
-        ${yuva === "otomatik" ? "" : `<button class="tehlike" data-kayit-sil="${kacis(yuva)}" title="Sil">✕</button>`}</span></li>`).join("")
+    const oto = (y: string) => y.startsWith("otomatik");
+    $("kayitListesi").innerHTML = liste.map(({ yuva, kayit }) => `<li><span><b>${kacis(yuvaAdi(yuva, kayit))}</b>
+        <small>${kacis(kayit.devlet)} · ${kacis(kayit.oyunTarihi)} · ${zamanMetni(kayit.zaman)}</small></span>
+      <span class="eylemler">${kayitKipi === "kaydet" ? (oto(yuva) ? "" : `<button data-kayit-yaz="${kacis(yuva)}">Üzerine yaz</button>`) : `<button class="birincil" data-kayit-yukle="${kacis(yuva)}">Yükle</button>`}
+        <button data-kayit-indir="${kacis(yuva)}" title="Dosyaya indir">⭳</button>
+        ${oto(yuva) ? "" : `<button class="tehlike" data-kayit-sil="${kacis(yuva)}" title="Sil">✕</button>`}</span></li>`).join("")
       || '<li class="bos">Henüz kayıt yok.</li>';
   };
   const kayitPenceresi = async (kip: "kaydet" | "yukle") => { kayitKipi = kip; await kayitlariCiz(); menuGoster("kayit"); };
+  $("kayitDosyaIndir").onclick = async () => {
+    const y = await sim.gonder({ tip: "kaydet" });
+    dosyayaIndir(y.metin!, dosyaAdi({ devlet: y.ozet.oyuncu.ad, oyunTarihi: y.ozet.tarih }));
+    bildir("Oyun dosya olarak indirildi.");
+  };
+  $("kayitDosyaAc").onclick = () => $<HTMLInputElement>("kayitDosyaGirdi").click();
+  $("kayitDosyaGirdi").addEventListener("change", async (e) => {
+    const girdi = e.target as HTMLInputElement, dosya = girdi.files?.[0];
+    girdi.value = "";
+    if (!dosya) return;
+    if (dosya.size > 50_000_000) return bildir("Dosya çok büyük; bir oyun kaydı değil.", "hata");
+    const metin = await dosya.text();
+    if (menuOyunda && !await onayIste("Dosyadan yükle", "Kaydedilmemiş ilerleme kaybolur. Bu dosya yüklensin mi?", "Yükle")) return;
+    try {
+      ozet = (await sim.gonder({ tip: "yukle", metin, senaryo: senaryoKimligi })).ozet; // doğrulama simülasyonda
+    } catch (err) { return bildir(`Dosya yüklenemedi: ${(err as Error).message}`, "hata"); }
+    sifirla(); arayuzuGuncelle();
+    gorunum.secVeGit({ tur: "devlet", id: ozet.oyuncu.indeks });
+    await kayitYaz(`kayit:${Date.now()}`, { metin, oyunTarihi: ozet.tarih, devlet: ozet.oyuncu.ad, zaman: Date.now(), ad: dosya.name.replace(/\.json$/i, "") });
+    menuOyunda = true; menuKapat();
+    bildir(`Dosyadan yüklendi: ${ozet.oyuncu.ad} · ${ozet.tarih}`);
+  });
   $("kayitYeniBtn").onclick = async () => {
     const ad = $<HTMLInputElement>("kayitAdi").value.trim() || `${ozet.oyuncu.ad} · ${ozet.tarih}`;
     await kaydet(`kayit:${Date.now()}`, ad);
@@ -900,6 +947,12 @@ async function baslat() {
   };
   $("kayitListesi").addEventListener("click", async (e) => {
     const t = e.target as HTMLElement;
+    const indirB = t.closest<HTMLElement>("[data-kayit-indir]");
+    if (indirB) {
+      const k = await kayitOku(indirB.dataset.kayitIndir!);
+      if (k) { dosyayaIndir(k.metin, dosyaAdi(k)); bildir("Kayıt dosyası indirildi."); }
+      return;
+    }
     const yukleB = t.closest<HTMLElement>("[data-kayit-yukle]"), yazB = t.closest<HTMLElement>("[data-kayit-yaz]"), silB = t.closest<HTMLElement>("[data-kayit-sil]");
     if (yukleB) {
       if (menuOyunda && !await onayIste("Kayıt yükle", "Kaydedilmemiş ilerleme kaybolur. Bu kayıt yüklensin mi?", "Yükle")) return;

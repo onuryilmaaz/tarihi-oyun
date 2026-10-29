@@ -1,5 +1,13 @@
 # CHANGELOG
 
+## 2026-10-29 — TASK-0013 / 10a: kayıt güvenilirliği (Claude)
+
+- DEC-0061: Aşama 10 kartı (sürüm 0.9.0; dağıtım yalnızca yerel zip).
+- `kayit.ts`: kayıt paketine içerik özeti; güncel şemada değiştirilmiş ya da bozulmuş kayıt anlaşılır hatayla reddedilir (eski kayıtlar özetsiz yüklenir).
+- İstemci: dönüşümlü otomatik kayıt (son 3 tur), her kaydı **⭳ dosyaya indirme**, **⭱ dosyadan yükleme** (simülasyonda doğrulanır),
+  bozuk otomatik kayıtta "daha eski otomatik kaydı deneyin" önerisi.
+- Testler: içerik özeti ve yarım dosya; şema 3'ten 18'e tam dönüşüm zinciri (toplam 189). `docs/qa/ASAMA-10A-TEST.md`.
+
 ## 2026-10-29 — Aşama 9 kapanışı; Aşama 10 taslağı (Claude)
 
 - DEC-0060: 9e kabul (sekmelerde ← → artık haritayı kaydırmıyor); **Aşama 9 kapandı, oynanabilir sürüm kabul edildi.**

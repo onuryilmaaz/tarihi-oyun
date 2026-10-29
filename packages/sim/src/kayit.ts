@@ -13,6 +13,7 @@ export interface KayitPaketi {
   sema: number;
   senaryo: string;
   durum: DunyaDurumu;
+  ozet?: string; // içerik özeti (10a): dosya bozulmuş ya da değiştirilmişse yüklemede yakalanır; eski kayıtlarda yok
 }
 
 export class KayitHatasi extends Error {
@@ -23,7 +24,7 @@ export class KayitHatasi extends Error {
 }
 
 export function kaydet(d: DunyaDurumu): string {
-  const paket: KayitPaketi = { tur: "tarihi-oyun-kayit", sema: SEMA_SURUMU, senaryo: d.senaryo, durum: d };
+  const paket: KayitPaketi = { tur: "tarihi-oyun-kayit", sema: SEMA_SURUMU, senaryo: d.senaryo, durum: d, ozet: durumOzeti(d) };
   return JSON.stringify(paket);
 }
 
@@ -48,6 +49,10 @@ export function yukle(metin: string, beklenenSenaryo?: string): DunyaDurumu {
     throw new KayitHatasi(`Kayıt farklı bir senaryoya ait: ${paket.senaryo} (beklenen ${beklenenSenaryo}).`);
   }
   const d = paket.durum;
+  if (!d || typeof d !== "object") throw new KayitHatasi("Kayıt eksik: dünya durumu yok.");
+  // Özet dönüşümlerden önce, kaydedildiği hâliyle hesaplanır; uyuşmazlık doğrulamalardan sonra bildirilir (10a)
+  // Özet yalnızca güncel şemada yazılır; eski şemalı kayıtlarda yoktur
+  const ozetUyusmuyor = paket.sema === SEMA_SURUMU && typeof paket.ozet === "string" && durumOzeti(d) !== paket.ozet;
   if (!d || !Array.isArray(d.devletler) || !Array.isArray(d.birimler) || !Array.isArray(d.sehirler)) {
     throw new KayitHatasi("Kayıt eksik: dünya durumu bulunamadı.");
   }
@@ -155,6 +160,7 @@ export function yukle(metin: string, beklenenSenaryo?: string): DunyaDurumu {
   if (d.sema !== SEMA_SURUMU) throw new KayitHatasi("Kayıt tutarsız: dünya şema sürümü uyuşmuyor.");
   const hatalar = degismezler(d);
   if (hatalar.length) throw new KayitHatasi(`Kayıt tutarsız: ${hatalar.slice(0, 3).join("; ")}`);
+  if (ozetUyusmuyor) throw new KayitHatasi("Kayıt bozulmuş ya da elle değiştirilmiş (içerik özeti tutmuyor). Önceki bir otomatik kaydı deneyin.");
   return d;
 }
 
