@@ -18,6 +18,7 @@ import { arastirmalariIlerlet } from "./teknoloji";
 import { diplomasiSonumu } from "./diplomasi";
 import { yzKararlari, yzYillikOzet } from "./yz";
 import { seferKararlari, teklifSureleri } from "./yz-savas";
+import { hukumdarlariIlerlet } from "./hanedan";
 
 export type Siklik = "gunluk" | "aylik" | "yillik";
 
@@ -84,6 +85,7 @@ export const SISTEMLER: Sistem[] = [
   { id: "ordu-maasi", siklik: "aylik", calistir: (d) => maaslariOde(d) },
   { id: "diplomasi-sonumu", siklik: "aylik", calistir: diplomasiSonumu },
   { id: "yz-yillik-ozet", siklik: "yillik", calistir: yzYillikOzet },
+  { id: "hukumdarlar", siklik: "aylik", calistir: hukumdarlariIlerlet }, // 7a: ölüm, veraset, meşruiyet
   {
     // Test: yılbaşında oyuncu için yıllık özet olayı
     id: "test-yillik-ozet",

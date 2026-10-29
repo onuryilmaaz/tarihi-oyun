@@ -8,6 +8,7 @@ import { DENGE } from "./denge";
 import type { Insaat } from "./yatirim";
 import type { Arastirma, TeknolojiId } from "./teknoloji";
 import type { IliskiEtkisi, Ittifak } from "./diplomasi";
+import { baslangicHanedanlari, type AdHavuzu, type Hukumdar, type TarihiHalef, type Veraset, type VerasetSecimi } from "./hanedan";
 
 export type TurSuresi = "hafta" | "ay" | "ceyrek" | "yil";
 export const TUR_SURESI_ADLARI: Record<TurSuresi, string> = {
@@ -20,6 +21,11 @@ export interface DevletDurumu {
   hazine: number; // tam sayı; eksi olabilir (DEC-0002), borç değildir
   baskent: number | null; // şehir indeksi
   teknolojiler: TeknolojiId[]; // bitmiş araştırmalar (TASK-0008/5c)
+  // TASK-0010/7a: hükümdar (null = veraset bekleniyor), gelenek, kurgusal ad havuzu, sıradaki tarihî halef
+  hukumdar: Hukumdar | null;
+  veraset: Veraset;
+  adHavuzu: AdHavuzu;
+  tarihiHalef: TarihiHalef | null;
 }
 
 // MASTER_SPEC §9.1: yasal sahip ile askerî kontrol ayrı tutulur
@@ -170,6 +176,7 @@ export interface DunyaDurumu {
   barisTeklifleri: BarisTeklifi[]; // 6c
   sonrakiTeklifId: number;
   ateskesler: Ateskes[];
+  verasetSecimi: VerasetSecimi | null; // oyuncunun halef seçimi (7a)
   kusatmalar: Kusatma[];
   isgalHazirliklari: IsgalHazirligi[];
   barislar: BarisKaydi[];
@@ -199,13 +206,19 @@ export interface SenaryoVerisi {
   // Başlangıç ilişkileri ve ittifakları (6a; tarihî tahmin, [TASLAK])
   iliskiler?: { a: string; b: string; deger: number; not?: string }[];
   ittifaklar?: { a: string; b: string; not?: string }[];
+  // 1453 hükümdarları, veraset gelenekleri ve ad havuzları (7a; tarihî tahmin, [TASLAK])
+  hukumdarlar?: {
+    hukumdarlar: { devlet: string; ad: string; hanedan: string; dogum: number; yetenek: [number, number, number]; halef?: { ad: string; dogum: number; yetenek: [number, number, number] } }[];
+    veraset: { acik: string[]; secimli: string[] };
+    adHavuzu: Partial<Record<AdHavuzu, string[]>>;
+  };
   ag?: AgVerisi;
 }
 
 // 2: ordular ve şehir kontrolü (TASK-0006); 3: savaş, muharebe, moral, garnizon orduları (TASK-0007/4a)
 // 4: insan gücü ve asker toplama (TASK-0007/4b); şema 3 için eklemeli dönüşüm var.
 // 5: kuşatma, gerçek işgal ve barış (TASK-0007/4c); şema 3–4 için eklemeli dönüşüm var.
-export const SEMA_SURUMU = 10; // 10: AI savaş/barış (6c); 6: şehir yatırımları (TASK-0008/5b); 7: teknoloji (5c); 8: diplomasi (TASK-0009/6a); 9: AI ekonomi (6b)
+export const SEMA_SURUMU = 11; // 11: hükümdar ve veraset (7a); 10 10: AI savaş/barış (6c); 6: şehir yatırımları (TASK-0008/5b); 7: teknoloji (5c); 8: diplomasi (TASK-0009/6a); 9: AI ekonomi (6b)
 
 export function baslangicDurumu(s: SenaryoVerisi, secenek: { tohum: number; oyuncu?: string }): DunyaDurumu {
   const indeks = new Map(s.devletler.map((d, i) => [d.id, i]));
@@ -244,12 +257,14 @@ export function baslangicDurumu(s: SenaryoVerisi, secenek: { tohum: number; oyun
     const asker = Math.min(DENGE.GARNIZON_EN_COK, DENGE.GARNIZON_TABAN + DENGE.GARNIZON_BIRIM_BASINA * birimSayisi[i]);
     ordular.push(yeniOrdu(ordular.length + 1, `${v.ad} Ordusu`, i, asker, c.dugum!, c.x ?? 0, c.y ?? 0));
   });
+  const hanedanlar = baslangicHanedanlari(s, secenek.tohum >>> 0, s.baslangic.yil, tarihtenGun(s.baslangic));
   const devletler: DevletDurumu[] = s.devletler.map((d, i) => ({
     id: d.id,
     ad: d.ad,
     hazine: birimSayisi[i] * DENGE.BASLANGIC_HAZINE_BIRIM_BASINA,
     baskent: (() => { const k = sehirler.findIndex((c) => c.devlet === i && c.baskent); return k >= 0 ? k : null; })(),
     teknolojiler: [],
+    ...hanedanlar[i],
   }));
   return {
     sema: SEMA_SURUMU,
@@ -276,6 +291,7 @@ export function baslangicDurumu(s: SenaryoVerisi, secenek: { tohum: number; oyun
     barisTeklifleri: [],
     sonrakiTeklifId: 1,
     ateskesler: [],
+    verasetSecimi: null,
     ittifaklar: (s.ittifaklar ?? []).map((r) => {
       const [a, b] = [bul(r.a), bul(r.b)].sort((x, y) => x - y);
       return { a, b, baslangic: tarihtenGun(s.baslangic) };
@@ -392,6 +408,13 @@ export function degismezler(d: DunyaDurumu): string[] {
     if (!s || ![s.saldiran, s.savunan].includes(t.teklifEden) || ![s.saldiran, s.savunan].includes(t.alan) || !tam(t.id) || t.id >= d.sonrakiTeklifId) h.push(`barış teklifi ${t.id} geçersiz`);
   }
   for (const a of d.ateskesler) if (!d.devletler[a.a] || !d.devletler[a.b] || a.a >= a.b || !tam(a.bitis)) h.push("ateşkes geçersiz");
+  d.devletler.forEach((v, i) => {
+    const k = v.hukumdar;
+    if (!["babadan", "acik", "secimli"].includes(v.veraset) || !["turk", "slav", "rum", "latin", "asya", "genel"].includes(v.adHavuzu)) h.push(`devlet ${i} veraset/ad havuzu geçersiz`);
+    if (k && (!tam(k.dogum) || ![k.yonetim, k.askerlik, k.diplomasi].every((x) => tam(x) && x >= 0 && x <= 6) || !tam(k.mesruiyet) || k.mesruiyet < 0 || k.mesruiyet > 100)) h.push(`devlet ${i} hükümdarı geçersiz`);
+    if (!k && d.verasetSecimi?.devlet !== i) h.push(`devlet ${i} hükümdarsız`);
+  });
+  if (d.verasetSecimi && (d.verasetSecimi.devlet !== d.ayarlar.oyuncu || !d.verasetSecimi.adaylar.length)) h.push("veraset seçimi geçersiz");
   const y = d.yzSayac;
   if (!y || ![y.insaat, y.arastirma, y.asker].every((x) => tam(x) && x >= 0)) h.push("AI sayacı geçersiz");
   if (!Array.isArray(d.saldirganlik) || d.saldirganlik.length !== n || d.saldirganlik.some((x) => !tam(x) || x < 0)) h.push("saldırganlık geçersiz");

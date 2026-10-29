@@ -23,8 +23,8 @@ Son güncelleme: **2026-10-29, Claude (Opus 5.5)** — Codex'in 4b/4c/5a işinde
 - **6b kabul edildi ve commit edildi** (DEC-0040; garnizon tabanı 0, eksi bütçeli başlangıç 71 → 0).
 - **6c kabul edildi; Aşama 6 kapandı** (DEC-0041), commit + push edildi. Ertelenenler: AI-AI ittifak, ileri diplomasi,
   şehir yönetimi otomasyonu (Aşama 7), terhis.
-- **Aşama 7 başladı (DEC-0042).** 7a kapsamı onaylandı (DEC-0043), uygulanıyor; `veri/senaryo-1453/hukumdarlar.json`
-  tablosu kullanıcı onayına sunulacak.
+- **Aşama 7 başladı (DEC-0042).** 7a ve hükümdar tablosu kabul edildi, commit edildi (DEC-0044).
+  **Sıradaki: 7b (nüfus grupları, din/kültür, göç) — kapsam kullanıcı onayı bekliyor; onaysız kod yazma.**
 - Aşağıdaki 2–3. bölümler Codex'in notlarıdır; "5b/5c sorusuna yanıt yok" bilgisi artık geçersiz (DEC-0033).
 - Arayüz notu: Ordu işaretinin olduğu şehre tıklamak orduyu seçer; şehir paneline sol paneldeki
   "Şehir yatırımları → Şehri aç" ile de ulaşılır.

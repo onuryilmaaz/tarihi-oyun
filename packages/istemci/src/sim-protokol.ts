@@ -62,6 +62,9 @@ export interface Ozet {
   butce: ButceOzeti;
   sehirYatirimlari: SehirYatirimi[]; // oyuncunun şehirleri (TASK-0008/5b)
   teknoloji: TeknolojiOzeti; // TASK-0008/5c
+  hukumdar: HukumdarOzeti | null; // oyuncunun hükümdarı (7a); null = halef bekleniyor
+  verasetSecimi: { onceki: string; veraset: string; adaylar: (HukumdarOzeti & { tarihi: boolean; gelenek: boolean })[] } | null;
+  veraset: string; tarihiHalef: string | null;
   diplomasi: (DiplomasiKarti | null)[]; // devlet başına; oyuncunun kendisi null (TASK-0009/6a)
   saldirganlik: number; // oyuncunun saldırganlığı
   barisTeklifleri: { id: number; devlet: number; gerekce: string; size: boolean; birimler: number[]; sehirler: number[]; kalanGun: number; cevap: boolean | null }[]; // 6c
@@ -126,7 +129,10 @@ export interface YatirimSecenegi {
   neden: string | null;
 }
 
+export interface HukumdarOzeti { ad: string; hanedan: string; yas: number; yonetim: number; askerlik: number; diplomasi: number; mesruiyet: number; kurgusal: boolean }
+
 export interface DiplomasiKarti {
+  hukumdar: HukumdarOzeti | null;
   bakisi: number; // onun size bakışı
   bakisimiz: number; // sizin ona bakışınız
   bilesenler: IliskiBileseni[]; // onun bakışının bileşenleri

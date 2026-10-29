@@ -1,5 +1,17 @@
 # CHANGELOG
 
+## 2026-10-29 — TASK-0010 / 7a: hükümdar ve veraset (Claude)
+
+- DEC-0041: Aşama 6 kapandı. DEC-0042: Aşama 7 başladı. DEC-0043: 7a kapsamı.
+- `packages/sim/src/hanedan.ts`: hükümdar (yetenekler, meşruiyet, kurgusal işareti), yaşa bağlı ölüm (aylık),
+  veraset gelenekleri (babadan / açık / seçimli), tarihî halef ve alternatif soy, AI halef seçimi, oyuncu için
+  `halefSec` emri ve tur başında divanın otomatik seçimi. Etkiler: yönetim → arazi geliri, askerlik → muharebe
+  gücü, diplomasi → başkalarının bakışı (en çok ±%9 / ±9). Kayıt şeması 11.
+- `veri/senaryo-1453/hukumdarlar.json`: 31 devletin 1453 hükümdarı ve tarihî halefi, veraset gelenekleri,
+  kurgusal ad havuzları ([TASLAK]); senaryo üreticisi gömer.
+- İstemci: sol panelde Hükümdar kartı, devlet panelinde hükümdar, oyunun kendi veraset penceresi.
+- `packages/sim/test/hanedan.test.ts` (6 test; toplam 136), `docs/qa/ASAMA-7A-TEST.md`.
+
 ## 2026-10-29 — TASK-0009 / 6c: AI savaş ilanı, sefer, kuşatma, barış (Claude)
 
 - DEC-0040: 6b kabul edildi; garnizon tabanı 0. DEC-0041: 6c kabul edildi, Aşama 6 kapandı.

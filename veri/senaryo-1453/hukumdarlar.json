@@ -1,0 +1,770 @@
+{
+  "aciklama": "1 Nisan 1453 hükümdarları ve tarihî halefleri — agent'ın tarihî tahmini, [TASLAK] (DEC-0043). Doğum yılları bilinen ya da yaklaşık değerlerdir; yetenekler (0–6) oyun için tahmindir, tarihî ölçüm değildir. Tabloda olmayan devletlerin hükümdarları kurgusal üretilir.",
+  "hukumdarlar": [
+    {
+      "devlet": "osm",
+      "ad": "II. Mehmed",
+      "hanedan": "Osmanoğulları",
+      "dogum": 1432,
+      "yetenek": [
+        5,
+        6,
+        4
+      ],
+      "halef": {
+        "ad": "II. Bayezid",
+        "dogum": 1447,
+        "yetenek": [
+          4,
+          3,
+          4
+        ]
+      }
+    },
+    {
+      "devlet": "biz",
+      "ad": "XI. Konstantinos",
+      "hanedan": "Palaiologos",
+      "dogum": 1405,
+      "yetenek": [
+        3,
+        4,
+        3
+      ],
+      "halef": {
+        "ad": "Thomas Palaiologos",
+        "dogum": 1409,
+        "yetenek": [
+          2,
+          2,
+          2
+        ]
+      }
+    },
+    {
+      "devlet": "mor",
+      "ad": "Thomas Palaiologos",
+      "hanedan": "Palaiologos",
+      "dogum": 1409,
+      "yetenek": [
+        2,
+        2,
+        2
+      ],
+      "halef": {
+        "ad": "Demetrios Palaiologos",
+        "dogum": 1407,
+        "yetenek": [
+          2,
+          2,
+          3
+        ]
+      }
+    },
+    {
+      "devlet": "trb",
+      "ad": "IV. Ioannes",
+      "hanedan": "Komnenos",
+      "dogum": 1403,
+      "yetenek": [
+        3,
+        2,
+        3
+      ],
+      "halef": {
+        "ad": "David Komnenos",
+        "dogum": 1408,
+        "yetenek": [
+          2,
+          2,
+          2
+        ]
+      }
+    },
+    {
+      "devlet": "kar",
+      "ad": "II. İbrahim Bey",
+      "hanedan": "Karamanoğulları",
+      "dogum": 1405,
+      "yetenek": [
+        3,
+        3,
+        3
+      ],
+      "halef": {
+        "ad": "İshak Bey",
+        "dogum": 1426,
+        "yetenek": [
+          2,
+          3,
+          2
+        ]
+      }
+    },
+    {
+      "devlet": "dul",
+      "ad": "Süleyman Bey",
+      "hanedan": "Dulkadiroğulları",
+      "dogum": 1405,
+      "yetenek": [
+        3,
+        3,
+        3
+      ],
+      "halef": {
+        "ad": "Malik Arslan Bey",
+        "dogum": 1425,
+        "yetenek": [
+          3,
+          3,
+          3
+        ]
+      }
+    },
+    {
+      "devlet": "akk",
+      "ad": "Uzun Hasan",
+      "hanedan": "Bayındır",
+      "dogum": 1423,
+      "yetenek": [
+        4,
+        5,
+        4
+      ],
+      "halef": {
+        "ad": "Sultan Halil",
+        "dogum": 1441,
+        "yetenek": [
+          3,
+          3,
+          3
+        ]
+      }
+    },
+    {
+      "devlet": "kkk",
+      "ad": "Cihan Şah",
+      "hanedan": "Baranlu",
+      "dogum": 1397,
+      "yetenek": [
+        4,
+        4,
+        4
+      ],
+      "halef": {
+        "ad": "Hasan Ali",
+        "dogum": 1440,
+        "yetenek": [
+          1,
+          2,
+          1
+        ]
+      }
+    },
+    {
+      "devlet": "mem",
+      "ad": "el-Eşref İnal",
+      "hanedan": "Memlûk (Çerkes)",
+      "dogum": 1381,
+      "yetenek": [
+        3,
+        3,
+        3
+      ],
+      "halef": {
+        "ad": "el-Müeyyed Ahmed",
+        "dogum": 1430,
+        "yetenek": [
+          3,
+          2,
+          3
+        ]
+      }
+    },
+    {
+      "devlet": "ser",
+      "ad": "Đurađ Branković",
+      "hanedan": "Branković",
+      "dogum": 1377,
+      "yetenek": [
+        4,
+        3,
+        4
+      ],
+      "halef": {
+        "ad": "Lazar Branković",
+        "dogum": 1421,
+        "yetenek": [
+          2,
+          2,
+          2
+        ]
+      }
+    },
+    {
+      "devlet": "bos",
+      "ad": "Stefan Tomaš",
+      "hanedan": "Kotromanić",
+      "dogum": 1411,
+      "yetenek": [
+        3,
+        2,
+        3
+      ],
+      "halef": {
+        "ad": "Stefan Tomašević",
+        "dogum": 1438,
+        "yetenek": [
+          2,
+          2,
+          2
+        ]
+      }
+    },
+    {
+      "devlet": "efl",
+      "ad": "II. Vladislav",
+      "hanedan": "Basarab (Dănești)",
+      "dogum": 1410,
+      "yetenek": [
+        3,
+        3,
+        2
+      ],
+      "halef": {
+        "ad": "III. Vlad Drakula",
+        "dogum": 1431,
+        "yetenek": [
+          3,
+          5,
+          2
+        ]
+      }
+    },
+    {
+      "devlet": "hun",
+      "ad": "V. László",
+      "hanedan": "Habsburg",
+      "dogum": 1440,
+      "yetenek": [
+        2,
+        2,
+        3
+      ],
+      "halef": {
+        "ad": "Matthias Corvinus",
+        "dogum": 1443,
+        "yetenek": [
+          6,
+          5,
+          5
+        ]
+      }
+    },
+    {
+      "devlet": "ven",
+      "ad": "Doj Francesco Foscari",
+      "hanedan": "Venedik dojları",
+      "dogum": 1373,
+      "yetenek": [
+        5,
+        4,
+        5
+      ],
+      "halef": {
+        "ad": "Doj Pasquale Malipiero",
+        "dogum": 1392,
+        "yetenek": [
+          3,
+          2,
+          4
+        ]
+      }
+    },
+    {
+      "devlet": "pap",
+      "ad": "V. Nicolaus",
+      "hanedan": "Papalık",
+      "dogum": 1397,
+      "yetenek": [
+        4,
+        2,
+        5
+      ],
+      "halef": {
+        "ad": "III. Callixtus",
+        "dogum": 1378,
+        "yetenek": [
+          3,
+          2,
+          3
+        ]
+      }
+    },
+    {
+      "devlet": "nap",
+      "ad": "V. Alfonso",
+      "hanedan": "Trastámara",
+      "dogum": 1396,
+      "yetenek": [
+        5,
+        4,
+        5
+      ],
+      "halef": {
+        "ad": "I. Ferrante",
+        "dogum": 1423,
+        "yetenek": [
+          4,
+          4,
+          3
+        ]
+      }
+    },
+    {
+      "devlet": "ara",
+      "ad": "V. Alfonso",
+      "hanedan": "Trastámara",
+      "dogum": 1396,
+      "yetenek": [
+        5,
+        4,
+        5
+      ],
+      "halef": {
+        "ad": "II. Juan",
+        "dogum": 1398,
+        "yetenek": [
+          4,
+          4,
+          4
+        ]
+      }
+    },
+    {
+      "devlet": "kas",
+      "ad": "II. Juan",
+      "hanedan": "Trastámara",
+      "dogum": 1405,
+      "yetenek": [
+        2,
+        2,
+        3
+      ],
+      "halef": {
+        "ad": "IV. Enrique",
+        "dogum": 1425,
+        "yetenek": [
+          2,
+          2,
+          2
+        ]
+      }
+    },
+    {
+      "devlet": "mil",
+      "ad": "Francesco Sforza",
+      "hanedan": "Sforza",
+      "dogum": 1401,
+      "yetenek": [
+        5,
+        6,
+        5
+      ],
+      "halef": {
+        "ad": "Galeazzo Maria Sforza",
+        "dogum": 1444,
+        "yetenek": [
+          3,
+          3,
+          2
+        ]
+      }
+    },
+    {
+      "devlet": "flo",
+      "ad": "Cosimo de' Medici",
+      "hanedan": "Medici",
+      "dogum": 1389,
+      "yetenek": [
+        6,
+        2,
+        5
+      ],
+      "halef": {
+        "ad": "Piero de' Medici",
+        "dogum": 1416,
+        "yetenek": [
+          4,
+          2,
+          3
+        ]
+      }
+    },
+    {
+      "devlet": "fra",
+      "ad": "VII. Charles",
+      "hanedan": "Valois",
+      "dogum": 1403,
+      "yetenek": [
+        5,
+        4,
+        4
+      ],
+      "halef": {
+        "ad": "XI. Louis",
+        "dogum": 1423,
+        "yetenek": [
+          6,
+          3,
+          6
+        ]
+      }
+    },
+    {
+      "devlet": "ing",
+      "ad": "VI. Henry",
+      "hanedan": "Lancaster",
+      "dogum": 1421,
+      "yetenek": [
+        1,
+        1,
+        2
+      ],
+      "halef": {
+        "ad": "IV. Edward",
+        "dogum": 1442,
+        "yetenek": [
+          4,
+          5,
+          3
+        ]
+      }
+    },
+    {
+      "devlet": "avs",
+      "ad": "III. Friedrich",
+      "hanedan": "Habsburg",
+      "dogum": 1415,
+      "yetenek": [
+        4,
+        2,
+        4
+      ],
+      "halef": {
+        "ad": "VI. Albrecht",
+        "dogum": 1418,
+        "yetenek": [
+          2,
+          3,
+          2
+        ]
+      }
+    },
+    {
+      "devlet": "boh",
+      "ad": "V. László",
+      "hanedan": "Habsburg",
+      "dogum": 1440,
+      "yetenek": [
+        2,
+        2,
+        3
+      ],
+      "halef": {
+        "ad": "Jiří z Poděbrad",
+        "dogum": 1420,
+        "yetenek": [
+          5,
+          4,
+          4
+        ]
+      }
+    },
+    {
+      "devlet": "pol",
+      "ad": "IV. Kazimierz",
+      "hanedan": "Jagiellon",
+      "dogum": 1427,
+      "yetenek": [
+        5,
+        3,
+        5
+      ],
+      "halef": {
+        "ad": "I. Jan Olbracht",
+        "dogum": 1459,
+        "yetenek": [
+          3,
+          3,
+          2
+        ]
+      }
+    },
+    {
+      "devlet": "lit",
+      "ad": "IV. Kazimierz",
+      "hanedan": "Jagiellon",
+      "dogum": 1427,
+      "yetenek": [
+        5,
+        3,
+        5
+      ],
+      "halef": {
+        "ad": "Aleksander Jagiellończyk",
+        "dogum": 1461,
+        "yetenek": [
+          3,
+          2,
+          3
+        ]
+      }
+    },
+    {
+      "devlet": "mos",
+      "ad": "II. Vasiliy",
+      "hanedan": "Rurik",
+      "dogum": 1415,
+      "yetenek": [
+        3,
+        3,
+        3
+      ],
+      "halef": {
+        "ad": "III. İvan",
+        "dogum": 1440,
+        "yetenek": [
+          6,
+          4,
+          5
+        ]
+      }
+    },
+    {
+      "devlet": "kir",
+      "ad": "I. Hacı Giray",
+      "hanedan": "Giray",
+      "dogum": 1397,
+      "yetenek": [
+        4,
+        4,
+        4
+      ],
+      "halef": {
+        "ad": "I. Mengli Giray",
+        "dogum": 1445,
+        "yetenek": [
+          4,
+          4,
+          4
+        ]
+      }
+    },
+    {
+      "devlet": "min",
+      "ad": "Jingtai",
+      "hanedan": "Ming",
+      "dogum": 1428,
+      "yetenek": [
+        4,
+        3,
+        3
+      ],
+      "halef": {
+        "ad": "Tianshun (Yingzong)",
+        "dogum": 1427,
+        "yetenek": [
+          2,
+          1,
+          2
+        ]
+      }
+    },
+    {
+      "devlet": "jos",
+      "ad": "Danjong",
+      "hanedan": "Yi",
+      "dogum": 1441,
+      "yetenek": [
+        2,
+        1,
+        2
+      ],
+      "halef": {
+        "ad": "Sejo",
+        "dogum": 1417,
+        "yetenek": [
+          5,
+          5,
+          3
+        ]
+      }
+    },
+    {
+      "devlet": "dai",
+      "ad": "Lê Nhân Tông",
+      "hanedan": "Lê",
+      "dogum": 1441,
+      "yetenek": [
+        3,
+        2,
+        3
+      ],
+      "halef": {
+        "ad": "Lê Thánh Tông",
+        "dogum": 1442,
+        "yetenek": [
+          6,
+          5,
+          4
+        ]
+      }
+    }
+  ],
+  "veraset": {
+    "acik": [
+      "osm",
+      "kar",
+      "can",
+      "dul",
+      "ram",
+      "akk",
+      "kkk",
+      "kir",
+      "alt",
+      "kaz",
+      "nog",
+      "tim",
+      "ozb",
+      "mgl",
+      "tum",
+      "oir",
+      "sir",
+      "dag"
+    ],
+    "secimli": [
+      "mem",
+      "ven",
+      "cen",
+      "rag",
+      "pap",
+      "hun",
+      "boh",
+      "pol",
+      "kra",
+      "rod",
+      "nov",
+      "psk",
+      "isv",
+      "liv",
+      "tos"
+    ]
+  },
+  "adHavuzu": {
+    "turk": [
+      "osm",
+      "kar",
+      "can",
+      "dul",
+      "ram",
+      "akk",
+      "kkk",
+      "mem",
+      "kir",
+      "alt",
+      "kaz",
+      "nog",
+      "tim",
+      "ozb",
+      "mgl",
+      "tum",
+      "sir",
+      "dag",
+      "fas",
+      "tle",
+      "haf",
+      "gir",
+      "ada",
+      "ymn",
+      "hrm",
+      "del",
+      "jau",
+      "ben",
+      "guc",
+      "mal",
+      "bah",
+      "ksm",
+      "mlt",
+      "sin",
+      "mlk",
+      "bru",
+      "kil"
+    ],
+    "slav": [
+      "ser",
+      "bos",
+      "hrc",
+      "zet",
+      "mos",
+      "nov",
+      "psk",
+      "tvr",
+      "rya",
+      "lit",
+      "pol",
+      "boh",
+      "efl",
+      "bog",
+      "grc",
+      "cer",
+      "teo"
+    ],
+    "rum": [
+      "biz",
+      "mor",
+      "trb",
+      "atn",
+      "nax",
+      "kib"
+    ],
+    "asya": [
+      "min",
+      "jos",
+      "jap",
+      "dai",
+      "cha",
+      "khm",
+      "lan",
+      "lnn",
+      "aut",
+      "ava",
+      "peg",
+      "ark",
+      "mjp",
+      "tib",
+      "oir",
+      "jur",
+      "ahm",
+      "kot",
+      "vij",
+      "mew",
+      "ori"
+    ],
+    "genel": [
+      "son",
+      "mli",
+      "kan",
+      "bnn",
+      "kon",
+      "mut",
+      "etp",
+      "azt",
+      "tlx",
+      "pur",
+      "may",
+      "inka",
+      "chi"
+    ]
+  }
+}

@@ -10,6 +10,7 @@ import { DENGE } from "./denge";
 import { kusatmadanCikar, orduKusatmasi, sehirMenzilinde } from "./kusatma";
 import { barisDogrula, barisiUygula } from "./baris";
 import { YAPI_ADLARI, insaatMaliyeti, insaatSuresi, sehirdeInsaatVar, yapiSeviyesi, type YapiTuru } from "./yatirim";
+import { bekleyenVerasetiCoz, tahtaCikar } from "./hanedan";
 import { diplomasiOnHesap, etkiEkle, hediyePuani, ittifakBoz, ittifakDegerlendir, ittifakKur, muttefik, muttefikleri, savasIlaniSonuclari } from "./diplomasi";
 import { arastirmaEngeli, teknolojiBul, teknolojiGecerli, toplamaBedelYuzde, toplamaSuresi, type TeknolojiId } from "./teknoloji";
 
@@ -50,7 +51,9 @@ export type Emir =
   | { tur: "ittifakBoz"; hedef: number }
   | { tur: "hediye"; hedef: number; miktar: number }
   // AI barış teklifine cevap (TASK-0009/6c)
-  | { tur: "barisCevap"; teklif: number; kabul: boolean };
+  | { tur: "barisCevap"; teklif: number; kabul: boolean }
+  // Oyuncu hükümdarı ölünce halef seçimi (TASK-0010/7a)
+  | { tur: "halefSec"; aday: number };
 
 export type Dogrulama = { gecerli: true } | { gecerli: false; neden: string };
 
@@ -117,6 +120,13 @@ export function emirDogrula(d: DunyaDurumu, e: Emir, b: Baglam = BOS_BAGLAM, kuy
       if (bedel === null) return { gecerli: false, neden: `${YAPI_ADLARI[e.yapi]} en yüksek seviyede (${yapiSeviyesi(s, e.yapi)}).` };
       const para = kuyrukHaric ? d.devletler[s.devlet].hazine : kullanilabilirHazine(d, s.devlet);
       if (para < 0 || bedel > para) return { gecerli: false, neden: `Hazine yetersiz: ${para} kullanılabilir, ${bedel} gerekli. Borçlanma yoktur.` };
+      return { gecerli: true };
+    }
+    case "halefSec": {
+      const s = d.verasetSecimi;
+      if (!s || s.devlet !== d.ayarlar.oyuncu) return { gecerli: false, neden: "Bekleyen veraset yok." };
+      if (!Number.isSafeInteger(e.aday) || !s.adaylar[e.aday]) return { gecerli: false, neden: "Geçersiz aday." };
+      if (!kuyrukHaric && d.emirKuyrugu.some((x) => x.tur === "halefSec")) return { gecerli: false, neden: "Halef zaten seçildi; tur başında tahta çıkar." };
       return { gecerli: true };
     }
     case "barisCevap": {
@@ -289,6 +299,7 @@ export function emirleriUygula(d: DunyaDurumu, b: Baglam = BOS_BAGLAM): void {
     }
     emirUygula(d, e, b);
   }
+  bekleyenVerasetiCoz(d); // halef seçilmeden tur ilerletildiyse (7a)
 }
 
 /** Doğrulanmış tek emri uygular (oyuncu kuyruğu ve AI kararları aynı yolu kullanır). */
@@ -393,6 +404,9 @@ export function emirUygula(d: DunyaDurumu, e: Emir, b: Baglam = BOS_BAGLAM): voi
         if (e.hedef === oyuncu && e.devlet !== oyuncu && !d.aktifKesinti) d.aktifKesinti = { gun: d.gun, neden: metin };
       }
       savasIlaniSonuclari(d, b.ag, e.devlet, e.hedef);
+      break;
+    case "halefSec":
+      tahtaCikar(d, d.ayarlar.oyuncu, d.verasetSecimi!.adaylar[e.aday], "oyuncu");
       break;
     case "barisCevap": {
       const t = d.barisTeklifleri.find((x) => x.id === e.teklif)!;

@@ -6,6 +6,7 @@ import { olayEkle, type DunyaDurumu } from "./durum";
 import { DENGE } from "./denge";
 import type { HareketAgi } from "./hareket";
 import { savasta } from "./savas";
+import { hukumdarDiplomasiPuani } from "./hanedan";
 
 export type IliskiNedeni = "tarih" | "savas" | "hediye" | "ittifakBozma" | "cagriReddi";
 export const ILISKI_NEDEN_ADLARI: Record<IliskiNedeni, string> = {
@@ -78,6 +79,8 @@ export function iliskiBilesenleri(d: DunyaDurumu, o: DiplomasiOnHesap, a: number
     return dusman >= 0 && dusman !== b && savasta(d, b, dusman);
   });
   if (ortak) r.push({ ad: "Ortak düşman", deger: DENGE.ILISKI_ORTAK_DUSMAN });
+  const dip = hukumdarDiplomasiPuani(d, b);
+  if (dip) r.push({ ad: "Hükümdarının diplomasisi", deger: dip });
   return r;
 }
 

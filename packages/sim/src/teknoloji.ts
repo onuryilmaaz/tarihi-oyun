@@ -5,6 +5,7 @@
 
 import { olayEkle, type DunyaDurumu } from "./durum";
 import { DENGE } from "./denge";
+import { hukumdarGucYuzde } from "./hanedan";
 
 export type Alan = "ekonomik" | "askeri" | "idari";
 export type TeknolojiId = keyof typeof DENGE.TEKNOLOJI;
@@ -49,7 +50,9 @@ export const araziGeliriBirimBasina = (d: DunyaDurumu, devlet: number) =>
   biliyor(d, devlet, "vergi") ? DENGE.VERGI_ARAZI_GELIRI : DENGE.TEST_GELIR_BIRIM_BASINA;
 export const pazarGeliriSeviyeBasina = (d: DunyaDurumu, devlet: number) =>
   DENGE.YAPI_AYLIK_GELIR.pazar + (biliyor(d, devlet, "kervan") ? DENGE.KERVAN_PAZAR_EK_GELIR : 0);
-export const muharebeGucYuzde = (d: DunyaDurumu, devlet: number) => (biliyor(d, devlet, "daimiOrdu") ? DENGE.DAIMI_ORDU_GUC_YUZDE : 100);
+/** Teknoloji (Daimî Ordu) ve hükümdarın askerliği (7a) birlikte. */
+export const muharebeGucYuzde = (d: DunyaDurumu, devlet: number) =>
+  Math.floor(((biliyor(d, devlet, "daimiOrdu") ? DENGE.DAIMI_ORDU_GUC_YUZDE : 100) * hukumdarGucYuzde(d, devlet)) / 100);
 export const kusatmaSaldiriYuzde = (d: DunyaDurumu, devlet: number) => (biliyor(d, devlet, "top") ? DENGE.TOP_SALDIRI_YUZDE : 100);
 export const toplamaBedelYuzde = (d: DunyaDurumu, devlet: number) => (biliyor(d, devlet, "kayit") ? DENGE.KAYIT_TOPLAMA_BEDEL_YUZDE : 100);
 export const toplamaSuresi = (d: DunyaDurumu, devlet: number) => (biliyor(d, devlet, "kayit") ? DENGE.KAYIT_TOPLAMA_GUN : DENGE.TOPLAMA_GUN);

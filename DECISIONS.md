@@ -583,3 +583,13 @@ Kaynak belge: `MASTER_SPEC.md` (v1.3). Orijinal keşif çıktısı:
   5. DEC-0042 ve TASK-0010/ASAMA-7 taslakları commit + push edilir; hükümdar tablosu onaya sunulur.
 - **Onay kaydı:** Kullanıcı: "1- uygundur 2- evet 3- evet 4- evet 5- evet" (2026-10-29)
 - **Durum:** GEÇERLİ
+
+## DEC-0044 — 7a kabulü ve hükümdar tablosu
+
+- **Tarih:** 2026-10-29
+- **Seçilen karar:**
+  1. 7a (hükümdar ve veraset) kullanıcı tarafından test edildi ve kabul edildi.
+  2. `veri/senaryo-1453/hukumdarlar.json` (31 devlet, veraset gelenekleri, ad havuzları) onaylandı; değerler [TASLAK].
+  3. 7a commit + push onaylandı; 7b (nüfus grupları, din/kültür, göç) kapsamı önce onaya sunulur.
+- **Onay kaydı:** Kullanıcı: "1- başarılı 2- uygun 3- evet 4- evet" (2026-10-29)
+- **Durum:** GEÇERLİ

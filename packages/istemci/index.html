@@ -141,6 +141,14 @@
     #barisTeklifi .panel { position: static; width: min(520px, calc(100% - 32px)); max-height: calc(100% - 48px); overflow: auto; padding: 22px; }
     #barisTeklifi h3 { font-family: "Cinzel", serif; margin: 0 0 8px; }
     #barisTeklifi .satir { justify-content: flex-end; gap: 8px; margin-top: 10px; }
+    #verasetPencere { position: fixed; inset: 0; display: grid; place-items: center; background: rgba(15,12,9,.6); z-index: 11; }
+    #verasetPencere .panel { position: static; width: min(640px, calc(100% - 32px)); max-height: calc(100% - 48px); overflow: auto; padding: 22px; }
+    #verasetPencere h3 { font-family: "Cinzel", serif; margin: 0 0 6px; }
+    .aday-liste { display: grid; gap: 10px; margin: 12px 0; }
+    .aday { border: 1px solid var(--cizgi); border-radius: 6px; padding: 10px; display: flex; justify-content: space-between; gap: 12px; align-items: center; font-size: 12px; }
+    .aday b { font-size: 13px; } .aday small { display: block; color: var(--soluk); }
+    .aday.secili { border-color: var(--vurgu); }
+    #hukumdarKarti b { color: var(--metin); } .rozet-kurgu { font-size: 10px; border: 1px solid var(--cizgi); border-radius: 4px; padding: 0 4px; margin-left: 4px; }
     #onay { position: fixed; inset: 0; display: grid; place-items: center; background: rgba(15, 12, 9, .5); z-index: 12; }
     #onay .panel { position: static; width: min(440px, calc(100% - 32px)); padding: 22px; text-align: center; }
     #onay h3 { font-family: "Cinzel", serif; margin: 0 0 8px; font-size: 18px; }
@@ -250,6 +258,8 @@
   </header>
 
   <aside id="yan" class="panel">
+    <h2>Hükümdar</h2>
+    <div id="hukumdarKarti" class="not"></div>
     <h2>Ordular</h2>
     <ul id="orduListesi"></ul>
     <div id="orduDetay" hidden></div>
@@ -350,6 +360,16 @@
       <div id="teklifIcerik"></div>
       <p class="not">Cevabınız bir sonraki turun başında uygulanır. Kabul ederseniz savaş biter; reddederseniz sürer.</p>
       <div class="satir"><button id="teklifSonra">Sonra karar ver</button><button id="teklifRet" class="tehlike">Reddet</button><button id="teklifKabul">Kabul et</button></div>
+    </div>
+  </div>
+
+  <div id="verasetPencere" hidden>
+    <div class="panel" role="dialog" aria-modal="true" aria-labelledby="verasetBaslik">
+      <h3 id="verasetBaslik">Veraset</h3>
+      <p id="verasetBilgi" class="not"></p>
+      <div id="verasetAdaylar" class="aday-liste"></div>
+      <p class="not">Seçiminiz bir sonraki turun başında uygulanır. Seçmeden turu ilerletirseniz divan en uygun adayı tahta çıkarır.</p>
+      <div class="satir" style="justify-content:flex-end"><button id="verasetKapat">Sonra seç</button></div>
     </div>
   </div>
 

@@ -132,4 +132,19 @@ export const DENGE = {
   YZ_SAVAS_YORGUNLUK_GUN: 730, // bu kadar süren dengeli savaş beyaz barışla biter
   YZ_KAYBEDEN_TEKLIF_GUN: 180, // kaybeden taraf bu süreden sonra oyuncuya taviz teklif eder
   BARIS_TEKLIF_GUN: 30, // oyuncuya gelen teklifin geçerlilik süresi
+  // 7a — hükümdar ve veraset (DEC-0043); hepsi [TASLAK]
+  HUK_ETKI_ORTA: 3, // yetenek 3 = etkisiz; her puan fark aşağıdaki kadar etki
+  HUK_GELIR_YUZDE: 3, // yönetim: arazi geliri ±%3/puan (en çok ±%9)
+  HUK_GUC_YUZDE: 3, // askerlik: muharebe gücü ±%3/puan
+  HUK_DIPLOMASI_PUAN: 3, // diplomasi: başkalarının bakışı ±3/puan
+  // Yaşa göre yıllık ölüm olasılığı (%): [alt yaş, yüzde]; her ay yüzde/12 olasılıkla
+  OLUM_YUZDE: [[0, 1], [30, 2], [50, 4], [60, 8], [70, 15], [80, 30]] as [number, number][],
+  MESRUIYET_TARIHI_HALEF: 90,
+  MESRUIYET_GELENEKSEL: 80,
+  MESRUIYET_SECIMLI: 70,
+  MESRUIYET_GELENEK_DISI: 50,
+  MESRUIYET_YILLIK_ARTIS: 2,
+  KURGUSAL_YAS: [20, 55] as [number, number], // başlangıçta kurgusal hükümdar yaş aralığı
+  HALEF_YAS: [16, 45] as [number, number], // kurgusal aday yaş aralığı
+  VERASET_DUNYA_HABERI_ARAZI: 20, // bu büyüklükteki devletlerde tahta çıkış dünya haberidir
 };

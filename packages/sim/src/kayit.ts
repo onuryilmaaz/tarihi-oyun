@@ -3,6 +3,8 @@
 
 import { SEMA_SURUMU, degismezler, type DunyaDurumu } from "./durum";
 import { DENGE } from "./denge";
+import { kurgusalHukumdar } from "./hanedan";
+import { gundenTarih } from "./takvim";
 
 export interface KayitPaketi {
   tur: "tarihi-oyun-kayit";
@@ -93,6 +95,16 @@ export function yukle(metin: string, beklenenSenaryo?: string): DunyaDurumu {
     d.barisTeklifleri = [];
     d.sonrakiTeklifId = 1;
     d.ateskesler = [];
+    d.sema = 10;
+  }
+  if (d.sema === 10) {
+    // Şema 10 → 11 (TASK-0010/7a): eski kayıtta tarihî tablo yok; her devlete nötr kurgusal hükümdar
+    const yil = gundenTarih(d.gun).yil;
+    d.devletler.forEach((v, i) => {
+      v.hukumdar = kurgusalHukumdar(v.ad, d.tohum, i, yil, "latin", d.gun);
+      v.veraset = "babadan"; v.adHavuzu = "latin"; v.tarihiHalef = null;
+    });
+    d.verasetSecimi = null;
     d.sema = SEMA_SURUMU;
   }
   if (d.sema !== SEMA_SURUMU) throw new KayitHatasi("Kayıt tutarsız: dünya şema sürümü uyuşmuyor.");

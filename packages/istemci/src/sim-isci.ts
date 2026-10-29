@@ -8,12 +8,17 @@ import {
   barisBedeli, barisDogrula, kusatmaGucu, orduKusatmasi, savasSkoru,
   butceOzeti, insaatMaliyeti, insaatSuresi, sehirYapiGeliri, yapiSeviyesi, yapiEnYuksek, pazarGeliriSeviyeBasina, YAPI_ADLARI, YAPI_TURLERI,
   diplomasiOnHesap, etkiDegeri, hediyePuanBedeli, iliski, iliskiBilesenleri, ittifakDegerlendir, komsuMu, muttefik, muttefikleri, savasta,
+  hukumdarYasi, VERASET_ADLARI, type Hukumdar,
   ALAN_ADLARI, TEKNOLOJILER, teknolojiBul, biliyor, toplamaBedelYuzde, toplamaSuresi,
 } from "@tarihi/sim";
 import type { Istek, Ozet, Yanit } from "./sim-protokol";
 
 let d: DunyaDurumu | null = null;
 let baglam: Baglam = { ag: null };
+
+const hukumdarOzeti = (durum: DunyaDurumu, h: Omit<Hukumdar, "tahtaCikis"> | null) => h && {
+  ad: h.ad, hanedan: h.hanedan, yas: hukumdarYasi(durum, h), yonetim: h.yonetim, askerlik: h.askerlik, diplomasi: h.diplomasi,
+  mesruiyet: h.mesruiyet, kurgusal: h.kurgusal };
 
 function ozet(durum: DunyaDurumu): Ozet {
   const o = durum.devletler[durum.ayarlar.oyuncu];
@@ -52,6 +57,10 @@ function ozet(durum: DunyaDurumu): Ozet {
         }),
       }];
     }),
+    hukumdar: hukumdarOzeti(durum, o.hukumdar),
+    verasetSecimi: durum.verasetSecimi && { onceki: durum.verasetSecimi.onceki, veraset: VERASET_ADLARI[o.veraset],
+      adaylar: durum.verasetSecimi.adaylar.map((a) => ({ ...hukumdarOzeti(durum, a)!, tarihi: a.tarihi, gelenek: a.gelenek })) },
+    veraset: VERASET_ADLARI[o.veraset], tarihiHalef: o.tarihiHalef?.ad ?? null,
     teknoloji: {
       yuva: DENGE.ARASTIRMA_YUVASI,
       kartlar: TEKNOLOJILER.map((t) => {
@@ -72,6 +81,7 @@ function ozet(durum: DunyaDurumu): Ozet {
         if (i === p) return null;
         const bekleyen = durum.emirKuyrugu.find((e) => (e.tur === "ittifakTeklif" || e.tur === "ittifakBoz") && e.hedef === i);
         return {
+          hukumdar: hukumdarOzeti(durum, durum.devletler[i].hukumdar),
           bakisi: iliski(durum, on, i, p), bakisimiz: iliski(durum, on, p, i), bilesenler: iliskiBilesenleri(durum, on, i, p),
           muttefik: muttefik(durum, p, i), muttefikleri: muttefikleri(durum, i), savasta: savasta(durum, p, i), komsu: komsuMu(on, p, i),
           ittifak: ittifakDegerlendir(durum, on, p, i), hediyePuanBedeli: hediyePuanBedeli(durum, i, on),

@@ -116,6 +116,27 @@ async function baslat() {
     gorunum.haritaRenkleri(ozet.diplomasi.map((k) => !k ? "#c9a227" : k.savasta ? "#a33a2f" : k.muttefik ? "#4f8f4a"
       : hex(k.bakisi < 0 ? karis(notr, kotu, Math.min(1, -k.bakisi / 60)) : karis(notr, iyi, Math.min(1, k.bakisi / 60)))));
   };
+  // Hükümdar ve veraset (TASK-0010/7a)
+  type HukOz = NonNullable<Ozet["hukumdar"]>;
+  const yetenekMetni = (h: HukOz) => `Yönetim ${h.yonetim} · Askerlik ${h.askerlik} · Diplomasi ${h.diplomasi}`;
+  const kurguRozeti = (h: HukOz) => (h.kurgusal ? '<span class="rozet-kurgu" title="Tarihî kişi değil; oyunun ürettiği kurgusal kişi">kurgusal</span>' : "");
+  const hukumdarKarti = () => {
+    const h = ozet.hukumdar;
+    $("hukumdarKarti").innerHTML = h
+      ? `<b>${kacis(h.ad)}</b>${kurguRozeti(h)} · ${h.yas} yaşında<br />${kacis(h.hanedan)} · meşruiyet ${h.mesruiyet}<br />${yetenekMetni(h)}<br />
+        Veraset: ${kacis(ozet.veraset)}${ozet.tarihiHalef ? ` · tarihî halef: ${kacis(ozet.tarihiHalef)}` : ""}`
+      : `Taht boş — halef bekleniyor. <button id="verasetAc">Halefi seç</button>`;
+  };
+  let secilenAday: number | null = null;
+  const verasetCiz = () => {
+    const v = ozet.verasetSecimi;
+    if (!v) { $("verasetPencere").hidden = true; return; }
+    $("verasetBilgi").textContent = `${v.onceki} öldü. Veraset geleneği: ${v.veraset}. Geleneğe uygun aday daha yüksek meşruiyetle başlar.`;
+    $("verasetAdaylar").innerHTML = v.adaylar.map((a, i) => `<div class="aday${secilenAday === i ? " secili" : ""}"><span><b>${kacis(a.ad)}</b>${kurguRozeti(a)}${a.tarihi ? " · tarihî halef" : ""}
+      <small>${a.yas} yaşında · ${yetenekMetni(a)} · meşruiyet ${a.mesruiyet}${a.gelenek ? "" : " (geleneğe aykırı)"}</small></span>
+      <button data-aday="${i}"${secilenAday !== null ? " disabled" : ""}>${secilenAday === i ? "Seçildi" : "Tahta çıkar"}</button></div>`).join("");
+  };
+  const verasetAc = () => { if (ozet.verasetSecimi) { verasetCiz(); $("verasetPencere").hidden = false; } };
   const arayuzuGuncelle = () => {
     if (seciliOrdu !== null && !ozet.ordular.some((o) => o.id === seciliOrdu)) seciliOrdu = null;
     $("oyuncu").innerHTML = `${gorunum.devletRenkKutusu(ozet.oyuncu.indeks)}<span>${kacis(ozet.oyuncu.ad)}</span>`;
@@ -170,6 +191,9 @@ async function baslat() {
       || '<li class="bos">Süren araştırma yok. Üst çubuktaki “Teknoloji” düğmesinden başlatın.</li>';
     if (!$("teknoloji").hidden) teknolojiCiz();
     diplomasiHaritasi();
+    hukumdarKarti();
+    if (!ozet.verasetSecimi) secilenAday = null;
+    if (!$("verasetPencere").hidden) verasetCiz();
     $("raporListesi").innerHTML = [...ozet.raporlar].reverse().map((r) => {
       const biz = r.kazanan === ozet.oyuncu.indeks;
       const karsi = r.taraflar.find((t) => t.devlet !== ozet.oyuncu.indeks)!;
@@ -322,7 +346,8 @@ async function baslat() {
     const hediye = k.savasta ? "" : `<div class="hediye-satir"><input id="hediyeMiktar" type="number" min="1" step="1" value="${k.hediyePuanBedeli * 5}" aria-label="Hediye miktarı" />
         <button data-eylem="hediye" data-devlet="${devlet}"${k.hediyeKalan ? "" : " disabled"}>Hediye gönder</button></div>
       <p class="not">1 ilişki puanı ≈ ${k.hediyePuanBedeli.toLocaleString("tr-TR")} · ${k.hediyeKalan ? `en çok ${k.hediyeKalan} puan daha eklenebilir` : "hediye etkisi dolu"}; zamanla söner.</p>`;
-    return `<h4>Diplomasi</h4><dl><dt>Size bakışı</dt><dd>${isaretli(k.bakisi)} · ${iliskiAdi(k.bakisi)}</dd>
+    const huk = k.hukumdar ? `<h4>Hükümdar</h4><p class="not"><b>${kacis(k.hukumdar.ad)}</b>${kurguRozeti(k.hukumdar)} · ${k.hukumdar.yas} yaşında · ${kacis(k.hukumdar.hanedan)}<br />${yetenekMetni(k.hukumdar)} · meşruiyet ${k.hukumdar.mesruiyet}</p>` : "";
+    return `${huk}<h4>Diplomasi</h4><dl><dt>Size bakışı</dt><dd>${isaretli(k.bakisi)} · ${iliskiAdi(k.bakisi)}</dd>
       <dt>Sizin bakışınız</dt><dd>${isaretli(k.bakisimiz)} · ${iliskiAdi(k.bakisimiz)}</dd></dl>
       ${k.bilesenler.length ? `<ul class="iliski-bilesen">${k.bilesenler.map((b) => `<li><span>${kacis(b.ad)}</span>${isaretli(b.deger)}</li>`).join("")}</ul>` : '<p class="not">Aranızda özel bir etken yok.</p>'}
       ${durum ? `<p class="not">${durum}</p>` : ""}${ittifak}${hediye}`;
@@ -505,7 +530,15 @@ async function baslat() {
     $("kesinti").hidden = false;
     $<HTMLButtonElement>("kesintiTamam").focus();
   };
-  $("kesintiTamam").onclick = () => { $("kesinti").hidden = true; teklifGoster(); };
+  $("kesintiTamam").onclick = () => { $("kesinti").hidden = true; if (ozet.verasetSecimi && secilenAday === null) verasetAc(); else teklifGoster(); };
+  $("verasetKapat").onclick = () => { $("verasetPencere").hidden = true; };
+  $("hukumdarKarti").addEventListener("click", (e) => { if ((e.target as HTMLElement).id === "verasetAc") verasetAc(); });
+  $("verasetAdaylar").addEventListener("click", async (e) => {
+    const b = (e.target as HTMLElement).closest<HTMLButtonElement>("[data-aday]");
+    if (!b || b.disabled) return;
+    const i = Number(b.dataset.aday), a = ozet.verasetSecimi!.adaylar[i];
+    if (await emirGonder({ tur: "halefSec", aday: i }, `${a.ad} halef seçildi; bir sonraki tur başında tahta çıkar.`)) { secilenAday = i; verasetCiz(); }
+  });
   // AI'dan gelen barış teklifi (TASK-0009/6c): oyunun kendi penceresi; bir kez kendiliğinden açılır
   const gosterilenTeklifler = new Set<number>();
   let acikTeklif: number | null = null;
@@ -595,7 +628,7 @@ async function baslat() {
   $("yukleOtomatik").onclick = () => yukle("otomatik");
   window.addEventListener("keydown", (e) => {
     if (e.key === "Escape" && !$("teknoloji").hidden && $("onay").hidden) { $("teknoloji").hidden = true; return; }
-    if (e.code !== "Space" || !$("kesinti").hidden || !$("rapor").hidden || !$("onay").hidden || !$("baris").hidden || !$("teknoloji").hidden || !$("barisTeklifi").hidden) return;
+    if (e.code !== "Space" || !$("verasetPencere").hidden || !$("kesinti").hidden || !$("rapor").hidden || !$("onay").hidden || !$("baris").hidden || !$("teknoloji").hidden || !$("barisTeklifi").hidden) return;
     const etiket = (e.target as HTMLElement).tagName;
     if (etiket === "INPUT" || etiket === "SELECT" || etiket === "TEXTAREA") return;
     e.preventDefault();

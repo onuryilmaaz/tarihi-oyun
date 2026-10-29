@@ -13,6 +13,7 @@ export * from "./teknoloji";
 export * from "./diplomasi";
 export * from "./yz";
 export * from "./yz-savas";
+export * from "./hanedan";
 export * from "./kusatma";
 export * from "./baris";
 export * from "./savas";
