@@ -953,13 +953,19 @@ async function baslat() {
       .map(([t, a]) => `<dt>${kacis(t)}</dt><dd>${kacis(a)}</dd>`).join("") || '<dd class="not">Eşleşen terim yok.</dd>';
   };
   $("sozlukAra").addEventListener("input", sozlukCiz);
-  $("kaynakMetni").innerHTML = `<ul>
-    <li><b>Sınırlar:</b> OpenHistoricalMap (CC0) + agent tahmini; tahmin sınırları Ayar → Katmanlar'dan kesikli gösterilebilir.</li>
-    <li><b>Kıyı, nehir, göl:</b> Natural Earth (kamu malı).</li>
-    <li><b>Arazi zorluğu:</b> NOAA ETOPO 2022 (kamu malı).</li>
-    <li><b>Devlet kimlikleri:</b> Wikidata (CC0).</li>
-    <li><b>Hükümdarlar, ilişkiler, nüfus grupları, deniz bölgeleri:</b> agent'ın tarihî tahmini; hepsi taslaktır, ayrıntılı kaynaklandırma 9d'de.</li>
-    <li><b>Armalar:</b> oyunun ürettiği simgelerdir; tarihî arma iddiası taşımaz.</li></ul>`;
+  $("kaynakMetni").innerHTML = `
+    <h4>Harita ve coğrafya</h4><ul>
+    <li><b>OpenHistoricalMap</b> — 1453 sınırlarının bir kısmı (49 kayıt, CC0). Kalan sınırlar tahmindir; Ayar → Katmanlar → "Kaynak güveni" ile kesikli gösterilir.</li>
+    <li><b>Natural Earth</b> — kıyı, göl, nehir ve idari birim geometrisi (kamu malı).</li>
+    <li><b>NOAA NCEI ETOPO 2022</b> — yükseklikten türetilen arazi zorluğu ve verimi (serbest kullanım).</li>
+    <li><b>Wikidata</b> — devlet kimlikleri, başkentler, kuruluş/yıkılış yılları (CC0).</li></ul>
+    <h4>Tahmini tablolar (taslak)</h4><ul>
+    <li>Hükümdarlar ve halefler, başlangıç ilişkileri ve ittifakları, nüfus grupları (din × kültür), şehir nüfusları, deniz bölgeleri ve
+      başlangıç donanmaları: geliştirici tahminidir, tarihî kaynakla tek tek doğrulanmamıştır. Yetenek puanları ve bütün denge sayıları oyun içindir.</li>
+    <li>Armalar oyunun ürettiği simgelerdir (devlet rengi + resmî din simgesi); tarihî arma iddiası taşımaz.</li></ul>
+    <h4>Yazılım ve yazı tipleri</h4><ul>
+    <li>three.js (MIT), earcut (ISC); Cinzel, Cormorant Garamond, Inter yazı tipleri (SIL Open Font License 1.1).</li>
+    <li>Oyun çalışırken dış bir sunucuya bağlanmaz; kayıtlar yalnızca bu tarayıcıda tutulur.</li></ul>`;
   $("menuBtn").onclick = async () => { await anaMenuyuHazirla(); menuGoster("ana", false); };
 
   // --- Denetimler

@@ -741,3 +741,11 @@ Kaynak belge: `MASTER_SPEC.md` (v1.3). Orijinal keşif çıktısı:
   ve lisans kontrolü) başlar.
 - **Onay kaydı:** Kullanıcı: "1- gayet iyi 2- evet 3- evet" (2026-10-29)
 - **Durum:** GEÇERLİ
+
+## DEC-0059 — 9d kabulü ve 9e'ye geçiş
+
+- **Tarih:** 2026-10-29
+- **Seçilen karar:** 9d (lisans kontrol listesi, kaynaklar belgesi ve ekranı, veri etiket testi) kabul edildi; commit + push
+  onaylandı; 9e (performans ölçümleri, paket boyutu, erişilebilirlik, yazı boyutu ayarı) başlar.
+- **Onay kaydı:** Kullanıcı: "1- evet 2- evet 3- evet" (2026-10-29)
+- **Durum:** GEÇERLİ

@@ -1,5 +1,12 @@
 # CHANGELOG
 
+## 2026-10-29 — TASK-0012 / 9d: kaynaklar ve lisans kontrolü (Claude)
+
+- DEC-0058: 9c kabul.
+- `docs/LISANS-KONTROL.md`: veri, yazılım ve yazı tipi lisansları; dış ağ isteği yok; açık noktalar (tahmini tablolar doğrulanmadı,
+  yayında OFL metinleri eklenecek). `veri/senaryo-1453/KAYNAKLAR.md`: bütün veri dosyaları ve tahmini tablolar.
+- Oyun içi **Kaynaklar** ekranı ayrıntılandı. `packages/sim/test/veri-kaynak.test.ts` (3 test; toplam 187).
+
 ## 2026-10-29 — TASK-0012 / 9c: oyun içi rehber ve sözlük (Claude)
 
 - DEC-0057: 9b kabul ("biraz durağan ama okey").
