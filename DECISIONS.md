@@ -593,3 +593,13 @@ Kaynak belge: `MASTER_SPEC.md` (v1.3). Orijinal keşif çıktısı:
   3. 7a commit + push onaylandı; 7b (nüfus grupları, din/kültür, göç) kapsamı önce onaya sunulur.
 - **Onay kaydı:** Kullanıcı: "1- başarılı 2- uygun 3- evet 4- evet" (2026-10-29)
 - **Durum:** GEÇERLİ
+
+## DEC-0045 — 7b (nüfus grupları, din/kültür, göç) kapsamı
+
+- **Tarih:** 2026-10-29
+- **Seçilen karar:** TASK-0010 / 7b kapsamı onaylandı: din × kültür nüfus grupları (toplam = şehir nüfusu), devlet/bölge
+  varsayılanı + önemli şehir düzeltmeleri (tahmini tablo onaya sunulur), yıllık doğal artış, kuşatma/işgal kaybı ve
+  göç, basit **iskân** emri, aynı din +10 / farklı din ailesi −10 ilişki bileşeni, "Din" ve "Kültür" harita modları.
+  Test amaçlı günlük rastgele nüfus artışı kaldırılır.
+- **Onay kaydı:** Kullanıcı: "1- evet 2- evet 3- evet 4- evet" (2026-10-29)
+- **Durum:** GEÇERLİ

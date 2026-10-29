@@ -18,7 +18,7 @@ kaynak: `MASTER_SPEC.md` §21 ve §27.
 ## Mevcut durum
 
 - **Aşama:** 6 kapandı (DEC-0041); Aşama 4 ve 5 de kapalı (DEC-0037). Aşama 7 başladı (DEC-0042); TASK-0010
-  7a kabul edildi (DEC-0044); 7b kapsamı onay bekliyor. Durum için `DEVIR-TESLIM.md`.
+  7a kabul edildi (DEC-0044); 7b onaylandı (DEC-0045), uygulanıyor. Durum için `DEVIR-TESLIM.md`.
 - **Yerel sunucu (DEC-0036):** Kullanıcı da agent da **5173**'teki geliştirme sunucusunu kullanır
   (kullanıcı başlattı, kapatılmaz; kod değişince kendini yeniler). Kullanıcıya test adımı 5173 ile verilir;
   4175 önizlemesi kullanılmaz. Aşama 2 kapandı
