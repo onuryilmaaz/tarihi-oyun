@@ -26,7 +26,7 @@ const ordu = (d: DunyaDurumu, ad: string) => d.ordular.find((o) => o.ad === ad)!
 describe("ordu hareketi", () => {
   it("başlangıçta Osmanlı'nın iki test ordusu var", () => {
     const d = yeni();
-    expect(d.ordular.map((o) => [o.ad, d.devletler[o.devlet].id])).toEqual([["Rumeli Ordusu", "osm"], ["Anadolu Ordusu", "osm"]]);
+    expect(d.ordular.filter((o) => d.devletler[o.devlet].id === "osm").map((o) => o.ad)).toEqual(["Rumeli Ordusu", "Anadolu Ordusu"]);
     expect(degismezler(d)).toEqual([]);
   });
 
@@ -60,7 +60,7 @@ describe("ordu hareketi", () => {
     const rumeli = ordu(d, "Rumeli Ordusu");
     const buda = emirVer(d, { tur: "orduHedef", ordu: rumeli.id, ...hedef(d, "Buda") }, B);
     expect(buda.gecerli).toBe(false);
-    if (!buda.gecerli) expect(buda.neden).toMatch(/Macaristan Krallığı toprağına girmek için/);
+    if (!buda.gecerli) expect(buda.neden).toMatch(/Macaristan Krallığı toprağına girmek için savaş ilan etmek gerekir/);
     // Devletsiz ama kara yolu olmayan hedef: Avustralya (deniz taşıması Aşama 8)
     const avustralya = ag.dugumler.findIndex((n) => d.birimler[n.b].sahip === -1 && n.x > 1300000 && n.y < -200000);
     expect(avustralya).toBeGreaterThanOrEqual(0);

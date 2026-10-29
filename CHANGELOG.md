@@ -1,5 +1,23 @@
 # CHANGELOG
 
+## 2026-10-29 — TASK-0007 / 4a: savaş, görünürlük, muharebe, moral
+
+### Eklendi
+- DEC-0027 (Aşama 4 kararları), TASK-0007, `docs/milestones/ASAMA-4.md`.
+- `packages/sim/src/savas.ts`: savaş durumu, görünürlük (AT-013), muharebe başlatma ve günlük
+  muharebe, takip, geri çekilme, dağılma, moral toparlanması, ortamdan bağımsız sayı biçimi.
+- `packages/sim/src/denge.ts`: tüm [TASLAK] denge değerleri.
+- Emirler: `savasIlan`, `orduTutum`; garnizon orduları; kayıt şeması 3.
+- İstemci: yabancı ordu işaretleri (yaklaşık büyüklük; tıklayınca devleti seçer), savaş ilanı,
+  tutum seçimi, moral göstergesi, savaşlar listesi, muharebe raporu penceresi.
+- 7 yeni test (toplam 48); determinizm kurallarına yerel ayar biçimlendirme yasağı.
+
+### Değişti
+- Savaş ilanı onayı tarayıcı penceresi yerine oyunun kendi onay ekranında (DEC-0028).
+- `DEVIR-TESLIM.md` eklendi; AGENTS.md'ye devir teslim ve arayüz/iletişim kuralları (DEC-0028).
+- Senaryo verisi: şehirlere hareket ağı düğümü ve konum eklendi.
+- Erişim kuralı: savaşta olunan devletin toprakları geçilebilir.
+
 ## 2026-10-29 — TASK-0006: Aşama 3 siyasi kontrol ve ordu hareketi
 
 ### Eklendi

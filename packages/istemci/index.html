@@ -63,6 +63,42 @@
     .ordu-satir small { display: block; color: var(--soluk); font-size: 11px; }
     #orduDetay { margin-top: 8px; }
     .isgal { color: var(--uyari); }
+    .ordu.yabanci { border-style: dashed; font-style: italic; background: rgba(28,24,20,.72); cursor: pointer; }
+    .ordu.muharebede::after { content: "⚔"; color: var(--uyari); }
+    .ordu .moral { display: block; width: 18px; height: 3px; border-radius: 2px; margin-left: 2px;
+      background: linear-gradient(90deg, var(--vurgu) var(--moral), rgba(239,230,212,.2) var(--moral)); }
+    .moral-satir { display: flex; align-items: center; gap: 8px; font-size: 12px; }
+    .moral-satir span { color: var(--soluk); }
+    .moral.buyuk { flex: 1; height: 6px; width: auto; display: block; border-radius: 3px;
+      background: linear-gradient(90deg, var(--vurgu) var(--moral), rgba(239,230,212,.15) var(--moral)); }
+    .tutumlar { display: flex; margin-top: 8px; }
+    .tutumlar button { flex: 1; border-radius: 0; margin-left: -1px; padding: 4px 6px; font-size: 12px; }
+    .tutumlar button:first-child { border-radius: 6px 0 0 6px; margin-left: 0; }
+    .tutumlar button:last-child { border-radius: 0 6px 6px 0; }
+    #savasListesi, #raporListesi { list-style: none; margin: 0; padding: 0; display: grid; gap: 6px; }
+    #savasListesi li { display: flex; gap: 8px; align-items: flex-start; }
+    #savasListesi li .renk { margin-top: 3px; }
+    #savasListesi small, .rapor-satir small { display: block; color: var(--soluk); font-size: 11px; }
+    #savasListesi .bos, #raporListesi .bos { color: var(--soluk); display: block; }
+    .rapor-satir { width: 100%; text-align: left; }
+    .zafer { color: #9fcf7a; } .yenilgi { color: var(--hata); }
+    .savas-durumu { color: var(--uyari); margin: 10px 0 0; }
+    .eylem { margin-top: 12px; }
+    button.tehlike { border-color: var(--hata); color: #ffd9d2; }
+    #onay { position: fixed; inset: 0; display: grid; place-items: center; background: rgba(15, 12, 9, .5); z-index: 12; }
+    #onay .panel { position: static; width: min(440px, calc(100% - 32px)); padding: 22px; text-align: center; }
+    #onay h3 { font-family: "Cinzel", serif; margin: 0 0 8px; font-size: 18px; }
+    #onay p { margin: 0 0 18px; }
+    #onay .satir { justify-content: center; }
+    #rapor { position: fixed; inset: 0; display: grid; place-items: center; background: rgba(15, 12, 9, .45); z-index: 10; }
+    #rapor .panel { position: static; width: min(640px, calc(100% - 32px)); padding: 20px; }
+    #rapor h3 { font-family: "Cinzel", serif; margin: 0 0 4px; font-size: 18px; }
+    #rapor h4 { margin: 14px 0 6px; font-size: 12px; text-transform: uppercase; letter-spacing: .08em; color: var(--soluk); }
+    #rapor table { width: 100%; border-collapse: collapse; margin-top: 12px; font-variant-numeric: tabular-nums; }
+    #rapor th { text-align: left; color: var(--soluk); font-weight: 500; font-size: 11.5px; border-bottom: 1px solid var(--cizgi); padding: 4px 6px; }
+    #rapor td { padding: 6px; border-bottom: 1px solid var(--cizgi); vertical-align: top; }
+    #rapor td small { display: block; color: var(--soluk); font-size: 11px; }
+    #rapor ul { margin: 0; padding-left: 18px; }
 
     /* Üst durum çubuğu */
     #ust { top: 12px; left: 12px; right: 12px; height: var(--ust); padding: 0 14px; display: flex; align-items: center;
@@ -159,6 +195,10 @@
     <h2>Ordular</h2>
     <ul id="orduListesi"></ul>
     <div id="orduDetay" hidden></div>
+    <h2>Savaşlar</h2>
+    <ul id="savasListesi"></ul>
+    <h2>Muharebe raporları</h2>
+    <ul id="raporListesi"></ul>
     <h2>Olay günlüğü</h2>
     <ul id="gunluk"></ul>
     <p class="not" id="bekleyen"></p>
@@ -195,6 +235,21 @@
       <p id="kesintiMetin"></p>
       <button id="kesintiTamam">Anladım</button>
       <p class="not">Kararınızı verin, sonra turu yeniden ilerletin.</p>
+    </div>
+  </div>
+
+  <div id="onay" hidden>
+    <div class="panel" role="alertdialog" aria-labelledby="onayBaslik" aria-describedby="onayMetin">
+      <h3 id="onayBaslik"></h3>
+      <p id="onayMetin"></p>
+      <div class="satir"><button id="onayHayir">Vazgeç</button><button id="onayEvet"></button></div>
+    </div>
+  </div>
+
+  <div id="rapor" hidden>
+    <div class="panel" role="dialog" aria-label="Muharebe raporu">
+      <div id="raporIcerik"></div>
+      <div class="satir" style="margin-top:14px"><button id="raporKapat">Kapat</button></div>
     </div>
   </div>
 

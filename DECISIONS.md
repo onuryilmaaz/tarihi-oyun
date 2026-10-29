@@ -378,3 +378,33 @@ Kaynak belge: `MASTER_SPEC.md` (v1.3). Orijinal keşif çıktısı:
   Sıradaki aşama: Aşama 4 (savaş, kuşatma ve barış).
 - **Onay kaydı:** Kullanıcı: "hepsi başarılı", "Evet şunalık gayet iyi", "onaylıyorum" (2026-10-29)
 - **Durum:** GEÇERLİ
+
+## DEC-0027 — Aşama 4 kararları (TASK-0007)
+
+- **Tarih:** 2026-10-29
+- **Seçilen karar:**
+  1. **Düşman davranışı (AI'ye kadar):** Yabancı ordular yerinde savunur; temas olursa savaşır,
+     yenilirse en yakın kendi şehrine çekilir; kendiliğinden saldırmaz. Barışta basit kural: savaş
+     skoru talebi karşılıyorsa kabul. Gerçek AI Aşama 6'da.
+  2. **Görünürlük:** Oyuncu kendi topraklarını, bunlara komşu birimleri ve ordularının 2 düğüm
+     çevresini görür; dışarıdaki yabancı ordular görünmez. Görülen düşmanın büyüklüğü yaklaşık
+     gösterilir; kesin sayı istemciye gönderilmez (AT-013).
+  3. **Muharebe:** Günlük muharebe turları (en çok 5 gün); kayıp sayı × moral × arazi (savunana
+     zorluk bonusu) ile orantılı; tohumlu ±%15 oynama; moral eşiği aşılınca geri çekilme, tamamen
+     çöküşte dağılma. Komutan, birlik türü ve teknoloji sonradan aynı formüle eklenir.
+  4. **Teslim sırası:** 4a (savaş, görünürlük, muharebe, moral, geri çekilme) → 4b (asker toplama,
+     maaş, ikmal, birleştir/böl) → 4c (kuşatma, işgal, barış); her alt teslimden sonra kullanıcı testi.
+- **Onay kaydı:** Kullanıcı: "önerilerin gayet yerinde. onaylıyorum" (2026-10-29)
+- **Durum:** GEÇERLİ
+
+## DEC-0028 — Arayüz pencereleri ve agent devir teslimi
+
+- **Tarih:** 2026-10-29
+- **Seçilen karar:**
+  1. Tarayıcının kendi pencereleri (alert, confirm, prompt) kullanılmaz; onaylar ve uyarılar oyunun
+     kendi tasarımıyla gösterilir. Savaş ilanı onayı `#onay` penceresine taşındı.
+  2. Çalışma farklı AI agent'lar (Claude, Codex vb.) arasında devredilebilir. Oturumu biten agent
+     `DEVIR-TESLIM.md`'yi günceller; yeni agent onu okuyarak aynı kurallarla devam eder.
+- **Onay kaydı:** Kullanıcı: "onay ekranı da bizim tasarladığımız bir ekran olsun… codex e geçicem
+  kaldığın yeri onun devam edeceği şekilde hallet. aynı şeyi o da limiti bitince yapsın." (2026-10-29)
+- **Durum:** GEÇERLİ

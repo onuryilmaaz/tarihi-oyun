@@ -51,10 +51,11 @@ function icMesafe(n: AgDugum, x0: number, y0: number, x1: number, y1: number): n
 }
 const zorlu = (m: number, z: number) => Math.round((m * z) / 100);
 
-/** Diplomasi gelene kadar erişim kuralı (DEC-0025/3): kendi ve devletsiz topraklar. */
+/** Erişim kuralı (DEC-0025/3): kendi ve devletsiz topraklar; savaşta olunan devletin toprakları (DEC-0027). */
 export function gecilebilir(d: DunyaDurumu, ag: HareketAgi, dugum: number, devlet: number): boolean {
   const sahip = d.birimler[ag.dugumler[dugum].b]?.sahip ?? -1;
-  return sahip === devlet || sahip === -1;
+  if (sahip === devlet || sahip === -1) return true;
+  return d.savaslar.some((s) => (s.saldiran === devlet && s.savunan === sahip) || (s.saldiran === sahip && s.savunan === devlet));
 }
 
 // İkili yığın (öncelik kuyruğu); eşitlikte düğüm indeksi küçük olan önce — deterministik
@@ -118,7 +119,7 @@ export function rotaBul(d: DunyaDurumu, ag: HareketAgi, ordu: OrduDurumu, hedef:
   if (!Number.isSafeInteger(hedef.dugum) || hedef.dugum < 0 || hedef.dugum >= N) return { gecerli: false, neden: "Hedef karada değil." };
   if (!gecilebilir(d, ag, hedef.dugum, ordu.devlet)) {
     const sahip = d.birimler[ag.dugumler[hedef.dugum].b].sahip;
-    return { gecerli: false, neden: `${d.devletler[sahip].ad} toprağına girmek için geçiş izni ya da savaş gerekir (diplomasi ve savaş sonraki aşamalarda).` };
+    return { gecerli: false, neden: `${d.devletler[sahip].ad} toprağına girmek için savaş ilan etmek gerekir (geçiş izni diplomasiyle Aşama 6'da).` };
   }
   const bas = ordu.dugum;
   const maliyet = new Float64Array(N).fill(Infinity);

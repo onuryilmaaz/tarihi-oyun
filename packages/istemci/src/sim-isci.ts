@@ -2,8 +2,8 @@
 // ana iş parçacığı yalnızca özet alır, böylece uzun turlar haritayı dondurmaz.
 
 import {
-  agHazirla, baslangicDurumu, durumOzeti, emirVer, kalanYol, kaydet, orduKonumu, rotaBul, tarihMetni,
-  turSuresiAyarla, turuIlerlet, yukle, TUR_SURESI_ADLARI, type Baglam, type DunyaDurumu,
+  agHazirla, baslangicDurumu, durumOzeti, emirVer, gorunurYabanciOrdular, kalanYol, kaydet, orduKonumu, orduRotasi,
+  tarihMetni, turSuresiAyarla, turuIlerlet, yukle, TUR_SURESI_ADLARI, type Baglam, type DunyaDurumu,
 } from "@tarihi/sim";
 import type { Istek, Ozet, Yanit } from "./sim-protokol";
 
@@ -23,7 +23,7 @@ function ozet(durum: DunyaDurumu): Ozet {
     bekleyenEmir: durum.emirKuyrugu.length,
     planliKesinti: durum.planliKesintiler.map((k) => ({ tarih: tarihMetni(k.gun), neden: k.neden })),
     hash: durumOzeti(durum),
-    ordular: durum.ordular.map((o) => {
+    ordular: durum.ordular.filter((o) => o.devlet === durum.ayarlar.oyuncu).map((o) => {
       const k = orduKonumu(o);
       const kalan = kalanYol(o);
       return {
@@ -32,8 +32,15 @@ function ozet(durum: DunyaDurumu): Ozet {
         rota: o.rota.map((a) => [a.x, a.y] as [number, number]),
         kalanGun: o.rota.length ? kalan.gun : 0,
         varisTarihi: o.rota.length ? tarihMetni(durum.gun + kalan.gun) : null,
+        moral: o.moral, tutum: o.tutum, muharebede: o.muharebe !== null, cekiliyor: o.cekiliyor,
       };
     }),
+    // Yabancı ordular yalnızca görünürlük kuralıyla süzülerek ve yaklaşık büyüklükle gönderilir (DEC-0027/2)
+    yabanciOrdular: baglam.ag ? gorunurYabanciOrdular(durum, baglam.ag, durum.ayarlar.oyuncu)
+      .map((y) => ({ ...y, ...orduKonumu(durum.ordular.find((o) => o.id === y.id)!) })) : [],
+    savaslar: durum.savaslar.filter((s) => s.saldiran === durum.ayarlar.oyuncu || s.savunan === durum.ayarlar.oyuncu)
+      .map((s) => ({ karsi: s.saldiran === durum.ayarlar.oyuncu ? s.savunan : s.saldiran, baslangic: tarihMetni(s.baslangic), saldiran: s.saldiran === durum.ayarlar.oyuncu })),
+    raporlar: durum.muharebeRaporlari.filter((r) => r.taraflar.some((t) => t.devlet === durum.ayarlar.oyuncu)).slice(-10),
     birimIsgal: durum.birimler.flatMap((b, i) => (b.kontrol !== b.sahip ? [[i, b.kontrol, b.isgalBaslangic ?? durum.gun]] : [])) as [number, number, number][],
     sehirIsgal: durum.sehirler.flatMap((s, i) => (s.kontrol !== s.devlet ? [[i, s.kontrol, s.isgalBaslangic ?? durum.gun]] : [])) as [number, number, number][],
   };
@@ -68,7 +75,7 @@ function isle(i: Istek): Yanit {
     case "rotaOnizle": {
       const o = d.ordular.find((x) => x.id === i.ordu);
       if (!o || !baglam.ag) return { id: i.id, tamam: true, ozet: ozet(d), rota: { gecerli: false, neden: "Ordu ya da hareket ağı bulunamadı." } };
-      const r = rotaBul(d, baglam.ag, { ...o, ...orduKonumu(o), ilerleme: 0, rota: [] }, i);
+      const r = orduRotasi(d, baglam.ag, o, i);
       return {
         id: i.id, tamam: true, ozet: ozet(d),
         rota: r.gecerli

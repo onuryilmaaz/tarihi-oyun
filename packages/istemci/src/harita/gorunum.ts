@@ -5,7 +5,7 @@ import * as THREE from "three";
 import { LineMaterial } from "three/addons/lines/LineMaterial.js";
 import { LineSegments2 } from "three/addons/lines/LineSegments2.js";
 import { LineSegmentsGeometry } from "three/addons/lines/LineSegmentsGeometry.js";
-import { tarihMetni } from "@tarihi/sim";
+import { tarihMetni, type YabanciOrdu } from "@tarihi/sim";
 import type { OrduOzeti } from "../sim-protokol";
 import { birimBul, type Harita } from "./veri";
 import { TEMALAR } from "./temalar";
@@ -36,7 +36,7 @@ export interface HaritaGorunumu {
   devletRenkKutusu(d: number): string;
   oyuncuyuAyarla(devletIndeksi: number): void;
   /** Ordu işaretleri ve rotaları; planli: emri verilmiş ama yürüyüşe başlamamış rotalar (kesikli) */
-  ordulariGoster(ordular: OrduOzeti[], secili: number | null, planli: Map<number, [number, number][]>): void;
+  ordulariGoster(ordular: OrduOzeti[], yabanci: YabanciOrdu[], secili: number | null, planli: Map<number, [number, number][]>): void;
   /** [birim, kontrol eden, gün], [şehir, kontrol eden, gün] */
   isgalGoster(birimler: [number, number, number][], sehirler: [number, number, number][]): void;
   orduyaOdaklan(o: OrduOzeti): void;
@@ -44,6 +44,8 @@ export interface HaritaGorunumu {
   olaylar: {
     orduSec?: (id: number) => void;
     hedef?: (x: number, y: number, birim: number) => void; // Miller derece
+    /** Bilgi panelinin altına eklenecek HTML (ör. savaş ilanı düğmesi) */
+    ekBilgi?: (s: NonNullable<Secim>) => string;
   };
 }
 
@@ -86,7 +88,7 @@ export function haritaGorunumuKur(h: Harita, wikidata: Record<string, WdDevlet>,
   let isgalMesh: THREE.Mesh | null = null;
   const birimIsgal = new Map<number, [number, number]>(); // birim → [devlet, gün]
   const sehirIsgal = new Map<number, [number, number]>();
-  let orduListesi: OrduOzeti[] = [];
+  let orduListesi: { id: number; x: number; y: number }[] = [];
   let seciliOrdu: number | null = null;
   const orduOgeleri = new Map<number, HTMLDivElement>();
   let kirli = true;
@@ -223,7 +225,7 @@ export function haritaGorunumuKur(h: Harita, wikidata: Record<string, WdDevlet>,
         ${kontrolSatiri(sehirIsgal.get(secim.id))}
       </dl>`;
     }
-    bilgi.innerHTML = `<nav class="kirinti">${yol.join('<span class="ayrac">›</span>')}</nav>${govde}`;
+    bilgi.innerHTML = `<nav class="kirinti">${yol.join('<span class="ayrac">›</span>')}</nav>${govde}${olaylar.ekBilgi?.(secim) ?? ""}`;
   };
   ogeler.bilgi.addEventListener("click", (e) => {
     const hedef = (e.target as HTMLElement).closest<HTMLElement>("[data-secim]");
@@ -402,10 +404,32 @@ export function haritaGorunumuKur(h: Harita, wikidata: Record<string, WdDevlet>,
       g.cx = o.x / 1e4; g.cy = o.y / 1e4; g.z = Math.max(g.z, 40);
       istek();
     },
-    ordulariGoster(ordular, secili, planli) {
-      orduListesi = ordular;
+    ordulariGoster(ordular, yabanci, secili, planli) {
+      orduListesi = [...ordular, ...yabanci];
       seciliOrdu = secili;
-      for (const [id, el] of orduOgeleri) if (!ordular.some((o) => o.id === id)) { el.remove(); orduOgeleri.delete(id); }
+      for (const [id, el] of orduOgeleri) if (!orduListesi.some((o) => o.id === id)) { el.remove(); orduOgeleri.delete(id); }
+      // Görülen yabancı ordular: yaklaşık büyüklük, seçilemez (bilgi asimetrisi, DEC-0027/2)
+      for (const o of yabanci) {
+        let el = orduOgeleri.get(o.id);
+        if (!el) {
+          el = document.createElement("div");
+          el.className = "ordu yabanci";
+          el.addEventListener("pointerdown", (e) => e.stopPropagation());
+          // Yabancı ordunun işaretine tıklamak devletini seçer (bilgi paneli, savaş ilanı)
+          el.addEventListener("click", (e) => { e.stopPropagation(); sec({ tur: "devlet", id: o.devlet }); });
+          el.addEventListener("contextmenu", (e) => {
+            e.preventDefault(); e.stopPropagation();
+            if (seciliOrdu === null || !olaylar.hedef) return;
+            const [x, y] = ekrandanDunyaya(e.clientX, e.clientY);
+            olaylar.hedef(x, y, birimBul(h, x, y));
+          });
+          ogeler.orduKap.append(el);
+          orduOgeleri.set(o.id, el);
+        }
+        el.innerHTML = `${devletRenkKutusu(o.devlet)}<b>~${Math.round(o.yaklasikAsker / 1000)}B</b>`;
+        el.title = `${o.ad} · yaklaşık ${o.yaklasikAsker.toLocaleString("tr-TR")} asker (kesin sayı bilinmiyor)`;
+        el.classList.toggle("muharebede", o.muharebede);
+      }
       for (const o of ordular) {
         let el = orduOgeleri.get(o.id);
         if (!el) {
@@ -425,10 +449,11 @@ export function haritaGorunumuKur(h: Harita, wikidata: Record<string, WdDevlet>,
           orduOgeleri.set(o.id, el);
         }
         const asker = o.asker >= 1000 ? `${Math.round(o.asker / 1000)}B` : String(o.asker);
-        el.innerHTML = `${devletRenkKutusu(o.devlet)}<b>${asker}</b>`;
-        el.title = `${o.ad} · ${o.asker.toLocaleString("tr-TR")} asker`;
+        el.innerHTML = `${devletRenkKutusu(o.devlet)}<b>${asker}</b><i class="moral" style="--moral:${o.moral / 10}%"></i>`;
+        el.title = `${o.ad} · ${o.asker.toLocaleString("tr-TR")} asker · moral %${Math.round(o.moral / 10)}`;
         el.classList.toggle("secili", o.id === secili);
-        el.classList.toggle("yuruyor", o.yuruyor);
+        el.classList.toggle("yuruyor", o.yuruyor && !o.muharebede);
+        el.classList.toggle("muharebede", o.muharebede);
       }
       const yuruyen: number[] = [], plan: number[] = [];
       for (const o of ordular) {

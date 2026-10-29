@@ -5,6 +5,7 @@ kaynak: `MASTER_SPEC.md` §21 ve §27.
 
 ## Başlamadan önce
 
+0. **`DEVIR-TESLIM.md` dosyasını oku** — önceki agent'ın kaldığı yer, bekleyen kararlar, sıradaki iş.
 1. `MASTER_SPEC.md` dosyasını tamamen oku.
 2. `DECISIONS.md` dosyasını oku; buradaki kayıtlar MASTER_SPEC'teki
    [TASLAK] maddelerinin önündedir.
@@ -16,7 +17,8 @@ kaynak: `MASTER_SPEC.md` §21 ve §27.
 
 ## Mevcut durum
 
-- **Aşama:** 4 (savaş, kuşatma ve barış) — görev kartı hazırlanıyor. Aşama 3 kapandı (DEC-0026).
+- **Aşama:** 4 (savaş, kuşatma ve barış) — 4a tamamlandı, kullanıcı testi bekliyor; sonra 4b, 4c.
+  Aşama 3 kapandı (DEC-0026). Denge değerleri yalnızca `packages/sim/src/denge.ts` içinde tutulur.
 - **Yerel sunucular:** Kullanıcı oyunu 4175'te (`vite preview`) dener; agent denemelerini 5173'teki
   geliştirme sunucusunda yapar (kullanıcı başlattı, kapatılmaz). Aşama 2 kapandı
   (DEC-0024), Aşama 1 kapandı (DEC-0019). Görsel yön: Tarihî atlas (DEC-0018).
@@ -69,3 +71,17 @@ modül geliştirmek.
   Neler belirsiz? Senden hangi kararı istiyorum?
 - Aşama kapısı yalnızca açık kullanıcı onayıyla geçilir. Sessizlik onay
   değildir.
+
+## Devir teslim (DEC-0028)
+
+- Bu projede farklı AI agent'lar (Claude, Codex vb.) sırayla çalışabilir. Hepsi aynı kurallara uyar.
+- Oturumun ya da kullanım limitinin bitmesine yaklaşınca, son işten önce `DEVIR-TESLIM.md`'yi
+  güncelle (durum, bekleyen kararlar, sıradaki iş, commit edilmemiş değişiklikler, yarım kalan iş).
+- Devralan agent ilk iş olarak `DEVIR-TESLIM.md`'yi okur ve kullanıcıya kısaca nerede kaldığını söyler.
+
+## Arayüz ve iletişim kuralları
+
+- Tarayıcının kendi pencereleri (alert/confirm/prompt) kullanılmaz; oyunun kendi tasarımı kullanılır (DEC-0028).
+- Kullanıcıyla Türkçe konuşulur. Kararlar numaralı sorulur ve her birine öneri yazılır.
+- Kullanıcıya test adımları sade ve tıklama tıklama verilir; önce agent akışı kendisi dener.
+- Kod değişince `npm run build` ile 4175'teki önizleme güncellenir.

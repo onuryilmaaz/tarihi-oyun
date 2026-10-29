@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { KayitHatasi, durumOzeti, kaydet, turSuresiAyarla, turuIlerlet, yukle } from "../src";
+import { KayitHatasi, SEMA_SURUMU, durumOzeti, kaydet, turSuresiAyarla, turuIlerlet, yukle } from "../src";
 import { yeniDurum } from "./yardimci";
 
 describe("kayıt / yükleme", () => {
@@ -17,8 +17,8 @@ describe("kayıt / yükleme", () => {
     const iyi = kaydet(yeniDurum());
     expect(() => yukle("{bozuk")).toThrow(KayitHatasi);
     expect(() => yukle(JSON.stringify({ tur: "baska" }))).toThrow(/oyun kaydı değil/);
-    expect(() => yukle(iyi.replace('"sema":2', '"sema":99'))).toThrow(/daha yeni/);
-    expect(() => yukle(iyi.replace('"sema":2', '"sema":1'))).toThrow(/eski bir prototip/);
+    expect(() => yukle(iyi.replace(`"sema":${SEMA_SURUMU}`, '"sema":99'))).toThrow(/daha yeni/);
+    expect(() => yukle(iyi.replace(`"sema":${SEMA_SURUMU}`, '"sema":1'))).toThrow(/eski bir prototip/);
     expect(() => yukle(iyi, "baska-senaryo@1")).toThrow(/farklı bir senaryo/);
     const p = JSON.parse(iyi);
     p.durum.devletler[0].hazine = 1.5;

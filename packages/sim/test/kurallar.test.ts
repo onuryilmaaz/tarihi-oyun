@@ -12,6 +12,7 @@ const YASAK: [RegExp, string][] = [
   [/Math\.(sin|cos|tan|asin|acos|atan2?|sinh|cosh|tanh|exp|expm1|log|log1p|log2|log10|pow|cbrt|hypot)\b/,
     "tarayıcılar arası farklı sonuç verebilen matematik fonksiyonu"],
   [/\*\*/, "** üs alma — Math.pow ile aynı risk"],
+  [/toLocale(String|DateString|TimeString)|Intl\./, "yerel ayara bağlı biçimlendirme — ortamlar arası farklı metin üretebilir"],
   [/\bfetch\(|\bXMLHttpRequest\b|\bdocument\.|\bwindow\./, "dış dünya erişimi — çekirdek saf olmalı"],
   [/from\s+["']node:|\bprocess\./, "Node.js API — çekirdek tarayıcıda da çalışmalı (test tipleri yalnızca testler için)"],
 ];

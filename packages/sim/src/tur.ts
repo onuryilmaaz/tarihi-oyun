@@ -22,10 +22,10 @@ export function turHedefi(gun: number, sure: TurSuresi): number {
 }
 
 /** Tek bir iç adım (bir gün). Kesinti olursa d.aktifKesinti dolar. */
-export function gunIlerlet(d: DunyaDurumu): void {
+export function gunIlerlet(d: DunyaDurumu, b: Baglam = BOS_BAGLAM): void {
   d.gun++;
-  gununSistemleri(d);
-  for (let i = 0; i < d.planliKesintiler.length; i++) {
+  gununSistemleri(d, b);
+  for (let i = 0; i < d.planliKesintiler.length && !d.aktifKesinti; i++) {
     if (d.planliKesintiler[i].gun === d.gun) {
       d.aktifKesinti = d.planliKesintiler[i];
       d.planliKesintiler.splice(i, 1);
@@ -40,7 +40,7 @@ export function turuIlerlet(d: DunyaDurumu, b: Baglam = BOS_BAGLAM): TurSonucu {
   d.aktifKesinti = null;
   emirleriUygula(d, b);
   const hedefGun = turHedefi(d.gun, d.ayarlar.turSuresi);
-  while (d.gun < hedefGun && !d.aktifKesinti) gunIlerlet(d);
+  while (d.gun < hedefGun && !d.aktifKesinti) gunIlerlet(d, b);
   const kesinti = d.aktifKesinti as Kesinti | null; // döngüde gunIlerlet tarafından atanır
   if (kesinti) olayEkle(d, { tur: "kesinti", devlet: d.ayarlar.oyuncu, metin: kesinti.neden });
   d.turNo++;

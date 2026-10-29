@@ -5,6 +5,8 @@ export * from "./rastgele";
 export * from "./durum";
 export * from "./emirler";
 export * from "./hareket";
+export * from "./denge";
+export * from "./savas";
 export * from "./sistemler";
 export * from "./tur";
 export * from "./kayit";

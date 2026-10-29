@@ -74,6 +74,9 @@ const senaryo = {
     birim: birimBul(s.x, s.y),
     baskent: s.b === 1,
     nufus: s.b === 1 ? 40000 : 10000, // [TASLAK — test değeri] gerçek nüfus verisi Aşama 7'de
+    dugum: dugumBul(s.x, millerLat(s.y)), // hareket ağındaki düğüm (ordu konuşlanması, geri çekilme hedefi)
+    x: Math.round(s.x * 10000),
+    y: Math.round(s.y * 10000),
   })),
   // DEC-0025/4: yalnızca oyuncu devlete 2 test ordusu [TASLAK — asker sayıları test değeri]
   ordular: [["Rumeli Ordusu", "Edirne", 20000], ["Anadolu Ordusu", "Bursa", 12000]].map(([ad, sehirAd, asker]) => {

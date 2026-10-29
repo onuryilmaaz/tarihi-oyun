@@ -1,6 +1,6 @@
 // Ana iş parçacığı ↔ simülasyon Worker'ı mesaj protokolü.
 
-import type { Dogrulama, Emir, OlayKaydi, RotaKirilimi, SenaryoVerisi, TurSonucu, TurSuresi } from "@tarihi/sim";
+import type { Dogrulama, Emir, MuharebeRaporu, OlayKaydi, RotaKirilimi, SenaryoVerisi, Tutum, TurSonucu, TurSuresi, YabanciOrdu } from "@tarihi/sim";
 
 export type Istek = { id: number } & (
   | { tip: "yeniOyun"; senaryo: SenaryoVerisi; tohum: number; oyuncu?: string }
@@ -23,6 +23,10 @@ export interface OrduOzeti {
   rota: [number, number][]; // kalan rota noktaları (anlık konumdan sonra)
   kalanGun: number;
   varisTarihi: string | null;
+  moral: number; // binde
+  tutum: Tutum;
+  muharebede: boolean;
+  cekiliyor: boolean;
 }
 
 export interface RotaOnizleme {
@@ -46,6 +50,9 @@ export interface Ozet {
   planliKesinti: { tarih: string; neden: string }[];
   hash: string;
   ordular: OrduOzeti[];
+  yabanciOrdular: YabanciOrdu[]; // yalnızca görünenler; kesin asker sayısı yok (AT-013)
+  savaslar: { karsi: number; baslangic: string; saldiran: boolean }[];
+  raporlar: MuharebeRaporu[]; // oyuncunun taraf olduğu son muharebeler
   birimIsgal: [number, number, number][]; // [birim, kontrol eden devlet, başlangıç günü]
   sehirIsgal: [number, number, number][];
 }

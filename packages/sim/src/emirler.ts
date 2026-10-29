@@ -1,8 +1,9 @@
 // Emir kuyruğu. Emirler verildiği anda doğrulanır (oyuncuya anında sebep gösterilir), turun başında
 // yeniden doğrulanıp uygulanır (MASTER_SPEC §3.2, evre 1). Tur ilerlemeden dünya değişmez (AT-004).
 
-import { olayEkle, type DunyaDurumu, type OrduDurumu } from "./durum";
-import { orduKonumu, rotaBul, type HareketAgi } from "./hareket";
+import { olayEkle, type DunyaDurumu, type OrduDurumu, type Tutum } from "./durum";
+import { savasta } from "./savas";
+import { orduKonumu, rotaBul, type HareketAgi, type RotaSonucu } from "./hareket";
 import { tarihMetni } from "./takvim";
 
 /** Statik senaryo verisi (dünya durumuna girmez, kayda yazılmaz). */
@@ -20,7 +21,11 @@ export type Emir =
   | { tur: "orduHedef"; ordu: number; x: number; y: number; dugum: number }
   | { tur: "orduDur"; ordu: number }
   // Test: askerî kontrolü değiştir (gerçek işgal savaşla Aşama 4'te; AT-007 modelinin sınanması)
-  | { tur: "testIsgal"; hedef: "birim" | "sehir"; indeks: number; devlet: number };
+  | { tur: "testIsgal"; hedef: "birim" | "sehir"; indeks: number; devlet: number }
+  // Serbest savaş ilanı (MASTER_SPEC §7.1); diplomatik sonuçlar Aşama 6'da
+  | { tur: "savasIlan"; devlet: number; hedef: number }
+  // Geri çekilme tutumu (DEC-0008)
+  | { tur: "orduTutum"; ordu: number; tutum: Tutum };
 
 export type Dogrulama = { gecerli: true } | { gecerli: false; neden: string };
 
@@ -53,11 +58,23 @@ export function emirDogrula(d: DunyaDurumu, e: Emir, b: Baglam = BOS_BAGLAM, kuy
       if (!o) return { gecerli: false, neden: "Ordu bulunamadı." };
       if (!b.ag) return { gecerli: false, neden: "Hareket ağı yüklenmedi." };
       if (![e.x, e.y, e.dugum].every(Number.isSafeInteger)) return { gecerli: false, neden: "Hedef koordinatı geçersiz." };
-      const r = rotaBul(d, b.ag, { ...o, ...orduKonumu(o), ilerleme: 0, rota: [] }, e);
+      const r = orduRotasi(d, b.ag, o, e, !kuyrukHaric);
       return r.gecerli ? { gecerli: true } : { gecerli: false, neden: r.neden };
     }
     case "orduDur":
       return orduBul(d, e.ordu) ? { gecerli: true } : { gecerli: false, neden: "Ordu bulunamadı." };
+    case "savasIlan":
+      if (!d.devletler[e.devlet] || !d.devletler[e.hedef]) return { gecerli: false, neden: "Devlet bulunamadı." };
+      if (e.devlet === e.hedef) return { gecerli: false, neden: "Bir devlet kendine savaş ilan edemez." };
+      if (savasta(d, e.devlet, e.hedef)) return { gecerli: false, neden: `${d.devletler[e.hedef].ad} ile zaten savaştasınız.` };
+      if (!kuyrukHaric && d.emirKuyrugu.some((x) => x.tur === "savasIlan" && x.devlet === e.devlet && x.hedef === e.hedef)) {
+        return { gecerli: false, neden: "Bu savaş ilanı zaten bir sonraki tur için bekliyor." };
+      }
+      return { gecerli: true };
+    case "orduTutum":
+      if (!orduBul(d, e.ordu)) return { gecerli: false, neden: "Ordu bulunamadı." };
+      if (!["temkinli", "dengeli", "inatci"].includes(e.tutum)) return { gecerli: false, neden: "Geçersiz tutum." };
+      return { gecerli: true };
     case "testIsgal": {
       const liste = e.hedef === "birim" ? d.birimler : d.sehirler;
       if (!Number.isSafeInteger(e.indeks) || !liste[e.indeks]) return { gecerli: false, neden: "Hedef bulunamadı." };
@@ -65,6 +82,18 @@ export function emirDogrula(d: DunyaDurumu, e: Emir, b: Baglam = BOS_BAGLAM, kuy
       return { gecerli: true };
     }
   }
+}
+
+/**
+ * Ordunun şu anki konumundan hedefe rota. bekleyenleriSay: kuyruktaki savaş ilanları da etkin sayılır
+ * (tur başında yürüyüşten önce uygulanırlar), böylece ilan ve yürüyüş aynı turda verilebilir.
+ */
+export function orduRotasi(d: DunyaDurumu, ag: HareketAgi, o: OrduDurumu, hedef: { x: number; y: number; dugum: number },
+  bekleyenleriSay = true): RotaSonucu {
+  const bekleyen = bekleyenleriSay ? d.emirKuyrugu.flatMap((x, i) =>
+    x.tur === "savasIlan" ? [{ id: -1 - i, saldiran: x.devlet, savunan: x.hedef, baslangic: d.gun }] : []) : [];
+  const gorunum = bekleyen.length ? { ...d, savaslar: [...d.savaslar, ...bekleyen] } : d;
+  return rotaBul(gorunum, ag, { ...o, ...orduKonumu(o), ilerleme: 0, rota: [] }, hedef);
 }
 
 /** Ordu yolun ortasındaysa bulunduğu noktada durur (ilerleme konuma işlenir). */
@@ -85,12 +114,13 @@ export function emirVer(d: DunyaDurumu, e: Emir, b: Baglam = BOS_BAGLAM): Dogrul
 
 /** Turun başında: kuyruktaki emirleri sırayla yeniden doğrula ve uygula. */
 export function emirleriUygula(d: DunyaDurumu, b: Baglam = BOS_BAGLAM): void {
-  const kuyruk = d.emirKuyrugu;
+  // Savaş ilanları önce: aynı turda verilen yürüyüş emirleri yeni savaşın topraklarına girebilsin
+  const kuyruk = [...d.emirKuyrugu.filter((e) => e.tur === "savasIlan"), ...d.emirKuyrugu.filter((e) => e.tur !== "savasIlan")];
   d.emirKuyrugu = [];
   for (const e of kuyruk) {
     const s = emirDogrula(d, e, b, true);
     if (!s.gecerli) {
-      olayEkle(d, { tur: "emir-reddedildi", devlet: e.tur === "harca" || e.tur === "testIsgal" ? e.devlet : d.ayarlar.oyuncu, metin: s.neden });
+      olayEkle(d, { tur: "emir-reddedildi", devlet: "devlet" in e ? e.devlet : d.ayarlar.oyuncu, metin: s.neden });
       continue;
     }
     switch (e.tur) {
@@ -118,6 +148,13 @@ export function emirleriUygula(d: DunyaDurumu, b: Baglam = BOS_BAGLAM): void {
         orduyuDurdur(o);
         break;
       }
+      case "savasIlan":
+        d.savaslar.push({ id: d.sonrakiSavasId++, saldiran: e.devlet, savunan: e.hedef, baslangic: d.gun });
+        olayEkle(d, { tur: "savas-ilani", devlet: e.devlet, metin: `${d.devletler[e.devlet].ad}, ${d.devletler[e.hedef].ad}'na savaş ilan etti.` });
+        break;
+      case "orduTutum":
+        orduBul(d, e.ordu)!.tutum = e.tutum;
+        break;
       case "testIsgal": {
         const hedef = e.hedef === "birim" ? d.birimler[e.indeks] : d.sehirler[e.indeks];
         const sahip = "sahip" in hedef ? hedef.sahip : hedef.devlet;

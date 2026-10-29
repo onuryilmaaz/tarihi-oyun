@@ -8,13 +8,15 @@ import { olayEkle, type DunyaDurumu } from "./durum";
 import { aralik } from "./rastgele";
 import { gundenTarih } from "./takvim";
 import { orduIlerlet } from "./hareket";
+import { moralToparla, muharebeGunleri, muharebeleriBaslat } from "./savas";
+import type { Baglam } from "./emirler";
 
 export type Siklik = "gunluk" | "aylik" | "yillik";
 
 export interface Sistem {
   id: string;
   siklik: Siklik;
-  calistir(d: DunyaDurumu): void;
+  calistir(d: DunyaDurumu, b: Baglam): void;
 }
 
 export const SISTEMLER: Sistem[] = [
@@ -24,14 +26,23 @@ export const SISTEMLER: Sistem[] = [
     siklik: "gunluk",
     calistir(d) {
       for (const o of d.ordular) {
-        if (!o.rota.length) continue;
+        if (!o.rota.length || o.muharebe !== null) continue; // muharebedeki ordu yürümez
         if (orduIlerlet(o)) {
           o.hedef = null;
-          olayEkle(d, { tur: "ordu-vardi", devlet: o.devlet, metin: `${o.ad} hedefine vardı.` });
+          if (o.cekiliyor) {
+            o.cekiliyor = false;
+            olayEkle(d, { tur: "ordu-vardi", devlet: o.devlet, metin: `${o.ad} geri çekilmeyi tamamladı.` });
+          } else {
+            olayEkle(d, { tur: "ordu-vardi", devlet: o.devlet, metin: `${o.ad} hedefine vardı.` });
+          }
         }
       }
     },
   },
+  // Savaş (TASK-0007/4a): temas → muharebe günü → moral toparlanması
+  { id: "muharebe-temas", siklik: "gunluk", calistir: (d) => muharebeleriBaslat(d) },
+  { id: "muharebe-gunu", siklik: "gunluk", calistir: (d, b) => muharebeGunleri(d, b.ag) },
+  { id: "moral-toparlanma", siklik: "gunluk", calistir: (d, b) => moralToparla(d, b.ag) },
   {
     // Test: her gün rastgele bir şehrin nüfusu 0–2 artar (rastgelelik akışını her gün kullanır)
     id: "test-nufus",
@@ -63,10 +74,10 @@ export const SISTEMLER: Sistem[] = [
   },
 ];
 
-export function gununSistemleri(d: DunyaDurumu): void {
+export function gununSistemleri(d: DunyaDurumu, b: Baglam): void {
   const t = gundenTarih(d.gun);
   const ayBasi = t.gun === 1, yilBasi = ayBasi && t.ay === 1;
-  for (const s of SISTEMLER) if (s.siklik === "gunluk") s.calistir(d);
-  if (ayBasi) for (const s of SISTEMLER) if (s.siklik === "aylik") s.calistir(d);
-  if (yilBasi) for (const s of SISTEMLER) if (s.siklik === "yillik") s.calistir(d);
+  for (const s of SISTEMLER) if (s.siklik === "gunluk") s.calistir(d, b);
+  if (ayBasi) for (const s of SISTEMLER) if (s.siklik === "aylik") s.calistir(d, b);
+  if (yilBasi) for (const s of SISTEMLER) if (s.siklik === "yillik") s.calistir(d, b);
 }

@@ -4,6 +4,7 @@
 import { tarihtenGun, type Tarih } from "./takvim";
 import type { Emir } from "./emirler";
 import { HAREKET, type AgVerisi, type RotaAdimi } from "./hareket";
+import { DENGE } from "./denge";
 
 export type TurSuresi = "hafta" | "ay" | "ceyrek" | "yil";
 export const TUR_SURESI_ADLARI: Record<TurSuresi, string> = {
@@ -30,8 +31,55 @@ export interface SehirDurumu {
   kontrol: number; // askerî kontrol — şehir çevresinden ayrı ele geçirilebilir (AT-007)
   isgalBaslangic: number | null;
   birim: number; // -1 = bilinmiyor
+  dugum: number; // hareket ağı düğümü; -1 = bilinmiyor
   nufus: number;
   baskent: boolean;
+}
+
+/** Geri çekilme tutumu: muharebede moral bu eşiğin altına düşünce çekilir (DEC-0008, DEC-0027/3) */
+export type Tutum = "temkinli" | "dengeli" | "inatci";
+
+export interface Savas {
+  id: number;
+  saldiran: number;
+  savunan: number;
+  baslangic: number;
+}
+
+export interface MuharebeTarafi {
+  devlet: number;
+  ordular: number[]; // ordu kimlikleri
+  baslangicAsker: number;
+  kayip: number;
+  baslangicMoral: number;
+}
+
+export interface Muharebe {
+  id: number;
+  dugum: number;
+  baslangic: number;
+  gun: number; // geçen muharebe günü
+  taraflar: [MuharebeTarafi, MuharebeTarafi];
+}
+
+export interface MuharebeRaporu {
+  id: number;
+  dugum: number;
+  birim: number;
+  baslangic: number;
+  bitis: number;
+  kazanan: number;
+  taraflar: [RaporTarafi, RaporTarafi];
+  nedenler: string[];
+}
+export interface RaporTarafi {
+  devlet: number;
+  ordular: string[];
+  baslangicAsker: number;
+  kayip: number;
+  moralBas: number;
+  moralSon: number;
+  sonuc: "zafer" | "geri-cekildi" | "dagildi";
 }
 
 // MASTER_SPEC §8.1 ordu veri modelinin ilk sürümü (TASK-0006); birlik grupları, moral ve ikmal Aşama 4–5'te
@@ -47,6 +95,10 @@ export interface OrduDurumu {
   rota: RotaAdimi[];
   ilerleme: number; // rotanın ilk adımında katedilen efektif metre
   hedef: { x: number; y: number } | null;
+  moral: number; // binde 0–1000
+  tutum: Tutum;
+  cekiliyor: boolean; // yenilgi sonrası geri çekilme yürüyüşü
+  muharebe: number | null; // katıldığı muharebe kimliği
 }
 
 export interface OlayKaydi {
@@ -75,6 +127,11 @@ export interface DunyaDurumu {
   sehirler: SehirDurumu[];
   ordular: OrduDurumu[];
   sonrakiOrduId: number;
+  savaslar: Savas[];
+  sonrakiSavasId: number;
+  muharebeler: Muharebe[];
+  sonrakiMuharebeId: number;
+  muharebeRaporlari: MuharebeRaporu[];
   emirKuyrugu: Emir[];
   planliKesintiler: Kesinti[];
   aktifKesinti: Kesinti | null;
@@ -91,13 +148,13 @@ export interface SenaryoVerisi {
   varsayilanOyuncu: string;
   devletler: { id: string; ad: string }[];
   birimler: { devlet: string | null }[];
-  sehirler: { ad: string; devlet: string; birim: number; baskent: boolean; nufus: number }[];
+  sehirler: { ad: string; devlet: string; birim: number; baskent: boolean; nufus: number; dugum?: number; x?: number; y?: number }[];
   ordular?: { ad: string; devlet: string; asker: number; dugum: number; x: number; y: number }[];
   ag?: AgVerisi;
 }
 
-// 2: ordular ve şehir kontrolü eklendi (TASK-0006)
-export const SEMA_SURUMU = 2;
+// 2: ordular ve şehir kontrolü (TASK-0006); 3: savaş, muharebe, moral, garnizon orduları (TASK-0007/4a)
+export const SEMA_SURUMU = 3;
 
 // [TASLAK — test değeri] Başlangıç hazinesi: birim başına 100. Ekonomi Aşama 5'te tasarlanacak.
 const BASLANGIC_HAZINE_BIRIM_BASINA = 100;
@@ -119,12 +176,23 @@ export function baslangicDurumu(s: SenaryoVerisi, secenek: { tohum: number; oyun
   });
   const sehirler: SehirDurumu[] = s.sehirler.map((c) => {
     const devlet = bul(c.devlet);
-    return { ad: c.ad, devlet, kontrol: devlet, isgalBaslangic: null, birim: c.birim, nufus: c.nufus, baskent: c.baskent };
+    return { ad: c.ad, devlet, kontrol: devlet, isgalBaslangic: null, birim: c.birim, dugum: c.dugum ?? -1, nufus: c.nufus, baskent: c.baskent };
   });
-  const ordular: OrduDurumu[] = (s.ordular ?? []).map((o, i) => ({
-    id: i + 1, ad: o.ad, devlet: bul(o.devlet), asker: o.asker, dugum: o.dugum, x: o.x, y: o.y,
-    hiz: HAREKET.TEMEL_HIZ, rota: [], ilerleme: 0, hedef: null,
-  }));
+  const yeniOrdu = (id: number, ad: string, devlet: number, asker: number, dugum: number, x: number, y: number): OrduDurumu => ({
+    id, ad, devlet, asker, dugum, x, y, hiz: HAREKET.TEMEL_HIZ, rota: [], ilerleme: 0, hedef: null,
+    moral: DENGE.MORAL_EN_YUKSEK, tutum: "dengeli", cekiliyor: false, muharebe: null,
+  });
+  const ordular: OrduDurumu[] = (s.ordular ?? []).map((o, i) => yeniOrdu(i + 1, o.ad, bul(o.devlet), o.asker, o.dugum, o.x, o.y));
+  // Garnizon orduları (DEC-0025/4, DEC-0027/1): senaryoda ordusu olmayan her devlete başkentinde bir ordu
+  // [TASLAK — büyüklük test formülü: taban + birim başına; üst sınırlı]
+  s.devletler.forEach((v, i) => {
+    if (ordular.some((o) => o.devlet === i)) return;
+    const k = s.sehirler.findIndex((c) => c.devlet === v.id && c.baskent && (c.dugum ?? -1) >= 0);
+    if (k < 0) return;
+    const c = s.sehirler[k];
+    const asker = Math.min(DENGE.GARNIZON_EN_COK, DENGE.GARNIZON_TABAN + DENGE.GARNIZON_BIRIM_BASINA * birimSayisi[i]);
+    ordular.push(yeniOrdu(ordular.length + 1, `${v.ad} Ordusu`, i, asker, c.dugum!, c.x ?? 0, c.y ?? 0));
+  });
   const devletler: DevletDurumu[] = s.devletler.map((d, i) => ({
     id: d.id,
     ad: d.ad,
@@ -144,6 +212,11 @@ export function baslangicDurumu(s: SenaryoVerisi, secenek: { tohum: number; oyun
     sehirler,
     ordular,
     sonrakiOrduId: ordular.length + 1,
+    savaslar: [],
+    sonrakiSavasId: 1,
+    muharebeler: [],
+    sonrakiMuharebeId: 1,
+    muharebeRaporlari: [],
     emirKuyrugu: [],
     planliKesintiler: [],
     aktifKesinti: null,
@@ -185,7 +258,10 @@ export function degismezler(d: DunyaDurumu): string[] {
     if (![o.x, o.y, o.dugum, o.hiz, o.ilerleme].every(tam) || o.hiz <= 0) h.push(`ordu ${i} konum/hız tam sayı değil`);
     if (o.rota.some((a) => ![a.x, a.y, a.d, a.m].every(tam) || a.m <= 0)) h.push(`ordu ${i} rotası geçersiz`);
     if (o.rota.length && o.ilerleme >= o.rota[0].m) h.push(`ordu ${i} ilerlemesi adımı aşıyor`);
+    if (!tam(o.moral) || o.moral < 0 || o.moral > DENGE.MORAL_EN_YUKSEK) h.push(`ordu ${i} morali geçersiz`);
+    if (o.muharebe !== null && !d.muharebeler.some((m) => m.id === o.muharebe)) h.push(`ordu ${i} olmayan bir muharebede`);
   });
+  for (const s of d.savaslar) if (s.saldiran === s.savunan || !d.devletler[s.saldiran] || !d.devletler[s.savunan]) h.push(`savaş ${s.id} geçersiz`);
   if (d.ayarlar.oyuncu < 0 || d.ayarlar.oyuncu >= n) h.push("oyuncu devleti geçersiz");
   return h;
 }

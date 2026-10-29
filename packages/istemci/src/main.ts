@@ -5,7 +5,7 @@ import "@fontsource/cinzel/600.css";
 import "@fontsource/cormorant-garamond/700-italic.css";
 import "@fontsource/inter/500.css";
 import "@fontsource/inter/700.css";
-import { tarihMetni, type SenaryoVerisi, type TurSuresi } from "@tarihi/sim";
+import { tarihMetni, type MuharebeRaporu, type SenaryoVerisi, type Tutum, type TurSuresi } from "@tarihi/sim";
 import { haritaYukle } from "./harita/veri";
 import { haritaGorunumuKur, kacis, KONUMLAR, type Katmanlar, type WdDevlet } from "./harita/gorunum";
 import { SimIstemcisi, type Ozet, type RotaOnizleme } from "./sim-protokol";
@@ -15,6 +15,29 @@ const $ = <T extends HTMLElement = HTMLElement>(id: string) => document.getEleme
 const parametreler = new URLSearchParams(location.search);
 const TOHUM = Number(parametreler.get("tohum")) || 1453;
 const SENARYO_YOLU = `${import.meta.env.BASE_URL}senaryo-1453/`;
+
+/** Oyunun kendi onay penceresi (tarayıcının confirm/alert pencereleri kullanılmaz). */
+function onayIste(baslik: string, metin: string, evet: string, tehlikeli = false): Promise<boolean> {
+  return new Promise((cozum) => {
+    $("onayBaslik").textContent = baslik;
+    $("onayMetin").textContent = metin;
+    const evetBtn = $<HTMLButtonElement>("onayEvet"), hayirBtn = $<HTMLButtonElement>("onayHayir");
+    evetBtn.textContent = evet;
+    evetBtn.classList.toggle("tehlike", tehlikeli);
+    $("onay").hidden = false;
+    hayirBtn.focus();
+    const bitir = (sonuc: boolean) => {
+      $("onay").hidden = true;
+      evetBtn.onclick = hayirBtn.onclick = null;
+      window.removeEventListener("keydown", tus);
+      cozum(sonuc);
+    };
+    const tus = (e: KeyboardEvent) => { if (e.key === "Escape") { e.preventDefault(); e.stopPropagation(); bitir(false); } };
+    window.addEventListener("keydown", tus, { capture: true });
+    evetBtn.onclick = () => bitir(true);
+    hayirBtn.onclick = () => bitir(false);
+  });
+}
 
 let bildirimZamanlayici = 0;
 function bildir(metin: string, tur: "bilgi" | "uyari" | "hata" = "bilgi") {
@@ -66,6 +89,14 @@ async function baslat() {
   let ozet: Ozet = (await sim.gonder({ tip: "yeniOyun", senaryo, tohum: TOHUM, oyuncu: parametreler.get("devlet") ?? undefined })).ozet;
   let mesgul = false;
   let seciliOrdu: number | null = null;
+  const bekleyenSavas = new Set<number>(); // ilan edildi, bir sonraki turda başlayacak
+  const bekleyenTutum = new Map<number, Tutum>();
+  const gorulenRaporlar = new Set<number>();
+  const TUTUMLAR: [Tutum, string, string][] = [
+    ["temkinli", "Temkinli", "Moral %60'ın altına düşünce çekilir"],
+    ["dengeli", "Dengeli", "Moral %35'in altına düşünce çekilir"],
+    ["inatci", "İnatçı", "Moral %10'un altına düşene kadar direnir"],
+  ];
   const planli = new Map<number, RotaOnizleme>(); // emri verilmiş, tur başında uygulanacak rotalar
   // Birim → hareket ağı düğümleri (haritadan tıklanan noktanın düğümünü bulmak için)
   const birimDugumleri = new Map<number, number[]>();
@@ -94,10 +125,64 @@ async function baslat() {
     gorunum.oyuncuyuAyarla(ozet.oyuncu.indeks);
     const plan = new Map<number, [number, number][]>();
     for (const [id, r] of planli) if (r.noktalar) plan.set(id, r.noktalar);
-    gorunum.ordulariGoster(ozet.ordular, seciliOrdu, plan);
+    gorunum.ordulariGoster(ozet.ordular, ozet.yabanciOrdular, seciliOrdu, plan);
     gorunum.isgalGoster(ozet.birimIsgal, ozet.sehirIsgal);
     ordularPaneli();
+    $("savasListesi").innerHTML = ozet.savaslar.map((s) =>
+      `<li>${gorunum.devletRenkKutusu(s.karsi)}<span>${kacis(h.paket.devletler[s.karsi].ad)}<small>${s.saldiran ? "Siz ilan ettiniz" : "Size ilan etti"} · ${kacis(s.baslangic)}</small></span></li>`).join("")
+      + [...bekleyenSavas].map((d) => `<li>${gorunum.devletRenkKutusu(d)}<span>${kacis(h.paket.devletler[d].ad)}<small>İlan edildi · bir sonraki turda başlar</small></span></li>`).join("")
+      || '<li class="bos">Savaş yok. Bir devleti seçip savaş ilan edebilirsiniz.</li>';
+    $("raporListesi").innerHTML = [...ozet.raporlar].reverse().map((r) => {
+      const biz = r.kazanan === ozet.oyuncu.indeks;
+      const karsi = r.taraflar.find((t) => t.devlet !== ozet.oyuncu.indeks)!;
+      return `<li><button class="rapor-satir" data-rapor="${r.id}"><b class="${biz ? "zafer" : "yenilgi"}">${biz ? "Zafer" : "Yenilgi"}</b>
+        ${kacis(h.paket.devletler[karsi.devlet].ad)}<small>${kacis(birimAdi(r.birim))} · ${kacis(tarihMetni(r.bitis))}</small></button></li>`;
+    }).join("") || '<li class="bos">Henüz muharebe yok.</li>';
   };
+  const birimAdi = (b: number) => (b >= 0 ? h.paket.birimler[b].ad : "bilinmeyen yer");
+  const yuzde = (binde: number) => `%${Math.round(binde / 10)}`;
+  const raporGoster = (r: MuharebeRaporu) => {
+    const satir = (t: MuharebeRaporu["taraflar"][number]) => `<tr>
+      <td>${gorunum.devletRenkKutusu(t.devlet)} ${kacis(h.paket.devletler[t.devlet].ad)}<small>${t.ordular.map(kacis).join(", ")}</small></td>
+      <td>${t.baslangicAsker.toLocaleString("tr-TR")}</td><td>−${t.kayip.toLocaleString("tr-TR")}</td>
+      <td>${yuzde(t.moralBas)} → ${yuzde(t.moralSon)}</td>
+      <td>${{ zafer: "Zafer", "geri-cekildi": "Geri çekildi", dagildi: "Dağıldı" }[t.sonuc]}</td></tr>`;
+    $("raporIcerik").innerHTML = `<h3>${kacis(birimAdi(r.birim))} Muharebesi</h3>
+      <div class="not">${kacis(tarihMetni(r.baslangic))} – ${kacis(tarihMetni(r.bitis))} · Kazanan: <b>${kacis(h.paket.devletler[r.kazanan].ad)}</b></div>
+      <table><thead><tr><th>Taraf</th><th>Asker</th><th>Kayıp</th><th>Moral</th><th>Sonuç</th></tr></thead>
+      <tbody>${r.taraflar.map(satir).join("")}</tbody></table>
+      <h4>Sonucun nedenleri</h4><ul>${r.nedenler.map((n) => `<li>${kacis(n)}</li>`).join("")}</ul>`;
+    $("rapor").hidden = false;
+  };
+  $("raporKapat").onclick = () => { $("rapor").hidden = true; };
+  $("raporListesi").addEventListener("click", (e) => {
+    const b = (e.target as HTMLElement).closest<HTMLElement>("[data-rapor]");
+    const r = b && ozet.raporlar.find((x) => x.id === Number(b.dataset.rapor));
+    if (r) raporGoster(r);
+  });
+
+  // Bilgi paneli: yabancı devlet seçiliyken savaş durumu / savaş ilanı (MASTER_SPEC §7.1)
+  gorunum.olaylar.ekBilgi = (s) => {
+    if (s.tur !== "devlet" || s.id === ozet.oyuncu.indeks) return "";
+    const savas = ozet.savaslar.find((x) => x.karsi === s.id);
+    if (savas) return `<p class="savas-durumu">⚔ Savaştasınız (${kacis(savas.baslangic)})</p>`;
+    if (bekleyenSavas.has(s.id)) return '<p class="savas-durumu">Savaş ilan edildi; bir sonraki turda başlar.</p>';
+    return `<div class="satir eylem"><button class="tehlike" data-eylem="savas" data-devlet="${s.id}">Savaş ilan et</button></div>`;
+  };
+  $("bilgi").addEventListener("click", async (e) => {
+    const b = (e.target as HTMLElement).closest<HTMLElement>('[data-eylem="savas"]');
+    if (!b) return;
+    const hedef = Number(b.dataset.devlet);
+    const onay = await onayIste("Savaş ilanı", `${h.paket.devletler[hedef].ad}'na savaş ilan edilsin mi? Savaş bir sonraki turun başında başlar; ordularınız o devletin topraklarına girebilir. Diplomatik sonuçlar ileride (Aşama 6) eklenecek.`, "Savaş ilan et", true);
+    if (!onay) return;
+    const y = await sim.gonder({ tip: "emir", emir: { tur: "savasIlan", devlet: ozet.oyuncu.indeks, hedef } });
+    ozet = y.ozet;
+    if (y.dogrulama && !y.dogrulama.gecerli) return bildir(y.dogrulama.neden, "uyari");
+    bekleyenSavas.add(hedef);
+    arayuzuGuncelle();
+    gorunum.istek();
+    bildir(`${h.paket.devletler[hedef].ad}'na savaş ilan edildi; bir sonraki turda başlar.`, "uyari");
+  });
 
   const kirilimMetni = (r: RotaOnizleme) => {
     const k = r.kirilim!;
@@ -117,10 +202,23 @@ async function baslat() {
     det.hidden = !o;
     if (!o) return;
     const p = planli.get(o.id);
-    det.innerHTML = `<p class="not">${p ? `Planlanan rota: ${kirilimMetni(p)}. Yürüyüş bir sonraki turda başlar.`
+    const tutum = bekleyenTutum.get(o.id) ?? o.tutum;
+    det.innerHTML = `<div class="moral-satir"><span>Moral</span><i class="moral buyuk" style="--moral:${o.moral / 10}%"></i><b>${yuzde(o.moral)}</b></div>
+      <p class="not">${o.muharebede ? "⚔ Muharebede." : o.cekiliyor ? "Yenilgi sonrası geri çekiliyor." : p ? `Planlanan rota: ${kirilimMetni(p)}. Yürüyüş bir sonraki turda başlar.`
       : o.yuruyor ? "Yürüyor. Haritada sağ tıklayarak yeni hedef verebilirsiniz."
       : "Hedef vermek için haritada bir noktaya <b>sağ tıklayın</b>."}</p>
+      <div class="tutumlar" role="group" aria-label="Geri çekilme tutumu">${TUTUMLAR.map(([t, ad, aciklama]) =>
+        `<button data-tutum="${t}" title="${aciklama}" class="${t === tutum ? "etkin" : ""}">${ad}</button>`).join("")}</div>
+      <p class="not">${TUTUMLAR.find(([t]) => t === tutum)![2]}.${bekleyenTutum.has(o.id) ? " (Bir sonraki turda geçerli.)" : ""}</p>
       <div class="satir"><button id="orduOdak">Haritada göster</button>${o.yuruyor || p ? '<button id="orduDur">Durdur</button>' : ""}</div>`;
+    for (const b of det.querySelectorAll<HTMLButtonElement>("[data-tutum]")) {
+      b.onclick = async () => {
+        const t = b.dataset.tutum as Tutum;
+        ozet = (await sim.gonder({ tip: "emir", emir: { tur: "orduTutum", ordu: o.id, tutum: t } })).ozet;
+        bekleyenTutum.set(o.id, t);
+        arayuzuGuncelle();
+      };
+    }
     $("orduOdak").onclick = () => gorunum.orduyaOdaklan(o);
     const dur = document.getElementById("orduDur");
     if (dur) dur.onclick = async () => {
@@ -169,6 +267,12 @@ async function baslat() {
       const y = await sim.gonder({ tip: "turuIlerlet" });
       ozet = y.ozet;
       planli.clear(); // emirler tur başında uygulandı
+      bekleyenSavas.clear();
+      bekleyenTutum.clear();
+      // Oyuncunun katıldığı yeni muharebe raporu varsa göster
+      const yeniRapor = ozet.raporlar.filter((r) => !gorulenRaporlar.has(r.id));
+      for (const r of ozet.raporlar) gorulenRaporlar.add(r.id);
+      if (yeniRapor.length) raporGoster(yeniRapor[yeniRapor.length - 1]);
       $("sonTur").textContent = `Son tur: ${Math.round(y.sureMs ?? 0)} ms`;
       if (y.sonuc?.kesinti) kesintiGoster(ozet.tarih, y.sonuc.kesinti.neden);
       for (const o of y.sonuc?.yeniOlaylar ?? []) {
@@ -225,6 +329,9 @@ async function baslat() {
       if (!k) return bildir("Bu yuvada kayıt yok.", "uyari");
       ozet = (await sim.gonder({ tip: "yukle", metin: k.metin, senaryo: senaryoKimligi })).ozet;
       planli.clear();
+      bekleyenSavas.clear();
+      bekleyenTutum.clear();
+      for (const r of ozet.raporlar) gorulenRaporlar.add(r.id);
       arayuzuGuncelle();
       bildir(`Yüklendi: ${ozet.tarih}`);
     } catch (e) {
@@ -244,7 +351,7 @@ async function baslat() {
   $("yukleManuel").onclick = () => yukle("manuel");
   $("yukleOtomatik").onclick = () => yukle("otomatik");
   window.addEventListener("keydown", (e) => {
-    if (e.code !== "Space" || !$("kesinti").hidden) return;
+    if (e.code !== "Space" || !$("kesinti").hidden || !$("rapor").hidden || !$("onay").hidden) return;
     const etiket = (e.target as HTMLElement).tagName;
     if (etiket === "INPUT" || etiket === "SELECT" || etiket === "TEXTAREA") return;
     e.preventDefault();
