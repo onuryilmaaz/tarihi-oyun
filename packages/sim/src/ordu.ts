@@ -30,7 +30,7 @@ export function toplamalariIlerlet(d: DunyaDurumu, b: Baglam): void {
     const s = d.sehirler[t.sehir];
     const n = b.ag?.dugumler[s.dugum];
     // Şehir veya çevresi işgal altındaysa toplama bekler; para/insan gücü yeniden alınmaz.
-    if (!n || s.devlet !== t.devlet || s.kontrol !== t.devlet || d.birimler[n.b]?.kontrol !== t.devlet) return true;
+    if (s.istikrar.ayaklanma || !n || s.devlet !== t.devlet || s.kontrol !== t.devlet || d.birimler[n.b]?.kontrol !== t.devlet) return true;
     t.kalanGun = Math.max(0, t.kalanGun - 1);
     if (t.kalanGun > 0) return true;
     const konum = b.sehirKonumlari?.[t.sehir] ?? n;

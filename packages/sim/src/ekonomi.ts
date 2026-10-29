@@ -6,6 +6,7 @@ import { kullanilabilirHazine } from "./emirler";
 import { devletMaasi } from "./ordu";
 import { sehirYapiGeliri } from "./yatirim";
 import { araziGeliriBirimBasina } from "./teknoloji";
+import { birimGelirYuzdeleri } from "./istikrar";
 import { hukumdarGelirYuzde } from "./hanedan";
 
 export interface ButceOzeti {
@@ -25,7 +26,8 @@ export interface ButceOzeti {
 export function araziGelirleri(d: DunyaDurumu): number[] {
   const gelir = new Array<number>(d.devletler.length).fill(0);
   const birimBasina = d.devletler.map((_, i) => araziGeliriBirimBasina(d, i)); // Para ve Vergi Reformu (5c)
-  for (const b of d.birimler) if (b.sahip >= 0) gelir[b.sahip] += birimBasina[b.sahip];
+  const etki = birimGelirYuzdeleri(d);
+  d.birimler.forEach((b, i) => { if (b.sahip >= 0) gelir[b.sahip] += Math.floor(birimBasina[b.sahip] * etki[i] / 100); });
   return gelir.map((g, i) => Math.floor((g * hukumdarGelirYuzde(d, i)) / 100)); // hükümdarın yönetimi (7a)
 }
 

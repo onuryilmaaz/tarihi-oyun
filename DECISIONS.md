@@ -613,3 +613,31 @@ Kaynak belge: `MASTER_SPEC.md` (v1.3). Orijinal keşif çıktısı:
   3. 7b commit + push onaylandı; 7c (istikrar ve isyan riski) kapsamı önce onaya sunulur.
 - **Onay kaydı:** Kullanıcı: "1- başarılı 2- uygun 3- evet 4- evet" (2026-10-29)
 - **Durum:** GEÇERLİ
+
+## DEC-0047 — 7c (istikrar ve isyan riski) kapsamı
+
+- **Tarih:** 2026-10-29
+- **Seçilen karar:** TASK-0010 / 7c kapsamı onaylandı: şehir başına 0–100 isyan riski, bileşenleri ve "geçen aya göre
+  neden değişti" açıklaması, İstikrar harita modu; aşamalar huzursuzluk (≥ 50, gelir yarı) ve ayaklanma (3 ay ≥ 80;
+  gelir/asker/inşaat yok, tur durur); bağımsızlık sonraya; araçlar ordu bulundurma ve tek seferlik bağış; yüksek
+  risk yalnızca uyarı verir.
+- **Onay kaydı:** Kullanıcı: "hepsine evet diyorum" (2026-10-29)
+- **Durum:** GEÇERLİ
+
+## DEC-0048 — 7c kabulü
+
+- **Tarih:** 2026-10-29
+- **Seçilen karar:** 7c (istikrar ve isyan riski; Codex uygulaması, şema 13, 158 test) kullanıcı tarafından test edildi
+  ve kabul edildi. Sıradaki adım 7d (yerel yönetim) kapsamının onaya sunulmasıdır.
+- **Onay kaydı:** Kullanıcı: "testleri yaptım diğer adıma geçebiliriz" (2026-10-29)
+- **Durum:** GEÇERLİ
+
+## DEC-0049 — 7d (yerel yönetim) kapsamı
+
+- **Tarih:** 2026-10-29
+- **Seçilen karar:** TASK-0010 / 7d kapsamı onaylandı (OPEN-016'nın ilk kapsamı): şehir başına aç/kapa yerel yönetici;
+  oyuncunun aylık toplam bütçe tavanı ve hazine alt sınırı; yetki yalnızca bağış (riskli şehir) ve tarla/pazar;
+  öncelik önce bağış sonra en kârlı yatırım; elle verilen emir/inşaat her zaman önce; her harcama günlükte;
+  varsayılan: yöneticiler kapalı, bütçe 0. 7c commit + push onaylandı.
+- **Onay kaydı:** Kullanıcı: "1- evet 2- evet 3- evet 4- evet" (2026-10-29)
+- **Durum:** GEÇERLİ

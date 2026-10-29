@@ -1,3 +1,4 @@
+import type { Istikrar } from "@tarihi/sim";
 // Ana iş parçacığı ↔ simülasyon Worker'ı mesaj protokolü.
 
 import type { Alan, Degerlendirme, IliskiBileseni, TeknolojiId, YapiTuru, BarisKaydi, BarisTalebi, ButceOzeti, Dogrulama, Emir, KusatmaYontemi, MuharebeRaporu, OlayKaydi, RotaKirilimi, SenaryoVerisi, Tutum, TurSonucu, TurSuresi, YabanciOrdu } from "@tarihi/sim";
@@ -66,6 +67,7 @@ export interface Ozet {
   verasetSecimi: { onceki: string; veraset: string; adaylar: (HukumdarOzeti & { tarihi: boolean; gelenek: boolean })[] } | null;
   veraset: string; tarihiHalef: string | null;
   din: string; kultur: string; // oyuncu devletinin resmî dini ve baskın kültürü (7b)
+  istikrar: (Istikrar & { asayis: number; gerekenAsker: number; bagisUygun: boolean; bagisNedeni: string | null })[];
   sehirNufuslari: { nufus: number; gruplar: [string, string, number][] }[]; // şehir başına din × kültür
   devletDinleri: string[]; // harita modu için
   devletKulturleri: string[];
@@ -74,7 +76,7 @@ export interface Ozet {
   saldirganlik: number; // oyuncunun saldırganlığı
   barisTeklifleri: { id: number; devlet: number; gerekce: string; size: boolean; birimler: number[]; sehirler: number[]; kalanGun: number; cevap: boolean | null }[]; // 6c
   toplamaKurali: { bedelYuzde: number; gun: number }; // teknolojiyle değişir (Asker Kayıt Defterleri)
-  askerSehirleri: { indeks: number; ad: string; insanGucu: number; uygun: boolean }[];
+  askerSehirleri: { indeks: number; ad: string; insanGucu: number; uygun: boolean; ayaklanma: boolean }[];
   toplamalar: { sehir: string; asker: number; kalanGun: number; bekliyor: boolean; emir: boolean }[];
   planliKesinti: { tarih: string; neden: string }[];
   hash: string;

@@ -56,13 +56,15 @@ export type Emir =
   // Oyuncu hükümdarı ölünce halef seçimi (TASK-0010/7a)
   | { tur: "halefSec"; aday: number }
   // İskân: oyuncunun bir şehrinden diğerine nüfus taşıma (TASK-0010/7b)
-  | { tur: "iskan"; kaynak: number; hedef: number; miktar: number };
+  | { tur: "iskan"; kaynak: number; hedef: number; miktar: number }
+  | { tur: "bagis"; sehir: number; devlet?: number };
 
 export type Dogrulama = { gecerli: true } | { gecerli: false; neden: string };
 
 function bekleyenHarcama(d: DunyaDurumu, devlet: number): number {
   let s = 0;
   for (const e of d.emirKuyrugu) {
+    if (e.tur === "bagis" && d.sehirler[e.sehir]?.devlet === devlet) s += DENGE.IST_BAGIS_BEDEL;
     if (e.tur === "harca" && e.devlet === devlet) s += e.miktar;
     if (e.tur === "askerTopla" && d.sehirler[e.sehir]?.devlet === devlet) s += toplamaMaliyeti(e.asker, toplamaBedelYuzde(d, devlet));
     if (e.tur === "insaat" && d.sehirler[e.sehir]?.devlet === devlet) s += insaatMaliyeti(d, d.sehirler[e.sehir], e.yapi) ?? 0;
@@ -94,6 +96,15 @@ export function emirDogrula(d: DunyaDurumu, e: Emir, b: Baglam = BOS_BAGLAM, kuy
     return { gecerli: false, neden: "Bu ordu için bölme/birleştirme emri bekliyor; önce turu ilerletin." };
   }
   switch (e.tur) {
+    case "bagis": {
+      const c = d.sehirler[e.sehir], devlet = e.devlet ?? d.ayarlar.oyuncu;
+      if (!c || c.devlet !== devlet || c.kontrol !== devlet) return { gecerli: false, neden: "Bağış yalnızca kontrolünüzdeki kendi şehrinize yapılır." };
+      if (c.istikrar.bagis > 0 || (!kuyrukHaric && d.emirKuyrugu.some((x) => x.tur === "bagis" && x.sehir === e.sehir))) return { gecerli: false, neden: "Bu şehre yapılan yardım hâlâ etkili veya emri bekliyor." };
+      const para = kuyrukHaric ? d.devletler[devlet].hazine : kullanilabilirHazine(d, devlet);
+      if (para < DENGE.IST_BAGIS_BEDEL) return { gecerli: false, neden: "Bağış için hazine yetersiz; borçlanma yoktur." };
+      return { gecerli: true };
+    }
+
     case "baris":
       if (!kuyrukHaric && d.emirKuyrugu.some((x) => x.tur === "baris" && x.savas === e.savas)) return { gecerli: false, neden: "Bu savaş için bir barış teklifi zaten bekliyor." };
       return barisDogrula(d, e);
@@ -118,6 +129,7 @@ export function emirDogrula(d: DunyaDurumu, e: Emir, b: Baglam = BOS_BAGLAM, kuy
       const s = d.sehirler[e.sehir];
       if (!s || s.devlet !== (e.devlet ?? d.ayarlar.oyuncu) || s.kontrol !== s.devlet) return { gecerli: false, neden: "Yalnızca kontrolünüzdeki kendi şehrinize yatırım yapabilirsiniz." };
       if (!["tarla", "pazar", "sur"].includes(e.yapi)) return { gecerli: false, neden: "Geçersiz yapı türü." };
+      if (s.istikrar.ayaklanma) return { gecerli: false, neden: "Ayaklanmadaki şehirde inşaat başlatılamaz." };
       if (d.kusatmalar.some((k) => k.sehir === e.sehir)) return { gecerli: false, neden: "Kuşatma altındaki şehirde inşaat başlatılamaz." };
       if (sehirdeInsaatVar(d, e.sehir, kuyrukHaric)) return { gecerli: false, neden: `${s.ad} şehrinde zaten bir inşaat sürüyor ya da bekliyor; aynı anda tek inşaat yapılır.` };
       const bedel = insaatMaliyeti(d, s, e.yapi);
@@ -186,6 +198,7 @@ export function emirDogrula(d: DunyaDurumu, e: Emir, b: Baglam = BOS_BAGLAM, kuy
     }
     case "askerTopla": {
       const s = d.sehirler[e.sehir];
+      if (s?.istikrar.ayaklanma) return { gecerli: false, neden: "Ayaklanmadaki şehirden asker toplanamaz." };
       if (!s || s.devlet !== (e.devlet ?? d.ayarlar.oyuncu) || s.kontrol !== s.devlet) return { gecerli: false, neden: "Asker yalnızca kontrolünüzdeki kendi şehrinizden toplanır." };
       const n = b.ag?.dugumler[s.dugum];
       if (!n || d.birimler[n.b]?.kontrol !== s.devlet) return { gecerli: false, neden: "Şehir çevresi kontrolünüzde ve hareket ağına bağlı olmalı." };
@@ -293,7 +306,7 @@ export function orduyuDurdur(o: OrduDurumu): void {
 export function emirVer(d: DunyaDurumu, e: Emir, b: Baglam = BOS_BAGLAM): Dogrulama {
   // Oyuncu yalnızca kendi devleti ve kendi orduları adına emir verir; AI aynı doğrulamayı emirUygula ile kullanır (6b/6c)
   const oyuncu = d.ayarlar.oyuncu;
-  if (((e.tur === "insaat" || e.tur === "arastir" || e.tur === "askerTopla") && e.devlet !== undefined && e.devlet !== oyuncu)
+  if (((e.tur === "insaat" || e.tur === "arastir" || e.tur === "askerTopla" || e.tur === "bagis") && e.devlet !== undefined && e.devlet !== oyuncu)
     || (e.tur === "savasIlan" && e.devlet !== oyuncu)
     || ("ordu" in e && orduBul(d, e.ordu) && orduBul(d, e.ordu)!.devlet !== oyuncu)) {
     return { gecerli: false, neden: "Yalnızca kendi devletiniz ve ordularınız adına emir verebilirsiniz." };
@@ -322,6 +335,14 @@ export function emirleriUygula(d: DunyaDurumu, b: Baglam = BOS_BAGLAM): void {
 /** Doğrulanmış tek emri uygular (oyuncu kuyruğu ve AI kararları aynı yolu kullanır). */
 export function emirUygula(d: DunyaDurumu, e: Emir, b: Baglam = BOS_BAGLAM): void {
   switch (e.tur) {
+    case "bagis": {
+      const c = d.sehirler[e.sehir];
+      d.devletler[c.devlet].hazine -= DENGE.IST_BAGIS_BEDEL;
+      c.istikrar.bagis = DENGE.IST_BAGIS_INDIRIM;
+      olayEkle(d, { tur: "imar-yardimi", devlet: c.devlet, metin: `${c.ad}: bağış/imar yardımı −${DENGE.IST_BAGIS_BEDEL}; sonraki aylık risk hesabında ${DENGE.IST_BAGIS_INDIRIM} puan indirim, zamanla söner.` });
+      break;
+    }
+
     case "baris":
       barisiUygula(d, b, e);
       break;

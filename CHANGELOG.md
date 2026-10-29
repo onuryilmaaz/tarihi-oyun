@@ -1,5 +1,18 @@
 # CHANGELOG
 
+## 2026-10-29 — TASK-0010 / 7c: istikrar ve isyan riski (DEC-0047)
+
+- `istikrar.ts`: deterministik aylık risk bileşenleri, önceki aya göre farklar, uyarı,
+  huzursuzluk ve üç ay yüksek riskte ayaklanma; risk/asayişle sona erme.
+- Şehir ve çevre gelirleri yarılanır/sıfırlanır; ayaklanmada yeni ve süren asker/inşaat işleri durur.
+- Borçsuz bağış/imar yardımı, kuyrukta para rezervasyonu, zamanla sönüm; AI aynı kuralları kullanır.
+- Barışla fetih tarihi; kayıt şeması 13, 12→13 ve önceki dönüşümlerin zinciri/testleri.
+- Şehir risk/neden/değişim paneli, bağış düğmesi, asker toplama/inşaat durma açıklaması,
+  İstikrar harita modu ve renk açıklaması.
+- 14 yeni davranış testi + yeni modül determinizm taraması: toplam 158 test;
+  typecheck/build ve 5173 Chrome denemeleri başarılı. QA/ASAMA-7C-TEST.md eklendi.
+- Denge değerleri TASLAK. 7d başlamadı; 7c kabulü ve commit/push izni bekleniyor.
+
 ## 2026-10-29 — TASK-0010 / 7b: nüfus grupları, din/kültür, göç, iskân (Claude)
 
 - DEC-0044: 7a kabul. DEC-0045: 7b kapsamı.

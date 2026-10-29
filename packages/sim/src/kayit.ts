@@ -4,6 +4,7 @@
 import { SEMA_SURUMU, degismezler, type DunyaDurumu } from "./durum";
 import { DENGE } from "./denge";
 import { kurgusalHukumdar } from "./hanedan";
+import { bosIstikrar } from "./istikrar";
 import { BILINMIYOR } from "./nufus";
 import { gundenTarih } from "./takvim";
 
@@ -113,7 +114,15 @@ export function yukle(metin: string, beklenenSenaryo?: string): DunyaDurumu {
     for (const s of d.sehirler) s.gruplar = s.nufus > 0 ? [{ din: BILINMIYOR.din, kultur: BILINMIYOR.kultur, nufus: s.nufus }] : [];
     for (const v of d.devletler) { v.din = BILINMIYOR.din; v.kultur = BILINMIYOR.kultur; }
     d.iskanlar = [];
-    d.sema = SEMA_SURUMU;
+    d.sema = 12;
+  }
+  if (d.sema === 12) {
+    d.sehirler.forEach((s, i) => {
+      s.istikrar = bosIstikrar();
+      const fetih = [...d.barislar].reverse().find((p) => p.devlet === s.devlet && p.sehirler.includes(i));
+      s.istikrar.fetihGun = fetih?.gun ?? null;
+    });
+    d.sema = 13;
   }
   if (d.sema !== SEMA_SURUMU) throw new KayitHatasi("Kayıt tutarsız: dünya şema sürümü uyuşmuyor.");
   const hatalar = degismezler(d);

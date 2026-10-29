@@ -8,6 +8,7 @@ import {
   barisBedeli, barisDogrula, kusatmaGucu, orduKusatmasi, savasSkoru,
   butceOzeti, insaatMaliyeti, insaatSuresi, sehirYapiGeliri, yapiSeviyesi, yapiEnYuksek, pazarGeliriSeviyeBasina, YAPI_ADLARI, YAPI_TURLERI,
   diplomasiOnHesap, etkiDegeri, hediyePuanBedeli, iliski, iliskiBilesenleri, ittifakDegerlendir, komsuMu, muttefik, muttefikleri, savasta,
+  asayisAskeri, gerekenAsayis,
   hukumdarYasi, VERASET_ADLARI, type Hukumdar,
   ALAN_ADLARI, TEKNOLOJILER, teknolojiBul, biliyor, toplamaBedelYuzde, toplamaSuresi,
 } from "@tarihi/sim";
@@ -40,7 +41,7 @@ function ozet(durum: DunyaDurumu): Ozet {
       const emir = durum.emirKuyrugu.find((e) => e.tur === "insaat" && e.sehir === indeks);
       const insaat = suren
         ? { yapi: suren.yapi, ad: YAPI_ADLARI[suren.yapi], hedef: suren.hedef, kalanGun: suren.kalanGun, emir: false,
-          durdu: durum.kusatmalar.some((k) => k.sehir === indeks) }
+          durdu: s.istikrar.ayaklanma || durum.kusatmalar.some((k) => k.sehir === indeks) }
         : emir && emir.tur === "insaat"
           ? { yapi: emir.yapi, ad: YAPI_ADLARI[emir.yapi], hedef: yapiSeviyesi(s, emir.yapi) + 1, kalanGun: insaatSuresi(durum, s.devlet, emir.yapi), emir: true, durdu: false }
           : null;
@@ -62,6 +63,12 @@ function ozet(durum: DunyaDurumu): Ozet {
       adaylar: durum.verasetSecimi.adaylar.map((a) => ({ ...hukumdarOzeti(durum, a)!, tarihi: a.tarihi, gelenek: a.gelenek })) },
     veraset: VERASET_ADLARI[o.veraset], tarihiHalef: o.tarihiHalef?.ad ?? null,
     din: o.din, kultur: o.kultur,
+    istikrar: durum.sehirler.map((s, sehir) => {
+      const kendi = s.devlet === durum.ayarlar.oyuncu;
+      const dog = kendi ? emirDogrula(durum, { tur: "bagis", sehir }, baglam) : { gecerli: false as const, neden: "Yabancı şehir." };
+      return { ...s.istikrar, asayis: kendi ? asayisAskeri(durum, sehir) : 0, gerekenAsker: gerekenAsayis(s),
+        bagisUygun: dog.gecerli, bagisNedeni: dog.gecerli ? null : dog.neden };
+    }),
     sehirNufuslari: durum.sehirler.map((s) => ({ nufus: s.nufus, gruplar: s.gruplar.map((g) => [g.din, g.kultur, g.nufus] as [string, string, number]) })),
     devletDinleri: durum.devletler.map((v) => v.din),
     devletKulturleri: durum.devletler.map((v) => v.kultur),
@@ -109,7 +116,7 @@ function ozet(durum: DunyaDurumu): Ozet {
     toplamaKurali: { bedelYuzde: toplamaBedelYuzde(durum, durum.ayarlar.oyuncu), gun: toplamaSuresi(durum, durum.ayarlar.oyuncu) },
     askerSehirleri: durum.sehirler.flatMap((s, indeks) => s.devlet !== durum.ayarlar.oyuncu ? [] : [{
       indeks, ad: s.ad, insanGucu: kullanilabilirInsanGucu(durum, indeks),
-      uygun: s.kontrol === s.devlet && !!baglam.ag?.dugumler[s.dugum]
+      ayaklanma: s.istikrar.ayaklanma, uygun: !s.istikrar.ayaklanma && s.kontrol === s.devlet && !!baglam.ag?.dugumler[s.dugum]
         && durum.birimler[baglam.ag!.dugumler[s.dugum].b]?.kontrol === s.devlet,
     }]),
     toplamalar: [
@@ -117,7 +124,7 @@ function ozet(durum: DunyaDurumu): Ozet {
         const s = durum.sehirler[t.sehir];
         const n = baglam.ag?.dugumler[s.dugum];
         return { sehir: s.ad, asker: t.asker, kalanGun: t.kalanGun,
-          bekliyor: !n || s.kontrol !== t.devlet || durum.birimler[n.b]?.kontrol !== t.devlet, emir: false };
+          bekliyor: s.istikrar.ayaklanma || !n || s.kontrol !== t.devlet || durum.birimler[n.b]?.kontrol !== t.devlet, emir: false };
       }),
       ...durum.emirKuyrugu.flatMap((e) => e.tur !== "askerTopla" ? [] : [{ sehir: durum.sehirler[e.sehir].ad,
         asker: e.asker, kalanGun: toplamaSuresi(durum, durum.ayarlar.oyuncu), bekliyor: false, emir: true }]),

@@ -1,34 +1,47 @@
 # DEVİR TESLİM — agent değişiminde kaldığın yer
 
-Son güncelleme: **2026-10-29, Claude (Opus 5.5)** — Codex'in 4b/4c/5a işinden sonra devraldı. Bağlayıcı kurallar: `AGENTS.md`, `MASTER_SPEC.md`, `DECISIONS.md`.
+Son güncelleme: **2026-10-29, Codex — 7c tamamlandı; kullanıcı kabulü bekleniyor.** Bağlayıcı kurallar: `AGENTS.md`, `MASTER_SPEC.md`, `DECISIONS.md`.
 
 ## 1. İlk okunacaklar
 
-1. Bu belge, `AGENTS.md`, `MASTER_SPEC.md` tamamen ve `DECISIONS.md` (DEC-0001 … DEC-0037).
-2. Aktif görev `tasks/TASK-0008.md`, aşama `docs/milestones/ASAMA-5.md`; önceki görev TASK-0007.
-3. Son rapor `docs/qa/ASAMA-5A-TEST.md`; birlikte test edilecek `docs/qa/ASAMA-4C-TEST.md`.
+1. Bu belge, `AGENTS.md`, `MASTER_SPEC.md` tamamen ve `DECISIONS.md` (DEC-0001 … DEC-0047).
+2. Aktif görev `tasks/TASK-0010.md`, aşama `docs/milestones/ASAMA-7.md`.
+3. Son rapor `docs/qa/ASAMA-7C-TEST.md`.
 
-## 0. En son (Claude oturumu)
+## 0. En son — BURADAN BAŞLA
 
-- Codex'in 4b/4c/5a işi doğrulandı (94 test, tip, derleme, tarayıcı) ve kullanıcı onayıyla commit edildi (`312b2d9`).
-- Kullanıcı kararları (DEC-0033): 4c/5a "az çok" test edildi, ayrıntılı test sonraki turlarda;
-  **5b kapsamı onaylandı** ve **5b tamamlandı**: şehir yatırımları (tarla/pazar/sur), `packages/sim/src/yatirim.ts`,
-  kayıt şeması **6**, 101 test. Kullanıcı testi bekliyor: `docs/qa/ASAMA-5B-TEST.md`.
-- 5b kullanıcı tarafından kabul edildi ve commit edildi (DEC-0034).
-- **5c teknoloji ağacı tamamlandı ve kabul edildi** (DEC-0035, DEC-0036): `packages/sim/src/teknoloji.ts`,
-  `arastir` emri, kayıt şeması **7**, 109 test, üst çubukta "Teknoloji" penceresi. Commit + push edildi.
-- 4c/5a testi başarılı; **Aşama 4 ve 5 kapandı** (DEC-0037). Şehir yönetimi otomasyonu Aşama 7'ye ertelendi.
-- **Aşama 6: TASK-0009 onaylandı (DEC-0038). 6a tamamlandı** (`diplomasi.ts`, şema 8, 116 test, Diplomasi
-  harita modu). 6a ve başlangıç ilişki tablosu kabul edildi, commit edildi (DEC-0039).
-- **6b kabul edildi ve commit edildi** (DEC-0040; garnizon tabanı 0, eksi bütçeli başlangıç 71 → 0).
-- **6c kabul edildi; Aşama 6 kapandı** (DEC-0041), commit + push edildi. Ertelenenler: AI-AI ittifak, ileri diplomasi,
-  şehir yönetimi otomasyonu (Aşama 7), terhis.
-- **Aşama 7 başladı (DEC-0042).** 7a ve hükümdar tablosu kabul edildi, commit edildi (DEC-0044).
-  **7b kabul edildi ve commit edildi** (DEC-0046). **Sıradaki: 7c (istikrar ve isyan riski) — kapsam kullanıcı
-  onayı bekliyor; onaysız kod yazma.**
-- Aşağıdaki 2–3. bölümler Codex'in notlarıdır; "5b/5c sorusuna yanıt yok" bilgisi artık geçersiz (DEC-0033).
-- Arayüz notu: Ordu işaretinin olduğu şehre tıklamak orduyu seçer; şehir paneline sol paneldeki
-  "Şehir yatırımları → Şehri aç" ile de ulaşılır.
+Son güncelleme: **2026-10-29, Claude** (Codex'ten devraldı). **7c kullanıcı tarafından kabul edildi (DEC-0048).**
+7c commit edildi. **7d kapsamı onaylandı (DEC-0049) — uygulanıyor** (`tasks/TASK-0010.md` → 7d).
+
+- Aşama 0–6 kapalı. 7a kabul DEC-0044, 7b kabul DEC-0046 (son commit `0192de4`).
+- **7c kapsamı DEC-0047 ile onaylı; uygulandı.** Yeni `packages/sim/src/istikrar.ts`;
+  aylık risk/neden/fark, huzursuzluk/ayaklanma, ordu/bağış, ekonomi/asker/inşaat/AI bağlantıları.
+- **158 test (20 dosya), npm run typecheck ve npm run build başarılı.** Mevcut paket boyutu uyarısı sürüyor.
+- **Şema 13**, 12→13 dönüşümü/testi hazır. Fetih tarihi barışta kaydediliyor;
+  eski kayıt için barış geçmişinden bulunuyor; bilinmiyorsa tarih uydurulmuyor.
+- **Chrome / 5173 tamam:** Selanik ilk ay %11 → 200 bağış sonrası %0; harita, kayıt/yükle;
+  ayrı hazırlanmış kayıtta üç ay yüksek risk → ayaklanma/tur kesintisi ve kapalı asker/inşaat düğmeleri.
+  JS hatası yok. Kullanıcı kayıtları değiştirilmedi. Yalnızca geçici test Chrome'u kullanıldı.
+- **Yeni rapor:** `docs/qa/ASAMA-7C-TEST.md`; sayılar/sınırlar ve tıklama adımları orada.
+- **Commit/push yapılmadı:** önceden bekleyen DEC-0047/belgeler + 7c sim/istemci/test/QA değişiklikleri.
+  Yeni dosyalar istikrar.ts, test/istikrar.test.ts, docs/qa/ASAMA-7C-TEST.md. Güncel liste için git status.
+- **Yarım kod/kırık test yok.** Kullanıcıdan 1) 7c test sonucu, 2) commit/push, 3) 7d kapsamı onayı bekleniyor.
+- 7d henüz başlamadı: TASK-0010 sonunda yalnızca öneri var (şehir başına aylık bütçe, tarla/pazar,
+  elle emir önceliği). Bunu onaylanmış mekanik sanma; OPEN-016 açık.
+- **Sunucu sadece 5173 (DEC-0036); 4175 kullanılmaz. 5173'ü kapatma.**
+- Kullanıcı uzun sessizlikten rahatsız oldu. Ongoing işte 60 saniyeyi aşmadan somut durum güncellemesi ver.
+- Denge değerleri denge.ts içinde TASLAK. Risk ilk ay başında hesaplanır; güncel snapshot aylıktır.
+  Bağış 200, sonraki ay −20 ve aylık 5 sönüm; asayiş max(500, nüfus %5), iki ayla bastırma.
+- Geçici tarayıcı betikleri `/tmp/tarihi-7c-browser.mjs`, `/tmp/tarihi-7c-crisis.mjs`;
+  görseller `/tmp/tarihi-7c-istikrar.png`, `/tmp/tarihi-7c-ayaklanma.png`.
+
+### Devralanın ilk işi
+
+1. En son kullanıcı yanıtını oku; test/commit/7d kararlarını yalnızca açık yanıtla kaydet.
+2. Commit istenmişse mevcut 7c değişiklikleri ve önceden bekleyen DEC-0047 belgelerini birlikte gözden geçir;
+   onay yoksa commit/push yapma (DEC-0017). Kullanıcının önceki aşama commit izni bu iş için geçerli değildir.
+3. 7d kapsamını somut görev kartıyla netleştir; kullanıcı onayı olmadan otomasyon kodlama.
+4. Bu bölüm günceldir; aşağıdaki Aşama 5/4 notları eski oturum arşividir, uygulanacak iş değildir.
 
 ## 2. Mevcut durum (Codex notları)
 

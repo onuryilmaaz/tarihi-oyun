@@ -3,6 +3,7 @@
 // Sayılar denge.ts içinde [TASLAK].
 
 import { olayEkle, type DunyaDurumu, type SehirDurumu } from "./durum";
+import { sehirGelirYuzde } from "./istikrar";
 import { DENGE } from "./denge";
 import { insaatSureYuzde, pazarGeliriSeviyeBasina, surBedelYuzde, yapiEnYuksek } from "./teknoloji";
 
@@ -35,7 +36,7 @@ export const insaatSuresi = (d: DunyaDurumu, devlet: number, yapi: YapiTuru) =>
 /** Şehrin yapılarından gelen aylık gelir (şehir yasal sahibinin askerî kontrolündeyken). */
 export function sehirYapiGeliri(d: DunyaDurumu, s: SehirDurumu): number {
   if (s.kontrol !== s.devlet) return 0;
-  return s.yapilar.tarla * DENGE.YAPI_AYLIK_GELIR.tarla + s.yapilar.pazar * pazarGeliriSeviyeBasina(d, s.devlet);
+  return Math.floor((s.yapilar.tarla * DENGE.YAPI_AYLIK_GELIR.tarla + s.yapilar.pazar * pazarGeliriSeviyeBasina(d, s.devlet)) * sehirGelirYuzde(s) / 100);
 }
 
 /** Bekleyen ya da süren bir inşaat varsa kimliği; şehir başına aynı anda tek inşaat. */
@@ -54,7 +55,7 @@ export function insaatlariIlerlet(d: DunyaDurumu): void {
       olayEkle(d, { tur: "insaat-iptal", devlet: i.devlet, metin: `${s.ad}: ${YAPI_ADLARI[i.yapi]} inşaatı şehir el değiştirdiği için yarım kaldı.` });
       continue;
     }
-    if (d.kusatmalar.some((k) => k.sehir === i.sehir)) continue; // kuşatma altında iş durur
+    if (s.istikrar.ayaklanma || d.kusatmalar.some((k) => k.sehir === i.sehir)) continue; // kuşatma altında iş durur
     i.kalanGun--;
     if (i.kalanGun > 0) continue;
     if (i.yapi === "sur") s.sur = i.hedef;

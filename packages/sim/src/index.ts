@@ -21,3 +21,5 @@ export * from "./savas";
 export * from "./sistemler";
 export * from "./tur";
 export * from "./kayit";
+
+export * from "./istikrar";

@@ -108,7 +108,7 @@ async function baslat() {
   });
 
   // Diplomasi harita modu (MASTER_SPEC §7.3): siz, müttefik, savaş, tarafsızlar bakışa göre
-  let haritaModu: "siyasi" | "diplomasi" | "din" | "kultur" = "siyasi";
+  let haritaModu: "siyasi" | "diplomasi" | "din" | "kultur" | "istikrar" = "siyasi";
   // Din/kültür renkleri (7b): dinler sabit, kültürler sırasına göre altın oranla dağıtılmış tonlar
   const DIN_RENK: Record<string, string> = { sunni: "#4f8f4a", sii: "#2e6b5e", ortodoks: "#8a5fa8", katolik: "#3f6fb5", ermeni: "#b5603f",
     yahudi: "#d8c36a", budist: "#e08a3c", hindu: "#c94f7c", yerel: "#8c8c7a", bilinmiyor: "#cfc6b0" };
@@ -122,6 +122,13 @@ async function baslat() {
   const dinAdi = (x: string) => senaryo.nufus?.dinler[x] ?? (x === "bilinmiyor" ? "Bilinmiyor" : x);
   const kulturAdi = (x: string) => senaryo.nufus?.kulturler[x] ?? (x === "diger" ? "Diğer" : x);
   const nufusHaritasi = () => {
+    if (haritaModu === "istikrar") {
+      const riskler = ozet.birimSahipleri.map(() => 0), bilinen = new Set<number>();
+      senaryo.sehirler.forEach((s, i) => { if (s.birim >= 0) { bilinen.add(s.birim); riskler[s.birim] = Math.max(riskler[s.birim], ozet.istikrar[i].risk); } });
+      gorunum.birimRenkleri(riskler.map((r, i) => !bilinen.has(i) ? "#cfc6b0" : r >= DENGE.IST_AYAKLANMA ? "#b64d43" : r >= DENGE.IST_HUZURSUZLUK ? "#d6a64d" : "#8bac7a"));
+      $("nufusLejant").innerHTML = '<b>İsyan riski · aylık hesap</b><div><span style="background:#8bac7a"></span>0–49: sakin</div><div><span style="background:#d6a64d"></span>50–79: huzursuzluk</div><div><span style="background:#b64d43"></span>80–100: ayaklanma tehlikesi</div><div><span style="background:#cfc6b0"></span>Şehir verisi yok</div><div>Birden fazla şehirde en yüksek risk gösterilir.</div>';
+      $("nufusLejant").hidden = false; return;
+    }
     if (haritaModu !== "din" && haritaModu !== "kultur") { gorunum.birimRenkleri(null); $("nufusLejant").hidden = true; return; }
     const din = haritaModu === "din";
     // Şehri olan arazi o şehrin baskın grubuyla, şehri olmayan arazi sahibinin resmî din/kültürüyle boyanır
@@ -217,7 +224,7 @@ async function baslat() {
     yatirimSecim.innerHTML = ozet.sehirYatirimlari.map((s) => `<option value="${s.indeks}">${kacis(s.ad)}${s.insaat ? " · inşaat var" : ""}</option>`).join("");
     if (ozet.sehirYatirimlari.some((s) => String(s.indeks) === oncekiSehir)) yatirimSecim.value = oncekiSehir;
     const insaatlar = ozet.sehirYatirimlari.filter((s) => s.insaat);
-    $("insaatListesi").innerHTML = insaatlar.map((s) => `<li><button class="bag" data-sehir-sec="${s.indeks}">${kacis(s.ad)}</button>: ${kacis(s.insaat!.ad)} ${s.insaat!.hedef}. seviye · ${s.insaat!.emir ? "emir bekliyor" : s.insaat!.durdu ? "kuşatma nedeniyle durdu" : `${s.insaat!.kalanGun} gün kaldı`}</li>`).join("")
+    $("insaatListesi").innerHTML = insaatlar.map((s) => `<li><button class="bag" data-sehir-sec="${s.indeks}">${kacis(s.ad)}</button>: ${kacis(s.insaat!.ad)} ${s.insaat!.hedef}. seviye · ${s.insaat!.emir ? "emir bekliyor" : s.insaat!.durdu ? "kuşatma/ayaklanma nedeniyle durdu" : `${s.insaat!.kalanGun} gün kaldı`}</li>`).join("")
       || '<li class="bos">Süren inşaat yok. Bir şehir seçip “Şehri aç”a basın ya da haritada şehrinize tıklayın.</li>';
     $("insaatListesi").insertAdjacentHTML("beforeend", ozet.iskanlar.map((k) => `<li>İskân: ${kacis(senaryo.sehirler[k.kaynak].ad)} → ${kacis(senaryo.sehirler[k.hedef].ad)} · ${k.miktar.toLocaleString("tr-TR")} kişi · ${k.emir ? "emir bekliyor" : `${k.kalanGun} gün kaldı`}</li>`).join(""));
     const suren = ozet.teknoloji.kartlar.filter((t) => t.durum === "suruyor" || t.durum === "emir");
@@ -273,7 +280,7 @@ async function baslat() {
     const once = secim.value;
     secim.innerHTML = ozet.askerSehirleri.map((s) => `<option value="${s.indeks}">${kacis(s.ad)}${s.uygun ? "" : " · toplama yapılamaz"}</option>`).join("");
     if (ozet.askerSehirleri.some((s) => String(s.indeks) === once)) secim.value = once;
-    $("toplamaListesi").innerHTML = ozet.toplamalar.map((t) => `<li>${kacis(t.sehir)} · ${t.asker.toLocaleString("tr-TR")} asker · ${t.emir ? "Emir bekliyor" : t.bekliyor ? "İşgal nedeniyle bekliyor" : `${t.kalanGun} gün kaldı`}</li>`).join("");
+    $("toplamaListesi").innerHTML = ozet.toplamalar.map((t) => `<li>${kacis(t.sehir)} · ${t.asker.toLocaleString("tr-TR")} asker · ${t.emir ? "Emir bekliyor" : t.bekliyor ? "Şehirde işler durduğu için bekliyor" : `${t.kalanGun} gün kaldı`}</li>`).join("");
     toplamaBilgisi();
   };
   const toplamaBilgisi = () => {
@@ -283,7 +290,7 @@ async function baslat() {
     const bedel = sayiUygun ? toplamaMaliyeti(asker, ozet.toplamaKurali.bedelYuzde) : 0;
     $("toplamaBilgi").textContent = sehir
       ? `Kullanılabilir insan gücü: ${sehir.insanGucu.toLocaleString("tr-TR")}. ${ozet.toplamaKurali.gun} gün; bedel: ${bedel.toLocaleString("tr-TR")}.`
-        + (!sehir.uygun ? " Şehir ve çevresi kontrolünüzde olmalı." : !sayiUygun ? " Pozitif tam sayı girin." : asker > sehir.insanGucu ? " İnsan gücü yetersiz." : ozet.kullanilabilirHazine < bedel ? " Hazine yetersiz; borçlanma yoktur." : " Yeni ordu şehirde kurulur.")
+        + (!sehir.uygun ? (sehir.ayaklanma ? " Ayaklanmada asker toplanamaz." : " Şehir ve çevresi kontrolünüzde olmalı.") : !sayiUygun ? " Pozitif tam sayı girin." : asker > sehir.insanGucu ? " İnsan gücü yetersiz." : ozet.kullanilabilirHazine < bedel ? " Hazine yetersiz; borçlanma yoktur." : " Yeni ordu şehirde kurulur.")
       : "Asker toplanabilecek şehriniz yok.";
     $<HTMLButtonElement>("toplaBtn").disabled = mesgul || !sehir?.uygun || !sayiUygun || asker > sehir.insanGucu || ozet.kullanilabilirHazine < bedel;
   };
@@ -344,7 +351,7 @@ async function baslat() {
       const c = ozet.sehirDurumlari[s.id], k = ozet.kusatmalar.find((v) => v.sehir === s.id);
       const y = ozet.sehirYatirimlari.find((v) => v.indeks === s.id);
       const yatirim = !y ? "" : `<h4>Şehir yatırımları (prototip değerleri)</h4>
-        <p class="not">Yapıların aylık geliri: +${y.aylikGelir.toLocaleString("tr-TR")}${y.insaat ? ` · ${kacis(y.insaat.ad)} ${y.insaat.hedef}. seviye ${y.insaat.emir ? "emri bekliyor" : y.insaat.durdu ? "kuşatma nedeniyle durdu" : `yapılıyor (${y.insaat.kalanGun} gün kaldı)`}` : ""}</p>
+        <p class="not">Yapıların aylık geliri: +${y.aylikGelir.toLocaleString("tr-TR")}${y.insaat ? ` · ${kacis(y.insaat.ad)} ${y.insaat.hedef}. seviye ${y.insaat.emir ? "emri bekliyor" : y.insaat.durdu ? "kuşatma/ayaklanma nedeniyle durdu" : `yapılıyor (${y.insaat.kalanGun} gün kaldı)`}` : ""}</p>
         <ul class="yatirimlar">${y.secenekler.map((o) => `<li><span><b>${kacis(o.ad)}</b> ${o.seviye}/${o.enYuksek}
           <small>${o.maliyet === null ? "En yüksek seviye" : `${o.seviye + 1}. seviye: ${o.maliyet.toLocaleString("tr-TR")} · ${o.sure} gün · ${o.yapi === "sur" ? "kuşatma direnci artar" : `aylık +${o.gelirArtisi}`}`}</small></span>
           ${o.maliyet === null ? "" : `<button data-insaat="${s.id}:${o.yapi}" ${o.uygun ? "" : `disabled title="${kacis(o.neden ?? "")}"`}>Geliştir</button>`}</li>`).join("")}</ul>
@@ -359,7 +366,17 @@ async function baslat() {
           <span>kişi →</span><select id="iskanHedef" aria-label="Hedef şehir">${hedefler.map((x) => `<option value="${x.indeks}">${kacis(x.ad)}</option>`).join("")}</select>
           <button data-eylem="iskan" data-sehir="${s.id}">Taşı</button></div>
         <p class="not">Bedel: 1.000 kişi için ${DENGE.ISKAN_BEDEL_BINDE}; ${DENGE.ISKAN_GUN} gün sürer; en çok nüfusun %${DENGE.ISKAN_EN_COK_YUZDE}'si. Gruplar oranıyla taşınır.</p>`;
-      return `${nufus}${iskan}<h4>Şehir savunması (prototip değerleri)</h4><dl><dt>Sur seviyesi</dt><dd>${c.sur}</dd>
+      const st = ozet.istikrar[s.id], durum = st.ayaklanma ? "Ayaklanma" : st.risk >= DENGE.IST_HUZURSUZLUK ? "Huzursuzluk" : "Sakin";
+      const imzali = (n: number) => `${n > 0 ? "+" : ""}${n}`;
+      const istikrar = `<section id="istikrarBilgi"><h4>İstikrar · ${durum}</h4><p>İsyan riski: <b>%${st.risk}</b> · Önceki ay %${st.oncekiRisk}</p>
+        <p class="not">${st.hesapGun === null ? "İlk ay başında hesaplanacak." : `Son hesap: ${tarihMetni(st.hesapGun)}. Risk 0–100 arasında tutulur.`}</p>
+        <ul class="not">${st.bilesenler.filter((x) => x.puan !== 0).map((x) => `<li>${kacis(x.ad)}: ${imzali(x.puan)}</li>`).join("") || "<li>Etkin risk bileşeni yok.</li>"}</ul>
+        <p class="not">Geçen aya göre: ${st.degisim.length ? st.degisim.map((x) => `${kacis(x.ad)} ${imzali(x.puan)}`).join("; ") : "bileşenler değişmedi"}. İndirimler ve 0–100 sınırı toplam farkı etkileyebilir.</p>
+        <p class="not">${st.ayaklanma ? `Gelir ve asker toplama yok; inşaat bekliyor. ${DENGE.IST_BASTIRMA_AY} ay yeterli ordu veya riskin %${DENGE.IST_HUZURSUZLUK} altına düşmesiyle biter.` : st.risk >= DENGE.IST_HUZURSUZLUK ? `Şehir ve çevresi yarım gelir verir. %${DENGE.IST_AYAKLANMA} ve üzeri: ${st.yuksekAy}/${DENGE.IST_AYAKLANMA_AY} ay.` : "Şehir ve çevresinin gelirinde risk cezası yok."}</p>
+        ${c.devlet === ozet.oyuncu.indeks ? `<p class="not">Asayiş: ${st.asayis}/${st.gerekenAsker} asker. Yardım indirimi kalan: ${st.bagis} puan.</p>
+        <button data-bagis="${s.id}" ${st.bagisUygun ? "" : "disabled"}>Bağış / imar yardımı (${DENGE.IST_BAGIS_BEDEL})</button>
+        <p class="not">${kacis(st.bagisNedeni ?? `Sonraki aylık hesapta −${DENGE.IST_BAGIS_INDIRIM} puan; ayda ${DENGE.IST_BAGIS_SONUM} puan söner. Borçlanma yoktur.`)}</p>` : ""}</section>`;
+      return `${istikrar}${nufus}${iskan}<h4>Şehir savunması (prototip değerleri)</h4><dl><dt>Sur seviyesi</dt><dd>${c.sur}</dd>
         <dt>Garnizon</dt><dd>${c.garnizonTahmin ? "Yaklaşık " : ""}${c.garnizon.toLocaleString("tr-TR")}</dd></dl>
         <p class="not">${k ? `${k.gun} etkin gündür kuşatma altında.` : c.kontrol === ozet.oyuncu.indeks
           ? c.devlet === ozet.oyuncu.indeks ? "Şehir size ait ve askerî kontrolünüzde." : "Şehir askerî kontrolünüzde; yasal sahiplik barış antlaşmasıyla değişir."
@@ -401,6 +418,11 @@ async function baslat() {
       ${durum ? `<p class="not">${durum}</p>` : ""}${ittifak}${hediye}`;
   };
   $("bilgi").addEventListener("click", async (e) => {
+    const bagis = (e.target as HTMLElement).closest<HTMLElement>("[data-bagis]");
+    if (bagis) {
+      await emirGonder({ tur: "bagis", sehir: Number(bagis.dataset.bagis) }, "Bağış emri verildi; bedel ayrıldı, indirim sonraki aylık hesapta uygulanacak.");
+      return;
+    }
     const sehir = (e.target as HTMLElement).closest<HTMLElement>("[data-sehir-hedef]");
     if (sehir) {
       const c = senaryo.sehirler[Number(sehir.dataset.sehirHedef)];

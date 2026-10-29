@@ -5,7 +5,7 @@
 // gerçek nüfus ve ekonomi kuralları değildir. Aşama 5 ve 7'de tasarlanan sistemlerle değiştirilecek.
 
 import { olayEkle, type DunyaDurumu } from "./durum";
-import { aralik } from "./rastgele";
+import { istikrarAyi } from "./istikrar";
 import { gundenTarih } from "./takvim";
 import { orduIlerlet } from "./hareket";
 import { moralToparla, muharebeGunleri, muharebeleriBaslat } from "./savas";
@@ -66,6 +66,7 @@ export const SISTEMLER: Sistem[] = [
   { id: "baris-teklif-suresi", siklik: "gunluk", calistir: teklifSureleri },
   // 7b: yoldaki iskânlar; aylık savaş kaybı/göçü; yıllık doğal artış (test amaçlı günlük rastgele artış kaldırıldı, DEC-0045)
   { id: "iskan", siklik: "gunluk", calistir: iskanlariIlerlet },
+  { id: "istikrar", siklik: "aylik", calistir: istikrarAyi },
   {
     // Test: her ayın başında devlet, yasal sahibi olduğu birim başına 10 gelir alır
     id: "test-gelir",

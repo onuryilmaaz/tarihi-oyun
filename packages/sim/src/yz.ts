@@ -42,6 +42,10 @@ export function devletKarari(d: DunyaDurumu, b: Baglam, on: DiplomasiOnHesap, de
   const tehdit = tehditNedeni(d, on, devlet);
   const sehirler = d.sehirler.flatMap((s, i) => (s.devlet === devlet && s.kontrol === devlet ? [i] : []));
 
+  const riskli = [...sehirler].sort((a, c) => d.sehirler[c].istikrar.risk - d.sehirler[a].istikrar.risk || a - c)
+    .find((i) => d.sehirler[i].istikrar.risk >= DENGE.IST_HUZURSUZLUK && d.sehirler[i].istikrar.bagis === 0);
+  if (riskli !== undefined && para() >= DENGE.IST_BAGIS_BEDEL) dene({ tur: "bagis", sehir: riskli, devlet });
+
   const asker = () => {
     const bekleyen = d.askerToplamalar.filter((t) => t.devlet === devlet).reduce((t, x) => t + x.asker, 0);
     const hedef = on.arazi[devlet] * DENGE.YZ_ASKER_ARAZI_BASINA * (tehdit ? DENGE.YZ_TEHDIT_ASKER_CARPANI : 1);

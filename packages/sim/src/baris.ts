@@ -68,7 +68,11 @@ export function barisiUygula(d: DunyaDurumu, b: Baglam, t: BarisTalebi, devlet =
   d.kusatmalar = d.kusatmalar.filter((k) => !(taraflar.includes(k.devlet) && taraflar.includes(k.savunan)));
   d.isgalHazirliklari = d.isgalHazirliklari.filter((p) => !(taraflar.includes(p.devlet) && taraflar.includes(d.birimler[p.birim].sahip)));
   for (const i of t.birimler) d.birimler[i].sahip = devlet;
-  for (const i of t.sehirler) d.sehirler[i].devlet = devlet;
+  for (const i of t.sehirler) {
+    d.sehirler[i].devlet = devlet;
+    d.sehirler[i].istikrar.fetihGun = d.gun;
+    d.sehirler[i].istikrar.bagis = 0;
+  }
   for (const a of d.birimler) if (taraflar.includes(a.sahip) && taraflar.includes(a.kontrol)) {
     a.kontrol = a.sahip; a.isgalBaslangic = null;
   }
