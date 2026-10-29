@@ -145,6 +145,11 @@ export function yukle(metin: string, beklenenSenaryo?: string): DunyaDurumu {
   if (d.sema === 16) {
     // Şema 16 → 17 (TASK-0011/8c): casus görevi yok
     d.casusGorevleri = []; d.casusEtkileri = []; d.sonrakiGorevId = 1;
+    d.sema = 17;
+  }
+  if (d.sema === 17) {
+    // Şema 17 → 18 (TASK-0012/9b): eski kayıtta verim bilinmiyor; ortalama 10 (gelir değişmez)
+    for (const b of d.birimler) b.verim = 10;
     d.sema = SEMA_SURUMU;
   }
   if (d.sema !== SEMA_SURUMU) throw new KayitHatasi("Kayıt tutarsız: dünya şema sürümü uyuşmuyor.");

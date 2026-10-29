@@ -39,15 +39,18 @@ export function savasKarari(d: DunyaDurumu, b: Baglam, on: DiplomasiOnHesap, dev
   for (let k = 0; k < on.n; k++) {
     if (k === devlet || !on.arazi[k] || !komsuMu(on, devlet, k) || muttefik(d, devlet, k) || ateskesVar(d, devlet, k)) continue;
     const p = iliski(d, on, devlet, k);
-    if (p > DENGE.YZ_SAVAS_ILISKI) continue;
+    if (p > DENGE.YZ_FIRSAT_ILISKI) continue;
     const dusman = tahmin(k) + muttefikleri(d, k).filter((m) => m !== devlet && !muttefik(d, devlet, m)).reduce((t, m) => t + tahmin(m), 0);
     const oran = Math.floor((benim * 100) / Math.max(1, dusman));
-    if (oran < DENGE.YZ_SAVAS_GUC_YUZDE) continue;
-    if (!en || oran > en.oran) en = { hedef: k, oran, p };
+    // Kötü ilişkide 1,5 kat üstünlük yeter; ilişki yalnızca dostça değilse (fırsatçı fetih) 3 kat gerekir
+    if (oran < (p <= DENGE.YZ_SAVAS_ILISKI ? DENGE.YZ_SAVAS_GUC_YUZDE : DENGE.YZ_FIRSAT_GUC_YUZDE)) continue;
+    // Kötü ilişkili hedef fırsat hedefinden önce gelir; aynı türde daha büyük üstünlük seçilir
+    const kotu = p <= DENGE.YZ_SAVAS_ILISKI, enKotu = en !== null && en.p <= DENGE.YZ_SAVAS_ILISKI;
+    if (!en || (kotu && !enKotu) || (kotu === enKotu && oran > en.oran)) en = { hedef: k, oran, p };
   }
-  if (!en || aralik(d, 100) >= DENGE.YZ_SAVAS_OLASILIK) return false;
+  if (!en || aralik(d, 100) >= (en.p <= DENGE.YZ_SAVAS_ILISKI ? DENGE.YZ_SAVAS_OLASILIK : DENGE.YZ_FIRSAT_OLASILIK)) return false;
   return dene(d, b, { tur: "savasIlan", devlet, hedef: en.hedef,
-    gerekce: `kötü ilişki (${en.p}) ve tahmini güç üstünlüğü (yaklaşık ${Math.floor(en.oran / 10) / 10} kat).` });
+    gerekce: `${en.p <= DENGE.YZ_SAVAS_ILISKI ? `kötü ilişki (${en.p})` : `fırsat (ilişki ${en.p})`} ve tahmini güç üstünlüğü (yaklaşık ${Math.floor(en.oran / 10) / 10} kat).` });
 }
 
 // --- Barış (aylık karar) ---------------------------------------------------------------------------

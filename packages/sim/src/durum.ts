@@ -41,6 +41,7 @@ export interface BirimDurumu {
   sahip: number; // devlet indeksi; -1 = devlet yok
   kontrol: number;
   isgalBaslangic: number | null; // gün
+  verim: number; // arazi verimi (9b; 10 = ortalama, arazi geliri bununla ölçeklenir)
 }
 
 export interface SehirDurumu {
@@ -222,7 +223,7 @@ export interface SenaryoVerisi {
   baslangic: Tarih;
   varsayilanOyuncu: string;
   devletler: { id: string; ad: string }[];
-  birimler: { devlet: string | null }[];
+  birimler: { devlet: string | null; verim?: number }[];
   sehirler: { ad: string; devlet: string; birim: number; baskent: boolean; nufus: number; dugum?: number; x?: number; y?: number }[];
   ordular?: { ad: string; devlet: string; asker: number; dugum: number; x: number; y: number }[];
   // Başlangıç ilişkileri ve ittifakları (6a; tarihî tahmin, [TASLAK])
@@ -255,7 +256,7 @@ export interface SenaryoVerisi {
 // 5: kuşatma, gerçek işgal ve barış (TASK-0007/4c); şema 3–4 için eklemeli dönüşüm var.
 // Şema geçmişi: 6 şehir yatırımları (5b), 7 teknoloji (5c), 8 diplomasi (6a), 9 AI ekonomi (6b), 10 AI savaş/barış (6c),
 // 11 hükümdar ve veraset (7a), 12 nüfus grupları ve iskân (7b), 13 istikrar (7c), 14 yerel yönetim (7d)
-export const SEMA_SURUMU = 17; // 15 donanma ve deniz (8a), 16 ticaret ve ambargo (8b), 17 casusluk (8c)
+export const SEMA_SURUMU = 18; // 18 arazi verimi (9b), 15 donanma ve deniz (8a), 16 ticaret ve ambargo (8b), 17 casusluk (8c)
 
 export function baslangicDurumu(s: SenaryoVerisi, secenek: { tohum: number; oyuncu?: string }): DunyaDurumu {
   const indeks = new Map(s.devletler.map((d, i) => [d.id, i]));
@@ -270,7 +271,7 @@ export function baslangicDurumu(s: SenaryoVerisi, secenek: { tohum: number; oyun
   const birimler: BirimDurumu[] = s.birimler.map((b) => {
     const sahip = bul(b.devlet);
     if (sahip >= 0) birimSayisi[sahip]++;
-    return { sahip, kontrol: sahip, isgalBaslangic: null };
+    return { sahip, kontrol: sahip, isgalBaslangic: null, verim: b.verim ?? 10 };
   });
   const sehirler: SehirDurumu[] = s.sehirler.map((c) => {
     const devlet = bul(c.devlet);
@@ -480,6 +481,7 @@ export function degismezler(d: DunyaDurumu): string[] {
   for (const v of d.devletler) if (!(v.din in DIN_AILELERI) || typeof v.kultur !== "string") h.push(`${v.id} din/kültür geçersiz`);
   for (const k of d.iskanlar) if (!d.sehirler[k.kaynak] || !d.sehirler[k.hedef] || !tam(k.kalanGun) || k.kalanGun <= 0
     || k.gruplar.some((g) => !tam(g.nufus) || g.nufus <= 0)) h.push("iskân geçersiz");
+  if (d.birimler.some((b) => !tam(b.verim) || b.verim < 1 || b.verim > 20)) h.push("arazi verimi geçersiz");
   const B = d.deniz.bolgeler.length;
   if (d.deniz.limanlar.length !== d.sehirler.length || d.deniz.limanlar.some((x) => !tam(x) || x < -1 || x >= B)) h.push("liman listesi geçersiz");
   const donanmaId = new Set<number>();

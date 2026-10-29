@@ -723,3 +723,13 @@ Kaynak belge: `MASTER_SPEC.md` (v1.3). Orijinal keşif çıktısı:
      simülasyonla denge ayarı.
 - **Onay kaydı:** Kullanıcı: "1- kaydı sil diyince onay ekranı arkada açıldı gerisi sorunsuz 2- evet 3- evet" (2026-10-29)
 - **Durum:** GEÇERLİ
+
+## DEC-0057 — 9b kabulü ve 9c'ye geçiş
+
+- **Tarih:** 2026-10-29
+- **Seçilen karar:**
+  1. 9b (tarihî şehir nüfusları, arazi verimi, fırsatçı fetih dengesi) kabul edildi; `sehir-nufus.json` onaylandı ([TASLAK]).
+     Kullanıcı notu: dünya "biraz durağan ama okey" — ileride AI savaş olasılıkları (YZ_FIRSAT_OLASILIK vb.) yükseltilebilir.
+  2. 9b commit + push onaylandı; 9c (oyun içi rehber, ipuçları, terimler sözlüğü) başlar.
+- **Onay kaydı:** Kullanıcı: "1- biraz durağan ama okey 2- okey 3- evet 4- evet" (2026-10-29)
+- **Durum:** GEÇERLİ

@@ -121,13 +121,15 @@ describe("ordu hareketi", () => {
     const d = yeni();
     const bursa = sehir(d, "Bursa");
     const karaman = d.devletler.findIndex((v) => v.id === "kar");
-    const birimlerOnce = JSON.stringify(d.birimler);
+    // AI devletleri kendi aralarında savaşabilir (6c/9b); yalnızca Osmanlı arazilerinin değişmediğine bakılır
+    const osmBirimleri = () => JSON.stringify(d.birimler.filter((b) => d.devletler[b.sahip]?.id === "osm"));
+    const birimlerOnce = osmBirimleri();
     emirVer(d, { tur: "testIsgal", hedef: "sehir", indeks: bursa, devlet: karaman }, B);
     turuIlerlet(d, B);
     expect(d.sehirler[bursa].kontrol).toBe(karaman);
     expect(d.devletler[d.sehirler[bursa].devlet].id).toBe("osm"); // yasal sahip değişmedi
     expect(d.sehirler[bursa].isgalBaslangic).not.toBeNull();
-    expect(JSON.stringify(d.birimler)).toBe(birimlerOnce); // hiçbir arazi birimi etkilenmedi
+    expect(osmBirimleri()).toBe(birimlerOnce); // hiçbir arazi birimi etkilenmedi
     emirVer(d, { tur: "testIsgal", hedef: "sehir", indeks: bursa, devlet: d.sehirler[bursa].devlet }, B);
     turuIlerlet(d, B);
     expect(d.sehirler[bursa].kontrol).toBe(d.sehirler[bursa].devlet);

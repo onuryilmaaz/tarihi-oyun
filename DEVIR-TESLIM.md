@@ -13,8 +13,8 @@ Son güncelleme: **2026-10-29, Codex — 7c tamamlandı; kullanıcı kabulü bek
 Son güncelleme: **2026-10-29, Claude** (Codex'ten devraldı). **7c kullanıcı tarafından kabul edildi (DEC-0048).**
 7c ve 7d kabul edildi, commit edildi. **Aşama 7 kapandı (DEC-0050).** Aşama 8 başladı; TASK-0011 onaylandı (DEC-0051).
 **8a kabul edildi ve commit edildi (DEC-0052).** Sol panel düzeni, kalyon teknolojisi ve **8b ticaret tamamlandı**
-(şema 16, 179 test) — kabul ve commit (DEC-0053; panel 340 px, temalı form alanları). **8c kabul; Aşama 8 kapandı (DEC-0054).** Açılır liste tasarımı commit edildi. **Aşama 9 onaylandı (DEC-0055); 9a kabul edildi ve commit edildi (DEC-0056).** **9b uygulanıyor:** şehir nüfus
-tablosu + bölge verimi (onaya sunulacak), 50 yıllık denge simülasyonu.
+(şema 16, 179 test) — kabul ve commit (DEC-0053; panel 340 px, temalı form alanları). **8c kabul; Aşama 8 kapandı (DEC-0054).** Açılır liste tasarımı commit edildi. **Aşama 9 onaylandı (DEC-0055); 9a kabul edildi ve commit edildi (DEC-0056).** **9b kabul edildi ve commit edildi (DEC-0057).** Not: kullanıcı dünyayı "biraz durağan" buldu (ileride AI
+savaş olasılıkları artırılabilir). **9c (oyun içi rehber, ipuçları, sözlük) uygulanıyor.**
 Not: açılışta menü gelir; puppeteer betikleri için `?devlet=osm` menüyü atlar.
 
 - Aşama 0–6 kapalı. 7a kabul DEC-0044, 7b kabul DEC-0046 (son commit `0192de4`).

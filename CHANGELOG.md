@@ -1,5 +1,14 @@
 # CHANGELOG
 
+## 2026-10-29 — TASK-0012 / 9b: tarihî nüfus, arazi verimi, denge (Claude)
+
+- DEC-0056: 9a kabul; onay penceresi menünün üstünde.
+- `veri/senaryo-1453/sehir-nufus.json`: 193 şehrin 1453 tahmini nüfusu (test değerleri 40.000/10.000 yerine); senaryo üreticisi uygular.
+- Arazi verimi (`BirimDurumu.verim`): birimin ortalama ETOPO zorluğundan 12/10/9/7; arazi geliri verimle ölçeklenir. Şema 18.
+- AI denge: fırsatçı fetih kuralı (çok güçlüyse dostça olmayan komşuya, düşük olasılıkla); kötü ilişkili hedef öncelikli;
+  gerekçe metninde "fırsat". AT-007 testi yalnızca Osmanlı arazilerine daraltıldı (AI kendi arasında savaşabilir).
+- 50 yıllık simülasyon raporu: `docs/qa/ASAMA-9B-TEST.md`.
+
 ## 2026-10-29 — TASK-0012 / 9a: ana menü, devlet seçimi, kayıt yuvaları (Claude)
 
 - DEC-0055: Aşama 9 kartı onaylandı.

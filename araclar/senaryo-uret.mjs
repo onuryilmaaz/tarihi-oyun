@@ -60,6 +60,16 @@ const birimBul = (x, y) => {
 };
 
 const devletler = harita.devletler.map((d) => ({ id: d.id, ad: d.ad }));
+const sehirNufuslari = JSON.parse(fs.readFileSync(new URL("sehir-nufus.json", hedef), "utf8")).sehirler;
+const zorlukToplam = new Map();
+for (const n of ag.dugumler) { const a = zorlukToplam.get(n.b) ?? [0, 0]; a[0] += n.z; a[1]++; zorlukToplam.set(n.b, a); }
+const verimHesapla = (i) => {
+  const a = zorlukToplam.get(i);
+  if (!a) return 10;
+  const z = a[0] / a[1];
+  return z <= 105 ? 12 : z <= 130 ? 10 : z <= 170 ? 9 : 7;
+};
+
 const senaryo = {
   id: "1453",
   surum,
@@ -67,13 +77,14 @@ const senaryo = {
   baslangic: { yil: 1453, ay: 4, gun: 1 }, // Konstantiniyye'nin fethinden önce (AT-002)
   varsayilanOyuncu: "osm",
   devletler,
-  birimler: harita.birimler.map((b) => ({ devlet: b.d >= 0 ? harita.devletler[b.d].id : null })),
+  // Arazi verimi (TASK-0012/9b): birimin hareket ağı düğümlerinin ortalama ETOPO zorluğundan (ova 12 … sarp 7)
+  birimler: harita.birimler.map((b, i) => ({ devlet: b.d >= 0 ? harita.devletler[b.d].id : null, verim: verimHesapla(i) })),
   sehirler: harita.sehirler.map((s) => ({
     ad: s.ad,
     devlet: harita.devletler[s.d].id,
     birim: birimBul(s.x, s.y),
     baskent: s.b === 1,
-    nufus: s.b === 1 ? 40000 : 10000, // [TASLAK — test değeri] gerçek nüfus verisi Aşama 7'de
+    nufus: sehirNufuslari[s.ad] ?? (s.b === 1 ? 40000 : 10000), // 1453 tahmini (sehir-nufus.json, 9b); yoksa eski test değeri
     dugum: dugumBul(s.x, millerLat(s.y)), // hareket ağındaki düğüm (ordu konuşlanması, geri çekilme hedefi)
     x: Math.round(s.x * 10000),
     y: Math.round(s.y * 10000),

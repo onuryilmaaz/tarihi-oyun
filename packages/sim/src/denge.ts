@@ -146,6 +146,9 @@ export const DENGE = {
   // 6c — AI savaş ve barış (DEC-0040); hepsi [TASLAK]
   YZ_SAVAS_ILISKI: -30, // en az bu kadar kötü ilişki
   YZ_SAVAS_GUC_YUZDE: 150, // kendi ordusu / (hedef + müttefikleri tahmini) en az bu yüzde
+  YZ_FIRSAT_GUC_YUZDE: 300, // bu kadar üstünse dostça olmayan (≤ 0) komşuya da saldırır (9b denge)
+  YZ_FIRSAT_ILISKI: 0,
+  YZ_FIRSAT_OLASILIK: 10, // fırsatçı fetihte aylık ilan olasılığı (%); kötü ilişkide YZ_SAVAS_OLASILIK
   YZ_SAVAS_OLASILIK: 25, // koşullar uygunsa bir ayda ilan etme olasılığı (%)
   YZ_SALDIRGANLIK_SINIRI: 20, // saldırganlığı bu düzeydeyken yeni savaş açmaz
   ATESKES_GUN: 1825, // barıştan sonra AI aynı devlete 5 yıl savaş açmaz
