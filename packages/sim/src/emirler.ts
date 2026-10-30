@@ -15,7 +15,10 @@ import { iskanBedeli, nufusCikar } from "./nufus";
 import { ambargoVar } from "./ticaret";
 import { GOREV_TURLERI, gorevEngeli, type GorevTuru } from "./casusluk";
 import { bolgeGunu, denizYolu, GEMI_TURLERI, kapasite, type GemiTuru } from "./deniz";
-import { diplomasiOnHesap, etkiEkle, hediyePuani, ittifakBoz, ittifakDegerlendir, ittifakKur, muttefik, muttefikleri, savasIlaniSonuclari } from "./diplomasi";
+import {
+  diplomasiOnHesap, etkiEkle, hediyePuani, ittifakBoz, ittifakDegerlendir, ittifakKur, muttefik, muttefikleri, savasIlaniSonuclari,
+  saldirmazlikDegerlendir, saldirmazlikKur, saldirmazlikVar, ticaretAnlasmasiBoz, ticaretAnlasmasiKur, ticaretAnlasmasiVar, ticaretDegerlendir,
+} from "./diplomasi";
 import { biliyor, arastirmaEngeli, teknolojiBul, teknolojiGecerli, toplamaBedelYuzde, toplamaSuresi, type TeknolojiId } from "./teknoloji";
 import { VERGI_ADLARI, vergiOraniGecerli, type VergiOrani } from "./vergi";
 
@@ -56,6 +59,9 @@ export type Emir =
   | { tur: "ittifakTeklif"; hedef: number }
   | { tur: "ittifakBoz"; hedef: number }
   | { tur: "hediye"; hedef: number; miktar: number }
+  | { tur: "ticaretTeklif"; hedef: number } // TASK-0017 (4/4)
+  | { tur: "ticaretBoz"; hedef: number }
+  | { tur: "saldirmazlikTeklif"; hedef: number; ay: number }
   // AI barış teklifine cevap (TASK-0009/6c)
   | { tur: "barisCevap"; teklif: number; kabul: boolean }
   // Oyuncu hükümdarı ölünce halef seçimi (TASK-0010/7a)
@@ -263,6 +269,25 @@ export function emirDogrula(d: DunyaDurumu, e: Emir, b: Baglam = BOS_BAGLAM, kuy
       if (para < 0 || e.miktar > para) return { gecerli: false, neden: `Hazine yetersiz: ${para} kullanılabilir. Borçlanma yoktur.` };
       return { gecerli: true };
     }
+    case "ticaretTeklif":
+    case "ticaretBoz":
+    case "saldirmazlikTeklif": {
+      const oyuncu = d.ayarlar.oyuncu, v = d.devletler[e.hedef];
+      if (!Number.isSafeInteger(e.hedef) || !v || e.hedef === oyuncu) return { gecerli: false, neden: "Geçersiz hedef devlet." };
+      if (!kuyrukHaric && d.emirKuyrugu.some((x) =>
+        (x.tur === "ticaretTeklif" || x.tur === "ticaretBoz" || x.tur === "saldirmazlikTeklif") && x.tur === e.tur && x.hedef === e.hedef)) {
+        return { gecerli: false, neden: "Bu emir zaten bir sonraki tur için bekliyor." };
+      }
+      if (e.tur === "ticaretBoz") return ticaretAnlasmasiVar(d, oyuncu, e.hedef) ? { gecerli: true } : { gecerli: false, neden: `${v.ad} ile ticaret anlaşmanız yok.` };
+      if (savasta(d, oyuncu, e.hedef)) return { gecerli: false, neden: `${v.ad} ile savaştasınız.` };
+      if (e.tur === "ticaretTeklif") {
+        if (ticaretAnlasmasiVar(d, oyuncu, e.hedef)) return { gecerli: false, neden: `${v.ad} ile zaten bir ticaret anlaşmanız var.` };
+        return { gecerli: true };
+      }
+      if (saldirmazlikVar(d, oyuncu, e.hedef)) return { gecerli: false, neden: `${v.ad} ile zaten bir saldırmazlık paktınız var.` };
+      if (!(DENGE.SALDIRMAZLIK_AYLARI as readonly number[]).includes(e.ay)) return { gecerli: false, neden: `Süre ${DENGE.SALDIRMAZLIK_AYLARI.join("/")} aydan biri olmalı.` };
+      return { gecerli: true };
+    }
     case "arastir": {
       if (!teknolojiGecerli(e.teknoloji)) return { gecerli: false, neden: "Geçersiz teknoloji." };
       const oyuncu = e.devlet ?? d.ayarlar.oyuncu;
@@ -349,6 +374,7 @@ export function emirDogrula(d: DunyaDurumu, e: Emir, b: Baglam = BOS_BAGLAM, kuy
       if (e.devlet === e.hedef) return { gecerli: false, neden: "Bir devlet kendine savaş ilan edemez." };
       if (savasta(d, e.devlet, e.hedef)) return { gecerli: false, neden: `${d.devletler[e.hedef].ad} ile zaten savaştasınız.` };
       if (muttefik(d, e.devlet, e.hedef)) return { gecerli: false, neden: `${d.devletler[e.hedef].ad} müttefikiniz; önce ittifaktan çıkın.` };
+      if (saldirmazlikVar(d, e.devlet, e.hedef)) return { gecerli: false, neden: `${d.devletler[e.hedef].ad} ile saldırmazlık paktınız var; süresi dolmadan savaş ilan edemezsiniz.` };
       if (!kuyrukHaric && d.emirKuyrugu.some((x) => x.tur === "savasIlan" && x.devlet === e.devlet && x.hedef === e.hedef)) {
         return { gecerli: false, neden: "Bu savaş ilanı zaten bir sonraki tur için bekliyor." };
       }
@@ -530,6 +556,7 @@ export function emirUygula(d: DunyaDurumu, e: Emir, b: Baglam = BOS_BAGLAM): voi
     }
     case "savasIlan":
       d.savaslar.push({ id: d.sonrakiSavasId++, saldiran: e.devlet, savunan: e.hedef, baslangic: d.gun });
+      ticaretAnlasmasiBoz(d, e.devlet, e.hedef);
       {
         // Savaş ilanı herkesin bildiği bir olaydır; oyuncuya ilan edilirse tur durur (DEC-0038/4)
         const oyuncu = d.ayarlar.oyuncu;
@@ -622,6 +649,26 @@ export function emirUygula(d: DunyaDurumu, e: Emir, b: Baglam = BOS_BAGLAM): voi
       d.devletler[e.hedef].hazine += e.miktar;
       if (puan > 0) etkiEkle(d, oyuncu, e.hedef, "hediye", puan);
       olayEkle(d, { tur: "hediye", devlet: oyuncu, metin: `${d.devletler[e.hedef].ad}'na ${e.miktar} hediye gönderildi; ilişki +${puan}.` });
+      break;
+    }
+    case "ticaretTeklif": {
+      const oyuncu = d.ayarlar.oyuncu, ad = d.devletler[e.hedef].ad;
+      const c = ticaretDegerlendir(d, diplomasiOnHesap(d, b.ag), oyuncu, e.hedef);
+      if (c.kabul) ticaretAnlasmasiKur(d, oyuncu, e.hedef);
+      olayEkle(d, { tur: "ticaret-cevap", devlet: oyuncu,
+        metin: c.kabul ? `${ad} ticaret anlaşması teklifinizi kabul etti. ${c.nedenler.join(" ")}` : `${ad} ticaret anlaşması teklifinizi reddetti: ${c.nedenler.join(" ")}` });
+      break;
+    }
+    case "ticaretBoz":
+      ticaretAnlasmasiBoz(d, d.ayarlar.oyuncu, e.hedef);
+      olayEkle(d, { tur: "ticaret-bozuldu", devlet: d.ayarlar.oyuncu, metin: `${d.devletler[e.hedef].ad} ile ticaret anlaşmasından çıktınız.` });
+      break;
+    case "saldirmazlikTeklif": {
+      const oyuncu = d.ayarlar.oyuncu, ad = d.devletler[e.hedef].ad;
+      const c = saldirmazlikDegerlendir(d, diplomasiOnHesap(d, b.ag), oyuncu, e.hedef);
+      if (c.kabul) saldirmazlikKur(d, oyuncu, e.hedef, e.ay);
+      olayEkle(d, { tur: "saldirmazlik-cevap", devlet: oyuncu,
+        metin: c.kabul ? `${ad} ${e.ay} aylık saldırmazlık paktı teklifinizi kabul etti. ${c.nedenler.join(" ")}` : `${ad} saldırmazlık paktı teklifinizi reddetti: ${c.nedenler.join(" ")}` });
       break;
     }
     case "orduTutum":

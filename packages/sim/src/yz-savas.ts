@@ -10,7 +10,7 @@ import { gorunurYabanciOrdular, savasta } from "./savas";
 import { orduKonumu } from "./hareket";
 import { orduKusatmasi, sehirMenzilinde } from "./kusatma";
 import { barisBedeli, barisDogrula, barisiUygula, savasSkoru, sehirDegeri } from "./baris";
-import { iliski, komsuMu, muttefik, muttefikleri, type DiplomasiOnHesap } from "./diplomasi";
+import { iliski, komsuMu, muttefik, muttefikleri, saldirmazlikVar, type DiplomasiOnHesap } from "./diplomasi";
 import { aralik } from "./rastgele";
 
 const dene = (d: DunyaDurumu, b: Baglam, e: Emir) => {
@@ -37,7 +37,7 @@ export function savasKarari(d: DunyaDurumu, b: Baglam, on: DiplomasiOnHesap, dev
     gorunur.filter((o) => o.devlet === k).reduce((t, o) => t + o.yaklasikAsker, 0), on.arazi[k] * DENGE.GARNIZON_BIRIM_BASINA);
   let en: { hedef: number; oran: number; p: number } | null = null;
   for (let k = 0; k < on.n; k++) {
-    if (k === devlet || !on.arazi[k] || !komsuMu(on, devlet, k) || muttefik(d, devlet, k) || ateskesVar(d, devlet, k)) continue;
+    if (k === devlet || !on.arazi[k] || !komsuMu(on, devlet, k) || muttefik(d, devlet, k) || ateskesVar(d, devlet, k) || saldirmazlikVar(d, devlet, k)) continue;
     const p = iliski(d, on, devlet, k);
     if (p > DENGE.YZ_FIRSAT_ILISKI) continue;
     const dusman = tahmin(k) + muttefikleri(d, k).filter((m) => m !== devlet && !muttefik(d, devlet, m)).reduce((t, m) => t + tahmin(m), 0);

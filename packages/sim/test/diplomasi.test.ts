@@ -1,7 +1,7 @@
 // TASK-0009/6a: ilişkiler, savunma ittifakı ve hediye (DEC-0038)
 import { describe, expect, it } from "vitest";
 import {
-  agHazirla, baslangicDurumu, degismezler, DENGE, diplomasiOnHesap, durumOzeti, emirleriUygula, emirVer, etkiEkle, gunIlerlet,
+  agHazirla, baslangicDurumu, degismezler, DENGE, diplomasiOnHesap, diplomasiSonumu, durumOzeti, emirleriUygula, emirVer, etkiEkle, gunIlerlet,
   hediyePuanBedeli, iliski, iliskiBilesenleri, ittifakKur, kaydet, kullanilabilirHazine, muttefik, savasta, SEMA_SURUMU,
   turuIlerlet, yukle, type DunyaDurumu, type SenaryoVerisi,
 } from "../src";
@@ -114,6 +114,70 @@ describe("diplomasi (6a)", () => {
     const g = yukle(JSON.stringify(p));
     expect(g.sema).toBe(SEMA_SURUMU);
     expect(g.saldirganlik).toHaveLength(g.devletler.length);
+    expect(degismezler(g)).toEqual([]);
+  });
+});
+
+describe("TASK-0017 (4/4): ticaret anlaşması ve saldırmazlık paktı", () => {
+  it("ticaret anlaşması ilişki eşiğine göre reddedilir ya da kabul edilir; tekrar teklif ve bozma", () => {
+    const d = yeniDurum();
+    sonuc(d, { tur: "ticaretTeklif", hedef: B });
+    expect(d.ticaretAnlasmalari).toEqual([]);
+    expect(d.gunluk.at(-1)!.metin).toMatch(/reddetti.*bakışı 0.*en az 10/);
+    etkiEkle(d, A, B, "tarih", DENGE.TICARET_ANLASMA_ESIGI);
+    sonuc(d, { tur: "ticaretTeklif", hedef: B });
+    expect(d.ticaretAnlasmalari).toEqual([{ a: A, b: B, baslangic: d.gun }]);
+    expect(emirVer(d, { tur: "ticaretTeklif", hedef: B }).gecerli).toBe(false); // zaten var
+    sonuc(d, { tur: "ticaretBoz", hedef: B });
+    expect(d.ticaretAnlasmalari).toEqual([]);
+    expect(emirVer(d, { tur: "ticaretBoz", hedef: B }).gecerli).toBe(false); // zaten yok
+    expect(degismezler(d)).toEqual([]);
+  });
+
+  it("savaş ilanı mevcut ticaret anlaşmasını bozar", () => {
+    const d = yeniDurum();
+    etkiEkle(d, A, B, "tarih", DENGE.TICARET_ANLASMA_ESIGI);
+    sonuc(d, { tur: "ticaretTeklif", hedef: B });
+    expect(d.ticaretAnlasmalari).toHaveLength(1);
+    sonuc(d, { tur: "savasIlan", devlet: A, hedef: B });
+    expect(d.ticaretAnlasmalari).toEqual([]);
+  });
+
+  it("saldırmazlık paktı ilişki 0 iken bile kurulabilir; savaş ilanını engeller; süre dolunca kalkar", () => {
+    const d = yeniDurum();
+    sonuc(d, { tur: "saldirmazlikTeklif", hedef: B, ay: 12 });
+    expect(d.saldirmazlikPaktlari).toEqual([{ a: A, b: B, bitis: d.gun + 12 * 30 }]);
+    expect(emirVer(d, { tur: "savasIlan", devlet: A, hedef: B }).gecerli).toBe(false);
+    expect(emirVer(d, { tur: "saldirmazlikTeklif", hedef: B, ay: 24 }).gecerli).toBe(false); // zaten var
+    expect(emirVer(d, { tur: "saldirmazlikTeklif", hedef: B, ay: 13 as 12 }).gecerli).toBe(false); // geçersiz süre
+    d.saldirmazlikPaktlari[0].bitis = d.gun - 1;
+    diplomasiSonumu(d);
+    expect(d.saldirmazlikPaktlari).toEqual([]);
+    expect(emirVer(d, { tur: "savasIlan", devlet: A, hedef: B }).gecerli).toBe(true);
+    expect(degismezler(d)).toEqual([]);
+  });
+
+  it("savaşan taraflar birbirine saldırmazlık paktı teklif edemez", () => {
+    const d = yeniDurum();
+    sonuc(d, { tur: "savasIlan", devlet: A, hedef: B });
+    expect(emirVer(d, { tur: "saldirmazlikTeklif", hedef: B, ay: 12 }).gecerli).toBe(false);
+  });
+
+  it("kayıt/yükleme korur; şema 20 kaydı boş listelerle 21'e taşınır", () => {
+    const d = yeniDurum();
+    etkiEkle(d, A, B, "tarih", DENGE.TICARET_ANLASMA_ESIGI);
+    sonuc(d, { tur: "ticaretTeklif", hedef: B }, { tur: "saldirmazlikTeklif", hedef: C, ay: 24 });
+    const e = yukle(kaydet(d), d.senaryo);
+    expect(e.ticaretAnlasmalari).toEqual(d.ticaretAnlasmalari);
+    expect(e.saldirmazlikPaktlari).toEqual(d.saldirmazlikPaktlari);
+
+    const p = JSON.parse(kaydet(yeniDurum()));
+    delete p.durum.ticaretAnlasmalari; delete p.durum.saldirmazlikPaktlari;
+    p.sema = 20; p.durum.sema = 20;
+    const g = yukle(JSON.stringify(p));
+    expect(g.sema).toBe(SEMA_SURUMU);
+    expect(g.ticaretAnlasmalari).toEqual([]);
+    expect(g.saldirmazlikPaktlari).toEqual([]);
     expect(degismezler(g)).toEqual([]);
   });
 });

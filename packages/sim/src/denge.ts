@@ -222,4 +222,11 @@ export const DENGE = {
   VERGI_ORANI_GELIR_YUZDE: { dusuk: 80, orta: 100, yuksek: 130 },
   VERGI_ORANI_RISK_PUANI: { dusuk: -5, orta: 0, yuksek: 15 },
   HAZINE_GECMISI_EN_COK: 12, // ay
+  // TASK-0017 (4/4) — temel diplomasi: ticaret anlaşması ve saldırmazlık paktı; hepsi [TASLAK]
+  TICARET_ANLASMA_ESIGI: 10, // kabul için en az bu ilişki
+  TICARET_ANLASMA_YUZDE: 10, // her anlaşma, liman ticaret gelirine bu kadar ek yüzde verir
+  TICARET_ANLASMA_EN_COK_YUZDE: 30, // birden çok anlaşmanın toplam tavanı
+  SALDIRMAZLIK_ESIGI: 0, // kabul için en az bu ilişki
+  SALDIRMAZLIK_AYLARI: [12, 24, 36] as const,
+  SALDIRMAZLIK_VARSAYILAN_AY: 24,
 };

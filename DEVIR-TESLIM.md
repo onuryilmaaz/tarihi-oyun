@@ -1,6 +1,6 @@
 # DEVİR TESLİM — agent değişiminde kaldığın yer
 
-Son güncelleme: **2026-10-30, Claude — TASK-0017 (3/4 Ordu birleştirme/ayırma) uygulandı; kullanıcı testi ve commit/push onayı bekleniyor.**
+Son güncelleme: **2026-10-30, Claude — TASK-0017'nin 4 alt teslimi de kod olarak tamamlandı; kullanıcı testi ve commit/push onayı bekleniyor.**
 Bağlayıcı kurallar: `AGENTS.md`, `MASTER_SPEC.md`, `DECISIONS.md`.
 
 ## 0. En son — BURADAN BAŞLA
@@ -19,7 +19,13 @@ Bağlayıcı kurallar: `AGENTS.md`, `MASTER_SPEC.md`, `DECISIONS.md`.
   tek seçimlik `<select>` yerine tıklanabilir liste (ad + asker sayısı, ilk aday otomatik seçili); haritada sağ tıkla-seç
   akışı korundu. Sadece istemci değişti (`main.ts`, `index.html`); sim tarafı değişmedi, 209 test aynen geçiyor.
   5173'te agent tarafından doğrulandı: ordu bölündü, aynı konumdaki ordu listede çıktı, seçili/etkin oldu, Birleştir ile
-  2 orduya indi. JS hatası yok. **Kullanıcı testi ve commit/push onayı bekliyor.**
+  2 orduya indi. JS hatası yok. Commit+push edildi (`3fa88b8`).
+- **4/4 Temel diplomasi (ticaret anlaşması + saldırmazlık paktı) kod olarak tamamlandı, henüz commit edilmedi:** ticaret
+  anlaşması (eşik ilişki 10, +%10 liman geliri, savaşla otomatik bozulur), saldırmazlık paktı (12/24/36 ay seçimli,
+  eşik 0, aktifken savaş ilanını her iki yönde de engeller, süre dolunca kalkar). Şema 20 → 21. Devlet panelinde yeni
+  "Ticaret ve saldırmazlık" bölümü. 215 test (6 yeni), typecheck, build geçti; 5173'te agent tarafından doğrulandı
+  (haritadan devlet seçip ticaret teklifi gönderildi, tahmini cevap/eşik metni doğru, tur ilerletildi, JS hatası yok).
+  **TASK-0017'nin 4 alt teslimi de kod olarak bitti. Kullanıcı testi ve commit/push onayı bekliyor.**
 - Kullanıcı "oyun mantığında eksiklikler var, Age of History gibi bir şey istiyorum: ekonomi, asker basma, ordu
   birleştirme/ayırma, diplomasi" dedi. **TASK-0017 / DEC-0066** ile tek görev kartı onaylandı: sıra Ekonomi → Asker basma →
   Ordu birleştirme/ayırma → Temel diplomasi. Açık sorular yanıtlandı: vergi düşük/orta/yüksek (varsayılan orta); pakt süresini

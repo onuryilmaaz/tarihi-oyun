@@ -9,6 +9,7 @@ import { DENGE } from "./denge";
 import { savasta } from "./savas";
 import { bolgeKontrolu } from "./deniz";
 import { sehirGelirYuzde } from "./istikrar";
+import { ticaretAnlasmasiVar } from "./diplomasi";
 
 export interface Ambargo { devlet: number; hedef: number } // devlet, hedefe ambargo koydu
 
@@ -45,6 +46,12 @@ export function sehirTicareti(d: DunyaDurumu, sehir: number): TicaretDurumu {
   if (koyan) { yuzde -= koyan * DENGE.AMBARGO_KOYAN_YUZDE; nedenler.push(`Koyduğunuz ${koyan} ambargo kendi ticaretinizi de azaltıyor.`); }
   const ist = sehirGelirYuzde(s);
   if (ist < 100) { yuzde = Math.floor((yuzde * ist) / 100); nedenler.push(ist === 0 ? "Ayaklanma." : "Huzursuzluk."); }
+  const anlasmalar = d.devletler.filter((_, i) => i !== s.devlet && ticaretAnlasmasiVar(d, s.devlet, i)).length;
+  if (anlasmalar) {
+    const ek = Math.min(DENGE.TICARET_ANLASMA_EN_COK_YUZDE, anlasmalar * DENGE.TICARET_ANLASMA_YUZDE);
+    yuzde += ek;
+    nedenler.push(`${anlasmalar} ticaret anlaşması: +%${ek}.`);
+  }
   yuzde = Math.max(0, yuzde);
   return { taban, gelir: Math.floor((taban * yuzde) / 100), yuzde, nedenler };
 }

@@ -1,5 +1,20 @@
 # CHANGELOG
 
+## 2026-10-30 — TASK-0017 (4/4 Temel diplomasi): ticaret anlaşması ve saldırmazlık paktı (Claude)
+
+- **Ticaret anlaşması:** oyuncu bir devlete teklif eder (eşik ilişki 10, ittifaktan daha kolay); kabul edilirse her iki
+  tarafın liman ticaret gelirine +%10 (birden çok anlaşma en çok +%30'a kadar birikir). Savaş ilan edilince otomatik bozulur.
+  Oyuncu istediği zaman `ticaretBoz` ile çıkabilir.
+- **Saldırmazlık paktı:** oyuncu süre seçer (12/24/36 ay, varsayılan 24; eşik ilişki 0). Aktifken iki taraf da (oyuncu
+  ve AI) birbirine savaş ilan edemez; süre dolunca otomatik kalkar. Savaştaki taraflar teklif edemez.
+  AI'nın kendi savaş kararları da aktif paktı/ateşkesi zaten atladığı gibi bunu da atlar.
+- Yeni modül yok; genişletme `diplomasi.ts`, `ticaret.ts`, `emirler.ts`, `yz-savas.ts`, `durum.ts` (şema 21), `kayit.ts`.
+  İstemci: devlet panelinde "Ticaret ve saldırmazlık" bölümü (teklif/çık düğmeleri, tahmini AI cevabı, süre seçimi).
+- 215 test (6 yeni), typecheck ve build geçti. 5173'te agent tarafından doğrulandı: haritadan bir devlet seçilip ticaret
+  anlaşması teklif edildi ("İskoçya Krallığı'na ticaret anlaşması teklifi gönderildi"), tahmini cevap ve eşik metni doğru
+  göründü, tur ilerletildi, dünya simülasyonu sorunsuz devam etti. JS hatası yok.
+- **TASK-0017'nin 4 alt teslimi de kod olarak tamamlandı.** Kullanıcı testi ve commit/push onayı bekleniyor.
+
 ## 2026-10-30 — TASK-0017 (3/4 Ordu birleştirme/ayırma): checkbox listesi (Claude)
 
 - Ordu birleştirme arayüzü: tek seçimlik açılır liste (`<select>`) yerine, haritada tıkla-seç ile birlikte kullanılabilen

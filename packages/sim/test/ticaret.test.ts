@@ -77,4 +77,12 @@ describe("ticaret (8b)", () => {
     expect(g.deniz.bolgeler.every((b) => b.gecit === -1)).toBe(true);
     expect(degismezler(g)).toEqual([]);
   });
+
+  it("TASK-0017: aktif ticaret anlaşması liman gelirine ek yüzde verir", () => {
+    const d = yeni();
+    d.ticaretAnlasmalari.push({ a: A, b: B, baslangic: d.gun });
+    const beklenen = Math.floor((40 * (100 + DENGE.TICARET_ANLASMA_YUZDE)) / 100);
+    expect(sehirTicareti(d, A1)).toMatchObject({ taban: 40, gelir: beklenen, yuzde: 100 + DENGE.TICARET_ANLASMA_YUZDE });
+    expect(degismezler(d)).toEqual([]);
+  });
 });

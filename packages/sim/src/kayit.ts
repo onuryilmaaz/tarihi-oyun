@@ -171,6 +171,11 @@ export function yukle(metin: string, beklenenSenaryo?: string): DunyaDurumu {
       t.bedel = toplamaMaliyeti(t.asker); // teknoloji indirimi bilinmiyor; taban oranla iade edilir
     });
     d.sonrakiToplamaId = d.askerToplamalar.length + 1;
+    d.sema = 20;
+  }
+  if (d.sema === 20) {
+    // Şema 20 → 21 (TASK-0017): eski kayıtta ticaret anlaşması/saldırmazlık paktı yok
+    d.ticaretAnlasmalari = []; d.saldirmazlikPaktlari = [];
     d.sema = SEMA_SURUMU;
   }
   if (d.sema !== SEMA_SURUMU) throw new KayitHatasi("Kayıt tutarsız: dünya şema sürümü uyuşmuyor.");

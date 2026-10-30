@@ -79,8 +79,8 @@ describe("kayıt / yükleme", () => {
     delete p.ozet;
     const x = p.durum;
     // Şema 3'te olmayan alanlar silinir; dönüşümler bunları varsayılanlarla yeniden kurmalı
-    for (const k of ["askerToplamalar", "kusatmalar", "isgalHazirliklari", "barislar", "insaatlar", "arastirmalar", "iliskiEtkileri",
-      "saldirganlik", "ittifaklar", "yzSayac", "barisTeklifleri", "sonrakiTeklifId", "ateskesler", "verasetSecimi", "iskanlar",
+    for (const k of ["askerToplamalar", "sonrakiToplamaId", "kusatmalar", "isgalHazirliklari", "barislar", "insaatlar", "arastirmalar", "iliskiEtkileri",
+      "saldirganlik", "ittifaklar", "ticaretAnlasmalari", "saldirmazlikPaktlari", "yzSayac", "barisTeklifleri", "sonrakiTeklifId", "ateskesler", "verasetSecimi", "iskanlar",
       "yerelYonetim", "deniz", "donanmalar", "sonrakiDonanmaId", "gemiInsalari", "ambargolar", "casusGorevleri", "casusEtkileri", "sonrakiGorevId"]) delete x[k];
     for (const s of x.sehirler) for (const k of ["insanGucu", "sur", "garnizon", "yapilar", "gruplar", "istikrar", "yonetici"]) delete s[k];
     for (const v of x.devletler) for (const k of ["teknolojiler", "hukumdar", "veraset", "adHavuzu", "tarihiHalef", "din", "kultur", "vergiOrani", "hazineGecmisi"]) delete v[k];

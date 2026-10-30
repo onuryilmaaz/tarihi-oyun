@@ -193,7 +193,11 @@ export interface DiplomasiKarti {
   ittifak: Degerlendirme; // teklif etseniz bugünkü tahmini cevap
   hediyePuanBedeli: number;
   hediyeKalan: number; // eklenebilecek en çok hediye puanı
-  bekleyen: "ittifakTeklif" | "ittifakBoz" | null;
+  ticaretVar: boolean; // TASK-0017 (4/4)
+  ticaret: Degerlendirme; // teklif etseniz bugünkü tahmini cevap
+  saldirmazlikVar: boolean;
+  saldirmazlik: Degerlendirme;
+  bekleyen: "ittifakTeklif" | "ittifakBoz" | "ticaretTeklif" | "ticaretBoz" | "saldirmazlikTeklif" | null;
 }
 
 export interface TeknolojiKarti {

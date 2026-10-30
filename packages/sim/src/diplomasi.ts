@@ -176,4 +176,52 @@ export function diplomasiSonumu(d: DunyaDurumu): void {
   }
   d.iliskiEtkileri = d.iliskiEtkileri.filter((e) => e.deger !== 0);
   d.saldirganlik = d.saldirganlik.map((s) => Math.max(0, s - DENGE.SALDIRGANLIK_SONUM));
+  d.saldirmazlikPaktlari = d.saldirmazlikPaktlari.filter((p) => p.bitis > d.gun);
+}
+
+// --- TASK-0017 (4/4, DEC-0066): ticaret anlaşması ve saldırmazlık paktı --------------------------
+
+export const ticaretAnlasmasiVar = (d: DunyaDurumu, a: number, b: number) => {
+  const [x, y] = cift(a, b);
+  return d.ticaretAnlasmalari.some((t) => t.a === x && t.b === y);
+};
+export const saldirmazlikVar = (d: DunyaDurumu, a: number, b: number) => {
+  const [x, y] = cift(a, b);
+  return d.saldirmazlikPaktlari.some((p) => p.a === x && p.b === y && p.bitis > d.gun);
+};
+
+export function ticaretAnlasmasiKur(d: DunyaDurumu, a: number, b: number): void {
+  const [x, y] = cift(a, b);
+  if (!ticaretAnlasmasiVar(d, a, b)) d.ticaretAnlasmalari.push({ a: x, b: y, baslangic: d.gun });
+}
+export function ticaretAnlasmasiBoz(d: DunyaDurumu, a: number, b: number): void {
+  const [x, y] = cift(a, b);
+  d.ticaretAnlasmalari = d.ticaretAnlasmalari.filter((t) => !(t.a === x && t.b === y));
+}
+export function saldirmazlikKur(d: DunyaDurumu, a: number, b: number, ay: number): void {
+  const [x, y] = cift(a, b);
+  d.saldirmazlikPaktlari = d.saldirmazlikPaktlari.filter((p) => !(p.a === x && p.b === y));
+  d.saldirmazlikPaktlari.push({ a: x, b: y, bitis: d.gun + ay * 30 });
+}
+
+/** hedef, teklifEden'in ticaret anlaşması teklifini kabul eder mi? İttifaktan daha düşük bir eşik yeterlidir. */
+export function ticaretDegerlendir(d: DunyaDurumu, o: DiplomasiOnHesap, teklifEden: number, hedef: number): Degerlendirme {
+  const p = iliski(d, o, hedef, teklifEden);
+  const nedenler: string[] = [];
+  if (savasta(d, teklifEden, hedef)) nedenler.push("İki devlet savaşta.");
+  if (ticaretAnlasmasiVar(d, teklifEden, hedef)) nedenler.push("Zaten bir ticaret anlaşmanız var.");
+  if (p < DENGE.TICARET_ANLASMA_ESIGI) nedenler.push(`Size bakışı ${p} (${iliskiAdi(p)}); en az ${DENGE.TICARET_ANLASMA_ESIGI} gerekir.`);
+  if (nedenler.length) return { kabul: false, nedenler };
+  return { kabul: true, nedenler: [`Size bakışı ${p} (${iliskiAdi(p)}).`] };
+}
+
+/** hedef, teklifEden'in saldırmazlık paktı teklifini kabul eder mi? */
+export function saldirmazlikDegerlendir(d: DunyaDurumu, o: DiplomasiOnHesap, teklifEden: number, hedef: number): Degerlendirme {
+  const p = iliski(d, o, hedef, teklifEden);
+  const nedenler: string[] = [];
+  if (savasta(d, teklifEden, hedef)) nedenler.push("İki devlet savaşta; önce barış yapılmalı.");
+  if (saldirmazlikVar(d, teklifEden, hedef)) nedenler.push("Zaten bir saldırmazlık paktınız var.");
+  if (p < DENGE.SALDIRMAZLIK_ESIGI) nedenler.push(`Size bakışı ${p} (${iliskiAdi(p)}); en az ${DENGE.SALDIRMAZLIK_ESIGI} gerekir.`);
+  if (nedenler.length) return { kabul: false, nedenler };
+  return { kabul: true, nedenler: [`Size bakışı ${p} (${iliskiAdi(p)}).`] };
 }
