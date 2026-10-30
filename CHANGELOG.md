@@ -1,5 +1,21 @@
 # CHANGELOG
 
+## 2026-10-30 — TASK-0018 (3/3): yanlış istihbarat + direniş ara kademesi — TASK-0018 tamamlandı (Claude)
+
+- **Yanlış istihbarat:** Başarılı askerî/diplomatik casusluk görevinde %20 ihtimalle rapor çarpıtılır (gerçek sayının
+  %70–%130'u arası); oyuncu bunu bilemez, rapor hâlâ "kesin" görünür. Çarpan görev başlarken belirlenip saklanır
+  (sonradan sorgulanınca aynı sonucu verir, RNG tekrar tüketilmez). İsyanı destekleme görevini etkilemez.
+  `casusluk.ts` (yeni alan `CasusEtkisi.carpanBinde`), `savas.ts` (askerî rapor), istemci `sim-isci.ts` (diplomatik
+  rapordaki hazine).
+- **Direniş ara kademesi:** İstikrarda huzursuzluk (%50) ile ayaklanma (%80) arasına yeni bir "Direniş" eşiği (%65)
+  eklendi: bu aralıkta şehir ve çevresi gelirin tamamı yerine çeyreğini verir (önceden doğrudan yarıya düşüp
+  ayaklanmaya geçiliyordu). `istikrar.ts`, istemci şehir panelinde yeni aşama adı ve açıklaması.
+- Şema değişikliği yok (yeni alan isteğe bağlı, eski kayıtlarda yoksa doğru/1000 sayılır).
+- 224 test (3 yeni + 1 güncellenen), typecheck ve build geçti. 5173'te agent tarafından doğrulandı: askerî istihbarat
+  görevi hatasız başlatıldı, JS hatası yok; istikrar panelinin canlı ekran testi bu seferki denemede şehir seçilemediği
+  için eksik kaldı — mantık sim testleriyle (direniş eşiği, gelir yüzdesi) doğrulandı.
+- **TASK-0018'in 3 alt teslimi de kod olarak tamamlandı.** Kullanıcı testi ve commit/push onayı bekleniyor.
+
 ## 2026-10-30 — TASK-0018 (2/3): vasallık — yalnızca barışta "vasal yap" (Claude)
 
 - Tam ilhak düzeyinde talepte (düşmanın bütün kalan arazi/şehri), galip taraf toprak devri yerine **vasal yap**

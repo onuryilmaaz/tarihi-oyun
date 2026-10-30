@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
 import { agHazirla, araziGelirleri, asayisAskeri, baslangicDurumu, bosIstikrar, degismezler, DENGE, SEMA_SURUMU,
   diplomasiOnHesap, devletKarari, durumOzeti, emirleriUygula, emirVer, gerekenAsayis,
-  insaatlariIlerlet, istikrarAyi, kaydet, kullanilabilirHazine, riskBilesenleri, sehirYapiGeliri,
+  insaatlariIlerlet, istikrarAsamasi, istikrarAyi, kaydet, kullanilabilirHazine, riskBilesenleri, sehirGelirYuzde, sehirYapiGeliri,
   toplamalariIlerlet, yukle, type DunyaDurumu } from "../src";
 import { TEST_SENARYOSU } from "./yardimci";
 
@@ -82,6 +82,22 @@ describe("7c aşamalar ve sonuçları", () => {
     expect(sehirYapiGeliri(d, s)).toBe(yapi / 2); expect(araziGelirleri(d)[0]).toBe(once - 5);
     s.istikrar.ayaklanma = true;
     expect(sehirYapiGeliri(d, s)).toBe(0); expect(araziGelirleri(d)[0]).toBe(once - 10);
+  });
+
+  it("TASK-0018 (3/3): direniş ara kademesi huzursuzlukla ayaklanma arasında gelirin çeyreğini bırakır", () => {
+    const d = yeni(), s = d.sehirler[1]; s.yapilar.tarla = 2;
+    const yapi = sehirYapiGeliri(d, s);
+    s.istikrar.risk = DENGE.IST_DIRENIS;
+    expect(istikrarAsamasi(s)).toBe("Direniş");
+    expect(sehirGelirYuzde(s)).toBe(25);
+    expect(sehirYapiGeliri(d, s)).toBe(Math.floor((yapi * 25) / 100));
+    s.istikrar.risk = DENGE.IST_HUZURSUZLUK;
+    expect(istikrarAsamasi(s)).toBe("Huzursuzluk");
+    s.istikrar.risk = DENGE.IST_AYAKLANMA - 1;
+    expect(istikrarAsamasi(s)).toBe("Direniş");
+    s.istikrar.ayaklanma = true;
+    expect(istikrarAsamasi(s)).toBe("Ayaklanma");
+    expect(sehirGelirYuzde(s)).toBe(0);
   });
   it("ayaklanmada yeni ve süren asker/inşaat işleri durur; bitince devam eder", () => {
     const d = yeni(), s = d.sehirler[1]; s.istikrar.ayaklanma = true;

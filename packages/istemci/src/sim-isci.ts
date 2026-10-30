@@ -11,7 +11,7 @@ import {
   ticaretAnlasmasiVar, ticaretDegerlendir, saldirmazlikVar, saldirmazlikDegerlendir, efendisi,
   asayisAskeri, gerekenAsayis,
   hukumdarYasi, VERASET_ADLARI, yerelYonetimAyarla, bolgeKontrolu, gorunurDonanmalar, kapasite, sehirMenzilinde, sehirTicareti, type Hukumdar,
-  ALAN_ADLARI, TEKNOLOJILER, teknolojiBul, biliyor, toplamaBedelYuzde, toplamaSuresi,
+  ALAN_ADLARI, TEKNOLOJILER, teknolojiBul, biliyor, toplamaBedelYuzde, toplamaSuresi, etkiCarpani,
 } from "@tarihi/sim";
 import type { Istek, Ozet, Yanit } from "./sim-protokol";
 
@@ -97,8 +97,10 @@ function ozet(durum: DunyaDurumu): Ozet {
         if (e.devlet !== p || e.tur !== "diplomatik" || e.bitis <= durum.gun || r[e.hedef]) continue;
         const h = e.hedef, bakis = durum.devletler.flatMap((_, k) => (k === h || !durum.birimler.some((b) => b.sahip === k) ? [] : [[k, iliski(durum, on, h, k)] as [number, number]]));
         bakis.sort((a, b) => a[1] - b[1] || a[0] - b[0]);
+        // Yanlış bilgi (TASK-0018, 3/3): oyuncu bunu bilemez; gösterilen hazine çarpıtılmış olabilir.
+        const carpan = etkiCarpani(e);
         r[h] = { muttefikleri: muttefikleri(durum, h), savaslari: durum.savaslar.flatMap((s) => (s.saldiran === h ? [s.savunan] : s.savunan === h ? [s.saldiran] : [])),
-          enKotu: bakis.slice(0, 3), enIyi: bakis.slice(-3).reverse(), hazine: Math.round(durum.devletler[h].hazine / 100) * 100 };
+          enKotu: bakis.slice(0, 3), enIyi: bakis.slice(-3).reverse(), hazine: Math.round((durum.devletler[h].hazine * carpan) / 1000 / 100) * 100 };
       }
       return r;
     })(),

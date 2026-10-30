@@ -14,8 +14,11 @@ export interface Istikrar {
 }
 export const bosIstikrar = (): Istikrar => ({ risk: 0, oncekiRisk: 0, bilesenler: [], degisim: [],
   yuksekAy: 0, ayaklanma: false, asayisAy: 0, bagis: 0, fetihGun: null, hesapGun: null });
-export const istikrarAsamasi = (s: SehirDurumu): string => s.istikrar.ayaklanma ? "Ayaklanma" : s.istikrar.risk >= DENGE.IST_HUZURSUZLUK ? "Huzursuzluk" : "Sakin";
-export const sehirGelirYuzde = (s: SehirDurumu): number => s.istikrar.ayaklanma ? 0 : s.istikrar.risk >= DENGE.IST_HUZURSUZLUK ? 50 : 100;
+// TASK-0018 (3/3): huzursuzluk ile ayaklanma arasında bir "direniş" ara kademesi; ek küçük gelir kaybı, henüz tam ayaklanma değil.
+export const istikrarAsamasi = (s: SehirDurumu): string => s.istikrar.ayaklanma ? "Ayaklanma"
+  : s.istikrar.risk >= DENGE.IST_DIRENIS ? "Direniş" : s.istikrar.risk >= DENGE.IST_HUZURSUZLUK ? "Huzursuzluk" : "Sakin";
+export const sehirGelirYuzde = (s: SehirDurumu): number => s.istikrar.ayaklanma ? 0
+  : s.istikrar.risk >= DENGE.IST_DIRENIS ? 25 : s.istikrar.risk >= DENGE.IST_HUZURSUZLUK ? 50 : 100;
 /** Bir arazide birden çok şehir varsa en ağır etki uygulanır; ceza birikmez. */
 export function birimGelirYuzdeleri(d: DunyaDurumu): number[] {
   const sonuc = d.birimler.map(() => 100);
@@ -78,7 +81,11 @@ export function istikrarAyi(d: DunyaDurumu, b: Baglam): void {
       olayEkle(d, { tur: "ayaklanma", devlet: s.devlet, metin });
       if (s.devlet === d.ayarlar.oyuncu && !d.aktifKesinti) d.aktifKesinti = { gun: d.gun, neden: metin };
     }
-    if (!i.ayaklanma && ((once < DENGE.IST_HUZURSUZLUK && i.risk >= DENGE.IST_HUZURSUZLUK) || (once < DENGE.IST_AYAKLANMA && i.risk >= DENGE.IST_AYAKLANMA)))
+    if (!i.ayaklanma && once < DENGE.IST_HUZURSUZLUK && i.risk >= DENGE.IST_HUZURSUZLUK)
+      olayEkle(d, { tur: "isyan-uyari", devlet: s.devlet, metin: `${s.ad}: isyan riski %${i.risk}. Huzursuzluk nedeniyle şehir ve çevresi yarım gelir verir; nedenleri şehir panelinde.` });
+    if (!i.ayaklanma && once < DENGE.IST_DIRENIS && i.risk >= DENGE.IST_DIRENIS)
+      olayEkle(d, { tur: "isyan-uyari", devlet: s.devlet, metin: `${s.ad}: isyan riski %${i.risk}, direniş başladı. Şehir ve çevresi gelirin çeyreğini verir; nedenleri şehir panelinde.` });
+    if (!i.ayaklanma && once < DENGE.IST_AYAKLANMA && i.risk >= DENGE.IST_AYAKLANMA)
       olayEkle(d, { tur: "isyan-uyari", devlet: s.devlet, metin: `${s.ad}: isyan riski %${i.risk}. Huzursuzluk nedeniyle şehir ve çevresi yarım gelir verir; nedenleri şehir panelinde.` });
     i.bagis = Math.max(0, i.bagis - DENGE.IST_BAGIS_SONUM);
   });

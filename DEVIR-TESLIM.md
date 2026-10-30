@@ -1,6 +1,6 @@
 # DEVİR TESLİM — agent değişiminde kaldığın yer
 
-Son güncelleme: **2026-10-30, Claude — TASK-0018 (1/3 ve 2/3) kod olarak tamamlandı; kullanıcı testi ve commit/push onayı bekleniyor.**
+Son güncelleme: **2026-10-30, Claude — TASK-0018'in 3 alt teslimi de kod olarak tamamlandı; kullanıcı testi ve commit/push onayı bekleniyor.**
 Bağlayıcı kurallar: `AGENTS.md`, `MASTER_SPEC.md`, `DECISIONS.md`.
 
 ## 0. En son — BURADAN BAŞLA
@@ -40,7 +40,14 @@ Bağlayıcı kurallar: `AGENTS.md`, `MASTER_SPEC.md`, `DECISIONS.md`.
   talebinde görünür), devlet panelinde vasallık durumu/serbest bırak, vasalken "Savaş ilan et" nedenle pasif.
   222 test (5 yeni), typecheck, build geçti; 5173'te agent tarafından doğrulandı (barış penceresi, tam ilhak olmadan
   etiket gizli, JS hatası yok). Gerçek tam-ilhak+vasal akışı kuşatma gerektirdiği için canlı denenmedi; sim testleri
-  uçtan uca kapsıyor. **Kullanıcı testi ve commit/push onayı bekliyor.**
+  uçtan uca kapsıyor. Commit+push edildi (`9b1a845`).
+- **3/3 Yanlış istihbarat + direniş ara kademesi kod olarak tamamlandı, henüz commit edilmedi:** başarılı askerî/
+  diplomatik casusluk görevinde %20 ihtimalle rapor çarpıtılır (gerçek sayının %70–%130'u, oyuncu bilemez; isyan
+  desteğini etkilemez). İstikrarda huzursuzluk (%50) ile ayaklanma (%80) arasına yeni "Direniş" eşiği (%65): gelirin
+  çeyreği kalır. Şema değişikliği yok (yeni alan isteğe bağlı). 224 test (3 yeni + 1 güncellenen), typecheck, build
+  geçti; 5173'te casusluk görevi hatasız başlatıldı, JS hatası yok; istikrar panelinin canlı testi bu seferki
+  denemede eksik kaldı, mantık sim testleriyle doğrulandı.
+  **TASK-0018'in 3 alt teslimi de kod olarak bitti. Kullanıcı testi ve commit/push onayı bekliyor.**
 - Kullanıcı "oyun mantığında eksiklikler var, Age of History gibi bir şey istiyorum: ekonomi, asker basma, ordu
   birleştirme/ayırma, diplomasi" dedi. **TASK-0017 / DEC-0066** ile tek görev kartı onaylandı: sıra Ekonomi → Asker basma →
   Ordu birleştirme/ayırma → Temel diplomasi. Açık sorular yanıtlandı: vergi düşük/orta/yüksek (varsayılan orta); pakt süresini

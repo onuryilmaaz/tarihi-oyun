@@ -68,7 +68,10 @@ describe("casusluk (8c)", () => {
       if (basarili(d)) {
         gorduk = true;
         expect(istihbaratVar(d, A, B, "askeri")).toBe(true);
-        expect(gorunurYabanciOrdular(d, B_.ag, A)).toMatchObject([{ devlet: B, yaklasikAsker: 7300, kesin: true }]);
+        // TASK-0018 (3/3): yanlış bilgi ihtimali olduğu için sayı her zaman 7300 olmayabilir; saklanan çarpanla doğrulanır.
+        const etki = d.casusEtkileri.find((e) => e.devlet === A && e.hedef === B && e.tur === "askeri")!;
+        const beklenen = Math.max(0, Math.round((7300 * (etki.carpanBinde ?? 1000)) / 1000));
+        expect(gorunurYabanciOrdular(d, B_.ag, A)).toMatchObject([{ devlet: B, yaklasikAsker: beklenen, kesin: true }]);
       } else if (d.gunluk.some((o) => /Casusunuz yakalandı/.test(o.metin))) {
         yakalandi = true;
         expect(iliskiBilesenleri(d, diplomasiOnHesap(d, null), B, A)).toContainEqual({ ad: "Yakalanan casus", deger: DENGE.CASUS_YAKALANMA_ILISKI });
@@ -76,6 +79,28 @@ describe("casusluk (8c)", () => {
       expect(degismezler(d)).toEqual([]);
     }
     expect(gorduk && yakalandi).toBe(true);
+  });
+
+  it("TASK-0018 (3/3): başarılı askerî/diplomatik görevde bazen yanlış bilgi döner, isyan desteğinde asla", () => {
+    let dogru = false, yanlis = false;
+    for (let t = 1; t < 80 && !(dogru && yanlis); t++) {
+      const d = gorev(t, "askeri");
+      if (!basarili(d)) continue;
+      const etki = d.casusEtkileri.find((e) => e.devlet === A && e.hedef === B && e.tur === "askeri")!;
+      const carpan = etki.carpanBinde ?? 1000;
+      expect(carpan).toBeGreaterThanOrEqual(DENGE.CASUS_YANLIS_CARPAN_EN_AZ);
+      expect(carpan).toBeLessThanOrEqual(DENGE.CASUS_YANLIS_CARPAN_EN_COK);
+      if (carpan === 1000) dogru = true; else yanlis = true;
+      expect(degismezler(d)).toEqual([]);
+    }
+    expect(dogru && yanlis).toBe(true);
+    // İsyan desteğinde çarpan hiç oluşmaz (sadece askerî/diplomatik rapor çarpıtılır)
+    for (let t = 1; t < 40; t++) {
+      const d = gorev(t, "isyan", B1);
+      if (!basarili(d)) continue;
+      const etki = d.casusEtkileri.find((e) => e.tur === "isyan")!;
+      expect(etki.carpanBinde).toBe(1000);
+    }
   });
 
   it("isyanı destekleme şehrin risk bileşenine, sabotaj süren inşaata etki eder", () => {

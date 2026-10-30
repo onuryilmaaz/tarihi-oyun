@@ -545,7 +545,8 @@ export function degismezler(d: DunyaDurumu): string[] {
   }
   for (const g of d.casusGorevleri) if (!tam(g.id) || g.id >= d.sonrakiGorevId || !d.devletler[g.devlet] || !d.devletler[g.hedef]
     || !GOREV_TURLERI.includes(g.tur) || !tam(g.kalanGun) || g.kalanGun <= 0 || (g.sehir !== null && !d.sehirler[g.sehir])) h.push("casus görevi geçersiz");
-  for (const e of d.casusEtkileri) if (!d.devletler[e.devlet] || !d.devletler[e.hedef] || !["askeri", "diplomatik", "isyan"].includes(e.tur) || !tam(e.bitis)) h.push("casus etkisi geçersiz");
+  for (const e of d.casusEtkileri) if (!d.devletler[e.devlet] || !d.devletler[e.hedef] || !["askeri", "diplomatik", "isyan"].includes(e.tur) || !tam(e.bitis)
+    || (e.carpanBinde !== undefined && (!tam(e.carpanBinde) || e.carpanBinde <= 0))) h.push("casus etkisi geçersiz");
   for (const g of d.gemiInsalari) if (!d.sehirler[g.sehir] || (d.deniz.limanlar[g.sehir] ?? -1) < 0 || !GEMI_TURLERI.includes(g.gemi)
     || !tam(g.adet) || g.adet <= 0 || !tam(g.kalanGun) || g.kalanGun <= 0) h.push("gemi inşası geçersiz");
   const yy = d.yerelYonetim;

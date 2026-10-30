@@ -14,11 +14,16 @@ export const GOREV_TURLERI: GorevTuru[] = ["askeri", "diplomatik", "isyan", "sab
 export const SEHIRLI_GOREV: GorevTuru[] = ["isyan", "sabotaj"];
 
 export interface CasusGorevi { id: number; devlet: number; hedef: number; tur: GorevTuru; sehir: number | null; kalanGun: number }
-/** Süren etki: istihbarat (askerî/diplomatik) ya da şehirdeki isyan desteği; bitis gününe kadar. */
-export interface CasusEtkisi { devlet: number; hedef: number; tur: "askeri" | "diplomatik" | "isyan"; sehir: number | null; bitis: number }
+/** Süren etki: istihbarat (askerî/diplomatik) ya da şehirdeki isyan desteği; bitis gününe kadar.
+ * carpanBinde (TASK-0018, 3/3): askerî/diplomatik raporun gösterdiği sayıya uygulanan binde çarpan;
+ * yoksa ya da 1000 ise doğru, farklıysa oyuncuya bildirilmeyen bir "yanlış bilgi" (eski kayıtlarda yok, 1000 sayılır). */
+export interface CasusEtkisi { devlet: number; hedef: number; tur: "askeri" | "diplomatik" | "isyan"; sehir: number | null; bitis: number; carpanBinde?: number }
+export const etkiCarpani = (e: Pick<CasusEtkisi, "carpanBinde">): number => e.carpanBinde ?? 1000;
 
+export const istihbaratEtkisi = (d: DunyaDurumu, devlet: number, hedef: number, tur: "askeri" | "diplomatik") =>
+  d.casusEtkileri.find((e) => e.devlet === devlet && e.hedef === hedef && e.tur === tur && e.bitis > d.gun);
 export const istihbaratVar = (d: DunyaDurumu, devlet: number, hedef: number, tur: "askeri" | "diplomatik") =>
-  d.casusEtkileri.some((e) => e.devlet === devlet && e.hedef === hedef && e.tur === tur && e.bitis > d.gun);
+  !!istihbaratEtkisi(d, devlet, hedef, tur);
 /** Şehre yabancı isyan desteği (7c risk bileşeni). */
 export const disDestek = (d: DunyaDurumu, sehir: number) =>
   d.casusEtkileri.some((e) => e.tur === "isyan" && e.sehir === sehir && isyanHedefiGecerli(d, e) && e.bitis > d.gun) ? DENGE.CASUS_ISYAN_RISK : 0;
@@ -56,7 +61,10 @@ export function casusGorevleriIlerlet(d: DunyaDurumu): void {
         if (ins) { ins.kalanGun += DENGE.CASUS_SABOTAJ_GUN; sonuc = `inşaat ${DENGE.CASUS_SABOTAJ_GUN} gün gecikti`; }
         else { const k = Math.floor((s.garnizon * DENGE.CASUS_SABOTAJ_GARNIZON_YUZDE) / 100); s.garnizon -= k; sonuc = `garnizon ${k} asker kaybetti`; }
       } else {
-        d.casusEtkileri.push({ devlet: g.devlet, hedef: g.hedef, tur: g.tur, sehir: g.sehir, bitis: d.gun + c.sure });
+        // TASK-0018 (3/3): askerî/diplomatik görevde küçük bir ihtimalle rapor çarpıtılır; oyuncuya bildirilmez.
+        const yanlisBilgi = g.tur !== "isyan" && aralik(d, 100) < DENGE.CASUS_YANLIS_BILGI_YUZDE;
+        const carpanBinde = yanlisBilgi ? aralik(d, DENGE.CASUS_YANLIS_CARPAN_EN_COK - DENGE.CASUS_YANLIS_CARPAN_EN_AZ + 1) + DENGE.CASUS_YANLIS_CARPAN_EN_AZ : 1000;
+        d.casusEtkileri.push({ devlet: g.devlet, hedef: g.hedef, tur: g.tur, sehir: g.sehir, bitis: d.gun + c.sure, carpanBinde });
         sonuc = g.tur === "isyan" ? `şehrin isyan riski ${c.sure} gün boyunca +${DENGE.CASUS_ISYAN_RISK}` : `${c.sure} gün boyunca bilgi akacak`;
       }
       if (g.devlet === oyuncu) olayEkle(d, { tur: "casusluk", devlet: oyuncu, metin: `${c.ad} başarılı — ${hedefAd}${yer}: ${sonuc}.` });

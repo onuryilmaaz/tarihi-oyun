@@ -5,7 +5,7 @@ import { olayEkle, type DunyaDurumu, type Muharebe, type MuharebeRaporu, type Or
 import { DENGE } from "./denge";
 import { rotaBul, type HareketAgi } from "./hareket";
 import { aralik } from "./rastgele";
-import { istihbaratVar } from "./casusluk";
+import { etkiCarpani, istihbaratEtkisi, istihbaratVar } from "./casusluk";
 import { muharebeGucYuzde } from "./teknoloji";
 
 /** Binlik ayırıcılı sayı (ortamdan bağımsız; toLocaleString simülasyonda yasak) */
@@ -65,9 +65,11 @@ export function gorunurYabanciOrdular(d: DunyaDurumu, ag: HareketAgi, devlet: nu
   const g = gorunurDugumler(d, ag, devlet);
   // Askerî istihbarat (8c): hedefin bütün orduları görünür ve sayıları kesindir
   return d.ordular.filter((o) => o.devlet !== devlet && (g.has(o.dugum) || istihbaratVar(d, devlet, o.devlet, "askeri"))).map((o) => {
-    const kesin = istihbaratVar(d, devlet, o.devlet, "askeri");
+    const etki = istihbaratEtkisi(d, devlet, o.devlet, "askeri");
+    // Yanlış bilgi (TASK-0018, 3/3): oyuncu "kesin" etiketli ama çarpıtılmış bir sayı görür; bunu bilemez.
     return { id: o.id, ad: o.ad, devlet: o.devlet, dugum: o.dugum, x: o.x, y: o.y,
-      yaklasikAsker: kesin ? o.asker : yaklasikAsker(o.asker), muharebede: o.muharebe !== null, kesin };
+      yaklasikAsker: etki ? Math.max(0, Math.round((o.asker * etkiCarpani(etki)) / 1000)) : yaklasikAsker(o.asker),
+      muharebede: o.muharebe !== null, kesin: !!etki };
   });
 }
 

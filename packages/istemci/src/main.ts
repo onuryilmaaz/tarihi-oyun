@@ -478,13 +478,15 @@ async function baslat() {
           <span>kişi →</span><select id="iskanHedef" aria-label="Hedef şehir">${hedefler.map((x) => `<option value="${x.indeks}">${kacis(x.ad)}</option>`).join("")}</select>
           <button data-eylem="iskan" data-sehir="${s.id}">Taşı</button></div>
         <p class="not">Bedel: 1.000 kişi için ${DENGE.ISKAN_BEDEL_BINDE}; ${DENGE.ISKAN_GUN} gün sürer; en çok nüfusun %${DENGE.ISKAN_EN_COK_YUZDE}'si. Gruplar oranıyla taşınır.</p>`;
-      const st = ozet.istikrar[s.id], durum = st.ayaklanma ? "Ayaklanma" : st.risk >= DENGE.IST_HUZURSUZLUK ? "Huzursuzluk" : "Sakin";
+      const st = ozet.istikrar[s.id], durum = st.ayaklanma ? "Ayaklanma" : st.risk >= DENGE.IST_DIRENIS ? "Direniş" : st.risk >= DENGE.IST_HUZURSUZLUK ? "Huzursuzluk" : "Sakin";
       const imzali = (n: number) => `${n > 0 ? "+" : ""}${n}`;
       const istikrar = `<section id="istikrarBilgi"><h4>İstikrar · ${durum}</h4><p>İsyan riski: <b>%${st.risk}</b> · Önceki ay %${st.oncekiRisk}</p>
         <p class="not">${st.hesapGun === null ? "İlk ay başında hesaplanacak." : `Son hesap: ${tarihMetni(st.hesapGun)}. Risk 0–100 arasında tutulur.`}</p>
         <ul class="not">${st.bilesenler.filter((x) => x.puan !== 0).map((x) => `<li>${kacis(x.ad)}: ${imzali(x.puan)}</li>`).join("") || "<li>Etkin risk bileşeni yok.</li>"}</ul>
         <p class="not">Geçen aya göre: ${st.degisim.length ? st.degisim.map((x) => `${kacis(x.ad)} ${imzali(x.puan)}`).join("; ") : "bileşenler değişmedi"}. İndirimler ve 0–100 sınırı toplam farkı etkileyebilir.</p>
-        <p class="not">${st.ayaklanma ? `Gelir ve asker toplama yok; inşaat bekliyor. ${DENGE.IST_BASTIRMA_AY} ay yeterli ordu veya riskin %${DENGE.IST_HUZURSUZLUK} altına düşmesiyle biter.` : st.risk >= DENGE.IST_HUZURSUZLUK ? `Şehir ve çevresi yarım gelir verir. %${DENGE.IST_AYAKLANMA} ve üzeri: ${st.yuksekAy}/${DENGE.IST_AYAKLANMA_AY} ay.` : "Şehir ve çevresinin gelirinde risk cezası yok."}</p>
+        <p class="not">${st.ayaklanma ? `Gelir ve asker toplama yok; inşaat bekliyor. ${DENGE.IST_BASTIRMA_AY} ay yeterli ordu veya riskin %${DENGE.IST_HUZURSUZLUK} altına düşmesiyle biter.`
+          : st.risk >= DENGE.IST_DIRENIS ? `Direniş: şehir ve çevresi gelirin çeyreğini verir. %${DENGE.IST_AYAKLANMA} ve üzeri: ${st.yuksekAy}/${DENGE.IST_AYAKLANMA_AY} ay.`
+          : st.risk >= DENGE.IST_HUZURSUZLUK ? `Şehir ve çevresi yarım gelir verir. %${DENGE.IST_AYAKLANMA} ve üzeri: ${st.yuksekAy}/${DENGE.IST_AYAKLANMA_AY} ay.` : "Şehir ve çevresinin gelirinde risk cezası yok."}</p>
         ${c.devlet === ozet.oyuncu.indeks ? `<p class="not">Asayiş: ${st.asayis}/${st.gerekenAsker} asker. Yardım indirimi kalan: ${st.bagis} puan.</p>
         <button data-bagis="${s.id}" ${st.bagisUygun ? "" : "disabled"}>Bağış / imar yardımı (${DENGE.IST_BAGIS_BEDEL})</button>
         <p class="not">${kacis(st.bagisNedeni ?? `Sonraki aylık hesapta −${DENGE.IST_BAGIS_INDIRIM} puan; ayda ${DENGE.IST_BAGIS_SONUM} puan söner. Borçlanma yoktur.`)}</p>` : ""}</section>`;

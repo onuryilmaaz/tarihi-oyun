@@ -25,6 +25,7 @@ export const DENGE = {
   IST_ASAYIS_NUFUS_YUZDE: 5,
   IST_BASKENT_INDIRIM: 10,
   IST_HUZURSUZLUK: 50,
+  IST_DIRENIS: 65, // TASK-0018 (3/3): huzursuzluk ile ayaklanma arasında ara kademe
   IST_AYAKLANMA: 80,
   IST_AYAKLANMA_AY: 3,
   IST_BASTIRMA_AY: 2,
@@ -214,6 +215,10 @@ export const DENGE = {
   CASUS_EN_COK: 2, // aynı anda yürüyen görev (devlet başına)
   CASUS_YAKALANMA_YUZDE: 50, // başarısız görevde casusun yakalanma olasılığı
   CASUS_YAKALANMA_ILISKI: -30, // yakalanınca hedefin bakışı (zamanla söner)
+  // TASK-0018 (3/3): yanlış istihbarat — başarılı askerî/diplomatik görevde küçük bir ihtimalle rapor çarpıtılır
+  CASUS_YANLIS_BILGI_YUZDE: 20, // başarılı askeri/diplomatik görevde yanlış bilgi ihtimali
+  CASUS_YANLIS_CARPAN_EN_AZ: 700, // binde; gerçek sayının %70'i ile %130'u arasında görünür
+  CASUS_YANLIS_CARPAN_EN_COK: 1300,
   CASUS_ISYAN_RISK: 25, // isyan desteği şehir riskine
   CASUS_SABOTAJ_GUN: 60, // süren inşaatı geciktirme
   CASUS_SABOTAJ_GARNIZON_YUZDE: 30, // inşaat yoksa garnizon kaybı
