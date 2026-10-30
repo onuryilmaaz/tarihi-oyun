@@ -155,6 +155,11 @@ function ozet(durum: DunyaDurumu): Ozet {
         birimler: t.talep.birimler, sehirler: t.talep.sehirler, kalanGun: DENGE.BARIS_TEKLIF_GUN - (durum.gun - t.gun),
         cevap: c && c.tur === "barisCevap" ? c.kabul : null };
     }),
+    diplomatikTeklifler: durum.diplomatikTeklifler.map((t) => {
+      const c = durum.emirKuyrugu.find((e) => e.tur === "diplomatikTeklifCevap" && e.teklif === t.id);
+      return { id: t.id, devlet: t.devlet, tur: t.tur, ay: t.ay, gerekce: t.gerekce,
+        kalanGun: DENGE.BARIS_TEKLIF_GUN - (durum.gun - t.gun), cevap: c && c.tur === "diplomatikTeklifCevap" ? c.kabul : null };
+    }),
     toplamaKurali: { bedelYuzde: toplamaBedelYuzde(durum, durum.ayarlar.oyuncu), gun: toplamaSuresi(durum, durum.ayarlar.oyuncu) },
     askerSehirleri: durum.sehirler.flatMap((s, indeks) => s.devlet !== durum.ayarlar.oyuncu ? [] : [{
       indeks, ad: s.ad, insanGucu: kullanilabilirInsanGucu(durum, indeks),

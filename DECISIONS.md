@@ -833,6 +833,17 @@ Kaynak belge: `MASTER_SPEC.md` (v1.3). Orijinal keşif çıktısı:
   "İkisi birden, aynı kartta" (2026-10-30).
 - **Durum:** GEÇERLİ
 
+## DEC-0069 — TASK-0020 onayı: AI'dan gelen diplomatik teklifler, elçi gönderme, hükümdar portresi
+
+- **Tarih:** 2026-10-30
+- **Seçilen karar:** TASK-0020 onaylandı: (1) AI devletler ittifak/ticaret/saldırmazlık teklif edebilir, genel
+  "gelen kutusu" penceresi eklenir; (2) elçi gönderme — orta maliyet, 60 gün, tamamlanınca +15 ilişki (hediyeyle
+  aynı sönüm kuralı), aynı devlete ikinci elçi yoldayken gönderilemez; (3) hükümdar/devlet için basit, deterministik
+  bir görsel portre/avatar (saf görsel, oyun mantığını etkilemez). Sıra: AI teklifleri → elçi → portre.
+- **Onay kaydı:** Kullanıcı: "AI'dan gelen teklifler, elçi gönderme, hükümdar portresi/avatarı" (üçü de seçildi),
+  elçi tasarımı: "Orta maliyet, 60 gün, kademeli +15 ilişki" (2026-10-30).
+- **Durum:** GEÇERLİ
+
 ## DEC-0068 — TASK-0019 onayı: birim çeşitliliği (piyade/okçu/süvari)
 
 - **Tarih:** 2026-10-30

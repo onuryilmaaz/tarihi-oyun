@@ -243,4 +243,7 @@ export const DENGE = {
     okcu: { ad: "Okçu", maliyetYuzde: 80, maasYuzde: 90, saldiriYuzde: 80, savunmaYuzde: 130, hizYuzde: 100 },
     suvari: { ad: "Süvari", maliyetYuzde: 180, maasYuzde: 160, saldiriYuzde: 140, savunmaYuzde: 70, hizYuzde: 150 },
   },
+  // TASK-0020 (1/3, DEC-0069) — AI'dan oyuncuya diplomatik teklifler; hepsi [TASLAK]
+  YZ_DIPLOMASI_TEKLIF_OLASILIK: 1, // AI'nın aylık kararında, ilişki uygunsa teklif sunma olasılığı (%)
+  YZ_DIPLOMASI_SOGUMA_GUN: 180, // bir devlet, cevaplanan/süresi dolan teklifinden sonra bu kadar gün yeni teklif göndermez
 };

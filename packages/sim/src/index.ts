@@ -13,6 +13,7 @@ export * from "./teknoloji";
 export * from "./diplomasi";
 export * from "./yz";
 export * from "./yz-savas";
+export * from "./yz-diplomasi";
 export * from "./hanedan";
 export * from "./nufus";
 export * from "./yonetim";

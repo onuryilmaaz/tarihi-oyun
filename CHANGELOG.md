@@ -1,5 +1,31 @@
 # CHANGELOG
 
+## 2026-10-30 — TASK-0020 (1/3): AI'dan gelen diplomatik teklifler + gelen kutusu (Claude)
+
+- **AI kararı (`yz-diplomasi.ts`, yeni):** Her AI devleti, oyuncunun sınır komşusuysa, savaşta değillerse ve
+  180 gün içinde ona teklif göndermediyse, aylık kararında küçük bir olasılıkla (`YZ_DIPLOMASI_TEKLIF_OLASILIK`
+  %8) ilişkisine göre ittifak (eşik 25) / ticaret anlaşması (eşik 10) / saldırmazlık paktı (eşik 0, 24 ay) teklif
+  eder; en yüksek eşiği karşılayan tür seçilir. Uzak (komşu olmayan) devletler teklif göndermez — ilk denemede
+  132 devletli senaryoda sınırsız teklif akışı 10 yıllık turları sürekli kesintiye uğratıyordu (bkz. riskler).
+- **Oyuncu cevabı:** Yeni emir `diplomatikTeklifCevap` (kabul/ret), barış teklifiyle aynı doğrulama/uygulama
+  deseninde (`emirler.ts`). Kabul edilirse ilgili ilişki (`ittifakKur`/`ticaretAnlasmasiKur`/`saldirmazlikKur`)
+  kurulur.
+- **Arayüz:** Barış teklifiyle aynı desende genelleştirilmiş bir pencere (`#dipTeklifi`): kesinti olduğunda
+  otomatik açılır, devlet panelinde "📨 ... teklif ediyor" bildirimiyle de açılabilir. Savaş/barış rozetindeki
+  sayaç artık bekleyen diplomatik teklifleri de sayıyor.
+- **Şema 23 → 24:** `diplomatikTeklifler` (bekleyen teklifler) ve `diplomatikTeklifSoguma` (devlet başına son
+  teklif günü, soğuma için) eklendi; eski kayıtlarda boş/soğuma süresi dolmuş başlar.
+- **Riskler/düzeltme:** İlk sürümde (tüm 132 devlet, %8 olasılık, soğuma yok) 10 yıllık senaryo testinde yıllık
+  turlar sürekli kesintiye uğrayıp yalnızca ~4 ay ilerliyordu. Sınır komşusu kısıtı ve 180 günlük soğuma eklenerek
+  10 yılda makul sayıda (gerçek oyunda birkaç yılda bir) teklife indirildi; `senaryo-1453.test.ts`'teki 10 yıllık
+  test artık kesintileri reddederek ilerliyor ve en az 10 yıl geçtiğini doğruluyor (kesintiler nedeniyle takvim
+  tarihi birkaç ay kayabilir — bu kasıtlı ve mevcut "tur durur, oyuncu karar verir" kuralıyla tutarlı).
+- 242 sim testi (4 yeni: `yz-diplomasi.test.ts`), typecheck ve build geçti. 5173'te Playwright ile canlı
+  doğrulandı: Candaroğulları'ndan saldırmazlık paktı teklifi kesintiyle geldi, `#dipTeklifi` penceresi doğru
+  metinle açıldı, "Kabul et" JS hatasız çalıştı (kullanıcıya ekran görüntüsü gönderildi).
+- **Sırada:** TASK-0020 2/3 (elçi gönderme), 3/3 (hükümdar/devlet portresi). Kullanıcı testi ve commit/push
+  onayı bekliyor.
+
 ## 2026-10-30 — TASK-0019 (4/4): kuşatma gücü + arayüz tamamlama — TASK-0019 tamamlandı (Claude)
 
 - **Kuşatma gücü:** `kusatma.ts: kusatmaGucu` artık kuşatan ordunun kompozisyonuna göre saldırı yüzdesi çarpanı

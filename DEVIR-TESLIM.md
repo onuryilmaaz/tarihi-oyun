@@ -1,9 +1,35 @@
 # DEVİR TESLİM — agent değişiminde kaldığın yer
 
-Son güncelleme: **2026-10-30, Claude — TASK-0019'un 4 fazı da kod olarak tamamlandı (son görev); kullanıcı testi ve commit/push onayı bekleniyor.**
+Son güncelleme: **2026-10-30, Claude — TASK-0020 1/3 (AI'dan gelen diplomatik teklifler + gelen kutusu) kod olarak
+tamamlandı; kullanıcı testi ve commit/push onayı bekleniyor.**
 Bağlayıcı kurallar: `AGENTS.md`, `MASTER_SPEC.md`, `DECISIONS.md`.
 
 ## 0. En son — BURADAN BAŞLA
+
+- Kullanıcı "testleri sonra yaparız, eksikleri analiz et" dedi (TASK-0019 sonrası), sonra elçi gönderme/gelen
+  teklifleri görme/figürlerle gösterme istedi → **TASK-0020 / DEC-0069** onaylandı: 3 alt teslim sırayla
+  (1) AI'dan gelen diplomatik teklifler + gelen kutusu, (2) elçi gönderme, (3) hükümdar/devlet portresi.
+- **1/3 kod olarak tamamlandı, henüz commit edilmedi:** Yeni `yz-diplomasi.ts` — her AI devleti, oyuncunun sınır
+  komşusuysa, savaşta değillerse ve 180 gün içinde ona teklif göndermediyse, aylık kararında küçük bir olasılıkla
+  (`YZ_DIPLOMASI_TEKLIF_OLASILIK` %8) ilişkisine göre ittifak/ticaret/saldırmazlık teklif eder. Yeni emir
+  `diplomatikTeklifCevap` (kabul/ret), barış teklifiyle aynı doğrulama/uygulama deseninde. Şema 23 → 24
+  (`diplomatikTeklifler`, `diplomatikTeklifSoguma`). İstemci: barış teklifiyle aynı desende genelleştirilmiş
+  pencere (`#dipTeklifi`), devlet panelinde "📨 ... teklif ediyor" bildirimi, savaş rozeti sayacı güncellendi.
+  **Önemli düzeltme:** İlk sürümde (tüm 132 devlet, komşuluk/soğuma kısıtı yok) 10 yıllık senaryo testinde
+  yıllık turlar sürekli kesintiye uğrayıp 10 yıl yalnızca ~4 ay ilerliyordu; sınır komşusu kısıtı + 180 günlük
+  soğuma eklenince makul sıklığa indi (bkz. CHANGELOG). `senaryo-1453.test.ts`'teki 10 yıllık test artık
+  kesintileri reddederek ilerliyor, tam 10 yılın geçtiğini (kesintiler nedeniyle takvim birkaç ay kayabilir)
+  doğruluyor — bu kasıtlı davranış, "tur durur, oyuncu karar verir" kuralıyla tutarlı.
+  242 sim testi (4 yeni: `yz-diplomasi.test.ts`), typecheck, build geçti; 5173'te Playwright ile canlı doğrulandı
+  (Candaroğulları'ndan saldırmazlık paktı teklifi kesintiyle geldi, `#dipTeklifi` doğru metinle açıldı, "Kabul et"
+  JS hatasız çalıştı; kullanıcıya ekran görüntüsü gönderildi).
+- **Sırada:** TASK-0020 2/3 elçi gönderme (orta maliyet, 60 gün, tamamlanınca +15 ilişki), 3/3 hükümdar/devlet
+  portresi (saf görsel). Devralan agent önce kullanıcıdan 1/3'ün commit/push onayını istesin, sonra 2/3'e geçsin.
+- `tasks/TASK-0020.md`, `DECISIONS.md` (DEC-0069), `CHANGELOG.md` güncel; henüz commit edilmedi.
+
+## Arşiv — TASK-0019 ve öncesi (bu oturumun önceki kısmı)
+
+**Aşağısı bu oturumun TASK-0017/18/19 notlarıdır; güncel durum için yukarıdaki en üst §0 geçerlidir.**
 
 - **TASK-0015 (önceki oturum) commit/push edilmiş bulundu** (main'de `8d01be8`, commit mesajı hatalı/eksik "....."). Bu
   oturumda GitHub App erişimi düzeltildikten sonra bu dal (`claude/game-logic-gaps-rk0oge`) origin'e push edildi.

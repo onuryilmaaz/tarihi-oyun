@@ -187,6 +187,12 @@ export function yukle(metin: string, beklenenSenaryo?: string): DunyaDurumu {
     // Şema 22 → 23 (TASK-0019): eski kayıtlarda kompozisyon yok; bütün askerler piyade sayılır
     for (const o of d.ordular) o.kompozisyon = { piyade: o.asker, okcu: 0, suvari: 0 };
     for (const t of d.askerToplamalar) t.birim = "piyade";
+    d.sema = 23;
+  }
+  if (d.sema === 23) {
+    // Şema 23 → 24 (TASK-0020): eski kayıtlarda AI'dan gelen diplomatik teklif yok
+    d.diplomatikTeklifler = []; d.sonrakiDiplomatikTeklifId = 1;
+    d.diplomatikTeklifSoguma = d.devletler.map(() => -DENGE.YZ_DIPLOMASI_SOGUMA_GUN);
     d.sema = SEMA_SURUMU;
   }
   if (d.sema !== SEMA_SURUMU) throw new KayitHatasi("Kayıt tutarsız: dünya şema sürümü uyuşmuyor.");

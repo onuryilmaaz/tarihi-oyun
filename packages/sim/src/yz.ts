@@ -14,6 +14,7 @@ import { arastirmaEngeli, pazarGeliriSeviyeBasina, TEKNOLOJILER, toplamaBedelYuz
 import { insaatMaliyeti, sehirdeInsaatVar } from "./yatirim";
 import { gundenTarih } from "./takvim";
 import { barisKararlari, savasKarari } from "./yz-savas";
+import { diplomatikTeklifKarari } from "./yz-diplomasi";
 
 /** Tehdit nedeni (herkesin bildiği bilgilerden) ya da null. */
 export function tehditNedeni(d: DunyaDurumu, on: DiplomasiOnHesap, devlet: number): string | null {
@@ -39,6 +40,7 @@ export function devletKarari(d: DunyaDurumu, b: Baglam, on: DiplomasiOnHesap, de
   // 6c: önce süren savaşların barışı, sonra yeni savaş kararı (tehdit hesabı ilanı da görür)
   barisKararlari(d, b, devlet);
   savasKarari(d, b, on, devlet);
+  diplomatikTeklifKarari(d, on, devlet); // TASK-0020 (1/3): oyuncuya ittifak/ticaret/saldırmazlık teklifi
   // 8c: savaştaki AI ara sıra düşmanına askerî istihbarat görevi açar (aynı kurallar, aynı bedel)
   const dusmanSavasi = d.savaslar.find((s) => s.saldiran === devlet || s.savunan === devlet);
   if (dusmanSavasi && DENGE.CASUS.askeri.bedel <= para() && aralik(d, 100) < DENGE.YZ_CASUS_OLASILIK) {

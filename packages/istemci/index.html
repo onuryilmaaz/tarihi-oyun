@@ -183,6 +183,10 @@
     #barisTeklifi .panel { position: static; width: min(520px, calc(100% - 32px)); max-height: calc(100% - 48px); overflow: auto; padding: 22px; }
     #barisTeklifi h3 { font-family: "Cinzel", serif; margin: 0 0 8px; }
     #barisTeklifi .satir { justify-content: flex-end; gap: 8px; margin-top: 10px; }
+    #dipTeklifi { position: fixed; inset: 0; display: grid; place-items: center; background: rgba(15,12,9,.6); z-index: 11; }
+    #dipTeklifi .panel { position: static; width: min(520px, calc(100% - 32px)); max-height: calc(100% - 48px); overflow: auto; padding: 22px; }
+    #dipTeklifi h3 { font-family: "Cinzel", serif; margin: 0 0 8px; }
+    #dipTeklifi .satir { justify-content: flex-end; gap: 8px; margin-top: 10px; }
     #verasetPencere { position: fixed; inset: 0; display: grid; place-items: center; background: rgba(15,12,9,.6); z-index: 11; }
     #verasetPencere .panel { position: static; width: min(640px, calc(100% - 32px)); max-height: calc(100% - 48px); overflow: auto; padding: 22px; }
     #verasetPencere h3 { font-family: "Cinzel", serif; margin: 0 0 6px; }
@@ -361,14 +365,14 @@
        Ölçeklenen paneller zoom ile büyür; konumları ölçeğe bölünerek görsel yerleri korunur. */
     :root { --olcek: 1; }
     #ust, #yan, #bilgi, .menu-kart, #teknoloji .panel, #baris .panel, #onay .panel, #rapor .panel, #kesinti .panel,
-    #barisTeklifi .panel, #verasetPencere .panel { zoom: var(--olcek); }
+    #barisTeklifi .panel, #dipTeklifi .panel, #verasetPencere .panel { zoom: var(--olcek); }
     #ust { top: calc(12px / var(--olcek)); left: calc(12px / var(--olcek)); right: calc(12px / var(--olcek)); }
     #yan { top: calc(var(--ust) + 24px / var(--olcek)); left: calc(12px / var(--olcek));
       height: calc((100vh - 36px) / var(--olcek) - var(--ust)); max-height: none; }
     #bilgi { top: calc(var(--ust) + 24px / var(--olcek)); right: calc(12px / var(--olcek));
       max-height: calc((100vh - 36px) / var(--olcek) - var(--ust)); }
     #lejant, #nufusLejant, #diplomasiLejant { left: calc(var(--yan-genislik) * var(--olcek) + 24px); }
-    .menu-kart, #teknoloji .panel, #baris .panel, #rapor .panel, #barisTeklifi .panel, #verasetPencere .panel { max-height: calc((100vh - 48px) / var(--olcek)); }
+    .menu-kart, #teknoloji .panel, #baris .panel, #rapor .panel, #barisTeklifi .panel, #dipTeklifi .panel, #verasetPencere .panel { max-height: calc((100vh - 48px) / var(--olcek)); }
     button:focus-visible, [role="tab"]:focus-visible, a:focus-visible { outline: 2px solid var(--vurgu); outline-offset: 2px; }
     @media (prefers-reduced-motion: reduce) { *, *::before, *::after { transition: none !important; animation: none !important; } }
     /* Küçük ekran: mobil arayüz sonraya (DEC-0013); burada yalnızca bozulmama */
@@ -577,6 +581,15 @@
       <div id="teklifIcerik"></div>
       <p class="not">Cevabınız bir sonraki turun başında uygulanır. Kabul ederseniz savaş biter; reddederseniz sürer.</p>
       <div class="satir"><button id="teklifSonra">Sonra karar ver</button><button id="teklifRet" class="tehlike">Reddet</button><button id="teklifKabul">Kabul et</button></div>
+    </div>
+  </div>
+
+  <div id="dipTeklifi" hidden>
+    <div class="panel" role="dialog" aria-modal="true" aria-labelledby="dipTeklifBaslik">
+      <h3 id="dipTeklifBaslik">Diplomatik teklif</h3>
+      <div id="dipTeklifIcerik"></div>
+      <p class="not">Cevabınız bir sonraki turun başında uygulanır.</p>
+      <div class="satir"><button id="dipTeklifSonra">Sonra karar ver</button><button id="dipTeklifRet" class="tehlike">Reddet</button><button id="dipTeklifKabul">Kabul et</button></div>
     </div>
   </div>
 

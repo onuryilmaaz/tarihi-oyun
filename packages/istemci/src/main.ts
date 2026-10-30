@@ -256,7 +256,8 @@ async function baslat() {
     $("devletArmasi").innerHTML = armaSvg(gorunum.devletRengiHex(i), ozet.din, ozet.oyuncu.ad);
     $("devletAdi").textContent = ozet.oyuncu.ad;
     $("devletAlt").textContent = `${hk ? `${hk.ad} · ${hk.yas} yaşında` : "Taht boş"} · ${dinAdi(ozet.din)}`;
-    const n = ozet.savaslar.length + ozet.barisTeklifleri.filter((t) => t.cevap === null).length;
+    const n = ozet.savaslar.length + ozet.barisTeklifleri.filter((t) => t.cevap === null).length
+      + ozet.diplomatikTeklifler.filter((t) => t.cevap === null).length;
     $("savasRozet").hidden = n === 0;
     $("savasRozet").textContent = String(n);
   };
@@ -537,10 +538,17 @@ async function baslat() {
   };
   const isaretli = (n: number) => `<span class="${n > 0 ? "arti" : n < 0 ? "eksi" : ""}">${n > 0 ? "+" : ""}${n}</span>`;
   const iliskiAdi = (p: number) => (p >= 50 ? "Dostane" : p >= 15 ? "İyi" : p > -15 ? "Tarafsız" : p > -50 ? "Soğuk" : "Düşmanca");
+  // AI'dan gelen diplomatik teklif (ittifak/ticaret/saldırmazlık; TASK-0020 1/3): barış teklifiyle aynı desen
+  const dipTeklifAdi = { ittifak: "savunma ittifakı", ticaret: "ticaret anlaşması", saldirmazlik: "saldırmazlık paktı" } as const;
   /** Devlet panelindeki diplomasi bölümü (TASK-0009/6a) */
   const diplomasiBolumu = (devlet: number) => {
     const k = ozet.diplomasi[devlet];
     if (!k) return "";
+    const dipTeklif = ozet.diplomatikTeklifler.find((t) => t.devlet === devlet);
+    const dipTeklifBanner = dipTeklif
+      ? `<p class="not">📨 ${kacis(h.paket.devletler[devlet].ad)} size ${kacis(dipTeklifAdi[dipTeklif.tur])} teklif ediyor.
+        <button data-dipteklif="${dipTeklif.id}">${dipTeklif.cevap === null ? "Teklifi cevapla" : "Cevabınız bekliyor"}</button></p>`
+      : "";
     const durum = k.muttefik ? "Savunma ittifakınız var." : k.savasta ? "" : k.komsu ? "Sınır komşunuz." : "";
     const ittifak = k.savasta ? "" : k.muttefik
       ? `<button data-eylem="ittifakBoz" data-devlet="${devlet}"${k.bekleyen ? " disabled" : ""}>${k.bekleyen === "ittifakBoz" ? "Ayrılma emri bekliyor" : "İttifaktan çık"}</button>`
@@ -576,7 +584,7 @@ async function baslat() {
     const inanc = `<p class="not">Resmî din: ${kacis(dinAdi(ozet.devletDinleri[devlet]))}</p>`;
     const arma = `<div class="arma">${armaSvg(gorunum.devletRengiHex(devlet), ozet.devletDinleri[devlet], h.paket.devletler[devlet].ad)}</div>`;
     const huk = k.hukumdar ? `<h4>Hükümdar</h4><p class="not"><b>${kacis(k.hukumdar.ad)}</b>${kurguRozeti(k.hukumdar)} · ${k.hukumdar.yas} yaşında · ${kacis(k.hukumdar.hanedan)}<br />${yetenekMetni(k.hukumdar)} · meşruiyet ${k.hukumdar.mesruiyet}</p>` : "";
-    return `${arma}${huk}${inanc}<h4>Diplomasi</h4><dl><dt>Size bakışı</dt><dd>${isaretli(k.bakisi)} · ${iliskiAdi(k.bakisi)}</dd>
+    return `${arma}${huk}${inanc}${dipTeklifBanner}<h4>Diplomasi</h4><dl><dt>Size bakışı</dt><dd>${isaretli(k.bakisi)} · ${iliskiAdi(k.bakisi)}</dd>
       <dt>Sizin bakışınız</dt><dd>${isaretli(k.bakisimiz)} · ${iliskiAdi(k.bakisimiz)}</dd></dl>
       ${k.bilesenler.length ? `<ul class="iliski-bilesen">${k.bilesenler.map((b) => `<li><span>${kacis(b.ad)}</span>${isaretli(b.deger)}</li>`).join("")}</ul>` : '<p class="not">Aranızda özel bir etken yok.</p>'}
       ${durum ? `<p class="not">${durum}</p>` : ""}${ittifak}${hediye}<h4>Ticaret ve saldırmazlık</h4>${ticaret}${saldirmazlik}${vasallik}${casus}`;
@@ -818,7 +826,7 @@ async function baslat() {
       if (yeniRapor.length) raporGoster(yeniRapor[yeniRapor.length - 1]);
       $("sonTur").textContent = `Son tur: ${Math.round(y.sureMs ?? 0)} ms`;
       if (y.sonuc?.kesinti) kesintiGoster(ozet.tarih, y.sonuc.kesinti.neden);
-      else teklifGoster();
+      else bekleyenPencereyiAc();
       for (const o of y.sonuc?.yeniOlaylar ?? []) {
         if (o.tur === "emir-reddedildi") bildir(`Emir reddedildi: ${o.metin}`, "uyari");
       }
@@ -838,7 +846,7 @@ async function baslat() {
     $("kesinti").hidden = false;
     $<HTMLButtonElement>("kesintiTamam").focus();
   };
-  $("kesintiTamam").onclick = () => { $("kesinti").hidden = true; if (ozet.verasetSecimi && secilenAday === null) verasetAc(); else teklifGoster(); };
+  $("kesintiTamam").onclick = () => { $("kesinti").hidden = true; if (ozet.verasetSecimi && secilenAday === null) verasetAc(); else bekleyenPencereyiAc(); };
   $("yonetimKaydet").onclick = async () => {
     const butce = $<HTMLInputElement>("yonetimButce").valueAsNumber, altSinir = $<HTMLInputElement>("yonetimAlt").valueAsNumber;
     const y = await sim.gonder({ tip: "yonetim", butce, altSinir });
@@ -903,9 +911,43 @@ async function baslat() {
   $("teklifRet").onclick = () => teklifCevapla(false);
   $("teklifSonra").onclick = () => { $("barisTeklifi").hidden = true; };
 
+  // AI'dan gelen diplomatik teklif (ittifak/ticaret/saldırmazlık; TASK-0020 1/3): barış teklifiyle aynı desen
+  const gosterilenDipTeklifler = new Set<number>();
+  let acikDipTeklif: number | null = null;
+  const dipTeklifGoster = (id?: number) => {
+    const t = id !== undefined ? ozet.diplomatikTeklifler.find((x) => x.id === id)
+      : ozet.diplomatikTeklifler.find((x) => x.cevap === null && !gosterilenDipTeklifler.has(x.id));
+    if (!t || !$("kesinti").hidden || !$("barisTeklifi").hidden) return;
+    gosterilenDipTeklifler.add(t.id);
+    acikDipTeklif = t.id;
+    const ad = h.paket.devletler[t.devlet].ad, turAdi = dipTeklifAdi[t.tur];
+    $("dipTeklifBaslik").textContent = `${ad}: ${turAdi} teklifi`;
+    $("dipTeklifIcerik").innerHTML = `<p>${kacis(ad)} size ${kacis(turAdi)}${t.ay ? ` (${t.ay} ay)` : ""} teklif ediyor.</p>
+      <p class="not">${kacis(t.gerekce)}</p>
+      <p class="not">${t.cevap === null ? `Teklif ${t.kalanGun} gün daha geçerli.` : `Cevabınız: ${t.cevap ? "kabul" : "ret"} — bir sonraki tur başında uygulanır.`}</p>`;
+    for (const b of ["dipTeklifKabul", "dipTeklifRet"]) $<HTMLButtonElement>(b).disabled = t.cevap !== null;
+    $("dipTeklifi").hidden = false;
+  };
+  const dipTeklifCevapla = async (kabul: boolean) => {
+    if (acikDipTeklif === null) return;
+    const t = ozet.diplomatikTeklifler.find((x) => x.id === acikDipTeklif)!, ad = h.paket.devletler[t.devlet].ad;
+    if (await emirGonder({ tur: "diplomatikTeklifCevap", teklif: acikDipTeklif, kabul },
+      kabul ? `${ad} ile ${dipTeklifAdi[t.tur]} kabul edildi; bir sonraki tur başında uygulanır.` : `${ad}'nın teklifi reddedildi.`)) {
+      $("dipTeklifi").hidden = true;
+    }
+  };
+  $("dipTeklifKabul").onclick = () => dipTeklifCevapla(true);
+  $("dipTeklifRet").onclick = () => dipTeklifCevapla(false);
+  $("dipTeklifSonra").onclick = () => { $("dipTeklifi").hidden = true; };
+  const bekleyenPencereyiAc = () => { teklifGoster(); if ($("barisTeklifi").hidden) dipTeklifGoster(); };
+  $("bilgi").addEventListener("click", (e) => {
+    const b = (e.target as HTMLElement).closest<HTMLElement>("[data-dipteklif]");
+    if (b) dipTeklifGoster(Number(b.dataset.dipteklif));
+  });
+
   // --- Kayıt yuvaları, ana menü, devlet seçimi (TASK-0012/9a)
   const sifirla = () => {
-    planli.clear(); bekleyenSavas.clear(); bekleyenTutum.clear(); gosterilenTeklifler.clear();
+    planli.clear(); bekleyenSavas.clear(); bekleyenTutum.clear(); gosterilenTeklifler.clear(); gosterilenDipTeklifler.clear();
     gorulenRaporlar.clear(); // kimlikler yalnızca ait oldukları dünyada benzersizdir (H-07)
     sonOtoDonem = ""; // ilk tur yeni/yüklenen dünyanın otomatik kaydını yazmalı (H-03)
     seciliOrdu = null; seciliDonanma = null; secilenAday = null;
@@ -1215,7 +1257,7 @@ async function baslat() {
     if (rehberAcik()) return;
     if (!$("menuKatmani").hidden) { if (e.key === "Escape" && menuOyunda && $("onay").hidden) menuKapat(); return; }
     if (e.key === "Escape" && !$("teknoloji").hidden && $("onay").hidden) { $("teknoloji").hidden = true; return; }
-    if (e.code !== "Space" || !$("verasetPencere").hidden || !$("kesinti").hidden || !$("rapor").hidden || !$("onay").hidden || !$("baris").hidden || !$("teknoloji").hidden || !$("barisTeklifi").hidden) return;
+    if (e.code !== "Space" || !$("verasetPencere").hidden || !$("kesinti").hidden || !$("rapor").hidden || !$("onay").hidden || !$("baris").hidden || !$("teknoloji").hidden || !$("barisTeklifi").hidden || !$("dipTeklifi").hidden) return;
     const etiket = (e.target as HTMLElement).tagName;
     if (etiket === "INPUT" || etiket === "SELECT" || etiket === "TEXTAREA") return;
     e.preventDefault();

@@ -95,6 +95,7 @@ export interface Ozet {
   saldirganlik: number; // oyuncunun saldırganlığı
   efendim: number | null; // TASK-0018 (2/3): oyuncu bir vasalsa efendisinin indeksi
   barisTeklifleri: { id: number; devlet: number; gerekce: string; size: boolean; birimler: number[]; sehirler: number[]; kalanGun: number; cevap: boolean | null }[]; // 6c
+  diplomatikTeklifler: { id: number; devlet: number; tur: "ittifak" | "ticaret" | "saldirmazlik"; ay: number | null; gerekce: string; kalanGun: number; cevap: boolean | null }[]; // TASK-0020 (1/3)
   toplamaKurali: { bedelYuzde: number; gun: number }; // teknolojiyle değişir (Asker Kayıt Defterleri)
   askerSehirleri: { indeks: number; ad: string; insanGucu: number; uygun: boolean; ayaklanma: boolean }[];
   toplamalar: { id: number | null; sehir: string; asker: number; birim: BirimTuru; kalanGun: number; bekliyor: boolean; emir: boolean }[]; // TASK-0019: birim

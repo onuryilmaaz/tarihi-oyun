@@ -67,6 +67,8 @@ export type Emir =
   | { tur: "vasalSerbestBirak"; hedef: number } // TASK-0018 (2/3)
   // AI barış teklifine cevap (TASK-0009/6c)
   | { tur: "barisCevap"; teklif: number; kabul: boolean }
+  // AI'dan gelen diplomatik teklife (ittifak/ticaret/saldırmazlık) cevap (TASK-0020 1/3)
+  | { tur: "diplomatikTeklifCevap"; teklif: number; kabul: boolean }
   // Oyuncu hükümdarı ölünce halef seçimi (TASK-0010/7a)
   | { tur: "halefSec"; aday: number }
   // İskân: oyuncunun bir şehrinden diğerine nüfus taşıma (TASK-0010/7b)
@@ -250,6 +252,12 @@ export function emirDogrula(d: DunyaDurumu, e: Emir, b: Baglam = BOS_BAGLAM, kuy
       if (!t) return { gecerli: false, neden: "Barış teklifi artık geçerli değil." };
       if (!kuyrukHaric && d.emirKuyrugu.some((x) => x.tur === "barisCevap" && x.teklif === e.teklif)) return { gecerli: false, neden: "Bu teklife zaten cevap verdiniz." };
       return e.kabul ? barisDogrula(d, t.talep, t.alan) : { gecerli: true };
+    }
+    case "diplomatikTeklifCevap": {
+      const t = d.diplomatikTeklifler.find((x) => x.id === e.teklif);
+      if (!t) return { gecerli: false, neden: "Teklif artık geçerli değil." };
+      if (!kuyrukHaric && d.emirKuyrugu.some((x) => x.tur === "diplomatikTeklifCevap" && x.teklif === e.teklif)) return { gecerli: false, neden: "Bu teklife zaten cevap verdiniz." };
+      return { gecerli: true };
     }
     case "ittifakTeklif":
     case "ittifakBoz":
@@ -664,6 +672,20 @@ export function emirUygula(d: DunyaDurumu, e: Emir, b: Baglam = BOS_BAGLAM): voi
       d.barisTeklifleri = d.barisTeklifleri.filter((x) => x !== t);
       if (e.kabul) barisiUygula(d, b, t.talep, t.alan);
       else olayEkle(d, { tur: "baris-ret", devlet: d.ayarlar.oyuncu, metin: `${d.devletler[t.teklifEden].ad}'nın barış teklifini reddettiniz; savaş sürüyor.` });
+      break;
+    }
+    case "diplomatikTeklifCevap": {
+      const t = d.diplomatikTeklifler.find((x) => x.id === e.teklif)!;
+      d.diplomatikTeklifler = d.diplomatikTeklifler.filter((x) => x !== t);
+      const oyuncu = d.ayarlar.oyuncu, ad = d.devletler[t.devlet].ad;
+      if (e.kabul) {
+        if (t.tur === "ittifak") ittifakKur(d, oyuncu, t.devlet);
+        else if (t.tur === "ticaret") ticaretAnlasmasiKur(d, oyuncu, t.devlet);
+        else saldirmazlikKur(d, oyuncu, t.devlet, t.ay!);
+        olayEkle(d, { tur: "diplomatik-teklif", devlet: oyuncu, metin: `${ad}'nın teklifini kabul ettiniz.` });
+      } else {
+        olayEkle(d, { tur: "diplomatik-teklif", devlet: oyuncu, metin: `${ad}'nın teklifini reddettiniz.` });
+      }
       break;
     }
     case "ittifakTeklif": {
