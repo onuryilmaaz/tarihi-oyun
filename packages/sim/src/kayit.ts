@@ -156,6 +156,11 @@ export function yukle(metin: string, beklenenSenaryo?: string): DunyaDurumu {
   if (d.sema === 17) {
     // Şema 17 → 18 (TASK-0012/9b): eski kayıtta verim bilinmiyor; ortalama 10 (gelir değişmez)
     for (const b of d.birimler) b.verim = 10;
+    d.sema = 18;
+  }
+  if (d.sema === 18) {
+    // Şema 18 → 19 (TASK-0017): eski kayıtta vergi oranı yok; varsayılan orta, hazine geçmişi boş
+    for (const v of d.devletler) { v.vergiOrani = "orta"; v.hazineGecmisi = []; }
     d.sema = SEMA_SURUMU;
   }
   if (d.sema !== SEMA_SURUMU) throw new KayitHatasi("Kayıt tutarsız: dünya şema sürümü uyuşmuyor.");

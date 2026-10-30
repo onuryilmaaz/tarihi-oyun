@@ -13,8 +13,9 @@ import { gundenTarih } from "./takvim";
 import { orduIlerlet } from "./hareket";
 import { moralToparla, muharebeGunleri, muharebeleriBaslat } from "./savas";
 import type { Baglam } from "./emirler";
-import { ikmalVeMaasMorali, maaslariOde, toplamalariIlerlet } from "./ordu";
+import { devletMaasi, ikmalVeMaasMorali, maaslariOde, toplamalariIlerlet } from "./ordu";
 import { prototipGelirleri } from "./ekonomi";
+import { DENGE } from "./denge";
 import { isgalleriIlerlet, kusatmalariIlerlet } from "./kusatma";
 import { insaatlariIlerlet } from "./yatirim";
 import { arastirmalariIlerlet } from "./teknoloji";
@@ -89,6 +90,18 @@ export const SISTEMLER: Sistem[] = [
     },
   },
   { id: "ordu-maasi", siklik: "aylik", calistir: (d) => maaslariOde(d) },
+  {
+    // TASK-0017: bütçe panelindeki hazine geçmişi; gelir ve maaş bu ay uygulandıktan sonraki net fark
+    id: "hazine-gecmisi",
+    siklik: "aylik",
+    calistir(d) {
+      const gelir = prototipGelirleri(d);
+      d.devletler.forEach((v, i) => {
+        v.hazineGecmisi.push(gelir[i] - devletMaasi(d, i));
+        if (v.hazineGecmisi.length > DENGE.HAZINE_GECMISI_EN_COK) v.hazineGecmisi.shift();
+      });
+    },
+  },
   { id: "diplomasi-sonumu", siklik: "aylik", calistir: diplomasiSonumu },
   { id: "yz-yillik-ozet", siklik: "yillik", calistir: yzYillikOzet },
   { id: "hukumdarlar", siklik: "aylik", calistir: hukumdarlariIlerlet }, // 7a: ölüm, veraset, meşruiyet

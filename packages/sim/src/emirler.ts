@@ -17,6 +17,7 @@ import { GOREV_TURLERI, gorevEngeli, type GorevTuru } from "./casusluk";
 import { bolgeGunu, denizYolu, GEMI_TURLERI, kapasite, type GemiTuru } from "./deniz";
 import { diplomasiOnHesap, etkiEkle, hediyePuani, ittifakBoz, ittifakDegerlendir, ittifakKur, muttefik, muttefikleri, savasIlaniSonuclari } from "./diplomasi";
 import { biliyor, arastirmaEngeli, teknolojiBul, teknolojiGecerli, toplamaBedelYuzde, toplamaSuresi, type TeknolojiId } from "./teknoloji";
+import { VERGI_ADLARI, vergiOraniGecerli, type VergiOrani } from "./vergi";
 
 /** Statik senaryo verisi (dünya durumuna girmez, kayda yazılmaz). */
 export interface Baglam {
@@ -67,6 +68,8 @@ export type Emir =
   | { tur: "cikarma"; donanma: number; ordu: number; sehir: number }
   // Ambargo koy/kaldır (TASK-0011/8b); oyuncu adına
   | { tur: "ambargo"; hedef: number; acik: boolean }
+
+  | { tur: "vergiAyarla"; oran: VergiOrani; devlet?: number } // TASK-0017
   // Casusluk görevi (TASK-0011/8c); devlet: yalnızca AI
   | { tur: "casusluk"; hedef: number; gorev: GorevTuru; sehir: number | null; devlet?: number };
 
@@ -180,6 +183,14 @@ export function emirDogrula(d: DunyaDurumu, e: Emir, b: Baglam = BOS_BAGLAM, kuy
       if (e.acik && muttefik(d, oyuncu, e.hedef)) return { gecerli: false, neden: `${v.ad} müttefikiniz; önce ittifaktan çıkın.` };
       if (e.acik === ambargoVar(d, oyuncu, e.hedef)) return { gecerli: false, neden: e.acik ? `${v.ad}'na zaten ambargo var.` : `${v.ad}'na ambargo yok.` };
       if (!kuyrukHaric && d.emirKuyrugu.some((x) => x.tur === "ambargo" && x.hedef === e.hedef)) return { gecerli: false, neden: "Bu devlet için bekleyen ambargo emri var." };
+      return { gecerli: true };
+    }
+    case "vergiAyarla": {
+      const devlet = e.devlet ?? d.ayarlar.oyuncu;
+      if (!d.devletler[devlet]) return { gecerli: false, neden: "Geçersiz devlet." };
+      if (!vergiOraniGecerli(e.oran)) return { gecerli: false, neden: "Geçersiz vergi oranı." };
+      if (d.devletler[devlet].vergiOrani === e.oran) return { gecerli: false, neden: `Vergi oranı zaten ${VERGI_ADLARI[e.oran]}.` };
+      if (!kuyrukHaric && d.emirKuyrugu.some((x) => x.tur === "vergiAyarla" && (x.devlet ?? d.ayarlar.oyuncu) === devlet)) return { gecerli: false, neden: "Vergi oranı için bekleyen bir emir var." };
       return { gecerli: true };
     }
     case "gemiInsa": {
@@ -372,7 +383,7 @@ export function orduyuDurdur(o: OrduDurumu): void {
 export function emirVer(d: DunyaDurumu, e: Emir, b: Baglam = BOS_BAGLAM): Dogrulama {
   // Oyuncu yalnızca kendi devleti ve kendi orduları adına emir verir; AI aynı doğrulamayı emirUygula ile kullanır (6b/6c)
   const oyuncu = d.ayarlar.oyuncu;
-  if (((e.tur === "insaat" || e.tur === "arastir" || e.tur === "askerTopla" || e.tur === "bagis") && e.devlet !== undefined && e.devlet !== oyuncu)
+  if (((e.tur === "insaat" || e.tur === "arastir" || e.tur === "askerTopla" || e.tur === "bagis" || e.tur === "vergiAyarla") && e.devlet !== undefined && e.devlet !== oyuncu)
     || (e.tur === "savasIlan" && e.devlet !== oyuncu)
     || ("ordu" in e && orduBul(d, e.ordu) && orduBul(d, e.ordu)!.devlet !== oyuncu)
     || ("donanma" in e && d.donanmalar.find((f) => f.id === e.donanma) && d.donanmalar.find((f) => f.id === e.donanma)!.devlet !== oyuncu)
@@ -525,6 +536,12 @@ export function emirUygula(d: DunyaDurumu, e: Emir, b: Baglam = BOS_BAGLAM): voi
       olayEkle(d, { tur: "ambargo", devlet: oyuncu, metin: e.acik
         ? `${ad}'na ticaret ambargosu kondu: onların ticareti %${DENGE.AMBARGO_HEDEF_YUZDE}, sizinki %${DENGE.AMBARGO_KOYAN_YUZDE} azalır; size bakışları ${DENGE.AMBARGO_ILISKI}.`
         : `${ad}'na uygulanan ambargo kaldırıldı.` });
+      break;
+    }
+    case "vergiAyarla": {
+      const devlet = e.devlet ?? d.ayarlar.oyuncu, onceki = d.devletler[devlet].vergiOrani;
+      d.devletler[devlet].vergiOrani = e.oran;
+      olayEkle(d, { tur: "vergi-ayarlandi", devlet, metin: `Vergi oranı ${VERGI_ADLARI[onceki]} → ${VERGI_ADLARI[e.oran]} olarak değiştirildi.` });
       break;
     }
     case "gemiInsa": {

@@ -1,5 +1,20 @@
 # CHANGELOG
 
+## 2026-10-30 — TASK-0017 (1/4 Ekonomi): vergi oranı, şehir bazlı gelir dökümü, hazine geçmişi (Claude)
+
+- DEC-0066: ekonomi, asker basma, ordu birleştirme/ayırma, temel diplomasi derinleştirmesi onaylandı; ilk alt teslim ekonomi.
+- Yeni **vergi oranı** (düşük/orta/yüksek, varsayılan orta): arazi ve yapı gelirini %80/%100/%130 ölçekler; istikrar riskine
+  küçük bir bileşen ekler (yüksek +15, düşük −5). Oyuncu sol panelde "Aylık bütçe" altında üç düğmeyle değiştirir; yeni emir
+  `vergiAyarla`. Yeni modül `packages/sim/src/vergi.ts`.
+- Bütçe özetine **şehir bazlı gelir dökümü** (yapı + ticaret geliri, arazi geliri poligon bazlı olduğu için ayrı kalır) ve
+  **hazine geçmişi** (son 12 ayın net gelir-gider farkı) eklendi; "Şehir bazlı gelir ve hazine geçmişi" alt panelinde gösterilir.
+- Kayıt şeması 18 → **19**: eski kayıtlarda vergi oranı orta, hazine geçmişi boş olarak kurulur; geri dönüşsüz veri kaybı yok.
+- 206 test (6 yeni); tip kontrolü ve derleme başarılı. 5173'te gerçek düğmelerle doğrulandı: yüksek vergiye geçince aylık gelir
+  1.282'ye çıktı (önceki orta orana göre arttı), buton "etkin" oldu, tur ilerleyince hazine geçmişinde "+542" göründü, şehir
+  listesinde yapı/ticaret payları ayrı görünüyor. JS hatası yok.
+- Kullanıcı onayı: DEC-0066 (“1-öneri 2-seçilsin 3-ikiside”, 2026-10-30). Kullanıcı testi ve sıradaki alt teslim (asker basma)
+  onayı bekleniyor.
+
 ## 2026-10-29 — TASK-0015: oynanış hatalarının düzeltilmesi (Codex)
 
 - DEC-0064 ile H-01…H-07, ilhak arayüzü ve kayıt/test doğrulaması düzeltildi; kullanıcı kabulü bekleniyor.

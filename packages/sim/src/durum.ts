@@ -15,6 +15,7 @@ import type { Arastirma, TeknolojiId } from "./teknoloji";
 import type { IliskiEtkisi, Ittifak } from "./diplomasi";
 import { BILINMIYOR, DIN_AILELERI, baslangicGruplari, type Iskan, type NufusGrubu } from "./nufus";
 import { baslangicHanedanlari, type AdHavuzu, type Hukumdar, type TarihiHalef, type Veraset, type VerasetSecimi } from "./hanedan";
+import type { VergiOrani } from "./vergi";
 
 export type TurSuresi = "hafta" | "ay" | "ceyrek" | "yil";
 export const TUR_SURESI_ADLARI: Record<TurSuresi, string> = {
@@ -34,6 +35,8 @@ export interface DevletDurumu {
   tarihiHalef: TarihiHalef | null;
   din: string; // resmî din (7b); "bilinmiyor" = veri yok
   kultur: string; // baskın kültür
+  vergiOrani: VergiOrani; // TASK-0017: arazi/yapı geliri ve istikrar riski üzerinde etkili (19)
+  hazineGecmisi: number[]; // son aylık net gelir-gider farkları, en eski başta; en çok 12 kayıt (19)
 }
 
 // MASTER_SPEC §9.1: yasal sahip ile askerî kontrol ayrı tutulur
@@ -256,7 +259,7 @@ export interface SenaryoVerisi {
 // 5: kuşatma, gerçek işgal ve barış (TASK-0007/4c); şema 3–4 için eklemeli dönüşüm var.
 // Şema geçmişi: 6 şehir yatırımları (5b), 7 teknoloji (5c), 8 diplomasi (6a), 9 AI ekonomi (6b), 10 AI savaş/barış (6c),
 // 11 hükümdar ve veraset (7a), 12 nüfus grupları ve iskân (7b), 13 istikrar (7c), 14 yerel yönetim (7d)
-export const SEMA_SURUMU = 18; // 18 arazi verimi (9b), 15 donanma ve deniz (8a), 16 ticaret ve ambargo (8b), 17 casusluk (8c)
+export const SEMA_SURUMU = 19; // 19 vergi oranı ve hazine geçmişi (TASK-0017), 18 arazi verimi (9b), 15 donanma ve deniz (8a), 16 ticaret ve ambargo (8b), 17 casusluk (8c)
 
 export function baslangicDurumu(s: SenaryoVerisi, secenek: { tohum: number; oyuncu?: string }): DunyaDurumu {
   const indeks = new Map(s.devletler.map((d, i) => [d.id, i]));
@@ -307,6 +310,8 @@ export function baslangicDurumu(s: SenaryoVerisi, secenek: { tohum: number; oyun
     ...hanedanlar[i],
     din: s.nufus?.devletler[d.id]?.din ?? BILINMIYOR.din,
     kultur: s.nufus?.devletler[d.id]?.kultur ?? BILINMIYOR.kultur,
+    vergiOrani: "orta" as VergiOrani,
+    hazineGecmisi: [],
   }));
   return {
     sema: SEMA_SURUMU,
@@ -381,7 +386,12 @@ export function degismezler(d: DunyaDurumu): string[] {
   if (!tam(d.gun)) h.push("gün tam sayı değil");
   if (!tam(d.rng) || d.rng < 0 || d.rng > 0xffffffff) h.push("rng 32 bit değil");
   const n = d.devletler.length;
-  d.devletler.forEach((v, i) => { if (!tam(v.hazine)) h.push(`devlet ${i} hazinesi tam sayı değil`); });
+  d.devletler.forEach((v, i) => {
+    if (!tam(v.hazine)) h.push(`devlet ${i} hazinesi tam sayı değil`);
+    if (!["dusuk", "orta", "yuksek"].includes(v.vergiOrani)) h.push(`devlet ${i} vergi oranı geçersiz`);
+    if (!Array.isArray(v.hazineGecmisi) || v.hazineGecmisi.length > DENGE.HAZINE_GECMISI_EN_COK || !v.hazineGecmisi.every(tam))
+      h.push(`devlet ${i} hazine geçmişi geçersiz`);
+  });
   d.birimler.forEach((b, i) => {
     if (!tam(b.sahip) || b.sahip < -1 || b.sahip >= n) h.push(`birim ${i} sahibi geçersiz`);
     if (!tam(b.kontrol) || b.kontrol < -1 || b.kontrol >= n) h.push(`birim ${i} kontrolü geçersiz`);

@@ -300,10 +300,11 @@
     #tarihKutu { margin: 0 auto; text-align: center; }
     #tarih { font-family: "Cinzel", serif; font-weight: 600; font-size: 20px; letter-spacing: .04em; }
     #turNo { color: var(--soluk); font-size: 11px; }
-    #sureler { display: flex; gap: 0; }
-    #sureler button { border-radius: 0; margin-left: -1px; padding: 6px 10px; }
-    #sureler button:first-child { border-radius: 7px 0 0 7px; margin-left: 0; }
-    #sureler button:last-child { border-radius: 0 7px 7px 0; }
+    #sureler, #vergiSecim { display: flex; gap: 0; }
+    #sureler button, #vergiSecim button { border-radius: 0; margin-left: -1px; padding: 6px 10px; }
+    #sureler button:first-child, #vergiSecim button:first-child { border-radius: 7px 0 0 7px; margin-left: 0; }
+    #sureler button:last-child, #vergiSecim button:last-child { border-radius: 0 7px 7px 0; }
+    #vergiSecim { margin-bottom: 8px; }
     #ilerleBtn { background: var(--vurgu); border-color: var(--vurgu); color: #1b1814; font-weight: 700; padding: 8px 16px;
       display: flex; flex-direction: column; line-height: 1.1; align-items: center; }
     #ilerleBtn small { font-weight: 500; font-size: 10.5px; opacity: .8; }
@@ -429,9 +430,19 @@
         <div id="hukumdarKarti" class="not"></div>
         <details id="butceOzeti" open>
           <summary>Aylık bütçe</summary>
+          <div id="vergiSecim" role="group" aria-label="Vergi oranı">
+            <button data-vergi="dusuk">Düşük vergi</button>
+            <button data-vergi="orta">Orta vergi</button>
+            <button data-vergi="yuksek">Yüksek vergi</button>
+          </div>
           <dl id="butceKalemleri"></dl>
           <p id="orduGideri" class="not"></p>
           <p class="not">Gelir hâlâ prototip hesabıdır. Aylık fark, mevcut arazi ve ordular korunursa geçerlidir; toplama ve tazminat gibi tek seferlik işlemler bu farka dahil değildir.</p>
+          <details id="butceDokum">
+            <summary>Şehir bazlı gelir ve hazine geçmişi</summary>
+            <dl id="butceSehirleri"></dl>
+            <p id="hazineGecmisi" class="not"></p>
+          </details>
         </details>
         <h2>Araştırmalar</h2>
         <ul id="arastirmaListesi"></ul>

@@ -1,9 +1,30 @@
 # DEVİR TESLİM — agent değişiminde kaldığın yer
 
-Son güncelleme: **2026-10-29, Codex — TASK-0015 düzeltmeleri tamamlandı; kullanıcı testi ve commit/push onayı bekleniyor.**
+Son güncelleme: **2026-10-30, Claude — TASK-0017 (1/4 Ekonomi) uygulandı; kullanıcı testi ve commit/push onayı bekleniyor.**
 Bağlayıcı kurallar: `AGENTS.md`, `MASTER_SPEC.md`, `DECISIONS.md`.
 
 ## 0. En son — BURADAN BAŞLA
+
+- **TASK-0015 (önceki oturum) commit/push edilmiş bulundu** (main'de `8d01be8`, commit mesajı hatalı/eksik ".....").
+  Bu oturumda ayrıca commit/push yapılmadı; sadece durum not edildi.
+- Kullanıcı "oyun mantığında eksiklikler var, Age of History gibi bir şey istiyorum: ekonomi, asker basma, ordu
+  birleştirme/ayırma, diplomasi" dedi. **TASK-0017 / DEC-0066** ile tek görev kartı onaylandı: sıra Ekonomi → Asker basma →
+  Ordu birleştirme/ayırma → Temel diplomasi. Açık sorular yanıtlandı: vergi düşük/orta/yüksek (varsayılan orta); pakt süresini
+  oyuncu seçer; ordu birleştirme/ayırma arayüzünde hem checkbox listesi hem haritada tıkla-seç olacak (henüz uygulanmadı, 3. alt teslimde).
+- **1/4 Ekonomi uygulandı:** vergi oranı (`packages/sim/src/vergi.ts`, emir `vergiAyarla`), şehir bazlı gelir dökümü
+  (`ekonomi.ts: sehirGelirOzetleri`), hazine geçmişi (`sistemler.ts: hazine-gecmisi` sistemi, son 12 ay). Şema 19.
+  İstemci: "Aylık bütçe" panelinde vergi düğmeleri + "Şehir bazlı gelir ve hazine geçmişi" alt paneli.
+- **206 test (6 yeni: `vergi.test.ts` + 2 `kayit.test.ts` güncellemesi), typecheck, build başarılı.** 5173'te geçici
+  sunucu + Playwright ile doğrulandı (bu oturumun temizlediği geçici betikler, kalıcı depo bağımlılığı değil): yüksek vergiye
+  geçiş geliri artırdı, buton "etkin" oldu, tur sonrası hazine geçmişinde fark göründü, şehir listesi yapı/ticaret ayrı gösterdi.
+  JS hatası yok. **Kullanıcı henüz kendi 5173'ünde denemedi.**
+- **Commit/push yapılmadı; kullanıcı onayı bekleniyor (DEC-0017).** Sıradaki iş: kullanıcı testi/onayı, sonra 2/4 Asker basma
+  (şehir başına toplama kuyruğu görünürlüğü, maliyet/süre önizlemesi, iptal emri) için kısa bir kapsam teyidiyle devam.
+- `tasks/TASK-0017.md` ve `DECISIONS.md` (DEC-0066) güncel; CHANGELOG.md'ye 2026-10-30 girişi eklendi, henüz commit edilmedi.
+
+## Arşiv — önceki oturumların notları (TASK-0015 ve öncesi)
+
+**Aşağısı geçmiş oturum kaydıdır; güncel görev, onay veya commit durumu için yukarıdaki §0 geçerlidir.**
 
 - Kullanıcı Osmanlı ile Eflak ilhakı ve benzer sorunlar için ayrıntılı araştırma istedi (DEC-0063 / TASK-0014).
   Sonra **“hepsini sırayla yap”** dedi; rapordaki bütün hata ve doğrulama düzeltmeleri onaylandı (DEC-0064 / TASK-0015).

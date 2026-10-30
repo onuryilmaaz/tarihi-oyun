@@ -83,12 +83,23 @@ describe("kayıt / yükleme", () => {
       "saldirganlik", "ittifaklar", "yzSayac", "barisTeklifleri", "sonrakiTeklifId", "ateskesler", "verasetSecimi", "iskanlar",
       "yerelYonetim", "deniz", "donanmalar", "sonrakiDonanmaId", "gemiInsalari", "ambargolar", "casusGorevleri", "casusEtkileri", "sonrakiGorevId"]) delete x[k];
     for (const s of x.sehirler) for (const k of ["insanGucu", "sur", "garnizon", "yapilar", "gruplar", "istikrar", "yonetici"]) delete s[k];
-    for (const v of x.devletler) for (const k of ["teknolojiler", "hukumdar", "veraset", "adHavuzu", "tarihiHalef", "din", "kultur"]) delete v[k];
+    for (const v of x.devletler) for (const k of ["teknolojiler", "hukumdar", "veraset", "adHavuzu", "tarihiHalef", "din", "kultur", "vergiOrani", "hazineGecmisi"]) delete v[k];
     for (const b of x.birimler) delete b.verim;
     p.sema = 3; x.sema = 3;
     const g = yukle(JSON.stringify(p), d.senaryo);
     expect(g.sema).toBe(SEMA_SURUMU);
     turuIlerlet(g); // dönüştürülmüş dünya oynanabilir
     expect(g.turNo).toBe(d.turNo + 1);
+  });
+
+  it("TASK-0017: şema 18 kaydı vergi oranı orta ve boş hazine geçmişiyle 19'a taşınır", () => {
+    const d = yeniDurum();
+    const p = JSON.parse(kaydet(d));
+    delete p.ozet;
+    for (const v of p.durum.devletler) { delete v.vergiOrani; delete v.hazineGecmisi; }
+    p.sema = 18; p.durum.sema = 18;
+    const g = yukle(JSON.stringify(p), d.senaryo);
+    expect(g.sema).toBe(SEMA_SURUMU);
+    expect(g.devletler.every((v) => v.vergiOrani === "orta" && Array.isArray(v.hazineGecmisi) && v.hazineGecmisi.length === 0)).toBe(true);
   });
 });

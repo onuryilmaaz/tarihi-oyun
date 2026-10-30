@@ -27,3 +27,4 @@ export * from "./tur";
 export * from "./kayit";
 
 export * from "./istikrar";
+export * from "./vergi";

@@ -10,7 +10,7 @@ import "@fontsource/inter/latin-500.css";
 import "@fontsource/inter/latin-ext-500.css";
 import "@fontsource/inter/latin-700.css";
 import "@fontsource/inter/latin-ext-700.css";
-import { type YapiTuru, DENGE, tarihMetni, toplamaMaliyeti, type Emir, type MuharebeRaporu, type SenaryoVerisi, type Tutum, type TurSuresi } from "@tarihi/sim";
+import { type YapiTuru, DENGE, tarihMetni, toplamaMaliyeti, type Emir, type MuharebeRaporu, type SenaryoVerisi, type Tutum, type TurSuresi, type VergiOrani } from "@tarihi/sim";
 import { Color } from "three";
 import { armaSvg } from "./arma";
 import { ozelSecimleriKur } from "./secim";
@@ -290,11 +290,21 @@ async function baslat() {
       + (ozet.oyuncu.hazine < 0 ? ` Maaş aksıyor: her gün ${DENGE.MAAS_AKSAMASI_MORAL / 10} puan moral kaybı; toparlanma yok. Borç/faiz yoktur.` : " Maaş her ayın ilk günü zorunlu gider olarak alınır.");
     const butce = ozet.butce;
     const para = (n: number) => n.toLocaleString("tr-TR");
+    for (const b of document.querySelectorAll<HTMLButtonElement>("[data-vergi]")) {
+      b.classList.toggle("etkin", b.dataset.vergi === butce.vergiOrani);
+      b.disabled = mesgul;
+    }
     $("butceKalemleri").innerHTML = `<dt>Hazine</dt><dd>${para(butce.hazine)}</dd>
       <dt>Emirlere ayrılan</dt><dd>${para(butce.ayrilan)}</dd><dt>Kullanılabilir</dt><dd>${para(butce.kullanilabilir)}</dd>
       <dt>Aylık gelir (prototip)</dt><dd>+${para(butce.aylikGelir)}<small class="not"> · arazi ${para(butce.aylikAraziGeliri)} (${para(butce.araziSayisi)} arazi) + yapılar ${para(butce.aylikYapiGeliri)} + ticaret ${para(butce.aylikTicaretGeliri)}</small></dd>
       <dt>Aylık ordu maaşı</dt><dd>−${para(butce.aylikMaas)}<small class="not"> · ${para(butce.askerSayisi)} asker</small></dd>
       <dt>Aylık fark</dt><dd id="butceNet" class="${butce.aylikNet < 0 ? "eksi" : "artı"}">${butce.aylikNet > 0 ? "+" : ""}${para(butce.aylikNet)}</dd>`;
+    $("butceSehirleri").innerHTML = butce.sehirler.length
+      ? butce.sehirler.map((s) => `<dt>${kacis(s.ad)}</dt><dd>+${para(s.toplam)}<small class="not"> · yapılar ${para(s.yapiGeliri)} + ticaret ${para(s.ticaretGeliri)}</small></dd>`).join("")
+      : "<dt class=\"bos\">Şehriniz yok.</dt>";
+    $("hazineGecmisi").textContent = butce.hazineGecmisi.length
+      ? `Son ${butce.hazineGecmisi.length} ayın net farkı: ${butce.hazineGecmisi.map((n) => (n > 0 ? "+" : "") + para(n)).join(", ")}.`
+      : "Henüz bir aylık kapanış geçmedi.";
     $("savasListesi").innerHTML = ozet.savaslar.map((s) =>
       `<li>${gorunum.devletRenkKutusu(s.karsi)}<span>${kacis(h.paket.devletler[s.karsi].ad)}<small>${s.saldiran ? "Siz ilan ettiniz" : "Size ilan etti"} · ${kacis(s.baslangic)}<br />Savaş skoru: ${s.skor}</small>${(() => {
         const t = ozet.barisTeklifleri.find((x) => x.devlet === s.karsi);
@@ -1125,6 +1135,10 @@ async function baslat() {
       ozet = (await sim.gonder({ tip: "turSuresi", sure: b.dataset.sure as TurSuresi })).ozet;
       arayuzuGuncelle();
     };
+  }
+  for (const b of document.querySelectorAll<HTMLButtonElement>("[data-vergi]")) {
+    b.onclick = () => emirGonder({ tur: "vergiAyarla", oran: b.dataset.vergi as VergiOrani },
+      `Vergi oranı değiştirme emri verildi: ${b.textContent}.`);
   }
   $("ilerleBtn").onclick = turuIlerlet;
   $("kaydetBtn").onclick = () => kayitPenceresi("kaydet");

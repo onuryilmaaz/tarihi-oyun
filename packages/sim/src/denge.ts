@@ -218,4 +218,8 @@ export const DENGE = {
   CASUS_SABOTAJ_GUN: 60, // süren inşaatı geciktirme
   CASUS_SABOTAJ_GARNIZON_YUZDE: 30, // inşaat yoksa garnizon kaybı
   YZ_CASUS_OLASILIK: 10, // savaştaki AI'nın aylık askerî istihbarat görevi açma olasılığı (%)
+  // TASK-0017 — vergi oranı (DEC-0066); hepsi [TASLAK]
+  VERGI_ORANI_GELIR_YUZDE: { dusuk: 80, orta: 100, yuksek: 130 },
+  VERGI_ORANI_RISK_PUANI: { dusuk: -5, orta: 0, yuksek: 15 },
+  HAZINE_GECMISI_EN_COK: 12, // ay
 };
