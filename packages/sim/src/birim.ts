@@ -66,3 +66,12 @@ export function kompozisyonHizYuzde(k: Kompozisyon): number {
   if (!toplam) return 100;
   return Math.round(BIRIM_TURLERI.reduce((s, t) => s + k[t] * hizYuzde(t), 0) / toplam);
 }
+
+/** Kompozisyonun ağırlıklı ortalama saldırı/savunma yüzdesi (100 = taban); boş kompozisyonda 100.
+ * TASK-0019 (2/4): muharebe ve kuşatma gücüne çarpan olarak uygulanır. */
+export function kompozisyonMuharebeYuzde(k: Kompozisyon, savunuyor: boolean): number {
+  const toplam = kompozisyonToplami(k);
+  if (!toplam) return 100;
+  const yuzde = savunuyor ? savunmaYuzde : saldiriYuzde;
+  return Math.round(BIRIM_TURLERI.reduce((s, t) => s + k[t] * yuzde(t), 0) / toplam);
+}

@@ -1,5 +1,20 @@
 # CHANGELOG
 
+## 2026-10-30 — TASK-0019 (2/4): muharebe gücü ve kayıp dağılımı (Claude)
+
+- **En riskli faz — savaş dengesini ilk kez gerçekten değiştiriyor.** Muharebe günü formülüne (`savas.ts:
+  muharebeGunu`) kompozisyona göre saldırı/savunma çarpanı eklendi: saldıran taraf kompozisyonunun ağırlıklı
+  saldırı yüzdesini, savunan taraf (varsa) ağırlıklı savunma yüzdesini kullanır. Süvari saldırırken, okçu
+  savunurken daha güçlüdür. Savunan belirlenemiyorsa (açık arazi) iki taraf da saldırı yüzdesini kullanır.
+  Parametre verilmezse (eski çağrılar) davranış birebir eskisiyle aynıdır — tüm mevcut testler değişmeden geçti.
+  Kayıp dağılımı (türler arası oranlı) zaten 1. fazda uygulanmıştı, bu fazda değişmedi.
+  Kuşatma gücü formülü bu fazda **değişmedi** (4. fazda gelecek). Şema değişikliği yok.
+- 234 test (3 yeni), typecheck ve build geçti. Yeni testler: süvari saldıran eşit piyadeye göre düşmana daha çok
+  kayıp verdirir; okçu savunan, saldırana (kendi kaybı değil, karşı tarafınki) daha çok kayıp verdirir — ikisi de
+  gerçek `muharebeGunleri` akışından doğrulandı. 5173'te agent tarafından 20 turluk gerçek kampanya (ilan edilmiş
+  savaş + çok sayıda AI savaşı) hatasız çalıştı, JS hatası yok.
+- Kullanıcı testi ve commit/push onayı bekleniyor. Sonraki faz: 3/4 Hareket hızı (daha düşük risk).
+
 ## 2026-10-30 — TASK-0019 (1/4): birim çeşitliliği — veri modeli ve asker toplama (Claude)
 
 - Üç birim türü: **Piyade** (taban), **Okçu** (ucuz, savunmada güçlü, saldırıda zayıf), **Süvari** (pahalı, hızlı,

@@ -1,6 +1,6 @@
 # DEVİR TESLİM — agent değişiminde kaldığın yer
 
-Son güncelleme: **2026-10-30, Claude — TASK-0018 bitti; TASK-0019 (1/4 birim çeşitliliği: veri modeli + asker toplama) kod olarak tamamlandı; kullanıcı testi ve commit/push onayı bekleniyor.**
+Son güncelleme: **2026-10-30, Claude — TASK-0019 1/4 ve 2/4 (muharebe gücü, en riskli faz) kod olarak tamamlandı; kullanıcı testi ve commit/push onayı bekleniyor.**
 Bağlayıcı kurallar: `AGENTS.md`, `MASTER_SPEC.md`, `DECISIONS.md`.
 
 ## 0. En son — BURADAN BAŞLA
@@ -57,7 +57,13 @@ Bağlayıcı kurallar: `AGENTS.md`, `MASTER_SPEC.md`, `DECISIONS.md`.
   tutarlı tutar. **Muharebe gücü formülü bu fazda değişmedi** — savaş dengesi henüz etkilenmez. İstemci: asker toplama
   formunda birim seçimi (maliyet/maaş/saldırı/savunma/hız özeti). 231 test (6 yeni), typecheck, build geçti; 5173'te
   agent tarafından doğrulandı (süvari bedeli piyadenin 1,8 katı, 500 süvari toplanıp bir ay sonra ordu listesinde
-  çıktı, JS hatası yok). **Kullanıcı testi ve commit/push onayı bekliyor.**
+  çıktı, JS hatası yok). Commit+push edildi (`fccd5b4`).
+- **2/4 Muharebe gücü ve kayıp dağılımı kod olarak tamamlandı, henüz commit edilmedi — EN RİSKLİ FAZ, savaş
+  dengesini ilk kez gerçekten değiştiriyor:** `savas.ts: muharebeGunu` artık kompozisyona göre saldırı/savunma
+  çarpanı uyguluyor (süvari saldırırken, okçu savunurken güçlü). Parametre verilmezse eski davranışla birebir aynı
+  (tüm eski testler değişmeden geçti). Kuşatma gücü bu fazda değişmedi (4. fazda). Şema değişikliği yok.
+  234 test (3 yeni), typecheck, build geçti; 5173'te 20 turluk gerçek kampanya (ilan edilmiş savaş + çok sayıda AI
+  savaşı) hatasız çalıştı. **Kullanıcı testi ve commit/push onayı bekliyor.**
 - Kullanıcı "oyun mantığında eksiklikler var, Age of History gibi bir şey istiyorum: ekonomi, asker basma, ordu
   birleştirme/ayırma, diplomasi" dedi. **TASK-0017 / DEC-0066** ile tek görev kartı onaylandı: sıra Ekonomi → Asker basma →
   Ordu birleştirme/ayırma → Temel diplomasi. Açık sorular yanıtlandı: vergi düşük/orta/yüksek (varsayılan orta); pakt süresini

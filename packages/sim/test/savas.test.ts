@@ -105,6 +105,19 @@ describe("muharebe (AT-008)", () => {
     expect(kalabalik.kayip[1]).toBe(2 * kalabalik.kayip[0]);
   });
 
+  it("TASK-0019 (2/4): birim çarpanı saldıran/savunanın gücünü ve dolayısıyla karşı tarafın kaybını değiştirir", () => {
+    const esit = muharebeGunu([10000, 10000], [1000, 1000], 100, -1, [100, 100]); // 2. taraf savunan değil
+    const guclu0 = muharebeGunu([10000, 10000], [1000, 1000], 100, -1, [100, 100], [100, 100], [140, 100]); // süvari gibi
+    expect(guclu0.guc[0]).toBeGreaterThan(esit.guc[0]); expect(guclu0.guc[1]).toBe(esit.guc[1]);
+    expect(guclu0.kayip[1]).toBeGreaterThan(esit.kayip[1]); // 0'ın gücü arttıkça 1'in kaybı artar
+    expect(guclu0.kayip[0]).toBe(esit.kayip[0]);
+    const zayif0 = muharebeGunu([10000, 10000], [1000, 1000], 100, -1, [100, 100], [100, 100], [70, 100]); // süvariye karşı savunan okçu gibi
+    expect(zayif0.guc[0]).toBeLessThan(esit.guc[0]);
+    expect(zayif0.kayip[1]).toBeLessThan(esit.kayip[1]);
+    // birimYuzde verilmezse eski davranışla birebir aynı (geriye dönük uyum)
+    expect(muharebeGunu([10000, 10000], [1000, 1000], 100, -1, [100, 100])).toEqual(esit);
+  });
+
   it("tutum: inatçı ordu temkinli olandan daha uzun dayanır (DEC-0008)", () => {
     const sure = (t: Tutum) => { const r = karamanSeferi(1453, t).rapor(); return r.bitis - r.baslangic; };
     expect(sure("inatci")).toBeGreaterThanOrEqual(sure("temkinli"));

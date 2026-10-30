@@ -2,7 +2,7 @@
 import { describe, expect, it } from "vitest";
 import {
   agHazirla, baslangicDurumu, degismezler, DENGE, devletMaasi, emirleriUygula, emirVer,
-  kaydet, SEMA_SURUMU, toplamaMaliyeti, turSuresiAyarla, turuIlerlet, yukle, type SenaryoVerisi,
+  kaydet, muharebeleriBaslat, muharebeGunleri, SEMA_SURUMU, toplamaMaliyeti, turSuresiAyarla, turuIlerlet, yukle, type SenaryoVerisi,
 } from "../src";
 
 const senaryo: SenaryoVerisi = {
@@ -89,5 +89,50 @@ describe("TASK-0019 (1/4): birim çeşitliliği — veri modeli ve asker toplama
     expect(g.sema).toBe(SEMA_SURUMU);
     expect(g.ordular[0].kompozisyon).toEqual({ piyade: g.ordular[0].asker, okcu: 0, suvari: 0 });
     expect(degismezler(g)).toEqual([]);
+  });
+});
+
+describe("TASK-0019 (2/4): muharebe gücü ve kayıp dağılımı", () => {
+  /** A'nın ordusunu B'nin başkentine (dugum 2) yürütür: B savunan, A saldıran olur. */
+  const saldiranA = () => {
+    const d = yeni(), o = d.ordular[0];
+    o.dugum = 2; o.x = 20000; o.y = 0;
+    d.savaslar.push({ id: d.sonrakiSavasId++, saldiran: 0, savunan: 1, baslangic: d.gun });
+    const bOrdusu = { ...structuredClone(o), id: d.sonrakiOrduId++, devlet: 1,
+      asker: 1000, kompozisyon: { piyade: 1000, okcu: 0, suvari: 0 } };
+    d.ordular.push(bOrdusu);
+    return { d, a: o, b: bOrdusu };
+  };
+  const ilkGun = (d: ReturnType<typeof saldiranA>["d"]) => {
+    muharebeleriBaslat(d);
+    const once = structuredClone(d.ordular.map((o) => ({ id: o.id, asker: o.asker })));
+    muharebeGunleri(d, B.ag); // gerçek hareket ağı: B'nin toprağında savunan doğru belirlensin
+    return Object.fromEntries(once.map((o) => [o.id, o.asker - (d.ordular.find((x) => x.id === o.id)?.asker ?? 0)]));
+  };
+
+  it("süvari ağırlıklı saldıran, eşit sayıda piyadeye göre düşmana (savunan) daha çok kayıp verdirir", () => {
+    const esit = saldiranA();
+    const kayipEsit = ilkGun(esit.d);
+
+    const suvarili = saldiranA();
+    suvarili.a.kompozisyon = { piyade: 0, okcu: 0, suvari: 1000 };
+    const kayipSuvari = ilkGun(suvarili.d);
+
+    expect(kayipSuvari[suvarili.b.id]).toBeGreaterThan(kayipEsit[esit.b.id]); // B'nin (savunan) kaybı arttı
+    expect(degismezler(suvarili.d)).toEqual([]);
+  });
+
+  it("okçu ağırlıklı savunan, saldırana (A) piyadeye göre daha çok kayıp verdirir (savunmada güçlü)", () => {
+    // Not: kayip[saldıran] = güç[savunan]'a bağlıdır; savunanın bileşimi güçlenince kendi kaybı değil, saldıranınki artar.
+    const esit = saldiranA();
+    const kayipEsit = ilkGun(esit.d);
+
+    const okculu = saldiranA();
+    okculu.b.kompozisyon = { piyade: 0, okcu: 1000, suvari: 0 };
+    const kayipOkcu = ilkGun(okculu.d);
+
+    expect(kayipOkcu[okculu.a.id]).toBeGreaterThan(kayipEsit[esit.a.id]); // A'nın (saldıran) kaybı arttı
+    expect(kayipOkcu[okculu.b.id]).toBe(kayipEsit[esit.b.id]); // B'nin kendi kaybı A'nın gücüne bağlı, değişmez
+    expect(degismezler(okculu.d)).toEqual([]);
   });
 });

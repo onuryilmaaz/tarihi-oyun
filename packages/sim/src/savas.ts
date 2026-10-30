@@ -7,7 +7,7 @@ import { rotaBul, type HareketAgi } from "./hareket";
 import { aralik } from "./rastgele";
 import { etkiCarpani, istihbaratEtkisi, istihbaratVar } from "./casusluk";
 import { muharebeGucYuzde } from "./teknoloji";
-import { kompozisyonCikar, kompozisyonOransalAl } from "./birim";
+import { bosKompozisyon, kompozisyonCikar, kompozisyonMuharebeYuzde, kompozisyonOransalAl, kompozisyonTopla } from "./birim";
 
 /** Binlik ayırıcılı sayı (ortamdan bağımsız; toLocaleString simülasyonda yasak) */
 export function sayiMetni(n: number): string {
@@ -147,13 +147,14 @@ function kayipDagit(ordular: OrduDurumu[], kayip: number): void {
 export interface GunlukSonuc { kayip: [number, number]; guc: [number, number] }
 
 /**
- * Bir muharebe günü (saf hesap; test edilebilir). Güç = asker × moral × (savunana arazi bonusu).
+ * Bir muharebe günü (saf hesap; test edilebilir). Güç = asker × moral × (savunana arazi bonusu) × birim çarpanı.
  * zorluk: muharebe düğümünün arazi zorluğu (%); savunan: 0 ya da 1 (toprağın kontrolü kimdeyse), yoksa -1.
+ * birimYuzde (TASK-0019, 2/4): kompozisyona göre saldırı/savunma çarpanı (100 = taban, varsayılan etkisiz).
  */
 export function muharebeGunu(asker: [number, number], moral: [number, number], zorluk: number, savunan: number,
-  sans: [number, number], gucYuzde: [number, number] = [100, 100]): GunlukSonuc {
+  sans: [number, number], gucYuzde: [number, number] = [100, 100], birimYuzde: [number, number] = [100, 100]): GunlukSonuc {
   const arazi = (i: number) => (i === savunan ? 100 + Math.floor((zorluk - 100) / 2) : 100);
-  const guc = [0, 1].map((i) => Math.floor((asker[i] * moral[i] * arazi(i) * gucYuzde[i]) / 10000000)) as [number, number];
+  const guc = [0, 1].map((i) => Math.floor((asker[i] * moral[i] * arazi(i) * gucYuzde[i] * birimYuzde[i]) / 1000000000)) as [number, number];
   const kayip = [0, 1].map((i) => Math.min(asker[i], Math.round((guc[1 - i] * DENGE.KAYIP_YUZDE * sans[i]) / 10000))) as [number, number];
   return { kayip, guc };
 }
@@ -256,7 +257,10 @@ export function muharebeGunleri(d: DunyaDurumu, ag: HareketAgi | null): void {
     const savunan = m.taraflar.findIndex((t) => t.devlet === kontrol);
     const sans = [0, 1].map(() => DENGE.SANS_ALT + aralik(d, DENGE.SANS_UST - DENGE.SANS_ALT + 1)) as [number, number];
     const gucYuzde = m.taraflar.map((t) => muharebeGucYuzde(d, t.devlet)) as [number, number]; // Daimî Ordu (5c)
-    const g = muharebeGunu(asker, moral, zorluk, savunan, sans, gucYuzde);
+    // TASK-0019 (2/4): tarafın birleşik kompozisyonuna göre saldırı/savunma çarpanı
+    const birimYuzde = [0, 1].map((i) => kompozisyonMuharebeYuzde(
+      os[i].reduce((k, o) => kompozisyonTopla(k, o.kompozisyon), bosKompozisyon()), i === savunan)) as [number, number];
+    const g = muharebeGunu(asker, moral, zorluk, savunan, sans, gucYuzde, birimYuzde);
     for (const i of [0, 1]) {
       kayipDagit(os[i], g.kayip[i]);
       m.taraflar[i].kayip += g.kayip[i];
