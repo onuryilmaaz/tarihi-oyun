@@ -79,3 +79,66 @@ describe("AI diplomatik teklifleri (TASK-0020 1/3)", () => {
     expect(degismezler(d)).toEqual([]);
   });
 });
+
+// TASK-0021 (4/4, DEC-0070): çok daha güçlü komşu bir AI, oyuncuya vasallık teklif edebilir.
+// B, A'dan çok daha büyük (6 birim / 1 birim = 6 kat ≥ VASAL_TEKLIF_ARAZI_KATI); C küçük kalır, komşu da değil.
+const V: SenaryoVerisi = {
+  id: "yz-diplomasi-vasal", surum: "1", baslangic: { yil: 1453, ay: 4, gun: 1 }, varsayilanOyuncu: "a",
+  devletler: [{ id: "a", ad: "A" }, { id: "b", ad: "B" }, { id: "c", ad: "C" }],
+  birimler: ["a", "b", "b", "b", "b", "b", "b", "c"].map((devlet) => ({ devlet })),
+  sehirler: [
+    { ad: "A1", devlet: "a", birim: 0, dugum: 0, x: 0, y: 0, baskent: true, nufus: 40000 },
+    { ad: "B1", devlet: "b", birim: 1, dugum: 1, x: 10000, y: 0, baskent: true, nufus: 40000 },
+    { ad: "C1", devlet: "c", birim: 7, dugum: 7, x: 70000, y: 0, baskent: true, nufus: 40000 },
+  ],
+  ag: { dugumler: [0, 1, 2, 3, 4, 5, 6, 7].map((b) => ({ b, x: b * 10000, y: 0, kx: 10000, ky: 10000, z: 100 })),
+    kenarlar: [0, 1, 2, 3, 4, 5, 6].map((a) => ({ a, b: a + 1, mx: a * 10000 + 5000, my: 0, da: 5000, db: 5000, n: 0, g: 0 })) },
+};
+const VB = { ag: agHazirla(V.ag!), sehirKonumlari: V.sehirler.map((s) => ({ x: s.x!, y: s.y! })) };
+const yeniV = () => baslangicDurumu(V, { tohum: 7 });
+
+describe("AI vasallık teklifi (TASK-0021 4/4)", () => {
+  it("çok daha büyük komşu AI, zamanla vasallık teklif eder; küçük/uzak devlet etmez", () => {
+    const d = yeniV();
+    const on = diplomasiOnHesap(d, VB.ag);
+    expect(on.arazi[Bd]).toBeGreaterThanOrEqual(on.arazi[A] * DENGE.VASAL_TEKLIF_ARAZI_KATI);
+    for (let g = 0; g < 400 && !d.diplomatikTeklifler.length; g++) {
+      d.gun = g;
+      diplomatikTeklifKarari(d, on, Bd);
+      diplomatikTeklifKarari(d, on, C); // küçük ve komşu değil; hiç teklif göndermemeli
+    }
+    expect(d.diplomatikTeklifler).toHaveLength(1);
+    expect(d.diplomatikTeklifler[0].devlet).toBe(Bd);
+    expect(d.diplomatikTeklifler[0].tur).toBe("vasallik");
+    expect(d.diplomatikTeklifler[0].ay).toBeNull();
+    expect(degismezler(d)).toEqual([]);
+  });
+
+  it("oyuncu zaten birinin vasalıysa ya da teklif eden kendisi vasalsa vasallık teklif edilmez (başka tür gelebilir)", () => {
+    const d1 = yeniV();
+    d1.vasalliklar.push({ efendi: C, vasal: A, baslangic: 0 }); // A zaten C'nin vasalı
+    for (let g = 0; g < 400 && !d1.diplomatikTeklifler.length; g++) { d1.gun = g; diplomatikTeklifKarari(d1, diplomasiOnHesap(d1, VB.ag), Bd); }
+    if (d1.diplomatikTeklifler.length) expect(d1.diplomatikTeklifler[0].tur).not.toBe("vasallik");
+
+    const d2 = yeniV();
+    d2.vasalliklar.push({ efendi: C, vasal: Bd, baslangic: 0 }); // B'nin kendisi başka birinin vasalı
+    for (let g = 0; g < 400 && !d2.diplomatikTeklifler.length; g++) { d2.gun = g; diplomatikTeklifKarari(d2, diplomasiOnHesap(d2, VB.ag), Bd); }
+    if (d2.diplomatikTeklifler.length) expect(d2.diplomatikTeklifler[0].tur).not.toBe("vasallik");
+  });
+
+  it("oyuncu kabul ederse vasal olur (efendi teklif eden); reddederse hiçbir şey kurulmaz", () => {
+    const d = yeniV();
+    d.diplomatikTeklifler.push({ id: d.sonrakiDiplomatikTeklifId++, devlet: Bd, tur: "vasallik", ay: null, gun: d.gun, gerekce: "test" });
+    const e = { tur: "diplomatikTeklifCevap" as const, teklif: 1, kabul: true };
+    expect(emirDogrula(d, e, VB, true).gecerli).toBe(true);
+    emirUygula(d, e, VB);
+    expect(d.vasalliklar).toEqual([{ efendi: Bd, vasal: A, baslangic: d.gun }]);
+    expect(degismezler(d)).toEqual([]);
+
+    const d2 = yeniV();
+    d2.diplomatikTeklifler.push({ id: d2.sonrakiDiplomatikTeklifId++, devlet: Bd, tur: "vasallik", ay: null, gun: d2.gun, gerekce: "test" });
+    emirUygula(d2, { tur: "diplomatikTeklifCevap", teklif: 1, kabul: false }, VB);
+    expect(d2.vasalliklar).toHaveLength(0);
+    expect(degismezler(d2)).toEqual([]);
+  });
+});

@@ -1,5 +1,26 @@
 # CHANGELOG
 
+## 2026-10-30 — TASK-0021 (4/4): AI vasallık teklif etsin — TASK-0021 tamamlandı (Claude)
+
+- **Mevcut "gelen kutusu" altyapısına (`DiplomatikTeklif`) yeni `tur: "vasallik"` eklendi** (`yz-diplomasi.ts`):
+  arazisi oyuncudan en az `VASAL_TEKLIF_ARAZI_KATI` (3) kat büyük, komşu, savaşta olmayan ve kendisi kimsenin
+  vasalı olmayan bir AI, oyuncu zaten başka birinin vasalı değilse vasallık teklif edebilir. Bu, ilişkiden
+  bağımsız bir eşik (dostluk teklifi değil, güç dengesine dayalı bir baskı/istek); diğer tüm teklif türleri
+  ilişkiye bağlı kalmaya devam ediyor.
+- Oyuncu kabul ederse `vasalKur(d, teklifEden, oyuncu)` çağrılır (efendi teklif eden, vasal oyuncu) — **asla
+  zorla değil, yalnızca teklif/kabul/ret** (TASK-0021'in kabul kriteri).
+- **Arayüz:** Gelen kutusu penceresinde vasallık için özel, açık metin ("X sizi vasalı olarak almak istiyor",
+  vergi/savaş yükümlülüğü açıklaması) ve kabul öncesi ayrı bir onay penceresi eklendi.
+- Şema değişikliği yok (`DiplomatikTeklif.tur` birleşimine eklemeli tür genişlemesi; veri şekli değişmedi).
+- 253 sim testi (3 yeni: `yz-diplomasi.test.ts`'e eklenen vasallık bloğu — doğru/yanlış koşullarda teklif
+  gelip gelmediğini ve kabul/ret'in `vasalliklar`'ı doğru güncellediğini doğruluyor), typecheck, build geçti.
+  Canlı Playwright: JS hatası yok; gerçek bir vasallık teklifini 1453 senaryosunda tetiklemek pratikte zor
+  (büyük bir devletin 3 kat büyük komşusu nadir — kasıtlı/gerçekçi bir sınır), mekanik sim testlerinde uçtan
+  uca kanıtlı.
+- **TASK-0021'in 4 alt teslimi de kod olarak tamamlandı:** (1) muharebe raporu birim kırılımı, (2) elçi küçük
+  başarısızlık riski, (3) AI karışık ordu toplasın, (4) AI vasallık teklif etsin. Kullanıcı testi ve son commit
+  onayı bekliyor.
+
 ## 2026-10-30 — TASK-0021 (3/4): AI karışık ordu toplasın (Claude)
 
 - **`yz.ts: devletKarari`'nin `asker()` kararı artık tehdit altında süvari, barışta %60 okçu/%40 piyade**

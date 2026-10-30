@@ -544,7 +544,7 @@ async function baslat() {
   const isaretli = (n: number) => `<span class="${n > 0 ? "arti" : n < 0 ? "eksi" : ""}">${n > 0 ? "+" : ""}${n}</span>`;
   const iliskiAdi = (p: number) => (p >= 50 ? "Dostane" : p >= 15 ? "İyi" : p > -15 ? "Tarafsız" : p > -50 ? "Soğuk" : "Düşmanca");
   // AI'dan gelen diplomatik teklif (ittifak/ticaret/saldırmazlık; TASK-0020 1/3): barış teklifiyle aynı desen
-  const dipTeklifAdi = { ittifak: "savunma ittifakı", ticaret: "ticaret anlaşması", saldirmazlik: "saldırmazlık paktı" } as const;
+  const dipTeklifAdi = { ittifak: "savunma ittifakı", ticaret: "ticaret anlaşması", saldirmazlik: "saldırmazlık paktı", vasallik: "vasallık" } as const;
   /** Devlet panelindeki diplomasi bölümü (TASK-0009/6a) */
   const diplomasiBolumu = (devlet: number) => {
     const k = ozet.diplomasi[devlet];
@@ -935,8 +935,12 @@ async function baslat() {
     acikDipTeklif = t.id;
     const ad = h.paket.devletler[t.devlet].ad, turAdi = dipTeklifAdi[t.tur];
     $("dipTeklifBaslik").textContent = `${ad}: ${turAdi} teklifi`;
-    $("dipTeklifIcerik").innerHTML = `<p>${kacis(ad)} size ${kacis(turAdi)}${t.ay ? ` (${t.ay} ay)` : ""} teklif ediyor.</p>
+    const teklifCumlesi = t.tur === "vasallik"
+      ? `${kacis(ad)} sizi vasalı olarak almak istiyor.` // TASK-0021 (4/4): yön tek taraflı (efendi teklif eden)
+      : `${kacis(ad)} size ${kacis(turAdi)}${t.ay ? ` (${t.ay} ay)` : ""} teklif ediyor.`;
+    $("dipTeklifIcerik").innerHTML = `<p>${teklifCumlesi}</p>
       <p class="not">${kacis(t.gerekce)}</p>
+      ${t.tur === "vasallik" ? `<p class="not">Kabul ederseniz toprağınızı korursunuz; aylık gelirinizin %${DENGE.VASAL_VERGI_YUZDE}'si ${kacis(ad)}'na gider, onun savaşlarına katılmak zorunda kalırsınız ve kendi başınıza savaş ilan edemezsiniz.</p>` : ""}
       <p class="not">${t.cevap === null ? `Teklif ${t.kalanGun} gün daha geçerli.` : `Cevabınız: ${t.cevap ? "kabul" : "ret"} — bir sonraki tur başında uygulanır.`}</p>`;
     for (const b of ["dipTeklifKabul", "dipTeklifRet"]) $<HTMLButtonElement>(b).disabled = t.cevap !== null;
     $("dipTeklifi").hidden = false;
@@ -944,8 +948,11 @@ async function baslat() {
   const dipTeklifCevapla = async (kabul: boolean) => {
     if (acikDipTeklif === null) return;
     const t = ozet.diplomatikTeklifler.find((x) => x.id === acikDipTeklif)!, ad = h.paket.devletler[t.devlet].ad;
+    if (kabul && t.tur === "vasallik"
+      && !await onayIste("Vasal olun", `${ad}'nın vasalı olmayı kabul ediyor musunuz? Toprağınızı korursunuz ama aylık gelirinizin %${DENGE.VASAL_VERGI_YUZDE}'si ona gider, savaşlarına katılmak zorunda kalırsınız ve kendi başınıza savaş ilan edemezsiniz.`, "Vasal ol", true)) return;
+    const basariMetni = t.tur === "vasallik" ? `${ad}'nın vasalı oldunuz; bir sonraki tur başında uygulanır.` : `${ad} ile ${dipTeklifAdi[t.tur]} kabul edildi; bir sonraki tur başında uygulanır.`;
     if (await emirGonder({ tur: "diplomatikTeklifCevap", teklif: acikDipTeklif, kabul },
-      kabul ? `${ad} ile ${dipTeklifAdi[t.tur]} kabul edildi; bir sonraki tur başında uygulanır.` : `${ad}'nın teklifi reddedildi.`)) {
+      kabul ? basariMetni : `${ad}'nın teklifi reddedildi.`)) {
       $("dipTeklifi").hidden = true;
     }
   };

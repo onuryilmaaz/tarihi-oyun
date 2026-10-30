@@ -90,7 +90,7 @@ export interface TicaretAnlasmasi { a: number; b: number; baslangic: number }
 export interface SaldirmazlikPakti { a: number; b: number; bitis: number }
 
 /** AI'dan oyuncuya diplomatik teklif (TASK-0020 1/3, DEC-0069): ittifak/ticaret/saldırmazlık. */
-export interface DiplomatikTeklif { id: number; devlet: number; tur: "ittifak" | "ticaret" | "saldirmazlik"; ay: number | null; gun: number; gerekce: string }
+export interface DiplomatikTeklif { id: number; devlet: number; tur: "ittifak" | "ticaret" | "saldirmazlik" | "vasallik"; ay: number | null; gun: number; gerekce: string }
 
 /** TASK-0018 (2/3, DEC-0067): yalnızca barışta kurulan vasallık; bir devletin en çok bir efendisi olur. */
 export interface Vasallik { efendi: number; vasal: number; baslangic: number }
@@ -527,7 +527,7 @@ export function degismezler(d: DunyaDurumu): string[] {
   }
   for (const t of d.diplomatikTeklifler) {
     if (!d.devletler[t.devlet] || t.devlet === d.ayarlar.oyuncu || !tam(t.id) || t.id >= d.sonrakiDiplomatikTeklifId
-      || !["ittifak", "ticaret", "saldirmazlik"].includes(t.tur)
+      || !["ittifak", "ticaret", "saldirmazlik", "vasallik"].includes(t.tur)
       || (t.tur === "saldirmazlik" ? !(DENGE.SALDIRMAZLIK_AYLARI as readonly number[]).includes(t.ay ?? -1) : t.ay !== null)) {
       h.push(`diplomatik teklif ${t.id} geçersiz`);
     }

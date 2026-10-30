@@ -19,7 +19,7 @@ import {
   diplomasiOnHesap, etkiEkle, hediyePuani, ittifakBoz, ittifakDegerlendir, ittifakKur, muttefik, muttefikleri, savasIlaniSonuclari,
   saldirmazlikDegerlendir, saldirmazlikKur, saldirmazlikVar, ticaretAnlasmasiBoz, ticaretAnlasmasiKur, ticaretAnlasmasiVar, ticaretDegerlendir,
 } from "./diplomasi";
-import { efendisi, vasalMi, vasallari, vasalSerbestBirak } from "./vasallik";
+import { efendisi, vasalKur, vasalMi, vasallari, vasalSerbestBirak } from "./vasallik";
 import { BIRIM_ADLARI, birimTuruGecerli, kompozisyonCikar, kompozisyonHizi, kompozisyonOransalAl, kompozisyonTopla, tekTurKompozisyon, type BirimTuru } from "./birim";
 import { biliyor, arastirmaEngeli, teknolojiBul, teknolojiGecerli, toplamaBedelYuzde, toplamaSuresi, type TeknolojiId } from "./teknoloji";
 import { VERGI_ADLARI, vergiOraniGecerli, type VergiOrani } from "./vergi";
@@ -693,7 +693,8 @@ export function emirUygula(d: DunyaDurumu, e: Emir, b: Baglam = BOS_BAGLAM): voi
       if (e.kabul) {
         if (t.tur === "ittifak") ittifakKur(d, oyuncu, t.devlet);
         else if (t.tur === "ticaret") ticaretAnlasmasiKur(d, oyuncu, t.devlet);
-        else saldirmazlikKur(d, oyuncu, t.devlet, t.ay!);
+        else if (t.tur === "saldirmazlik") saldirmazlikKur(d, oyuncu, t.devlet, t.ay!);
+        else vasalKur(d, t.devlet, oyuncu); // TASK-0021 (4/4): efendi teklif eden, vasal oyuncu
         olayEkle(d, { tur: "diplomatik-teklif", devlet: oyuncu, metin: `${ad}'nın teklifini kabul ettiniz.` });
       } else {
         olayEkle(d, { tur: "diplomatik-teklif", devlet: oyuncu, metin: `${ad}'nın teklifini reddettiniz.` });
