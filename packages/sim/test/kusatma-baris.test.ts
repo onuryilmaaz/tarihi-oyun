@@ -4,7 +4,7 @@ import {
   gunIlerlet, kaydet, muharebeleriBaslat, prototipGelirleri, savasSkoru, turSuresiAyarla, turuIlerlet, vasalVergisiAl, yukle,
   type BarisTalebi, type KusatmaYontemi, type SenaryoVerisi,
 } from "../src";
-import { dunyaOzeti } from "./yardimci";
+import { askerAyarla, dunyaOzeti } from "./yardimci";
 
 const S: SenaryoVerisi = {
   id: "kusatma-test", surum: "1", baslangic: { yil: 1453, ay: 4, gun: 1 }, varsayilanOyuncu: "a",
@@ -91,7 +91,7 @@ describe("gerçek işgal ve kuşatma", () => {
   });
 
   it("yetersiz güç ilerlemez; uzaktan, yürüyüşte ve barışta kuşatma reddedilir", () => {
-    const d = kusat(); d.ordular[0].asker = 10;
+    const d = kusat(); askerAyarla(d.ordular[0], 10);
     for (let i = 0; i < 10; i++) gunIlerlet(d, B);
     expect(d.kusatmalar[0]).toMatchObject({ gun: 0, erzak: DENGE.KUSATMA_ERZAK });
     const e = yeni();
@@ -276,7 +276,7 @@ describe("barış ve sahiplik", () => {
 
   it("süren muharebe barışla durur; başka savaşa ait kuşatma ve işgal korunur", () => {
     const d = yeni(); const o = d.ordular[0]; o.dugum = 1; o.x = 10000;
-    const dusman = { ...structuredClone(o), id: d.sonrakiOrduId++, devlet: 1, asker: 3000 }; d.ordular.push(dusman);
+    const dusman = { ...structuredClone(o), id: d.sonrakiOrduId++, devlet: 1, asker: 3000, kompozisyon: { piyade: 3000, okcu: 0, suvari: 0 } }; d.ordular.push(dusman);
     muharebeleriBaslat(d); expect(d.muharebeler).toHaveLength(1);
     d.savaslar.push({ id: d.sonrakiSavasId++, saldiran: 0, savunan: 2, baslangic: d.gun });
     const diger = { ...structuredClone(o), id: d.sonrakiOrduId++, dugum: 3, x: 30000, muharebe: null }; d.ordular.push(diger);
@@ -290,7 +290,7 @@ describe("barış ve sahiplik", () => {
 
   it("kaybedilen şehirde toplama iptal edilir; aynı hazineden peşin ödeme iki kez alınamaz", () => {
     const d = yeni(); d.sehirler[1].kontrol = 0; d.birimler[1].kontrol = 0;
-    d.askerToplamalar.push({ id: d.sonrakiToplamaId++, sehir: 1, devlet: 1, asker: 200, kalanGun: 10, bedel: 20 });
+    d.askerToplamalar.push({ id: d.sonrakiToplamaId++, sehir: 1, devlet: 1, asker: 200, birim: "piyade", kalanGun: 10, bedel: 20 });
     expect(emirVer(d, { tur: "baris", ...talep({ sehirler: [1] }) }, B).gecerli).toBe(true);
     emirleriUygula(d, B); expect(d.askerToplamalar).toHaveLength(0);
     expect(d.sehirler[1].devlet).toBe(0);

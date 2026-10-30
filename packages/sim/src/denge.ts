@@ -237,4 +237,10 @@ export const DENGE = {
   // TASK-0018 (2/3) — vasallık; hepsi [TASLAK]
   VASAL_VERGI_YUZDE: 15, // vasalın aylık gelirinden efendiye aktarılan pay
   VASAL_SERBEST_ILISKI: 15, // serbest bırakılınca vasalın efendiye bakışı iyileşir
+  // TASK-0019 — birim çeşitliliği; hepsi [TASLAK], ilk oynanışla ayarlanacak
+  BIRIM: {
+    piyade: { ad: "Piyade", maliyetYuzde: 100, maasYuzde: 100, saldiriYuzde: 100, savunmaYuzde: 100, hizYuzde: 100 },
+    okcu: { ad: "Okçu", maliyetYuzde: 80, maasYuzde: 90, saldiriYuzde: 80, savunmaYuzde: 130, hizYuzde: 100 },
+    suvari: { ad: "Süvari", maliyetYuzde: 180, maasYuzde: 160, saldiriYuzde: 140, savunmaYuzde: 70, hizYuzde: 150 },
+  },
 };

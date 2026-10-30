@@ -5,6 +5,7 @@ import {
   muharebeleriBaslat, muharebeGunleri, sayiMetni,
   etkiEkle, gunIlerlet, kaydet, savasKarari, yikilanDevletleriTemizle, savasta, SEMA_SURUMU, seferKararlari, yukle, type DunyaDurumu, type SenaryoVerisi,
 } from "../src";
+import { askerAyarla } from "./yardimci";
 
 // Doğrusal dünya: a (oyuncu) | b | c — düğüm i, birim i'de; her devletin başkenti kendi ilk biriminde
 const S: SenaryoVerisi = {
@@ -31,7 +32,7 @@ describe("AI savaş ve barış (6c)", () => {
     savasAc(d, Bd, C); savasAc(d, A, Bd); savasAc(d, A, C);
     const bo = d.ordular.find((o) => o.devlet === Bd)!;
     const co = d.ordular.find((o) => o.devlet === C)!;
-    bo.asker = co.asker = 50000;
+    askerAyarla(bo, 50000); askerAyarla(co, 50000);
     co.dugum = bo.dugum; co.x = bo.x; co.y = bo.y;
     muharebeleriBaslat(d);
     expect(d.muharebeler).toHaveLength(1);
@@ -58,7 +59,7 @@ describe("AI savaş ve barış (6c)", () => {
   it("kötü ilişkili, açıkça zayıf komşuya gerekçesiyle savaş ilan eder; ateşkes ve müttefiklik engeller", () => {
     const ilan = (hazirla: (d: DunyaDurumu) => void) => {
       const d = yeni();
-      d.ordular.find((o) => o.devlet === Bd)!.asker = 20000;
+      askerAyarla(d.ordular.find((o) => o.devlet === Bd)!, 20000);
       etkiEkle(d, Bd, C, "tarih", -60);
       hazirla(d);
       for (let i = 0; i < 100 && !savasta(d, Bd, C); i++) savasKarari(d, B, diplomasiOnHesap(d, B.ag), Bd);
@@ -70,13 +71,13 @@ describe("AI savaş ve barış (6c)", () => {
     expect(d.saldirganlik[Bd]).toBe(DENGE.SALDIRGANLIK_ILAN);
     expect(savasta(ilan((x) => x.ateskesler.push({ a: Bd, b: C, bitis: x.gun + 100 })), Bd, C)).toBe(false);
     expect(savasta(ilan((x) => etkiEkle(x, Bd, C, "tarih", 60)), Bd, C)).toBe(false);
-    expect(savasta(ilan((x) => { x.ordular.find((o) => o.devlet === C)!.asker = 20000; }), Bd, C)).toBe(false); // güçlü hedef
+    expect(savasta(ilan((x) => { askerAyarla(x.ordular.find((o) => o.devlet === C)!, 20000); }), Bd, C)).toBe(false); // güçlü hedef
   });
 
   it("oyuncuya savaş ilan edilirse tur durur", () => {
     const d = yeni();
-    d.ordular.find((o) => o.devlet === Bd)!.asker = 30000;
-    d.ordular.find((o) => o.devlet === A)!.asker = 1000;
+    askerAyarla(d.ordular.find((o) => o.devlet === Bd)!, 30000);
+    askerAyarla(d.ordular.find((o) => o.devlet === A)!, 1000);
     etkiEkle(d, Bd, A, "tarih", -60);
     for (let i = 0; i < 100 && !savasta(d, Bd, A); i++) savasKarari(d, B, diplomasiOnHesap(d, B.ag), Bd);
     expect(savasta(d, Bd, A)).toBe(true);
@@ -85,7 +86,7 @@ describe("AI savaş ve barış (6c)", () => {
 
   it("savaştaki AI ordusu düşman arazisine yürür, işgal eder ve kuşatır", () => {
     const d = yeni();
-    d.ordular.find((o) => o.devlet === Bd)!.asker = 30000;
+    askerAyarla(d.ordular.find((o) => o.devlet === Bd)!, 30000);
     savasAc(d, Bd, C);
     for (let i = 0; i < 90; i++) { gunIlerlet(d, B); d.aktifKesinti = null; }
     // C'nin arazisi B'nin kontrolüne geçti (barış da yapıldıysa yasal sahibi de B olur)
@@ -138,7 +139,7 @@ describe("AI savaş ve barış (6c)", () => {
 
   it("AI savaşları sürerken kayıt/yükleme sonucu değiştirmez; şema 9 kaydı dönüştürülür", () => {
     const d = yeni();
-    d.ordular.find((o) => o.devlet === Bd)!.asker = 30000;
+    askerAyarla(d.ordular.find((o) => o.devlet === Bd)!, 30000);
     savasAc(d, Bd, C);
     for (let i = 0; i < 20; i++) { gunIlerlet(d, B); seferKararlari(d, B); d.aktifKesinti = null; }
     const e = yukle(kaydet(d), d.senaryo);

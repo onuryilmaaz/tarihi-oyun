@@ -16,6 +16,7 @@ import type { IliskiEtkisi, Ittifak } from "./diplomasi";
 import { BILINMIYOR, DIN_AILELERI, baslangicGruplari, type Iskan, type NufusGrubu } from "./nufus";
 import { baslangicHanedanlari, type AdHavuzu, type Hukumdar, type TarihiHalef, type Veraset, type VerasetSecimi } from "./hanedan";
 import type { VergiOrani } from "./vergi";
+import { BIRIM_TURLERI, kompozisyonToplami, tekTurKompozisyon, type BirimTuru, type Kompozisyon } from "./birim";
 
 export type TurSuresi = "hafta" | "ay" | "ceyrek" | "yil";
 export const TUR_SURESI_ADLARI: Record<TurSuresi, string> = {
@@ -141,7 +142,8 @@ export interface OrduDurumu {
   id: number;
   ad: string;
   devlet: number;
-  asker: number;
+  asker: number; // toplam; kapasite/asayiş/görünürlük bunu kullanır
+  kompozisyon: Kompozisyon; // TASK-0019 (23): türlere göre dağılım, toplamı asker'e eşit olmalı
   dugum: number; // hareket ağında bulunduğu düğüm
   x: number; // son ulaşılan nokta (Miller × 10⁴)
   y: number;
@@ -173,6 +175,7 @@ export interface AskerToplama {
   sehir: number;
   devlet: number;
   asker: number;
+  birim: BirimTuru; // TASK-0019 (23)
   kalanGun: number;
   bedel: number; // iptalde tam iade edilen tutar (sonradan teknolojiyle oran değişse de sabit kalır)
 }
@@ -272,7 +275,7 @@ export interface SenaryoVerisi {
 // 5: kuşatma, gerçek işgal ve barış (TASK-0007/4c); şema 3–4 için eklemeli dönüşüm var.
 // Şema geçmişi: 6 şehir yatırımları (5b), 7 teknoloji (5c), 8 diplomasi (6a), 9 AI ekonomi (6b), 10 AI savaş/barış (6c),
 // 11 hükümdar ve veraset (7a), 12 nüfus grupları ve iskân (7b), 13 istikrar (7c), 14 yerel yönetim (7d)
-export const SEMA_SURUMU = 22; // 22 vasallık (TASK-0018), 21 ticaret anlaşması ve saldırmazlık paktı (TASK-0017), 20 asker toplama iptali (TASK-0017),
+export const SEMA_SURUMU = 23; // 23 birim çeşitliliği (TASK-0019), 22 vasallık (TASK-0018), 21 ticaret anlaşması ve saldırmazlık paktı (TASK-0017), 20 asker toplama iptali (TASK-0017),
 // 19 vergi oranı ve hazine geçmişi (TASK-0017), 18 arazi verimi (9b), 15 donanma ve deniz (8a), 16 ticaret ve ambargo (8b), 17 casusluk (8c)
 
 export function baslangicDurumu(s: SenaryoVerisi, secenek: { tohum: number; oyuncu?: string }): DunyaDurumu {
@@ -298,8 +301,9 @@ export function baslangicDurumu(s: SenaryoVerisi, secenek: { tohum: number; oyun
       garnizon: c.baskent ? DENGE.BASKENT_GARNIZON : DENGE.SEHIR_GARNIZON, yapilar: { tarla: 0, pazar: 0 },
       istikrar: bosIstikrar(), yonetici: false, gruplar: baslangicGruplari(s, c.ad, c.devlet, c.nufus) };
   });
+  // TASK-0019: senaryo/garnizon orduları başlangıçta tamamen piyade sayılır.
   const yeniOrdu = (id: number, ad: string, devlet: number, asker: number, dugum: number, x: number, y: number): OrduDurumu => ({
-    id, ad, devlet, asker, dugum, x, y, hiz: HAREKET.TEMEL_HIZ, rota: [], ilerleme: 0, hedef: null,
+    id, ad, devlet, asker, kompozisyon: tekTurKompozisyon("piyade", asker), dugum, x, y, hiz: HAREKET.TEMEL_HIZ, rota: [], ilerleme: 0, hedef: null,
     moral: DENGE.MORAL_EN_YUKSEK, tutum: "dengeli", cekiliyor: false, muharebe: null,
   });
   const ordular: OrduDurumu[] = (s.ordular ?? []).map((o, i) => yeniOrdu(i + 1, o.ad, bul(o.devlet), o.asker, o.dugum, o.x, o.y));
@@ -426,7 +430,8 @@ export function degismezler(d: DunyaDurumu): string[] {
     const toplamaIdler = new Set<number>();
     for (const t of d.askerToplamalar) {
       if (!t || !tam(t.sehir) || !d.sehirler[t.sehir] || !tam(t.devlet) || !d.devletler[t.devlet]
-        || !tam(t.asker) || t.asker <= 0 || !tam(t.kalanGun) || t.kalanGun < 0 || !tam(t.id) || !tam(t.bedel) || t.bedel < 0) h.push("asker toplama geçersiz");
+        || !tam(t.asker) || t.asker <= 0 || !tam(t.kalanGun) || t.kalanGun < 0 || !tam(t.id) || !tam(t.bedel) || t.bedel < 0
+        || !BIRIM_TURLERI.includes(t.birim)) h.push("asker toplama geçersiz");
       else if (toplamaIdler.has(t.id)) h.push(`asker toplama kimliği tekrar ediyor: ${t.id}`);
       else toplamaIdler.add(t.id);
     }
@@ -439,6 +444,8 @@ export function degismezler(d: DunyaDurumu): string[] {
     idler.add(o.id);
     if (!tam(o.devlet) || o.devlet < 0 || o.devlet >= n) h.push(`ordu ${i} devleti geçersiz`);
     if (!tam(o.asker) || o.asker < 0) h.push(`ordu ${i} asker sayısı geçersiz`);
+    if (!o.kompozisyon || !BIRIM_TURLERI.every((t) => tam(o.kompozisyon[t]) && o.kompozisyon[t] >= 0) || kompozisyonToplami(o.kompozisyon) !== o.asker)
+      h.push(`ordu ${i} kompozisyonu asker sayısıyla uyuşmuyor`); // TASK-0019
     if (![o.x, o.y, o.dugum, o.hiz, o.ilerleme].every(tam) || o.hiz <= 0) h.push(`ordu ${i} konum/hız tam sayı değil`);
     if (o.rota.some((a) => ![a.x, a.y, a.d, a.m].every(tam) || a.m <= 0)) h.push(`ordu ${i} rotası geçersiz`);
     if (o.rota.length && o.ilerleme >= o.rota[0].m) h.push(`ordu ${i} ilerlemesi adımı aşıyor`);

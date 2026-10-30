@@ -1,6 +1,6 @@
 # DEVİR TESLİM — agent değişiminde kaldığın yer
 
-Son güncelleme: **2026-10-30, Claude — TASK-0018'in 3 alt teslimi de kod olarak tamamlandı; kullanıcı testi ve commit/push onayı bekleniyor.**
+Son güncelleme: **2026-10-30, Claude — TASK-0018 bitti; TASK-0019 (1/4 birim çeşitliliği: veri modeli + asker toplama) kod olarak tamamlandı; kullanıcı testi ve commit/push onayı bekleniyor.**
 Bağlayıcı kurallar: `AGENTS.md`, `MASTER_SPEC.md`, `DECISIONS.md`.
 
 ## 0. En son — BURADAN BAŞLA
@@ -47,7 +47,17 @@ Bağlayıcı kurallar: `AGENTS.md`, `MASTER_SPEC.md`, `DECISIONS.md`.
   çeyreği kalır. Şema değişikliği yok (yeni alan isteğe bağlı). 224 test (3 yeni + 1 güncellenen), typecheck, build
   geçti; 5173'te casusluk görevi hatasız başlatıldı, JS hatası yok; istikrar panelinin canlı testi bu seferki
   denemede eksik kaldı, mantık sim testleriyle doğrulandı.
-  **TASK-0018'in 3 alt teslimi de kod olarak bitti. Kullanıcı testi ve commit/push onayı bekliyor.**
+  **TASK-0018'in 3 alt teslimi de kod olarak bitti.** Commit+push edildi (`d8819e9`).
+- Kullanıcı "sen devam et yapmaya" dedi; **TASK-0019 (birim çeşitliliği) DEC-0068 ile agent önerisiyle onaylandı.**
+  Dört faz: (1) veri modeli + asker toplama, (2) muharebe gücü ve kayıp dağılımı — en riskli, (3) hareket hızı,
+  (4) kuşatma gücü + arayüz tamamlama. Piyade/Okçu/Süvari; tüm sayılar TASLAK; AI v1'de yalnızca piyade toplar.
+- **1/4 Veri modeli + asker toplama kod olarak tamamlandı, henüz commit edilmedi:** yeni `birim.ts`; `OrduDurumu.asker`
+  toplam olarak korunur, yeni `kompozisyon` alanı eklendi (şema 22 → 23); `askerTopla` emrine `birim` parametresi,
+  tür bazlı maliyet/maaş; ordu bölme/birleştirme oransal kompozisyon taşır; ikmalsizlik/muharebe kayıpları kompozisyonu
+  tutarlı tutar. **Muharebe gücü formülü bu fazda değişmedi** — savaş dengesi henüz etkilenmez. İstemci: asker toplama
+  formunda birim seçimi (maliyet/maaş/saldırı/savunma/hız özeti). 231 test (6 yeni), typecheck, build geçti; 5173'te
+  agent tarafından doğrulandı (süvari bedeli piyadenin 1,8 katı, 500 süvari toplanıp bir ay sonra ordu listesinde
+  çıktı, JS hatası yok). **Kullanıcı testi ve commit/push onayı bekliyor.**
 - Kullanıcı "oyun mantığında eksiklikler var, Age of History gibi bir şey istiyorum: ekonomi, asker basma, ordu
   birleştirme/ayırma, diplomasi" dedi. **TASK-0017 / DEC-0066** ile tek görev kartı onaylandı: sıra Ekonomi → Asker basma →
   Ordu birleştirme/ayırma → Temel diplomasi. Açık sorular yanıtlandı: vergi düşük/orta/yüksek (varsayılan orta); pakt süresini

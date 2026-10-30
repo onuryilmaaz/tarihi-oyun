@@ -10,7 +10,7 @@ import "@fontsource/inter/latin-500.css";
 import "@fontsource/inter/latin-ext-500.css";
 import "@fontsource/inter/latin-700.css";
 import "@fontsource/inter/latin-ext-700.css";
-import { type YapiTuru, DENGE, tarihMetni, toplamaMaliyeti, type Emir, type MuharebeRaporu, type SenaryoVerisi, type Tutum, type TurSuresi, type VergiOrani } from "@tarihi/sim";
+import { type YapiTuru, DENGE, tarihMetni, toplamaMaliyeti, type Emir, type MuharebeRaporu, type SenaryoVerisi, type Tutum, type TurSuresi, type VergiOrani, BIRIM_TURLERI, BIRIM_ADLARI, type BirimTuru } from "@tarihi/sim";
 import { Color } from "three";
 import { armaSvg } from "./arma";
 import { ozelSecimleriKur } from "./secim";
@@ -386,14 +386,23 @@ async function baslat() {
     const once = secim.value;
     secim.innerHTML = ozet.askerSehirleri.map((s) => `<option value="${s.indeks}">${kacis(s.ad)}${s.uygun ? "" : " · toplama yapılamaz"}</option>`).join("");
     if (ozet.askerSehirleri.some((s) => String(s.indeks) === once)) secim.value = once;
-    $("toplamaListesi").innerHTML = ozet.toplamalar.map((t) => `<li>${kacis(t.sehir)} · ${t.asker.toLocaleString("tr-TR")} asker · ${t.emir ? "Emir bekliyor" : t.bekliyor ? "Şehirde işler durduğu için bekliyor" : `${t.kalanGun} gün kaldı`}${t.id !== null ? `<button class="bag" data-toplama-iptal="${t.id}"${mesgul ? " disabled" : ""}>İptal</button>` : ""}</li>`).join("");
+    const birimSecim = $<HTMLSelectElement>("toplamaBirim"), onceBirim = birimSecim.value;
+    if (!birimSecim.options.length) {
+      birimSecim.innerHTML = BIRIM_TURLERI.map((t) => {
+        const b = DENGE.BIRIM[t];
+        return `<option value="${t}">${BIRIM_ADLARI[t]} — maliyet %${b.maliyetYuzde}, maaş %${b.maasYuzde}, saldırı %${b.saldiriYuzde}, savunma %${b.savunmaYuzde}, hız %${b.hizYuzde}</option>`;
+      }).join("");
+      if (onceBirim) birimSecim.value = onceBirim;
+    }
+    $("toplamaListesi").innerHTML = ozet.toplamalar.map((t) => `<li>${kacis(t.sehir)} · ${t.asker.toLocaleString("tr-TR")} ${kacis(BIRIM_ADLARI[t.birim].toLowerCase())} · ${t.emir ? "Emir bekliyor" : t.bekliyor ? "Şehirde işler durduğu için bekliyor" : `${t.kalanGun} gün kaldı`}${t.id !== null ? `<button class="bag" data-toplama-iptal="${t.id}"${mesgul ? " disabled" : ""}>İptal</button>` : ""}</li>`).join("");
     toplamaBilgisi();
   };
   const toplamaBilgisi = () => {
     const sehir = ozet.askerSehirleri.find((s) => s.indeks === Number($<HTMLSelectElement>("toplamaSehir").value));
+    const birim = $<HTMLSelectElement>("toplamaBirim").value as BirimTuru;
     const asker = $<HTMLInputElement>("toplamaAsker").valueAsNumber;
     const sayiUygun = Number.isSafeInteger(asker) && asker > 0;
-    const bedel = sayiUygun ? toplamaMaliyeti(asker, ozet.toplamaKurali.bedelYuzde) : 0;
+    const bedel = sayiUygun ? toplamaMaliyeti(asker, ozet.toplamaKurali.bedelYuzde, birim) : 0;
     $("toplamaBilgi").textContent = sehir
       ? `Kullanılabilir insan gücü: ${sehir.insanGucu.toLocaleString("tr-TR")}. ${ozet.toplamaKurali.gun} gün; bedel: ${bedel.toLocaleString("tr-TR")}.`
         + (!sehir.uygun ? (sehir.ayaklanma ? " Ayaklanmada asker toplanamaz." : " Şehir ve çevresi kontrolünüzde olmalı.") : !sayiUygun ? " Pozitif tam sayı girin." : asker > sehir.insanGucu ? " İnsan gücü yetersiz." : ozet.kullanilabilirHazine < bedel ? " Hazine yetersiz; borçlanma yoktur." : " Yeni ordu şehirde kurulur.")
@@ -401,9 +410,11 @@ async function baslat() {
     $<HTMLButtonElement>("toplaBtn").disabled = mesgul || !sehir?.uygun || !sayiUygun || asker > sehir.insanGucu || ozet.kullanilabilirHazine < bedel;
   };
   $("toplamaSehir").onchange = toplamaBilgisi;
+  $("toplamaBirim").onchange = toplamaBilgisi;
   $("toplamaAsker").oninput = toplamaBilgisi;
   $("toplaBtn").onclick = () => emirGonder({ tur: "askerTopla", sehir: Number($<HTMLSelectElement>("toplamaSehir").value),
-    asker: $<HTMLInputElement>("toplamaAsker").valueAsNumber }, "Asker toplama emri verildi; bir sonraki turda başlar.");
+    asker: $<HTMLInputElement>("toplamaAsker").valueAsNumber, birim: $<HTMLSelectElement>("toplamaBirim").value as BirimTuru },
+    "Asker toplama emri verildi; bir sonraki turda başlar.");
   $("toplamaListesi").addEventListener("click", (e) => {
     const b = (e.target as HTMLElement).closest<HTMLElement>("[data-toplama-iptal]");
     if (b) emirGonder({ tur: "toplamaIptal", id: Number(b.dataset.toplamaIptal) }, "Toplama iptal emri verildi; bedel bir sonraki turda iade edilir.");

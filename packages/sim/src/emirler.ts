@@ -20,6 +20,7 @@ import {
   saldirmazlikDegerlendir, saldirmazlikKur, saldirmazlikVar, ticaretAnlasmasiBoz, ticaretAnlasmasiKur, ticaretAnlasmasiVar, ticaretDegerlendir,
 } from "./diplomasi";
 import { efendisi, vasalMi, vasallari, vasalSerbestBirak } from "./vasallik";
+import { BIRIM_ADLARI, birimTuruGecerli, kompozisyonCikar, kompozisyonOransalAl, kompozisyonTopla, tekTurKompozisyon, type BirimTuru } from "./birim";
 import { biliyor, arastirmaEngeli, teknolojiBul, teknolojiGecerli, toplamaBedelYuzde, toplamaSuresi, type TeknolojiId } from "./teknoloji";
 import { VERGI_ADLARI, vergiOraniGecerli, type VergiOrani } from "./vergi";
 
@@ -45,7 +46,7 @@ export type Emir =
   // Geri çekilme tutumu (DEC-0008)
   | { tur: "orduTutum"; ordu: number; tutum: Tutum }
   // devlet: yalnızca AI kararlarında (TASK-0009/6b); oyuncu emrinde boş bırakılır
-  | { tur: "askerTopla"; sehir: number; asker: number; devlet?: number }
+  | { tur: "askerTopla"; sehir: number; asker: number; devlet?: number; birim?: BirimTuru } // TASK-0019: birim yoksa piyade
   | { tur: "toplamaIptal"; id: number; devlet?: number } // TASK-0017: bedel ve insan gücü tam iade edilir
   | { tur: "orduBol"; ordu: number; asker: number }
   | { tur: "orduBirlestir"; ordu: number; diger: number }
@@ -89,7 +90,7 @@ function bekleyenHarcama(d: DunyaDurumu, devlet: number): number {
   for (const e of d.emirKuyrugu) {
     if (e.tur === "bagis" && d.sehirler[e.sehir]?.devlet === devlet) s += DENGE.IST_BAGIS_BEDEL;
     if (e.tur === "harca" && e.devlet === devlet) s += e.miktar;
-    if (e.tur === "askerTopla" && d.sehirler[e.sehir]?.devlet === devlet) s += toplamaMaliyeti(e.asker, toplamaBedelYuzde(d, devlet));
+    if (e.tur === "askerTopla" && d.sehirler[e.sehir]?.devlet === devlet) s += toplamaMaliyeti(e.asker, toplamaBedelYuzde(d, devlet), e.birim ?? "piyade");
     if (e.tur === "insaat" && d.sehirler[e.sehir]?.devlet === devlet) s += insaatMaliyeti(d, d.sehirler[e.sehir], e.yapi) ?? 0;
     if (e.tur === "hediye" && d.ayarlar.oyuncu === devlet) s += e.miktar;
     if (e.tur === "casusluk" && (e.devlet ?? d.ayarlar.oyuncu) === devlet && GOREV_TURLERI.includes(e.gorev)) s += DENGE.CASUS[e.gorev].bedel;
@@ -315,10 +316,11 @@ export function emirDogrula(d: DunyaDurumu, e: Emir, b: Baglam = BOS_BAGLAM, kuy
       const n = b.ag?.dugumler[s.dugum];
       if (!n || d.birimler[n.b]?.kontrol !== s.devlet) return { gecerli: false, neden: "Şehir çevresi kontrolünüzde ve hareket ağına bağlı olmalı." };
       if (!Number.isSafeInteger(e.asker) || e.asker <= 0 || !Number.isSafeInteger(e.asker * DENGE.TOPLAMA_ASKER_BASINA_MALIYET_BINDE)) return { gecerli: false, neden: "Asker sayısı pozitif tam sayı olmalı." };
+      if (e.birim !== undefined && !birimTuruGecerli(e.birim)) return { gecerli: false, neden: "Geçersiz birim türü." };
       const havuz = kuyrukHaric ? s.insanGucu : kullanilabilirInsanGucu(d, e.sehir);
       if (e.asker > havuz) return { gecerli: false, neden: `İnsan gücü yetersiz: ${havuz} asker toplanabilir.` };
       const para = kuyrukHaric ? d.devletler[s.devlet].hazine : kullanilabilirHazine(d, s.devlet);
-      if (para < 0 || toplamaMaliyeti(e.asker, toplamaBedelYuzde(d, s.devlet)) > para) return { gecerli: false, neden: `Hazine yetersiz: ${para} kullanılabilir. Borçlanma yoktur.` };
+      if (para < 0 || toplamaMaliyeti(e.asker, toplamaBedelYuzde(d, s.devlet), e.birim ?? "piyade") > para) return { gecerli: false, neden: `Hazine yetersiz: ${para} kullanılabilir. Borçlanma yoktur.` };
       return { gecerli: true };
     }
     case "toplamaIptal": {
@@ -504,13 +506,13 @@ export function emirUygula(d: DunyaDurumu, e: Emir, b: Baglam = BOS_BAGLAM): voi
       break;
     }
     case "askerTopla": {
-      const s = d.sehirler[e.sehir];
-      const bedel = toplamaMaliyeti(e.asker, toplamaBedelYuzde(d, s.devlet));
+      const s = d.sehirler[e.sehir], birim = e.birim ?? "piyade";
+      const bedel = toplamaMaliyeti(e.asker, toplamaBedelYuzde(d, s.devlet), birim);
       const sure = toplamaSuresi(d, s.devlet);
       d.devletler[s.devlet].hazine -= bedel;
       s.insanGucu -= e.asker;
-      d.askerToplamalar.push({ id: d.sonrakiToplamaId++, sehir: e.sehir, devlet: s.devlet, asker: e.asker, kalanGun: sure, bedel });
-      olayEkle(d, { tur: "asker-toplama", devlet: s.devlet, metin: `${s.ad}: ${e.asker} asker toplanıyor (${sure} gün). Bedel: −${bedel}.` });
+      d.askerToplamalar.push({ id: d.sonrakiToplamaId++, sehir: e.sehir, devlet: s.devlet, asker: e.asker, birim, kalanGun: sure, bedel });
+      olayEkle(d, { tur: "asker-toplama", devlet: s.devlet, metin: `${s.ad}: ${e.asker} ${BIRIM_ADLARI[birim].toLowerCase()} toplanıyor (${sure} gün). Bedel: −${bedel}.` });
       break;
     }
     case "toplamaIptal": {
@@ -524,8 +526,10 @@ export function emirUygula(d: DunyaDurumu, e: Emir, b: Baglam = BOS_BAGLAM): voi
     }
     case "orduBol": {
       const o = orduBul(d, e.ordu)!;
+      const alinanKomp = kompozisyonOransalAl(o.kompozisyon, e.asker); // TASK-0019: türler oransal ayrılır
+      o.kompozisyon = kompozisyonCikar(o.kompozisyon, alinanKomp);
       o.asker -= e.asker;
-      const yeni = { ...o, id: d.sonrakiOrduId++, asker: e.asker, ad: `${o.ad} · Ayrılan birlik`, rota: [], hedef: null };
+      const yeni = { ...o, id: d.sonrakiOrduId++, asker: e.asker, kompozisyon: alinanKomp, ad: `${o.ad} · Ayrılan birlik`, rota: [], hedef: null };
       d.ordular.push(yeni);
       olayEkle(d, { tur: "ordu-bolundu", devlet: o.devlet, metin: `${o.ad}: ${e.asker} asker ayrı orduya ayrıldı; moral ve tutum korundu.` });
       break;
@@ -533,6 +537,7 @@ export function emirUygula(d: DunyaDurumu, e: Emir, b: Baglam = BOS_BAGLAM): voi
     case "orduBirlestir": {
       const o = orduBul(d, e.ordu)!, a = orduBul(d, e.diger)!;
       o.moral = Math.floor((o.moral * o.asker + a.moral * a.asker) / (o.asker + a.asker));
+      o.kompozisyon = kompozisyonTopla(o.kompozisyon, a.kompozisyon); // TASK-0019
       o.asker += a.asker;
       d.ordular = d.ordular.filter((x) => x.id !== a.id);
       olayEkle(d, { tur: "ordu-birlesti", devlet: o.devlet, metin: `${a.ad}, ${o.ad} ile birleşti (${o.asker} asker); seçili ordunun tutumu korundu.` });

@@ -6,6 +6,7 @@ import {
   agHazirla, baslangicDurumu, degismezler, durumOzeti, emirleriUygula, emirVer, gunIlerlet, gorunurYabanciOrdular, kaydet, muharebeGunu,
   turSuresiAyarla, turuIlerlet, yukle, type Baglam, type DunyaDurumu, type SenaryoVerisi, type Tutum,
 } from "../src";
+import { askerAyarla } from "./yardimci";
 
 const senaryo: SenaryoVerisi = JSON.parse(
   readFileSync(join(import.meta.dirname, "..", "..", "..", "veri", "senaryo-1453", "senaryo.json"), "utf8"));
@@ -113,7 +114,7 @@ describe("muharebe (AT-008)", () => {
     expect(durumOzeti(karamanSeferi(7).d)).toBe(durumOzeti(karamanSeferi(7).d));
     // Muharebe başladığı anda kaydet (gün gün ilerleyerek: AI ordusu artık kendisi de hareket eder, 6c)
     const d = yeni(11), osm = devlet(d, "osm");
-    d.ordular.find((o) => o.devlet === devlet(d, "kar"))!.asker = 10000; // tek günde dağılmasın (garnizon tabanı 0, DEC-0040)
+    askerAyarla(d.ordular.find((o) => o.devlet === devlet(d, "kar"))!, 10000); // tek günde dağılmasın (garnizon tabanı 0, DEC-0040)
     emirVer(d, { tur: "savasIlan", devlet: osm, hedef: devlet(d, "kar") }, B);
     emirleriUygula(d, B);
     emirVer(d, { tur: "orduHedef", ordu: ordu(d, "Anadolu Ordusu").id, ...sehirHedefi("Larende") }, B);

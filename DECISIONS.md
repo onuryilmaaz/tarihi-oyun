@@ -832,3 +832,14 @@ Kaynak belge: `MASTER_SPEC.md` (v1.3). Orijinal keşif çıktısı:
 - **Onay kaydı:** Kullanıcı: "Ayrı, sonraki büyük görev olsun" / "Dağılır" / "Yalnızca barışta 'vasal yap' seçeneği" /
   "İkisi birden, aynı kartta" (2026-10-30).
 - **Durum:** GEÇERLİ
+
+## DEC-0068 — TASK-0019 onayı: birim çeşitliliği (piyade/okçu/süvari)
+
+- **Tarih:** 2026-10-30
+- **Seçilen karar:** TASK-0018 bitince kullanıcı "sen devam et yapmaya" dedi; TASK-0019 (birim çeşitliliği) agent
+  önerisiyle onaylandı. Dört faz: (1) veri modeli + asker toplama, (2) muharebe gücü ve kayıp dağılımı, (3) hareket
+  hızı, (4) kuşatma gücü + arayüz tamamlama. Tasarım: Piyade (taban), Okçu (ucuz, savunmada güçlü), Süvari (pahalı,
+  hızlı, saldırıda güçlü, savunmada zayıf) — tüm sayılar TASLAK. AI v1'de yalnızca piyade toplar. `OrduDurumu.asker`
+  toplam olarak korunur; yeni `kompozisyon` alanı yalnızca maliyet/maaş/güç/hız hesaplarını etkiler.
+- **Onay kaydı:** Kullanıcı: "Sen devam et yapmaya" (2026-10-30); tasarım detayları agent önerisiyle.
+- **Durum:** GEÇERLİ

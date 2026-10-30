@@ -5,6 +5,7 @@ import type { Baglam } from "./emirler";
 import { savasta } from "./savas";
 import { kusatmaSaldiriYuzde } from "./teknoloji";
 import { denizAblukasi } from "./deniz";
+import { kompozisyonCikar, kompozisyonOransalAl } from "./birim";
 
 export function sehirMenzilinde(d: DunyaDurumu, b: Baglam, o: OrduDurumu, sehir: number): boolean {
   const s = d.sehirler[sehir], n = s && b.ag?.dugumler[s.dugum];
@@ -72,6 +73,7 @@ function kaybiPaylastir(ordular: OrduDurumu[], kayip: number): void {
   for (let i = 0; i < ordular.length; i++) {
     const o = ordular[i];
     const pay = i === ordular.length - 1 ? Math.min(o.asker, kalan) : Math.min(o.asker, kalan, Math.floor(kayip * o.asker / Math.max(1, toplam)));
+    o.kompozisyon = kompozisyonCikar(o.kompozisyon, kompozisyonOransalAl(o.kompozisyon, pay)); // TASK-0019
     o.asker -= pay; kalan -= pay;
   }
 }

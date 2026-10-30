@@ -15,7 +15,8 @@ function yeni() {
 }
 function ordu(d: DunyaDurumu, sehir = 1, devlet = 0) {
   const s = d.sehirler[sehir];
-  const o = { id: d.sonrakiOrduId++, ad: "Asayiş", devlet, asker: gerekenAsayis(s), dugum: s.dugum, x: sehir * 10000, y: 0,
+  const o = { id: d.sonrakiOrduId++, ad: "Asayiş", devlet, asker: gerekenAsayis(s), kompozisyon: { piyade: gerekenAsayis(s), okcu: 0, suvari: 0 },
+    dugum: s.dugum, x: sehir * 10000, y: 0,
     hiz: 20000, rota: [], ilerleme: 0, hedef: null, moral: 1000, tutum: "dengeli" as const, cekiliyor: false, muharebe: null };
   d.ordular.push(o); return o;
 }
@@ -103,7 +104,7 @@ describe("7c aşamalar ve sonuçları", () => {
     const d = yeni(), s = d.sehirler[1]; s.istikrar.ayaklanma = true;
     expect(emirVer(d, { tur: "askerTopla", sehir: 1, asker: 100 }, B).gecerli).toBe(false);
     expect(emirVer(d, { tur: "insaat", sehir: 1, yapi: "tarla" }, B).gecerli).toBe(false);
-    d.askerToplamalar.push({ id: d.sonrakiToplamaId++, sehir: 1, devlet: 0, asker: 100, kalanGun: 5, bedel: 10 });
+    d.askerToplamalar.push({ id: d.sonrakiToplamaId++, sehir: 1, devlet: 0, asker: 100, birim: "piyade", kalanGun: 5, bedel: 10 });
     d.insaatlar.push({ sehir: 1, devlet: 0, yapi: "tarla", hedef: 1, kalanGun: 5 });
     toplamalariIlerlet(d, B); insaatlariIlerlet(d); expect(d.askerToplamalar[0].kalanGun).toBe(5); expect(d.insaatlar[0].kalanGun).toBe(5);
     s.istikrar.ayaklanma = false; toplamalariIlerlet(d, B); insaatlariIlerlet(d);

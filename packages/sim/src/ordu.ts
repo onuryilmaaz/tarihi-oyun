@@ -5,20 +5,27 @@ import { DENGE } from "./denge";
 import { HAREKET, type HareketAgi } from "./hareket";
 import { savasta } from "./savas";
 import type { Baglam } from "./emirler";
+import { BIRIM_TURLERI, kompozisyonCikar, kompozisyonOransalAl, toplamaMaliyetiYuzde, aylikMaasYuzde, tekTurKompozisyon, type BirimTuru, type Kompozisyon } from "./birim";
 
-// yuzde: teknoloji indirimi (Asker Kayıt Defterleri, 5c); varsayılan indirimsiz
-export const toplamaMaliyeti = (asker: number, yuzde = 100): number => Math.ceil(asker * DENGE.TOPLAMA_ASKER_BASINA_MALIYET_BINDE * yuzde / 100000);
-// Devlet toplamı üzerinden yuvarlanır: orduyu bölmek maaşı değiştirmez.
-export const aylikMaas = (asker: number): number => Math.ceil(asker * DENGE.AYLIK_ASKER_MAASI_BINDE / 1000);
+// yuzde: teknoloji indirimi (Asker Kayıt Defterleri, 5c); varsayılan indirimsiz. birim: TASK-0019, varsayılan piyade
+// (piyadenin maliyetYuzde'si 100 olduğu için eski çağrılar aynı sonucu verir).
+export const toplamaMaliyeti = (asker: number, yuzde = 100, birim: BirimTuru = "piyade"): number =>
+  Math.ceil(asker * DENGE.TOPLAMA_ASKER_BASINA_MALIYET_BINDE * yuzde * toplamaMaliyetiYuzde(birim) / 10000000);
+// Devlet toplamı üzerinden yuvarlanır: orduyu bölmek maaşı değiştirmez. birim: TASK-0019, varsayılan piyade.
+export const aylikMaas = (asker: number, birim: BirimTuru = "piyade"): number =>
+  Math.ceil(asker * DENGE.AYLIK_ASKER_MAASI_BINDE * aylikMaasYuzde(birim) / 100000);
+/** Bir ordunun kompozisyonuna göre toplam aylık maaşı (TASK-0019). */
+export const kompozisyonMaasi = (k: Kompozisyon): number => BIRIM_TURLERI.reduce((s, t) => s + (k[t] ? aylikMaas(k[t], t) : 0), 0);
 /** Kara ve gemideki ordular birlikte; bir ordu yalnızca bir listede bulunur. */
 export function toplamAskerSayisi(d: DunyaDurumu, devlet: number): number {
   return d.ordular.filter((o) => o.devlet === devlet).reduce((s, o) => s + o.asker, 0)
     + d.donanmalar.filter((f) => f.devlet === devlet && f.yuk).reduce((s, f) => s + f.yuk!.asker, 0);
 }
-/** Zorunlu aylık askerî gider: ordu maaşı (gemideki ordular dahil) + donanma bakımı (8a). */
+/** Zorunlu aylık askerî gider: ordu maaşı (kompozisyona göre, gemideki ordular dahil) + donanma bakımı (8a). */
 export function devletMaasi(d: DunyaDurumu, devlet: number): number {
-  const asker = toplamAskerSayisi(d, devlet);
-  return aylikMaas(asker) + aylikBakim(d, devlet);
+  const karaMaas = d.ordular.filter((o) => o.devlet === devlet).reduce((s, o) => s + kompozisyonMaasi(o.kompozisyon), 0);
+  const gemiMaas = d.donanmalar.filter((f) => f.devlet === devlet && f.yuk).reduce((s, f) => s + kompozisyonMaasi(f.yuk!.kompozisyon), 0);
+  return karaMaas + gemiMaas + aylikBakim(d, devlet);
 }
 
 export function ikmalDurumu(d: DunyaDurumu, ag: HareketAgi | null, o: OrduDurumu): { deger: number; neden: string; dusmanda: boolean } {
@@ -43,6 +50,7 @@ export function toplamalariIlerlet(d: DunyaDurumu, b: Baglam): void {
     if (t.kalanGun > 0) return true;
     const konum = b.sehirKonumlari?.[t.sehir] ?? n;
     d.ordular.push({ id: d.sonrakiOrduId++, ad: `${s.ad} Ordusu`, devlet: t.devlet, asker: t.asker,
+      kompozisyon: tekTurKompozisyon(t.birim, t.asker),
       dugum: s.dugum, x: konum.x, y: konum.y, hiz: HAREKET.TEMEL_HIZ, rota: [], ilerleme: 0, hedef: null,
       moral: DENGE.MORAL_EN_YUKSEK, tutum: "dengeli", cekiliyor: false, muharebe: null });
     olayEkle(d, { tur: "asker-toplandi", devlet: t.devlet, metin: `${s.ad}: ${t.asker} asker hazır; yeni ordu kuruldu.` });
@@ -65,6 +73,7 @@ export function ikmalVeMaasMorali(d: DunyaDurumu, ag: HareketAgi | null): void {
       // İlk sürümde her ordu ayrı aşınır; küçük birlik en az bir asker kaybeder.
       const kayip = Math.min(o.asker, Math.ceil(o.asker * DENGE.IKMALSIZ_KAYIP_BINDE / 1000));
       o.asker -= kayip;
+      o.kompozisyon = kompozisyonCikar(o.kompozisyon, kompozisyonOransalAl(o.kompozisyon, kayip)); // TASK-0019
       o.moral = Math.max(0, o.moral - DENGE.IKMALSIZ_MORAL);
     }
     if (d.devletler[o.devlet].hazine < 0) o.moral = Math.max(0, o.moral - DENGE.MAAS_AKSAMASI_MORAL);

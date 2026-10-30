@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { agHazirla, baslangicDurumu, butceOzeti, durumOzeti, emirVer, turuIlerlet } from "../src";
-import { TEST_SENARYOSU } from "./yardimci";
+import { askerAyarla, TEST_SENARYOSU } from "./yardimci";
 
 const yeni = () => baslangicDurumu({ ...TEST_SENARYOSU,
   ordular: [{ ad: "A Ordusu", devlet: "a", asker: 1001, dugum: 0, x: 0, y: 0 }] }, { tohum: 1453 });
@@ -27,7 +27,7 @@ describe("5a mevcut bütçe görünürlüğü", () => {
   });
 
   it("eksi hazine ve aylık açık sıfıra yuvarlanarak gizlenmez", () => {
-    const d = yeni(); d.devletler[0].hazine = -10; d.ordular[0].asker = 10000;
+    const d = yeni(); d.devletler[0].hazine = -10; askerAyarla(d.ordular[0], 10000);
     expect(butceOzeti(d, 0)).toMatchObject({ hazine: -10, ayrilan: 0, kullanilabilir: -10, aylikMaas: 200, aylikNet: -150 });
   });
 

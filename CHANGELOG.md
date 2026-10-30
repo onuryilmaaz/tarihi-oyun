@@ -1,5 +1,23 @@
 # CHANGELOG
 
+## 2026-10-30 — TASK-0019 (1/4): birim çeşitliliği — veri modeli ve asker toplama (Claude)
+
+- Üç birim türü: **Piyade** (taban), **Okçu** (ucuz, savunmada güçlü, saldırıda zayıf), **Süvari** (pahalı, hızlı,
+  saldırıda güçlü, savunmada zayıf) — tüm sayılar TASLAK. Yeni modül `packages/sim/src/birim.ts`.
+  `askerTopla` emrine `birim` parametresi; toplama maliyeti ve aylık maaş türe göre değişir (örn. 500 süvari
+  bedeli 90, 500 piyade 50). Ordu birleştirme/bölme kompozisyonu oransal taşır; ikmalsizlik ve muharebe kayıpları
+  da kompozisyonu asker sayısıyla tutarlı tutar.
+  `OrduDurumu.asker` (toplam) **korunur** — kapasite, asayiş, görünürlük, donanma yükü değişmedi; yalnızca yeni
+  `kompozisyon` alanı eklendi. **Muharebe gücü formülü bu fazda değişmedi** (2. fazda gelecek); bu yüzden savaş
+  dengesi henüz etkilenmiyor. AI hâlâ yalnızca piyade topluyor.
+  Kayıt şeması 22 → 23 (eski ordular tamamen piyade sayılır).
+- İstemci: asker toplama formuna "Birim türü" seçimi (maliyet/maaş/saldırı/savunma/hız özet bilgisiyle); toplama
+  listesinde tür adı gösterilir.
+- 231 test (6 yeni), typecheck ve build geçti. 5173'te agent tarafından doğrulandı: süvari seçiminde bedel 90,
+  piyadede 50 (oran %180 ile tutarlı); 500 süvari toplandı, bir ay sonra "Edirne Ordusu · 500 asker" olarak
+  ordu listesinde çıktı. JS hatası yok.
+- Kullanıcı testi ve commit/push onayı bekleniyor. Sonraki faz: 2/4 Muharebe gücü ve kayıp dağılımı (en riskli faz).
+
 ## 2026-10-30 — TASK-0018 (3/3): yanlış istihbarat + direniş ara kademesi — TASK-0018 tamamlandı (Claude)
 
 - **Yanlış istihbarat:** Başarılı askerî/diplomatik casusluk görevinde %20 ihtimalle rapor çarpıtılır (gerçek sayının

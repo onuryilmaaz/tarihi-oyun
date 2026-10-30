@@ -7,6 +7,7 @@ import { rotaBul, type HareketAgi } from "./hareket";
 import { aralik } from "./rastgele";
 import { etkiCarpani, istihbaratEtkisi, istihbaratVar } from "./casusluk";
 import { muharebeGucYuzde } from "./teknoloji";
+import { kompozisyonCikar, kompozisyonOransalAl } from "./birim";
 
 /** Binlik ayırıcılı sayı (ortamdan bağımsız; toLocaleString simülasyonda yasak) */
 export function sayiMetni(n: number): string {
@@ -137,6 +138,7 @@ function kayipDagit(ordular: OrduDurumu[], kayip: number): void {
   let kalan = Math.min(kayip, toplam);
   ordular.forEach((o, i) => {
     const pay = i === ordular.length - 1 ? kalan : Math.min(kalan, Math.floor((kayip * o.asker) / Math.max(1, toplam)));
+    o.kompozisyon = kompozisyonCikar(o.kompozisyon, kompozisyonOransalAl(o.kompozisyon, pay)); // TASK-0019
     o.asker -= pay;
     kalan -= pay;
   });
@@ -202,6 +204,7 @@ function muharebeyiBitir(d: DunyaDurumu, ag: HareketAgi | null, m: Muharebe, kay
     if (o.asker * 100 < baslangic * DENGE.DAGILMA_ORANI || o.moral <= 0 || !rota || !rota.gecerli) {
       dagilan.push(o.ad);
       o.asker = 0;
+      o.kompozisyon = { piyade: 0, okcu: 0, suvari: 0 }; // TASK-0019
       continue;
     }
     o.rota = rota.adimlar;

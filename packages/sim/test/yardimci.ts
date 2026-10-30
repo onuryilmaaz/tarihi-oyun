@@ -1,4 +1,4 @@
-import { baslangicDurumu, durumOzeti, type DunyaDurumu, type SenaryoVerisi } from "../src";
+import { baslangicDurumu, durumOzeti, type DunyaDurumu, type OrduDurumu, type SenaryoVerisi } from "../src";
 
 // Küçük yapay senaryo: 3 devlet, 12 birim, 6 şehir. Gerçek tarihî veri değildir.
 export const TEST_SENARYOSU: SenaryoVerisi = {
@@ -19,6 +19,12 @@ export const TEST_SENARYOSU: SenaryoVerisi = {
 };
 
 export const yeniDurum = (tohum = 1453): DunyaDurumu => baslangicDurumu(TEST_SENARYOSU, { tohum });
+
+/** TASK-0019: testlerde ordu.asker'i doğrudan değiştirirken kompozisyonu (hepsi piyade) tutarlı tutar. */
+export const askerAyarla = (o: OrduDurumu, asker: number): void => {
+  o.asker = asker;
+  o.kompozisyon = { piyade: asker, okcu: 0, suvari: 0 };
+};
 
 /** Tur sayacı, oyuncu ayarı ve olay günlüğü hariç dünya özeti: farklı tur süreleriyle aynı noktaya
  *  gelindiğinde karşılaştırmak için. */

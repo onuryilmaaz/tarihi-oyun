@@ -1,7 +1,7 @@
 import type { Istikrar, BarisDevirOzeti } from "@tarihi/sim";
 // Ana iş parçacığı ↔ simülasyon Worker'ı mesaj protokolü.
 
-import type { Alan, Degerlendirme, IliskiBileseni, TeknolojiId, YapiTuru, BarisKaydi, BarisTalebi, ButceOzeti, Dogrulama, Emir, KusatmaYontemi, MuharebeRaporu, OlayKaydi, RotaKirilimi, SenaryoVerisi, Tutum, TurSonucu, TurSuresi, YabanciOrdu } from "@tarihi/sim";
+import type { Alan, Degerlendirme, IliskiBileseni, TeknolojiId, YapiTuru, BarisKaydi, BarisTalebi, ButceOzeti, Dogrulama, Emir, KusatmaYontemi, MuharebeRaporu, OlayKaydi, RotaKirilimi, SenaryoVerisi, Tutum, TurSonucu, TurSuresi, YabanciOrdu, BirimTuru } from "@tarihi/sim";
 
 export type Istek = { id: number } & (
   | { tip: "yeniOyun"; senaryo: SenaryoVerisi; tohum: number; oyuncu?: string }
@@ -96,7 +96,7 @@ export interface Ozet {
   barisTeklifleri: { id: number; devlet: number; gerekce: string; size: boolean; birimler: number[]; sehirler: number[]; kalanGun: number; cevap: boolean | null }[]; // 6c
   toplamaKurali: { bedelYuzde: number; gun: number }; // teknolojiyle değişir (Asker Kayıt Defterleri)
   askerSehirleri: { indeks: number; ad: string; insanGucu: number; uygun: boolean; ayaklanma: boolean }[];
-  toplamalar: { id: number | null; sehir: string; asker: number; kalanGun: number; bekliyor: boolean; emir: boolean }[];
+  toplamalar: { id: number | null; sehir: string; asker: number; birim: BirimTuru; kalanGun: number; bekliyor: boolean; emir: boolean }[]; // TASK-0019: birim
   planliKesinti: { tarih: string; neden: string }[];
   hash: string;
   ordular: OrduOzeti[];

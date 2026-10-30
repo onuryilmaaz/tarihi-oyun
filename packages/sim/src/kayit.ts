@@ -181,6 +181,12 @@ export function yukle(metin: string, beklenenSenaryo?: string): DunyaDurumu {
   if (d.sema === 21) {
     // Şema 21 → 22 (TASK-0018): eski kayıtta vasallık yok
     d.vasalliklar = [];
+    d.sema = 22;
+  }
+  if (d.sema === 22) {
+    // Şema 22 → 23 (TASK-0019): eski kayıtlarda kompozisyon yok; bütün askerler piyade sayılır
+    for (const o of d.ordular) o.kompozisyon = { piyade: o.asker, okcu: 0, suvari: 0 };
+    for (const t of d.askerToplamalar) t.birim = "piyade";
     d.sema = SEMA_SURUMU;
   }
   if (d.sema !== SEMA_SURUMU) throw new KayitHatasi("Kayıt tutarsız: dünya şema sürümü uyuşmuyor.");

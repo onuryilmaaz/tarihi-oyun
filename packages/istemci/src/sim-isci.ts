@@ -4,7 +4,7 @@
 import {
   agHazirla, baslangicDurumu, durumOzeti, emirVer, gorunurYabanciOrdular, kalanYol, kaydet, orduKonumu, orduRotasi,
   tarihMetni, turSuresiAyarla, turuIlerlet, yukle, TUR_SURESI_ADLARI, type Baglam, type DunyaDurumu,
-  aylikMaas, devletMaasi, emirDogrula, ikmalDurumu, kullanilabilirHazine, kullanilabilirInsanGucu, DENGE,
+  kompozisyonMaasi, devletMaasi, emirDogrula, ikmalDurumu, kullanilabilirHazine, kullanilabilirInsanGucu, DENGE,
   barisBedeli, barisDevirOzeti, barisDogrula, kusatmaGucu, orduKusatmasi, savasSkoru,
   butceOzeti, insaatMaliyeti, insaatSuresi, sehirYapiGeliri, yapiSeviyesi, yapiEnYuksek, pazarGeliriSeviyeBasina, YAPI_ADLARI, YAPI_TURLERI,
   diplomasiOnHesap, etkiDegeri, hediyePuanBedeli, iliski, iliskiBilesenleri, ittifakDegerlendir, komsuMu, muttefik, muttefikleri, savasta,
@@ -165,11 +165,11 @@ function ozet(durum: DunyaDurumu): Ozet {
       ...durum.askerToplamalar.filter((t) => t.devlet === durum.ayarlar.oyuncu).map((t) => {
         const s = durum.sehirler[t.sehir];
         const n = baglam.ag?.dugumler[s.dugum];
-        return { id: t.id, sehir: s.ad, asker: t.asker, kalanGun: t.kalanGun,
+        return { id: t.id, sehir: s.ad, asker: t.asker, birim: t.birim, kalanGun: t.kalanGun,
           bekliyor: s.istikrar.ayaklanma || !n || s.kontrol !== t.devlet || durum.birimler[n.b]?.kontrol !== t.devlet, emir: false };
       }),
       ...durum.emirKuyrugu.flatMap((e) => e.tur !== "askerTopla" ? [] : [{ id: null, sehir: durum.sehirler[e.sehir].ad,
-        asker: e.asker, kalanGun: toplamaSuresi(durum, durum.ayarlar.oyuncu), bekliyor: false, emir: true }]),
+        asker: e.asker, birim: e.birim ?? "piyade", kalanGun: toplamaSuresi(durum, durum.ayarlar.oyuncu), bekliyor: false, emir: true }]),
     ],
     planliKesinti: durum.planliKesintiler.map((k) => ({ tarih: tarihMetni(k.gun), neden: k.neden })),
     hash: durumOzeti(durum),
@@ -184,7 +184,7 @@ function ozet(durum: DunyaDurumu): Ozet {
         kalanGun: o.rota.length ? kalan.gun : 0,
         varisTarihi: o.rota.length ? tarihMetni(durum.gun + kalan.gun) : null,
         moral: o.moral, tutum: o.tutum, muharebede: o.muharebe !== null, cekiliyor: o.cekiliyor,
-        ikmal: ikmal.deger, ikmalNedeni: ikmal.neden, maas: aylikMaas(o.asker), maasAksiyor: durum.devletler[o.devlet].hazine < 0,
+        ikmal: ikmal.deger, ikmalNedeni: ikmal.neden, maas: kompozisyonMaasi(o.kompozisyon), maasAksiyor: durum.devletler[o.devlet].hazine < 0,
         bolunebilir: emirDogrula(durum, { tur: "orduBol", ordu: o.id, asker: 1 }, baglam).gecerli,
         birlesebilir: durum.ordular.filter((a) => a.id !== o.id && emirDogrula(durum,
           { tur: "orduBirlestir", ordu: o.id, diger: a.id }, baglam).gecerli).map((a) => a.id),

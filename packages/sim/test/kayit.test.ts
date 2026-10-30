@@ -14,7 +14,7 @@ describe("kayıt / yükleme", () => {
 
   it("değişmezler bitmiş savaşı yakalar; eski H-02 kaydı açık günlük kaydıyla onarılır (T-02)", () => {
     const d = yeniDurum();
-    const ordu = { id: 1, ad: "B Ordusu", devlet: 1, asker: 10000, dugum: 0, x: 0, y: 0, hiz: 1000,
+    const ordu = { id: 1, ad: "B Ordusu", devlet: 1, asker: 10000, kompozisyon: { piyade: 10000, okcu: 0, suvari: 0 }, dugum: 0, x: 0, y: 0, hiz: 1000,
       rota: [], ilerleme: 0, hedef: null, moral: 1000, tutum: "dengeli" as const, cekiliyor: false, muharebe: null };
     d.ordular = [ordu, { ...ordu, id: 2, ad: "C Ordusu", devlet: 2 }];
     d.sonrakiOrduId = 3;

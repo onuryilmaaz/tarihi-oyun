@@ -29,3 +29,4 @@ export * from "./kayit";
 export * from "./istikrar";
 export * from "./vergi";
 export * from "./vasallik";
+export * from "./birim";

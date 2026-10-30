@@ -4,7 +4,7 @@ import {
   gunIlerlet, ikmalDurumu, kaydet, kullanilabilirHazine, kullanilabilirInsanGucu, maaslariOde,
   SEMA_SURUMU, toplamaMaliyeti, turSuresiAyarla, turuIlerlet, yukle, type SenaryoVerisi,
 } from "../src";
-import { dunyaOzeti } from "./yardimci";
+import { askerAyarla, dunyaOzeti } from "./yardimci";
 
 const senaryo: SenaryoVerisi = {
   id: "ordu-test", surum: "1", baslangic: { yil: 1453, ay: 4, gun: 1 }, varsayilanOyuncu: "a",
@@ -175,7 +175,7 @@ describe("maaş ve ikmal", () => {
   });
 
   it("aşınma orduyu sıfırın altına indirmez, tamamen tükenen ordu silinir", () => {
-    const d = yeni(); const o = d.ordular[0]; o.asker = 1; o.dugum = 2;
+    const d = yeni(); const o = d.ordular[0]; askerAyarla(o, 1); o.dugum = 2;
     d.savaslar.push({ id: 1, saldiran: 0, savunan: 1, baslangic: d.gun });
     gunIlerlet(d, B);
     expect(d.ordular).toHaveLength(0); expect(degismezler(d)).toEqual([]);
@@ -184,7 +184,7 @@ describe("maaş ve ikmal", () => {
 
 describe("bölme ve birleştirme", () => {
   it("asker, konum ve tutum korunur; moral asker ağırlıklı ortalanır; maaş bölmeden etkilenmez", () => {
-    const d = yeni(); const o = d.ordular[0]; o.asker = 1001; o.moral = 600; o.tutum = "temkinli";
+    const d = yeni(); const o = d.ordular[0]; askerAyarla(o, 1001); o.moral = 600; o.tutum = "temkinli";
     const maas = devletMaasi(d, 0);
     expect(emirVer(d, { tur: "orduBol", ordu: o.id, asker: 301 }, B).gecerli).toBe(true);
     expect(d.ordular).toHaveLength(1);
@@ -224,7 +224,7 @@ describe("bölme ve birleştirme", () => {
     expect(emirVer(d, e, B).gecerli).toBe(true);
     expect(emirVer(d, e, B).gecerli).toBe(false);
     expect(emirVer(d, { tur: "orduHedef", ordu: o.id, x: 10000, y: 0, dugum: 1 }, B).gecerli).toBe(false);
-    o.asker = 300;
+    askerAyarla(o, 300);
     emirleriUygula(d, B);
     expect(d.ordular).toHaveLength(1); expect(o.asker).toBe(300);
     expect(d.gunluk.at(-1)?.tur).toBe("emir-reddedildi");
