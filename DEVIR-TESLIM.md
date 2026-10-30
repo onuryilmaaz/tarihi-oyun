@@ -1,49 +1,32 @@
 # DEVİR TESLİM — agent değişiminde kaldığın yer
 
-Son güncelleme: **2026-10-30, Claude — TASK-0020'nin 3 alt teslimi de kod olarak tamamlandı (1/3, 2/3 commit+push
-edildi; 3/3 henüz commit edilmedi, kullanıcı testi/onayı bekleniyor). Artık doğrudan `main` üzerinde çalışılıyor
-(kullanıcı isteğiyle, ayrı dal yok).**
+Son güncelleme: **2026-10-30, Claude — TASK-0020 tamamen bitti ve commit+push edildi (`be98b9e`). Kullanıcı
+"eksikleri analiz et" dedi → TASK-0021/DEC-0070 onaylandı (4 alt teslim). TASK-0021 1/4 (muharebe raporu birim
+kırılımı) kod olarak tamamlandı, henüz commit edilmedi. Doğrudan `main` üzerinde çalışılıyor (ayrı dal yok).**
 Bağlayıcı kurallar: `AGENTS.md`, `MASTER_SPEC.md`, `DECISIONS.md`.
 
 ## 0. En son — BURADAN BAŞLA
 
-- Kullanıcı "testleri sonra yaparız, eksikleri analiz et" dedi (TASK-0019 sonrası), sonra elçi gönderme/gelen
-  teklifleri görme/figürlerle gösterme istedi → **TASK-0020 / DEC-0069** onaylandı: 3 alt teslim sırayla
-  (1) AI'dan gelen diplomatik teklifler + gelen kutusu, (2) elçi gönderme, (3) hükümdar/devlet portresi.
-- **1/3 commit edildi (`10d0e70`), kullanıcı "main'den devam" dedi → main bu commit'e fast-forward edilip push
-  edildi; artık doğrudan `main` üzerinde çalışılıyor (DEC-0015 ile tutarlı), ayrı dal açılmıyor.**
-  Yeni `yz-diplomasi.ts` — her AI devleti, oyuncunun sınır
-  komşusuysa, savaşta değillerse ve 180 gün içinde ona teklif göndermediyse, aylık kararında küçük bir olasılıkla
-  (`YZ_DIPLOMASI_TEKLIF_OLASILIK` %1) ilişkisine göre ittifak/ticaret/saldırmazlık teklif eder. Yeni emir
-  `diplomatikTeklifCevap` (kabul/ret), barış teklifiyle aynı doğrulama/uygulama deseninde. Şema 23 → 24
-  (`diplomatikTeklifler`, `diplomatikTeklifSoguma`). İstemci: barış teklifiyle aynı desende genelleştirilmiş
-  pencere (`#dipTeklifi`), devlet panelinde "📨 ... teklif ediyor" bildirimi, savaş rozeti sayacı güncellendi.
-  **Önemli düzeltme:** İlk sürümde (tüm 132 devlet, komşuluk/soğuma kısıtı yok) 10 yıllık senaryo testinde
-  yıllık turlar sürekli kesintiye uğrayıp 10 yıl yalnızca ~4 ay ilerliyordu; sınır komşusu kısıtı + 180 günlük
-  soğuma eklenince makul sıklığa indi (bkz. CHANGELOG). `senaryo-1453.test.ts`'teki 10 yıllık test artık
-  kesintileri reddederek ilerliyor, tam 10 yılın geçtiğini (kesintiler nedeniyle takvim birkaç ay kayabilir)
-  doğruluyor — bu kasıtlı davranış, "tur durur, oyuncu karar verir" kuralıyla tutarlı.
-  242 sim testi (4 yeni: `yz-diplomasi.test.ts`), typecheck, build geçti; 5173'te Playwright ile canlı doğrulandı
-  (Candaroğulları'ndan saldırmazlık paktı teklifi kesintiyle geldi, `#dipTeklifi` doğru metinle açıldı, "Kabul et"
-  JS hatasız çalıştı; kullanıcıya ekran görüntüsü gönderildi).
-- **2/3 commit+push edildi (`538bef9`):** Yeni `elci.ts` — emir `elciGonder` (bedel 180, 60 gün); varınca
-  hediyeyle aynı birikim/sönüm kuralına tabi +15 ilişki ekler (`ELCI_EN_COK` 30 tavanlı, bağımsız havuz). Aynı
-  devlete ikinci elçi, ilki yoldayken gönderilemez. Şema 24 → 25 (`elciler`, `sonrakiElciId`). İstemci: devlet
-  panelinde hediyenin yanına "Elçi gönder" düğmesi / "🕊 Elçiniz yolda; N gün sonra varacak" bildirimi.
-  246 sim testi (3 yeni: `elci.test.ts`), typecheck, build geçti; 5173'te Playwright ile canlı doğrulandı
-  (Brandenburg'a elçi gönderildi, hazineden 180 düştü, tur sonrası panelde "Elçiniz yolda" göründü, JS hatası yok;
-  kullanıcıya ekran görüntüsü gönderildi).
-- **3/3 kod olarak tamamlandı, henüz commit edilmedi — TASK-0020'nin son alt teslimi:** Yeni
-  `packages/istemci/src/portre.ts: portreSvg(ad, hanedan)` — basit, deterministik insan silüeti SVG'si (ad ten/saç
-  rengini, hanedan aksesuar/taç şeridi rengini belirler). Saf görsel; sim tarafına/şemaya dokunmadı, yeni test
-  gerektirmedi (246 sim testi aynen geçti). Sol paneldeki kendi hükümdar kartına, devlet panelindeki hükümdar
-  bölümüne ve veraset aday listesine eklendi, mevcut arma'nın (`arma.ts`) yanında. Typecheck, build geçti; 5173'te
-  Playwright ile canlı doğrulandı (kendi hükümdarım II. Mehmed ve Brandenburg'un hükümdarı Karl için farklı
-  portreler göründü, JS hatası yok; ekran görüntüsü gönderildi).
-- **TASK-0020'nin 3 alt teslimi de kod olarak tamamlandı.** Devralan agent önce kullanıcıdan 3/3'ün commit onayını
-  istesin. Sonrasında TASK-0020 tamamen biter; kullanıcıya yeni bir sonraki konu (varsa) sorulmalı — bu oturumda
-  öngörülmüş, onaylanmış bir sonraki iş yok.
-- `tasks/TASK-0020.md`, `CHANGELOG.md` güncel; 3/3 henüz commit edilmedi.
+- **TASK-0020 tamamen bitti, 3 alt teslimi de commit+push edildi** (1/3 `10d0e70`, 2/3 `538bef9`, 3/3 `be98b9e`):
+  AI'dan gelen diplomatik teklifler + gelen kutusu, elçi gönderme, hükümdar/devlet portresi. Ayrıntılar için
+  CHANGELOG.md'nin 2026-10-30 TASK-0020 girişlerine bak; burada tekrarlanmıyor.
+- Kullanıcı tekrar "eksikleri analiz et" dedi (fork ile araştırma yapıldı). **TASK-0021 / DEC-0070** onaylandı:
+  4 alt teslim sırayla (1) muharebe raporunda birim kırılımı, (2) elçi/casus küçük başarısızlık riski,
+  (3) AI karışık ordu toplasın, (4) AI vasallık teklif etsin. Kapsam dışı bırakılanlar: çok taraflı diplomasi,
+  teknoloji ağacı genişlemesi, yerel yönetici özerkliği, gelişmiş kayıt yönetimi, bildirim merkezi — bunlar ayrı
+  gelecek görevler, bu oturumda ele alınmadı.
+- **1/4 kod olarak tamamlandı, henüz commit edilmedi:** `MuharebeTarafi`/`RaporTarafi`'ye `kayipKompozisyon`
+  eklendi (`durum.ts`); gün gün (`savas.ts: muharebeGunleri`) ve takip kaybında birikimli günceller (mevcut
+  toplam `kayip` alanıyla aynı desende). Şema 25 → 26. Arayüzde rapor penceresinin kayıp sütununa, TASK-0019'da
+  zaten canlı doğrulanmış `kompozisyonMetni` yardımcısıyla tür dökümü eklendi.
+  248 sim testi (2 yeni: `muharebe-kompozisyon.test.ts`), typecheck, build geçti. **Canlı Playwright testi kısmi
+  kaldı:** asker toplama ve savaş ilanı akışı denendi (ikisi de çalıştı), ama oyuncunun fiilen karışık birimli
+  bir muharebeye girmesi (ordu sevk + düşmanla temas, birkaç adım/zamanlama gerektiriyor) bu oturumda
+  tamamlanamadı — mekanik sim testlerinde uçtan uca kanıtlı, render kodu önceden canlı doğrulanmış bir yardımcıyı
+  yeniden kullanıyor.
+- **Sırada:** TASK-0021 2/4 elçi/casus küçük başarısızlık riski. Devralan agent önce kullanıcıdan 1/4'ün commit
+  onayını istesin, sonra 2/4'e geçsin.
+- `tasks/TASK-0021.md` (yeni), `CHANGELOG.md` güncel; `DECISIONS.md` DEC-0070 eklendi. 1/4 henüz commit edilmedi.
 
 ## Arşiv — TASK-0019 ve öncesi (bu oturumun önceki kısmı)
 

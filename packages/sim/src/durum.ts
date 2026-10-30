@@ -110,6 +110,7 @@ export interface MuharebeTarafi {
   ordular: number[]; // ordu kimlikleri
   baslangicAsker: number;
   kayip: number;
+  kayipKompozisyon: Kompozisyon; // TASK-0021 (1/4): gün gün birikimli, birim türüne göre kayıp
   baslangicMoral: number;
 }
 
@@ -136,6 +137,7 @@ export interface RaporTarafi {
   ordular: string[];
   baslangicAsker: number;
   kayip: number;
+  kayipKompozisyon: Kompozisyon; // TASK-0021 (1/4)
   moralBas: number;
   moralSon: number;
   sonuc: "zafer" | "geri-cekildi" | "dagildi";
@@ -284,7 +286,7 @@ export interface SenaryoVerisi {
 // 5: kuşatma, gerçek işgal ve barış (TASK-0007/4c); şema 3–4 için eklemeli dönüşüm var.
 // Şema geçmişi: 6 şehir yatırımları (5b), 7 teknoloji (5c), 8 diplomasi (6a), 9 AI ekonomi (6b), 10 AI savaş/barış (6c),
 // 11 hükümdar ve veraset (7a), 12 nüfus grupları ve iskân (7b), 13 istikrar (7c), 14 yerel yönetim (7d)
-export const SEMA_SURUMU = 25; // 25 elçi gönderme (TASK-0020), 24 AI diplomatik teklifleri (TASK-0020), 23 birim çeşitliliği (TASK-0019), 22 vasallık (TASK-0018), 21 ticaret anlaşması ve saldırmazlık paktı (TASK-0017), 20 asker toplama iptali (TASK-0017),
+export const SEMA_SURUMU = 26; // 26 muharebe raporu birim kırılımı (TASK-0021), 25 elçi gönderme (TASK-0020), 24 AI diplomatik teklifleri (TASK-0020), 23 birim çeşitliliği (TASK-0019), 22 vasallık (TASK-0018), 21 ticaret anlaşması ve saldırmazlık paktı (TASK-0017), 20 asker toplama iptali (TASK-0017),
 // 19 vergi oranı ve hazine geçmişi (TASK-0017), 18 arazi verimi (9b), 15 donanma ve deniz (8a), 16 ticaret ve ambargo (8b), 17 casusluk (8c)
 
 export function baslangicDurumu(s: SenaryoVerisi, secenek: { tohum: number; oyuncu?: string }): DunyaDurumu {
@@ -605,8 +607,12 @@ export function degismezler(d: DunyaDurumu): string[] {
   const yasayan = new Set([...d.birimler.map((b) => b.sahip), ...d.sehirler.map((s) => s.devlet)]);
   const savasVar = (a: number, b: number) => d.savaslar.some((s) =>
     (s.saldiran === a && s.savunan === b) || (s.saldiran === b && s.savunan === a));
-  for (const m of d.muharebeler) if (!savasVar(m.taraflar[0].devlet, m.taraflar[1].devlet))
-    h.push(`savaş ilişkisi: muharebe ${m.id} bitmiş savaşa ait`);
+  const kompozisyonTamMi = (k: Kompozisyon) => k && BIRIM_TURLERI.every((t) => tam(k[t]) && k[t] >= 0);
+  for (const m of d.muharebeler) {
+    if (!savasVar(m.taraflar[0].devlet, m.taraflar[1].devlet)) h.push(`savaş ilişkisi: muharebe ${m.id} bitmiş savaşa ait`);
+    if (m.taraflar.some((t) => !kompozisyonTamMi(t.kayipKompozisyon))) h.push(`muharebe ${m.id} kayıp kompozisyonu geçersiz`); // TASK-0021 (1/4)
+  }
+  for (const r of d.muharebeRaporlari) if (r.taraflar.some((t) => !kompozisyonTamMi(t.kayipKompozisyon))) h.push(`muharebe raporu ${r.id} kayıp kompozisyonu geçersiz`);
   for (const b of d.birimler) if (b.kontrol >= 0 && !yasayan.has(b.kontrol)) h.push("savaş ilişkisi: araziyi yıkılmış devlet kontrol ediyor");
   for (const s of d.sehirler) if (!yasayan.has(s.kontrol)) h.push("savaş ilişkisi: şehri yıkılmış devlet kontrol ediyor");
   return h;

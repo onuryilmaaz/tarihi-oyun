@@ -1,5 +1,21 @@
 # CHANGELOG
 
+## 2026-10-30 — TASK-0021 (1/4): muharebe raporunda birim kırılımı (Claude)
+
+- **`MuharebeTarafi`/`RaporTarafi`'ye `kayipKompozisyon: Kompozisyon` eklendi** (`durum.ts`): gün gün
+  (`savas.ts: muharebeGunleri`) ve takip kaybında (`muharebeyiBitir`) birikimli olarak güncellenir — mevcut
+  toplam `kayip` alanıyla aynı desende (anlık enstantane değil, reinforce/katılım durumlarında da doğru).
+  Şema 25 → 26 (eklemeli; eski kayıtlarda boş kompozisyon sayılır).
+- **Arayüz:** Muharebe raporu penceresindeki kayıp sütununa, tamamen piyade olmayan taraflar için küçük bir
+  tür dökümü eklendi; TASK-0019'da zaten canlı doğrulanmış `kompozisyonMetni` yardımcı fonksiyonu yeniden
+  kullanıldı.
+- 248 sim testi (2 yeni: `muharebe-kompozisyon.test.ts` — süvari/piyade karışık muharebede kırılımın doğru
+  dağıldığını ve eski kayıt göçünü doğruluyor), typecheck, build geçti. Canlı Playwright testi kısmi kaldı:
+  asker toplama ve savaş ilanı akışı denendi; oyuncunun fiilen karışık birimli bir muharebeye girmesi (ordu
+  sevk + temas) bu oturumda tamamlanamadı. Mekanik sim testlerinde uçtan uca kanıtlı; render kodu önceden
+  canlı doğrulanmış bir yardımcıyı yeniden kullanıyor.
+- **Sırada:** TASK-0021 2/4 (elçi/casus küçük başarısızlık riski). Kullanıcı testi ve commit onayı bekliyor.
+
 ## 2026-10-30 — TASK-0020 (3/3): hükümdar/devlet portresi — TASK-0020 tamamlandı (Claude)
 
 - **Yeni `packages/istemci/src/portre.ts: portreSvg(ad, hanedan)`:** Basit, deterministik insan silüeti SVG'si.

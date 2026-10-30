@@ -833,6 +833,18 @@ Kaynak belge: `MASTER_SPEC.md` (v1.3). Orijinal keşif çıktısı:
   "İkisi birden, aynı kartta" (2026-10-30).
 - **Durum:** GEÇERLİ
 
+## DEC-0070 — TASK-0021 onayı: AI karışık ordu, AI vasallık teklifi, elçi/casus riski, muharebe raporu kırılımı
+
+- **Tarih:** 2026-10-30
+- **Seçilen karar:** TASK-0021 onaylandı: (1) AI karışık ordu toplasın (piyade/okçu/süvari, TASLAK kural); (2) AI
+  vasallık teklif etsin (mevcut gelen kutusu altyapısına yeni `tur: "vasallik"`; yalnızca teklif, oyuncu her zaman
+  reddedebilir, zorla vasallık yok); (3) elçi/casus gibi küçük bir başarısızlık/yakalanma riski taşısın; (4)
+  muharebe raporunda piyade/okçu/süvari kırılımı gösterilsin (şema artışı gerektirir). Sıra: muharebe raporu
+  kırılımı → elçi/casus riski → AI karışık ordu → AI vasallık teklifi.
+- **Onay kaydı:** Kullanıcı: "AI karışık ordu toplasın (Önerilen)", "AI vasallık teklif etsin", "Elçi/casus küçük
+  başarısızlık riski", "Muharebe raporunda birim kırılımı" (dördü de seçildi) (2026-10-30).
+- **Durum:** GEÇERLİ
+
 ## DEC-0069 — TASK-0020 onayı: AI'dan gelen diplomatik teklifler, elçi gönderme, hükümdar portresi
 
 - **Tarih:** 2026-10-30

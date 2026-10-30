@@ -424,11 +424,14 @@ async function baslat() {
   });
   const yuzde = (binde: number) => `%${Math.round(binde / 10)}`;
   const raporGoster = (r: MuharebeRaporu) => {
-    const satir = (t: MuharebeRaporu["taraflar"][number]) => `<tr>
+    const satir = (t: MuharebeRaporu["taraflar"][number]) => {
+      const kirilim = kompozisyonMetni(t.kayipKompozisyon); // TASK-0021 (1/4)
+      return `<tr>
       <td>${gorunum.devletRenkKutusu(t.devlet)} ${kacis(h.paket.devletler[t.devlet].ad)}<small>${t.ordular.map(kacis).join(", ")}</small></td>
-      <td>${t.baslangicAsker.toLocaleString("tr-TR")}</td><td>−${t.kayip.toLocaleString("tr-TR")}</td>
+      <td>${t.baslangicAsker.toLocaleString("tr-TR")}</td><td>−${t.kayip.toLocaleString("tr-TR")}${kirilim ? `<small class="not">(${kacis(kirilim)})</small>` : ""}</td>
       <td>${yuzde(t.moralBas)} → ${yuzde(t.moralSon)}</td>
       <td>${{ zafer: "Zafer", "geri-cekildi": "Geri çekildi", dagildi: "Dağıldı" }[t.sonuc]}</td></tr>`;
+    };
     $("raporIcerik").innerHTML = `<h3>${kacis(birimAdi(r.birim))} Muharebesi</h3>
       <div class="not">${kacis(tarihMetni(r.baslangic))} – ${kacis(tarihMetni(r.bitis))} · Kazanan: <b>${kacis(h.paket.devletler[r.kazanan].ad)}</b></div>
       <table><thead><tr><th>Taraf</th><th>Asker</th><th>Kayıp</th><th>Moral</th><th>Sonuç</th></tr></thead>

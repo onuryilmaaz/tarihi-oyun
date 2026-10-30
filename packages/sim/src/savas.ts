@@ -117,7 +117,8 @@ export function muharebeleriBaslat(d: DunyaDurumu): void {
       taraflar: cift.map((devlet) => {
         const os = serbest.filter((o) => o.devlet === devlet);
         for (const o of os) o.muharebe = 0; // id aşağıda atanır
-        return { devlet, ordular: os.map((o) => o.id), baslangicAsker: toplamAsker(os), kayip: 0, baslangicMoral: ortalamaMoral(os) };
+        return { devlet, ordular: os.map((o) => o.id), baslangicAsker: toplamAsker(os), kayip: 0,
+          kayipKompozisyon: bosKompozisyon(), baslangicMoral: ortalamaMoral(os) };
       }) as Muharebe["taraflar"],
     };
     for (const t of m.taraflar) for (const o of tarafOrdulari(d, t.ordular)) o.muharebe = m.id;
@@ -192,7 +193,10 @@ function muharebeyiBitir(d: DunyaDurumu, ag: HareketAgi | null, m: Muharebe, kay
   const kaybedenOrdular = tarafOrdulari(d, m.taraflar[kaybeden].ordular);
   // Takip: kaybeden ek kayıp verir (MASTER_SPEC §8.6)
   const takip = Math.floor((toplamAsker(kaybedenOrdular) * (DENGE.TAKIP_KAYIP_ALT + aralik(d, DENGE.TAKIP_KAYIP_UST - DENGE.TAKIP_KAYIP_ALT + 1))) / 100);
+  const oncekiKompozisyon = kaybedenOrdular.reduce((k, o) => kompozisyonTopla(k, o.kompozisyon), bosKompozisyon()); // TASK-0021 (1/4)
   kayipDagit(kaybedenOrdular, takip);
+  const sonrakiKompozisyon = kaybedenOrdular.reduce((k, o) => kompozisyonTopla(k, o.kompozisyon), bosKompozisyon());
+  m.taraflar[kaybeden].kayipKompozisyon = kompozisyonTopla(m.taraflar[kaybeden].kayipKompozisyon, kompozisyonCikar(oncekiKompozisyon, sonrakiKompozisyon));
   m.taraflar[kaybeden].kayip += takip;
   if (takip) nedenler.push(`Takip: geri çekilen taraf ${sayiMetni(takip)} ek kayıp verdi.`);
   for (const o of kazananOrdular) { o.moral = Math.min(DENGE.MORAL_EN_YUKSEK, o.moral + DENGE.ZAFER_MORALI); o.muharebe = null; }
@@ -224,6 +228,7 @@ function muharebeyiBitir(d: DunyaDurumu, ag: HareketAgi | null, m: Muharebe, kay
       ordular: t.ordular.map((id) => orduBul(d, id)?.ad ?? "(dağıldı)"),
       baslangicAsker: t.baslangicAsker,
       kayip: t.kayip,
+      kayipKompozisyon: t.kayipKompozisyon,
       moralBas: t.baslangicMoral,
       moralSon: ortalamaMoral(os),
       sonuc: i === kazanan ? "zafer" : os.length ? "geri-cekildi" : "dagildi",
@@ -262,7 +267,10 @@ export function muharebeGunleri(d: DunyaDurumu, ag: HareketAgi | null): void {
       os[i].reduce((k, o) => kompozisyonTopla(k, o.kompozisyon), bosKompozisyon()), i === savunan)) as [number, number];
     const g = muharebeGunu(asker, moral, zorluk, savunan, sans, gucYuzde, birimYuzde);
     for (const i of [0, 1]) {
+      const oncekiKompozisyon = os[i].reduce((k, o) => kompozisyonTopla(k, o.kompozisyon), bosKompozisyon()); // TASK-0021 (1/4)
       kayipDagit(os[i], g.kayip[i]);
+      const sonrakiKompozisyon = os[i].reduce((k, o) => kompozisyonTopla(k, o.kompozisyon), bosKompozisyon());
+      m.taraflar[i].kayipKompozisyon = kompozisyonTopla(m.taraflar[i].kayipKompozisyon, kompozisyonCikar(oncekiKompozisyon, sonrakiKompozisyon));
       m.taraflar[i].kayip += g.kayip[i];
       const kayipBinde = Math.round((g.kayip[i] * DENGE.MORAL_KAYIP_CARPANI) / Math.max(1, asker[i]));
       for (const o of os[i]) o.moral = Math.max(0, o.moral - kayipBinde - DENGE.MORAL_YORGUNLUK);

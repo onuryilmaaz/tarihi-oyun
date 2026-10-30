@@ -9,6 +9,7 @@ import { bosIstikrar } from "./istikrar";
 import { BILINMIYOR } from "./nufus";
 import { gundenTarih } from "./takvim";
 import { eskiSavasKalintilariniTemizle } from "./savas-sonu";
+import { bosKompozisyon } from "./birim";
 
 export interface KayitPaketi {
   tur: "tarihi-oyun-kayit";
@@ -198,6 +199,12 @@ export function yukle(metin: string, beklenenSenaryo?: string): DunyaDurumu {
   if (d.sema === 24) {
     // Şema 24 → 25 (TASK-0020): eski kayıtlarda yoldaki elçi yok
     d.elciler = []; d.sonrakiElciId = 1;
+    d.sema = 25;
+  }
+  if (d.sema === 25) {
+    // Şema 25 → 26 (TASK-0021): eski kayıtlarda muharebe/rapor kayıp kompozisyonu yok; boş sayılır
+    for (const m of d.muharebeler) for (const t of m.taraflar) t.kayipKompozisyon = bosKompozisyon();
+    for (const r of d.muharebeRaporlari) for (const t of r.taraflar) t.kayipKompozisyon = bosKompozisyon();
     d.sema = SEMA_SURUMU;
   }
   if (d.sema !== SEMA_SURUMU) throw new KayitHatasi("Kayıt tutarsız: dünya şema sürümü uyuşmuyor.");
