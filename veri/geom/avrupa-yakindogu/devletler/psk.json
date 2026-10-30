@@ -1,0 +1,17 @@
+{
+ "indeks": 41,
+ "id": "psk",
+ "ad": "Pskov Cumhuriyeti",
+ "ton": 0.821,
+ "etiket": [
+  29.166,
+  64.359,
+  1.324
+ ],
+ "alan": 11.92,
+ "kaynak": {
+  "ohmOran": 0,
+  "guven": "dusuk",
+  "ohm": []
+ }
+}

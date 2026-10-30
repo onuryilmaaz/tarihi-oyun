@@ -1,0 +1,17 @@
+{
+ "indeks": 64,
+ "id": "pro",
+ "ad": "Provence Kontluğu",
+ "ton": 0.853,
+ "etiket": [
+  6.2,
+  46.506,
+  0.501
+ ],
+ "alan": 2.48,
+ "kaynak": {
+  "ohmOran": 0,
+  "guven": "dusuk",
+  "ohm": []
+ }
+}

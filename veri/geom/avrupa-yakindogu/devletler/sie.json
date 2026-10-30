@@ -1,0 +1,17 @@
+{
+ "indeks": 48,
+ "id": "sie",
+ "ad": "Siena Cumhuriyeti",
+ "ton": 0.723,
+ "etiket": [
+  11.331,
+  45.824,
+  0.463
+ ],
+ "alan": 1.03,
+ "kaynak": {
+  "ohmOran": 0,
+  "guven": "dusuk",
+  "ohm": []
+ }
+}

@@ -1,0 +1,17 @@
+{
+ "indeks": 29,
+ "id": "bog",
+ "ad": "Boğdan Voyvodalığı",
+ "ton": 0.586,
+ "etiket": [
+  27.575,
+  50.716,
+  1.495
+ ],
+ "alan": 12.61,
+ "kaynak": {
+  "ohmOran": 0,
+  "guven": "dusuk",
+  "ohm": []
+ }
+}

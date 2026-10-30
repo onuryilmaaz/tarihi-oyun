@@ -1,0 +1,17 @@
+{
+ "indeks": 54,
+ "id": "por",
+ "ad": "Portekiz Krallığı",
+ "ton": 0.597,
+ "etiket": [
+  -7.733,
+  43.064,
+  0.885
+ ],
+ "alan": 11.25,
+ "kaynak": {
+  "ohmOran": 0,
+  "guven": "dusuk",
+  "ohm": []
+ }
+}

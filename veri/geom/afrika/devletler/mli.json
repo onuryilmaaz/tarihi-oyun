@@ -1,0 +1,17 @@
+{
+ "indeks": 79,
+ "id": "mli",
+ "ad": "Mali İmparatorluğu",
+ "ton": 0.2,
+ "etiket": [
+  -9.742,
+  12.542,
+  2.917
+ ],
+ "alan": 119.94,
+ "kaynak": {
+  "ohmOran": 0,
+  "guven": "dusuk",
+  "ohm": []
+ }
+}

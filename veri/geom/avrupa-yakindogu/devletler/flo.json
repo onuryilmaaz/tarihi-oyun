@@ -1,0 +1,19 @@
+{
+ "indeks": 47,
+ "id": "flo",
+ "ad": "Floransa Cumhuriyeti",
+ "ton": 0.411,
+ "etiket": [
+  10.759,
+  46.692,
+  0.479
+ ],
+ "alan": 2.21,
+ "kaynak": {
+  "ohmOran": 0.77,
+  "guven": "dusuk",
+  "ohm": [
+   2800633
+  ]
+ }
+}

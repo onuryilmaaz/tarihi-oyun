@@ -1,0 +1,17 @@
+{
+ "indeks": 86,
+ "id": "etp",
+ "ad": "Habeşistan",
+ "ton": 0.644,
+ "etiket": [
+  37.954,
+  12.726,
+  1.816
+ ],
+ "alan": 22.9,
+ "kaynak": {
+  "ohmOran": 0,
+  "guven": "dusuk",
+  "ohm": []
+ }
+}

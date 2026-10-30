@@ -1,0 +1,20 @@
+{
+ "indeks": 65,
+ "id": "avs",
+ "ad": "Avusturya Arşidükalığı",
+ "ton": 0.032,
+ "etiket": [
+  15.25,
+  51.784,
+  1.164
+ ],
+ "alan": 15.96,
+ "kaynak": {
+  "ohmOran": 0.14,
+  "guven": "dusuk",
+  "ohm": [
+   2830843,
+   2806821
+  ]
+ }
+}

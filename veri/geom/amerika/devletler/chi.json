@@ -1,0 +1,17 @@
+{
+ "indeks": 131,
+ "id": "chi",
+ "ad": "Chimú Krallığı",
+ "ton": 0.822,
+ "etiket": [
+  -79.883,
+  -5.708,
+  0.942
+ ],
+ "alan": 12.25,
+ "kaynak": {
+  "ohmOran": 0,
+  "guven": "dusuk",
+  "ohm": []
+ }
+}

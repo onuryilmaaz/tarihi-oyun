@@ -1,0 +1,17 @@
+{
+ "indeks": 98,
+ "id": "jos",
+ "ad": "Joseon",
+ "ton": 0.43,
+ "etiket": [
+  128.096,
+  38.013,
+  1.273
+ ],
+ "alan": 26.53,
+ "kaynak": {
+  "ohmOran": 0,
+  "guven": "dusuk",
+  "ohm": []
+ }
+}

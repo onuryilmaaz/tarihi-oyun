@@ -21,6 +21,19 @@ tarihî kaynakla doğrulanmamıştır** (DEC-0016, DEC-0021). Yazılım lisansla
 Bütün agent tahmini tabloların `aciklama` alanı "[TASLAK]" işareti taşır; `packages/sim/test/veri-kaynak.test.ts` bunu denetler.
 Armalar oyunun ürettiği simgelerdir (`packages/istemci/src/arma.ts`), tarihî arma görseli kullanılmaz.
 
+## Varlık bazlı kaynak dosyaları (TASK-0022, DEC-0071)
+
+`veri/geom/<kita>/` altında, `harita.json`/`deniz.json`'daki devlet/bölge/şehir/deniz-bölgesi kayıtlarının
+**her biri kendi dosyasında**, kıta bazlı bir klasör yapısında ayrıca tutulur (düzenleme/düzeltme kolaylığı,
+ileride kıta bazlı yükleme ve senaryolar arası geometri paylaşımı için; DEC-0071). Bu, `harita.json`/`deniz.json`
+dosyalarının yerini **almaz** — onlar hâlâ istemcinin okuduğu tek dosyalardır; `araclar/harita-derle.mjs`,
+`veri/geom/` içindeki dosyaları orijinal dosyalarla **birebir eşleştiğini doğrular** (`npm run harita:derle`).
+132 devletin tamamı 4 kıtaya ayrıştırıldı: `avrupa-yakindogu` (devlet indeks 0–75, Osmanlı/Balkanlar/Anadolu/
+Kafkasya'dan Batı ve Kuzey Avrupa'ya, ayrıca Memlûk üzerinden Mısır/Levant — deniz bölgelerinin tamamı da
+burada, çünkü hepsi Akdeniz/Karadeniz sularında), `afrika` (76–89), `asya` (90–125), `amerika` (126–131).
+Sahipsiz (`d: -1`, hiçbir devlete ait olmayan arka plan) 1562 bölge ve deniz bölgelerinin gerçek poligon
+geometrisi (şu an yalnızca nokta+komşuluk grafı) bu fazın kapsamı dışıdır (bkz. `tasks/TASK-0022.md`).
+
 Ham ETOPO indirmesi depoya alınmaz (`veri-ham/`, ~59 MB):
 
 ```sh

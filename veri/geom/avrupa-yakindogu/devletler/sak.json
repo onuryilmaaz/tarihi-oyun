@@ -1,0 +1,17 @@
+{
+ "indeks": 68,
+ "id": "sak",
+ "ad": "Saksonya",
+ "ton": 0.957,
+ "etiket": [
+  11.75,
+  56.394,
+  1.125
+ ],
+ "alan": 9.4,
+ "kaynak": {
+  "ohmOran": 0,
+  "guven": "dusuk",
+  "ohm": []
+ }
+}

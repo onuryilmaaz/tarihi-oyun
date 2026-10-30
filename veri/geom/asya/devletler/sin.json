@@ -1,0 +1,17 @@
+{
+ "indeks": 123,
+ "id": "sin",
+ "ad": "Sind",
+ "ton": 0.978,
+ "etiket": [
+  68.766,
+  26.181,
+  1.352
+ ],
+ "alan": 13.59,
+ "kaynak": {
+  "ohmOran": 0,
+  "guven": "dusuk",
+  "ohm": []
+ }
+}

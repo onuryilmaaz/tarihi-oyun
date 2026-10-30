@@ -1,0 +1,11 @@
+{
+ "id": "mans",
+ "ad": "Manş Denizi",
+ "lon": -1.5,
+ "lat": 50,
+ "komsu": [
+  "biskay",
+  "kuzey-denizi",
+  "irlanda"
+ ]
+}

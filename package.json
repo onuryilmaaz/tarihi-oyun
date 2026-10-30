@@ -10,7 +10,9 @@
     "typecheck": "npm run typecheck -w @tarihi/sim && npm run typecheck -w @tarihi/istemci",
     "dev": "npm run dev -w @tarihi/istemci",
     "build": "npm run build -w @tarihi/istemci",
-    "senaryo": "node araclar/senaryo-uret.mjs"
+    "senaryo": "node araclar/senaryo-uret.mjs",
+    "harita:ayristir": "node araclar/harita-ayristir.mjs",
+    "harita:derle": "node araclar/harita-derle.mjs"
   },
   "devDependencies": {
     "polylabel": "^2.1.0"

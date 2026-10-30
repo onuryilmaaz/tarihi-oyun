@@ -1,0 +1,19 @@
+{
+ "indeks": 3,
+ "id": "atn",
+ "ad": "Atina Dükalığı",
+ "ton": 0.39,
+ "etiket": [
+  22.889,
+  40.507,
+  0.262
+ ],
+ "alan": 0.99,
+ "kaynak": {
+  "ohmOran": 1,
+  "guven": "orta",
+  "ohm": [
+   2809440
+  ]
+ }
+}

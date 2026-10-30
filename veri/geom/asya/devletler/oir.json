@@ -1,0 +1,17 @@
+{
+ "indeks": 94,
+ "id": "oir",
+ "ad": "Oyrat Konfederasyonu",
+ "ton": 0.396,
+ "etiket": [
+  104.799,
+  48.21,
+  6.655
+ ],
+ "alan": 391.11,
+ "kaynak": {
+  "ohmOran": 0,
+  "guven": "dusuk",
+  "ohm": []
+ }
+}

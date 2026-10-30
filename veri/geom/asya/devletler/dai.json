@@ -1,0 +1,17 @@
+{
+ "indeks": 100,
+ "id": "dai",
+ "ad": "Đại Việt",
+ "ton": 0.612,
+ "etiket": [
+  105.351,
+  22.057,
+  1.33
+ ],
+ "alan": 15.12,
+ "kaynak": {
+  "ohmOran": 0,
+  "guven": "dusuk",
+  "ohm": []
+ }
+}

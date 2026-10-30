@@ -1,0 +1,17 @@
+{
+ "indeks": 87,
+ "id": "ada",
+ "ad": "Adal Sultanlığı",
+ "ton": 0.888,
+ "etiket": [
+  45.084,
+  8.267,
+  2.187
+ ],
+ "alan": 55.22,
+ "kaynak": {
+  "ohmOran": 0,
+  "guven": "dusuk",
+  "ohm": []
+ }
+}

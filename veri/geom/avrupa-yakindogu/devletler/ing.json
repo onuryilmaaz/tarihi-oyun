@@ -1,0 +1,17 @@
+{
+ "indeks": 58,
+ "id": "ing",
+ "ad": "İngiltere Krallığı",
+ "ton": 0.101,
+ "etiket": [
+  -1.494,
+  58.114,
+  1.536
+ ],
+ "alan": 30.9,
+ "kaynak": {
+  "ohmOran": 0,
+  "guven": "dusuk",
+  "ohm": []
+ }
+}

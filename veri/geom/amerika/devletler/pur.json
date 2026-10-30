@@ -1,0 +1,17 @@
+{
+ "indeks": 128,
+ "id": "pur",
+ "ad": "Purépecha",
+ "ton": 0.33,
+ "etiket": [
+  -101.721,
+  19.589,
+  0.788
+ ],
+ "alan": 5.25,
+ "kaynak": {
+  "ohmOran": 0,
+  "guven": "dusuk",
+  "ohm": []
+ }
+}

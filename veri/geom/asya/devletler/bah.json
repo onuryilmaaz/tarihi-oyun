@@ -1,0 +1,17 @@
+{
+ "indeks": 117,
+ "id": "bah",
+ "ad": "Behmenî Sultanlığı",
+ "ton": 0.402,
+ "etiket": [
+  75.296,
+  19.603,
+  1.981
+ ],
+ "alan": 37.79,
+ "kaynak": {
+  "ohmOran": 0,
+  "guven": "dusuk",
+  "ohm": []
+ }
+}

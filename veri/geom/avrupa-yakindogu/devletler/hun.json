@@ -1,0 +1,17 @@
+{
+ "indeks": 27,
+ "id": "hun",
+ "ad": "Macaristan Krallığı",
+ "ton": 0.3,
+ "etiket": [
+  20.958,
+  50.883,
+  2.831
+ ],
+ "alan": 47.51,
+ "kaynak": {
+  "ohmOran": 0,
+  "guven": "dusuk",
+  "ohm": []
+ }
+}

@@ -1,0 +1,17 @@
+{
+ "indeks": 20,
+ "id": "arn",
+ "ad": "Arnavut Beyleri Birliği",
+ "ton": 0.271,
+ "etiket": [
+  20.21,
+  44.114,
+  0.235
+ ],
+ "alan": 0.82,
+ "kaynak": {
+  "ohmOran": 0,
+  "guven": "dusuk",
+  "ohm": []
+ }
+}

@@ -1,0 +1,17 @@
+{
+ "indeks": 80,
+ "id": "son",
+ "ad": "Songay",
+ "ton": 0.69,
+ "etiket": [
+  1.747,
+  17.31,
+  2.44
+ ],
+ "alan": 38.71,
+ "kaynak": {
+  "ohmOran": 0,
+  "guven": "dusuk",
+  "ohm": []
+ }
+}

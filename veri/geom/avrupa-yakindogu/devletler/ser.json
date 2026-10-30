@@ -1,0 +1,17 @@
+{
+ "indeks": 16,
+ "id": "ser",
+ "ad": "Sırp Despotluğu",
+ "ton": 0.66,
+ "etiket": [
+  20.49,
+  46.375,
+  0.979
+ ],
+ "alan": 7.48,
+ "kaynak": {
+  "ohmOran": 0,
+  "guven": "dusuk",
+  "ohm": []
+ }
+}

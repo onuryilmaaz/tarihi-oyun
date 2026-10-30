@@ -1,0 +1,17 @@
+{
+ "indeks": 7,
+ "id": "dul",
+ "ad": "Dulkadiroğulları",
+ "ton": 0.797,
+ "etiket": [
+  35.655,
+  40.662,
+  0.567
+ ],
+ "alan": 2.97,
+ "kaynak": {
+  "ohmOran": 0,
+  "guven": "dusuk",
+  "ohm": []
+ }
+}

@@ -1,0 +1,17 @@
+{
+ "indeks": 120,
+ "id": "ori",
+ "ad": "Orissa",
+ "ton": 0.653,
+ "etiket": [
+  84.614,
+  21.193,
+  1.324
+ ],
+ "alan": 14.01,
+ "kaynak": {
+  "ohmOran": 0,
+  "guven": "dusuk",
+  "ohm": []
+ }
+}

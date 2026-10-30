@@ -1,0 +1,17 @@
+{
+ "indeks": 116,
+ "id": "mal",
+ "ad": "Malva Sultanlığı",
+ "ton": 0.072,
+ "etiket": [
+  79.777,
+  23.526,
+  1.525
+ ],
+ "alan": 28.94,
+ "kaynak": {
+  "ohmOran": 0,
+  "guven": "dusuk",
+  "ohm": []
+ }
+}

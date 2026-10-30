@@ -1,0 +1,17 @@
+{
+ "indeks": 17,
+ "id": "bos",
+ "ad": "Bosna Krallığı",
+ "ton": 0.957,
+ "etiket": [
+  17.074,
+  47.657,
+  0.826
+ ],
+ "alan": 5.5,
+ "kaynak": {
+  "ohmOran": 0,
+  "guven": "dusuk",
+  "ohm": []
+ }
+}

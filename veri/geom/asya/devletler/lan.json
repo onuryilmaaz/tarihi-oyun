@@ -1,0 +1,17 @@
+{
+ "indeks": 103,
+ "id": "lan",
+ "ad": "Lan Xang",
+ "ton": 0.374,
+ "etiket": [
+  102.572,
+  19.946,
+  1.332
+ ],
+ "alan": 20.22,
+ "kaynak": {
+  "ohmOran": 0,
+  "guven": "dusuk",
+  "ohm": []
+ }
+}

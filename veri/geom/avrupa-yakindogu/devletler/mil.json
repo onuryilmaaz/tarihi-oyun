@@ -1,0 +1,17 @@
+{
+ "indeks": 46,
+ "id": "mil",
+ "ad": "Milano Dükalığı",
+ "ton": 0.782,
+ "etiket": [
+  8.944,
+  49.031,
+  0.538
+ ],
+ "alan": 3.98,
+ "kaynak": {
+  "ohmOran": 0,
+  "guven": "dusuk",
+  "ohm": []
+ }
+}

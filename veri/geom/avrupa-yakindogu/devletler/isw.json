@@ -1,0 +1,17 @@
+{
+ "indeks": 75,
+ "id": "isw",
+ "ad": "İsveç Krallığı",
+ "ton": 0.862,
+ "etiket": [
+  26.766,
+  72.967,
+  3.411
+ ],
+ "alan": 223.84,
+ "kaynak": {
+  "ohmOran": 0,
+  "guven": "dusuk",
+  "ohm": []
+ }
+}

@@ -1,0 +1,17 @@
+{
+ "indeks": 99,
+ "id": "jap",
+ "ad": "Aşikaga Şogunluğu",
+ "ton": 0.647,
+ "etiket": [
+  139.423,
+  38.372,
+  1.203
+ ],
+ "alan": 44.12,
+ "kaynak": {
+  "ohmOran": 0,
+  "guven": "dusuk",
+  "ohm": []
+ }
+}

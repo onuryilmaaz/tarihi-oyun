@@ -1,0 +1,17 @@
+{
+ "indeks": 40,
+ "id": "nov",
+ "ad": "Novgorod Cumhuriyeti",
+ "ton": 0.564,
+ "etiket": [
+  52.502,
+  76.029,
+  5.816
+ ],
+ "alan": 474.65,
+ "kaynak": {
+  "ohmOran": 0,
+  "guven": "dusuk",
+  "ohm": []
+ }
+}

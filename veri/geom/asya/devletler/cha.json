@@ -1,0 +1,17 @@
+{
+ "indeks": 101,
+ "id": "cha",
+ "ad": "Champa",
+ "ton": 0.11,
+ "etiket": [
+  108.402,
+  13.07,
+  0.879
+ ],
+ "alan": 10.1,
+ "kaynak": {
+  "ohmOran": 0,
+  "guven": "dusuk",
+  "ohm": []
+ }
+}

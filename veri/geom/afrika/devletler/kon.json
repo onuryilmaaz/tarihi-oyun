@@ -1,0 +1,17 @@
+{
+ "indeks": 83,
+ "id": "kon",
+ "ad": "Kongo Krallığı",
+ "ton": 0.068,
+ "etiket": [
+  14.749,
+  -6.357,
+  1.439
+ ],
+ "alan": 13.07,
+ "kaynak": {
+  "ohmOran": 0,
+  "guven": "dusuk",
+  "ohm": []
+ }
+}

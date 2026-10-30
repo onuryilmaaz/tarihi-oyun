@@ -1,0 +1,19 @@
+{
+ "indeks": 53,
+ "id": "ara",
+ "ad": "Aragon Krallığı",
+ "ton": 0.851,
+ "etiket": [
+  -0.146,
+  44.168,
+  1.276
+ ],
+ "alan": 20.13,
+ "kaynak": {
+  "ohmOran": 0.84,
+  "guven": "orta",
+  "ohm": [
+   2751179
+  ]
+ }
+}

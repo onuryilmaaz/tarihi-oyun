@@ -1,0 +1,17 @@
+{
+ "indeks": 8,
+ "id": "ram",
+ "ad": "Ramazanoğulları",
+ "ton": 0.357,
+ "etiket": [
+  35.542,
+  39.082,
+  0.542
+ ],
+ "alan": 2.13,
+ "kaynak": {
+  "ohmOran": 0,
+  "guven": "dusuk",
+  "ohm": []
+ }
+}

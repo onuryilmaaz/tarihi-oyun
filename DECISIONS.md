@@ -833,6 +833,26 @@ Kaynak belge: `MASTER_SPEC.md` (v1.3). Orijinal keşif çıktısı:
   "İkisi birden, aynı kartta" (2026-10-30).
 - **Durum:** GEÇERLİ
 
+## DEC-0071 — TASK-0022 onayı: harita verisini varlık bazlı ayrı dosyalarda tutma (devlet/bölge/şehir/deniz)
+
+- **Tarih:** 2026-10-30
+- **Seçilen karar:** TASK-0022 onaylandı. Şu an tek bir 4.7MB `harita.json` dosyasında tutulan dünya haritası
+  verisi (devlet/bölge/şehir geometrisi) ve `deniz.json`'daki deniz bölgeleri, kıta kıta, her varlık kendi
+  dosyasında olacak şekilde ayrıştırılacak. Amaç: veri düzenleme/düzeltme kolaylığı + ileride performans
+  (istemcinin yalnızca gereken kıtayı yüklemesi) + gelecekteki senaryolar arası geometri paylaşımı. Gerekirse
+  ileride PostgreSQL/PostGIS'e taşınabilir; bu aşamada dosya tabanlı kalınır (veritabanı kapsam dışı). Sıra:
+  önce kaynak veri ayrıştırması (bu kart), sonra istemci yükleme biçiminin değişmesi (ayrı, gelecekteki bir
+  karar). Başlangıç kıtası: Avrupa + Yakındoğu (mevcut 1453 senaryosunun kapsadığı bölge). Mevcut `harita.json`
+  paylaşılan sınır yayları (arklar) kullandığından, bu fazda kıta başına ortak bir arklar havuzu korunur (tam
+  bağımsız/kenar paylaşımsız varlık dosyaları — PostGIS'e en uygun biçim — ayrı bir sonraki faz kararı).
+  İstemci kodu ve oyun davranışı bu fazda değişmez.
+- **Onay kaydı:** Kullanıcı: "Her devletin geomu her bölgenin geomu her şehrin geom bilgisini ayrı ayrı tutalım.
+  Gerekirse ileride bunu pgsql ile db de tutarız... Deniz sahaları içinde böyle yapalım" (2026-10-30). Agent'ın
+  netleştirme sorularına kullanıcının yanıtları: amaç "Veri düzenleme/düzeltme kolaylığı + Performans +
+  Gelecekteki senaryolar arası paylaşım" (üçü de); kapsam "Her ikisi birden, sırayla" (önce kaynak veri);
+  başlangıç "Avrupa + Yakındoğu, TASK-0022 olarak".
+- **Durum:** GEÇERLİ
+
 ## DEC-0070 — TASK-0021 onayı: AI karışık ordu, AI vasallık teklifi, elçi/casus riski, muharebe raporu kırılımı
 
 - **Tarih:** 2026-10-30

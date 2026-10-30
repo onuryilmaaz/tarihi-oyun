@@ -1,0 +1,17 @@
+{
+ "indeks": 113,
+ "id": "jau",
+ "ad": "Jaunpur Sultanlığı",
+ "ton": 0.413,
+ "etiket": [
+  85.022,
+  25.569,
+  1.815
+ ],
+ "alan": 39.87,
+ "kaynak": {
+  "ohmOran": 0,
+  "guven": "dusuk",
+  "ohm": []
+ }
+}

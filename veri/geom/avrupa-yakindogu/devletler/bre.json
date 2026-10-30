@@ -1,0 +1,17 @@
+{
+ "indeks": 62,
+ "id": "bre",
+ "ad": "Bretanya Dükalığı",
+ "ton": 0.079,
+ "etiket": [
+  -2.43,
+  52.128,
+  0.629
+ ],
+ "alan": 4.23,
+ "kaynak": {
+  "ohmOran": 0,
+  "guven": "dusuk",
+  "ohm": []
+ }
+}

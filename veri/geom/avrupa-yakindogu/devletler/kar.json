@@ -1,0 +1,17 @@
+{
+ "indeks": 5,
+ "id": "kar",
+ "ad": "Karamanoğulları",
+ "ton": 0.58,
+ "etiket": [
+  33.483,
+  39.348,
+  1.309
+ ],
+ "alan": 10.75,
+ "kaynak": {
+  "ohmOran": 0,
+  "guven": "dusuk",
+  "ohm": []
+ }
+}

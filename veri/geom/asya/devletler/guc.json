@@ -1,0 +1,17 @@
+{
+ "indeks": 115,
+ "id": "guc",
+ "ad": "Gucerat Sultanlığı",
+ "ton": 0.722,
+ "etiket": [
+  71.751,
+  23.824,
+  1.262
+ ],
+ "alan": 17.11,
+ "kaynak": {
+  "ohmOran": 0,
+  "guven": "dusuk",
+  "ohm": []
+ }
+}

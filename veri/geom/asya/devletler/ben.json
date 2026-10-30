@@ -1,0 +1,17 @@
+{
+ "indeks": 114,
+ "id": "ben",
+ "ad": "Bengal Sultanlığı",
+ "ton": 0.2,
+ "etiket": [
+  88.876,
+  23.968,
+  1.386
+ ],
+ "alan": 20.92,
+ "kaynak": {
+  "ohmOran": 0,
+  "guven": "dusuk",
+  "ohm": []
+ }
+}

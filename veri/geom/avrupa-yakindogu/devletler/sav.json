@@ -1,0 +1,17 @@
+{
+ "indeks": 51,
+ "id": "sav",
+ "ad": "Savoya Dükalığı",
+ "ton": 0.332,
+ "etiket": [
+  7.42,
+  48.683,
+  0.738
+ ],
+ "alan": 6.56,
+ "kaynak": {
+  "ohmOran": 0,
+  "guven": "dusuk",
+  "ohm": []
+ }
+}

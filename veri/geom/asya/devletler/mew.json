@@ -1,0 +1,17 @@
+{
+ "indeks": 119,
+ "id": "mew",
+ "ad": "Mewar",
+ "ton": 0.571,
+ "etiket": [
+  73.885,
+  27.563,
+  2.311
+ ],
+ "alan": 33.37,
+ "kaynak": {
+  "ohmOran": 0,
+  "guven": "dusuk",
+  "ohm": []
+ }
+}

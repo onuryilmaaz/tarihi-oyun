@@ -1,0 +1,17 @@
+{
+ "indeks": 81,
+ "id": "kan",
+ "ad": "Kanem-Bornu",
+ "ton": 0.166,
+ "etiket": [
+  11.034,
+  18.068,
+  4.506
+ ],
+ "alan": 123.86,
+ "kaynak": {
+  "ohmOran": 0,
+  "guven": "dusuk",
+  "ohm": []
+ }
+}

@@ -1,0 +1,262 @@
+{
+ "aciklama": "1453 deniz bölgeleri, limanlar ve başlangıç donanmaları — agent'ın tahmini, [TASLAK] (DEC-0051). Bölge merkezleri boylam/enlem (harita işareti için); limanlar senaryo şehir adlarıdır. ticaretGecidi: o denizin ticaretinin geçtiği komşu bölge (ör. Karadeniz → Marmara/İstanbul Boğazı); 8b.",
+ "limanlar": {
+  "karadeniz": [
+   "Sinop",
+   "Trabzon",
+   "Kefe",
+   "Akkirman",
+   "Mangup"
+  ],
+  "marmara": [
+   "Konstantiniyye",
+   "Gelibolu"
+  ],
+  "ege": [
+   "Selanik",
+   "İzmir",
+   "Sakız",
+   "Nakşa",
+   "Atina",
+   "Mistra",
+   "Kandiye"
+  ],
+  "dogu-akdeniz": [
+   "Rodos",
+   "Lefkoşa",
+   "Antalya",
+   "Adana",
+   "Trablusşam",
+   "İskenderiye"
+  ],
+  "iyon": [
+   "Korfu"
+  ],
+  "adriyatik": [
+   "Venedik",
+   "Zara",
+   "Ragusa"
+  ],
+  "orta-akdeniz": [
+   "Palermo",
+   "Tunus"
+  ],
+  "tiren": [
+   "Napoli",
+   "Roma"
+  ],
+  "ligurya": [
+   "Cenova",
+   "Aix"
+  ],
+  "bati-akdeniz": [
+   "Barselona",
+   "Valensiya",
+   "Tlemsen"
+  ],
+  "alboran": [
+   "Gırnata"
+  ],
+  "iber-atlantik": [
+   "Lizbon",
+   "Sevilla"
+  ],
+  "biskay": [
+   "Bordo",
+   "Nantes"
+  ],
+  "irlanda": [
+   "Dublin"
+  ],
+  "kuzey-denizi": [
+   "Londra",
+   "Brugge",
+   "Edinburgh",
+   "Bergen"
+  ],
+  "kattegat": [
+   "Kopenhag"
+  ],
+  "baltik": [
+   "Lübeck",
+   "Stettin",
+   "Danzig",
+   "Riga",
+   "Stockholm"
+  ],
+  "kizildeniz": [
+   "Mekke"
+  ],
+  "aden": [
+   "Zeyla",
+   "Zebid"
+  ],
+  "basra": [
+   "Hürmüz"
+  ],
+  "arap-denizi": [
+   "Thatta",
+   "Ahmedabad"
+  ],
+  "dogu-afrika": [
+   "Kilva"
+  ],
+  "bengal": [
+   "Gaur",
+   "Mrauk U",
+   "Pegu",
+   "Cuttack",
+   "Kotte"
+  ],
+  "malakka": [
+   "Malakka"
+  ],
+  "cava": [
+   "Trowulan"
+  ],
+  "guney-cin": [
+   "Kanton",
+   "Thăng Long",
+   "Vijaya",
+   "Brunei"
+  ],
+  "dogu-cin": [
+   "Nankin",
+   "Hanseong",
+   "Kyoto"
+  ]
+ },
+ "bogazlar": [
+  {
+   "ad": "İstanbul Boğazı",
+   "bolge": "marmara"
+  },
+  {
+   "ad": "Çanakkale Boğazı",
+   "bolge": "marmara"
+  },
+  {
+   "ad": "Messina Boğazı",
+   "bolge": "tiren"
+  },
+  {
+   "ad": "Kerç Boğazı",
+   "bolge": "azak"
+  },
+  {
+   "ad": "Öresund",
+   "bolge": "kattegat"
+  },
+  {
+   "ad": "Cebelitarık Boğazı",
+   "bolge": "alboran"
+  }
+ ],
+ "donanmalar": [
+  {
+   "devlet": "osm",
+   "bolge": "marmara",
+   "ad": "Osmanlı Donanması",
+   "kadirga": 100,
+   "kalyon": 0
+  },
+  {
+   "devlet": "biz",
+   "bolge": "marmara",
+   "ad": "Bizans Donanması",
+   "kadirga": 10,
+   "kalyon": 0
+  },
+  {
+   "devlet": "ven",
+   "bolge": "adriyatik",
+   "ad": "Venedik Donanması",
+   "kadirga": 40,
+   "kalyon": 5
+  },
+  {
+   "devlet": "cen",
+   "bolge": "ligurya",
+   "ad": "Ceneviz Donanması",
+   "kadirga": 20,
+   "kalyon": 5
+  },
+  {
+   "devlet": "ara",
+   "bolge": "bati-akdeniz",
+   "ad": "Aragon Donanması",
+   "kadirga": 15,
+   "kalyon": 3
+  },
+  {
+   "devlet": "nap",
+   "bolge": "tiren",
+   "ad": "Napoli Donanması",
+   "kadirga": 10,
+   "kalyon": 0
+  },
+  {
+   "devlet": "mem",
+   "bolge": "dogu-akdeniz",
+   "ad": "Memlûk Donanması",
+   "kadirga": 15,
+   "kalyon": 0
+  },
+  {
+   "devlet": "rod",
+   "bolge": "dogu-akdeniz",
+   "ad": "Rodos Şövalyeleri Donanması",
+   "kadirga": 8,
+   "kalyon": 0
+  },
+  {
+   "devlet": "kas",
+   "bolge": "iber-atlantik",
+   "ad": "Kastilya Donanması",
+   "kadirga": 10,
+   "kalyon": 4
+  },
+  {
+   "devlet": "por",
+   "bolge": "iber-atlantik",
+   "ad": "Portekiz Donanması",
+   "kadirga": 4,
+   "kalyon": 6
+  },
+  {
+   "devlet": "ing",
+   "bolge": "mans",
+   "ad": "İngiliz Donanması",
+   "kadirga": 0,
+   "kalyon": 8
+  },
+  {
+   "devlet": "fra",
+   "bolge": "biskay",
+   "ad": "Fransız Donanması",
+   "kadirga": 0,
+   "kalyon": 6
+  },
+  {
+   "devlet": "kra",
+   "bolge": "baltik",
+   "ad": "Hansa Donanması",
+   "kadirga": 0,
+   "kalyon": 10
+  },
+  {
+   "devlet": "dan",
+   "bolge": "kattegat",
+   "ad": "Danimarka Donanması",
+   "kadirga": 4,
+   "kalyon": 4
+  },
+  {
+   "devlet": "min",
+   "bolge": "dogu-cin",
+   "ad": "Ming Donanması",
+   "kadirga": 30,
+   "kalyon": 10
+  }
+ ]
+}

@@ -1,0 +1,19 @@
+{
+ "indeks": 32,
+ "id": "alt",
+ "ad": "Büyük Orda",
+ "ton": 0.859,
+ "etiket": [
+  40.537,
+  54.37,
+  2.979
+ ],
+ "alan": 114.45,
+ "kaynak": {
+  "ohmOran": 0.44,
+  "guven": "dusuk",
+  "ohm": [
+   2849494
+  ]
+ }
+}

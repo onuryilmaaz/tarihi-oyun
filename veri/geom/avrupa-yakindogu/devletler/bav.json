@@ -1,0 +1,17 @@
+{
+ "indeks": 67,
+ "id": "bav",
+ "ad": "Bavyera Dükalıkları",
+ "ton": 0.314,
+ "etiket": [
+  11.653,
+  53.247,
+  1.185
+ ],
+ "alan": 10.76,
+ "kaynak": {
+  "ohmOran": 0,
+  "guven": "dusuk",
+  "ohm": []
+ }
+}

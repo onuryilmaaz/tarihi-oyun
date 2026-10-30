@@ -1,0 +1,11 @@
+{
+ "id": "marmara",
+ "ad": "Marmara Denizi",
+ "lon": 28,
+ "lat": 40.7,
+ "komsu": [
+  "karadeniz",
+  "ege"
+ ],
+ "ticaretGecidi": "ege"
+}

@@ -1,0 +1,17 @@
+{
+ "indeks": 38,
+ "id": "liv",
+ "ad": "Livonya Konfederasyonu",
+ "ton": 0.052,
+ "etiket": [
+  25.901,
+  64.503,
+  1.502
+ ],
+ "alan": 23.93,
+ "kaynak": {
+  "ohmOran": 0,
+  "guven": "dusuk",
+  "ohm": []
+ }
+}

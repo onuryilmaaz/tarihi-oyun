@@ -1,0 +1,17 @@
+{
+ "indeks": 37,
+ "id": "tos",
+ "ad": "Töton Şövalyeleri Devleti",
+ "ton": 0.657,
+ "etiket": [
+  18.587,
+  59.301,
+  1.191
+ ],
+ "alan": 15.01,
+ "kaynak": {
+  "ohmOran": 0,
+  "guven": "dusuk",
+  "ohm": []
+ }
+}

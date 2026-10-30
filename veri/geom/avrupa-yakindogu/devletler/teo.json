@@ -1,0 +1,19 @@
+{
+ "indeks": 31,
+ "id": "teo",
+ "ad": "Teodoro Prensliği",
+ "ton": 0.377,
+ "etiket": [
+  33.952,
+  47.872,
+  0.184
+ ],
+ "alan": 0.23,
+ "kaynak": {
+  "ohmOran": 1,
+  "guven": "orta",
+  "ohm": [
+   2849209
+  ]
+ }
+}

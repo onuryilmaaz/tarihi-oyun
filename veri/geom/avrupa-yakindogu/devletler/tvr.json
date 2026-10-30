@@ -1,0 +1,17 @@
+{
+ "indeks": 42,
+ "id": "tvr",
+ "ad": "Tver Büyük Knezliği",
+ "ton": 0.236,
+ "etiket": [
+  36.049,
+  64.818,
+  1.434
+ ],
+ "alan": 17.96,
+ "kaynak": {
+  "ohmOran": 0,
+  "guven": "dusuk",
+  "ohm": []
+ }
+}

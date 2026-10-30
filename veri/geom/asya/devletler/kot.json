@@ -1,0 +1,17 @@
+{
+ "indeks": 125,
+ "id": "kot",
+ "ad": "Kotte Krallığı",
+ "ton": 0.829,
+ "etiket": [
+  80.854,
+  7.104,
+  0.988
+ ],
+ "alan": 5.47,
+ "kaynak": {
+  "ohmOran": 0,
+  "guven": "dusuk",
+  "ohm": []
+ }
+}

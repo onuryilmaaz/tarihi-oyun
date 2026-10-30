@@ -1,0 +1,17 @@
+{
+ "indeks": 90,
+ "id": "tim",
+ "ad": "Timurlular",
+ "ton": 0.33,
+ "etiket": [
+  63.879,
+  37.96,
+  6.354
+ ],
+ "alan": 256.16,
+ "kaynak": {
+  "ohmOran": 0,
+  "guven": "dusuk",
+  "ohm": []
+ }
+}

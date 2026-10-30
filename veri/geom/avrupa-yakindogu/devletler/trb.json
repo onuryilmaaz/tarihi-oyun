@@ -1,0 +1,17 @@
+{
+ "indeks": 4,
+ "id": "trb",
+ "ad": "Trabzon İmparatorluğu",
+ "ton": 0.83,
+ "etiket": [
+  38.502,
+  42.991,
+  0.352
+ ],
+ "alan": 1.97,
+ "kaynak": {
+  "ohmOran": 0,
+  "guven": "dusuk",
+  "ohm": []
+ }
+}

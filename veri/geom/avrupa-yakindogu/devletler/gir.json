@@ -1,0 +1,17 @@
+{
+ "indeks": 55,
+ "id": "gir",
+ "ad": "Gırnata Emirliği",
+ "ton": 0.599,
+ "etiket": [
+  -2.466,
+  39.155,
+  0.577
+ ],
+ "alan": 3.3,
+ "kaynak": {
+  "ohmOran": 0,
+  "guven": "dusuk",
+  "ohm": []
+ }
+}

@@ -1,0 +1,17 @@
+{
+ "indeks": 122,
+ "id": "mlt",
+ "ad": "Multan Sultanlığı",
+ "ton": 0.235,
+ "etiket": [
+  72.805,
+  32.715,
+  1.687
+ ],
+ "alan": 21.16,
+ "kaynak": {
+  "ohmOran": 0,
+  "guven": "dusuk",
+  "ohm": []
+ }
+}

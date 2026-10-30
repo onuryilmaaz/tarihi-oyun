@@ -1,0 +1,17 @@
+{
+ "indeks": 69,
+ "id": "bra",
+ "ad": "Brandenburg",
+ "ton": 0.274,
+ "etiket": [
+  13.314,
+  57.992,
+  0.907
+ ],
+ "alan": 7.97,
+ "kaynak": {
+  "ohmOran": 0,
+  "guven": "dusuk",
+  "ohm": []
+ }
+}

@@ -1,0 +1,17 @@
+{
+ "indeks": 2,
+ "id": "mor",
+ "ad": "Mora Despotluğu",
+ "ton": 0.74,
+ "etiket": [
+  22.158,
+  39.552,
+  0.584
+ ],
+ "alan": 2.51,
+ "kaynak": {
+  "ohmOran": 0,
+  "guven": "dusuk",
+  "ohm": []
+ }
+}

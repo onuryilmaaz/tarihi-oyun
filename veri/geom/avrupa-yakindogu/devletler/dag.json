@@ -1,0 +1,17 @@
+{
+ "indeks": 14,
+ "id": "dag",
+ "ad": "Gazikumuk Şamhallığı",
+ "ton": 0.348,
+ "etiket": [
+  46.312,
+  46.194,
+  1.118
+ ],
+ "alan": 9.28,
+ "kaynak": {
+  "ohmOran": 0,
+  "guven": "dusuk",
+  "ohm": []
+ }
+}

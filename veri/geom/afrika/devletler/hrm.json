@@ -1,0 +1,17 @@
+{
+ "indeks": 89,
+ "id": "hrm",
+ "ad": "Hürmüz Krallığı",
+ "ton": 0.997,
+ "etiket": [
+  57.396,
+  22.475,
+  1.76
+ ],
+ "alan": 42.54,
+ "kaynak": {
+  "ohmOran": 0,
+  "guven": "dusuk",
+  "ohm": []
+ }
+}

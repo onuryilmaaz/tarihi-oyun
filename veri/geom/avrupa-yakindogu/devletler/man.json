@@ -1,0 +1,17 @@
+{
+ "indeks": 50,
+ "id": "man",
+ "ad": "Mantova Markizliği",
+ "ton": 0.311,
+ "etiket": [
+  10.734,
+  48.466,
+  0.191
+ ],
+ "alan": 0.31,
+ "kaynak": {
+  "ohmOran": 0,
+  "guven": "dusuk",
+  "ohm": []
+ }
+}

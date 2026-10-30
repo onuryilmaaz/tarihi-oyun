@@ -1,0 +1,17 @@
+{
+ "indeks": 6,
+ "id": "can",
+ "ad": "Candaroğulları",
+ "ton": 0.527,
+ "etiket": [
+  33.442,
+  44.059,
+  0.591
+ ],
+ "alan": 3.28,
+ "kaynak": {
+  "ohmOran": 0,
+  "guven": "dusuk",
+  "ohm": []
+ }
+}

@@ -1,0 +1,17 @@
+{
+ "indeks": 33,
+ "id": "kaz",
+ "ad": "Kazan Hanlığı",
+ "ton": 0.474,
+ "etiket": [
+  48.504,
+  62.105,
+  2.109
+ ],
+ "alan": 42.82,
+ "kaynak": {
+  "ohmOran": 0,
+  "guven": "dusuk",
+  "ohm": []
+ }
+}

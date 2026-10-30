@@ -1,0 +1,17 @@
+{
+ "indeks": 85,
+ "id": "kil",
+ "ad": "Kilva Sultanlığı",
+ "ton": 0.651,
+ "etiket": [
+  38.772,
+  -7.845,
+  0.515
+ ],
+ "alan": 4.42,
+ "kaynak": {
+  "ohmOran": 0,
+  "guven": "dusuk",
+  "ohm": []
+ }
+}

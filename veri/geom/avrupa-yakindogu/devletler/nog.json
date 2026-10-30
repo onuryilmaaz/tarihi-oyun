@@ -1,0 +1,19 @@
+{
+ "indeks": 34,
+ "id": "nog",
+ "ad": "Nogay Ordası",
+ "ton": 0.666,
+ "etiket": [
+  52.048,
+  54.981,
+  4.114
+ ],
+ "alan": 164.82,
+ "kaynak": {
+  "ohmOran": 0.53,
+  "guven": "dusuk",
+  "ohm": [
+   2849493
+  ]
+ }
+}

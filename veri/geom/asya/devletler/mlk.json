@@ -1,0 +1,17 @@
+{
+ "indeks": 109,
+ "id": "mlk",
+ "ad": "Malakka Sultanlığı",
+ "ton": 0.614,
+ "etiket": [
+  102.121,
+  4.469,
+  1.316
+ ],
+ "alan": 10.77,
+ "kaynak": {
+  "ohmOran": 0,
+  "guven": "dusuk",
+  "ohm": []
+ }
+}

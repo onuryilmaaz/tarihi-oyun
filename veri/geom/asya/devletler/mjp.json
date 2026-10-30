@@ -1,0 +1,17 @@
+{
+ "indeks": 111,
+ "id": "mjp",
+ "ad": "Majapahit",
+ "ton": 0.406,
+ "etiket": [
+  111.388,
+  -7.502,
+  0.775
+ ],
+ "alan": 11.29,
+ "kaynak": {
+  "ohmOran": 0,
+  "guven": "dusuk",
+  "ohm": []
+ }
+}

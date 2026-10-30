@@ -1,0 +1,17 @@
+{
+ "indeks": 106,
+ "id": "ava",
+ "ad": "Ava Krallığı",
+ "ton": 0.633,
+ "etiket": [
+  96.119,
+  22.273,
+  2.546
+ ],
+ "alan": 43.69,
+ "kaynak": {
+  "ohmOran": 0,
+  "guven": "dusuk",
+  "ohm": []
+ }
+}

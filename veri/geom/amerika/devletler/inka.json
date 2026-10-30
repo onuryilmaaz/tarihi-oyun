@@ -1,0 +1,17 @@
+{
+ "indeks": 130,
+ "id": "inka",
+ "ad": "İnka (Kusko)",
+ "ton": 0.504,
+ "etiket": [
+  -73.698,
+  -13.164,
+  1.738
+ ],
+ "alan": 35.09,
+ "kaynak": {
+  "ohmOran": 0,
+  "guven": "dusuk",
+  "ohm": []
+ }
+}

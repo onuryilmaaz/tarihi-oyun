@@ -1,0 +1,17 @@
+{
+ "indeks": 88,
+ "id": "ymn",
+ "ad": "Yemen (Tahirîler)",
+ "ton": 0.649,
+ "etiket": [
+  45.323,
+  15.929,
+  2.49
+ ],
+ "alan": 55.32,
+ "kaynak": {
+  "ohmOran": 0,
+  "guven": "dusuk",
+  "ohm": []
+ }
+}

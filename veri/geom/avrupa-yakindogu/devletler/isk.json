@@ -1,0 +1,17 @@
+{
+ "indeks": 59,
+ "id": "isk",
+ "ad": "İskoçya Krallığı",
+ "ton": 0.608,
+ "etiket": [
+  -4.014,
+  63.921,
+  0.99
+ ],
+ "alan": 16.4,
+ "kaynak": {
+  "ohmOran": 0,
+  "guven": "dusuk",
+  "ohm": []
+ }
+}

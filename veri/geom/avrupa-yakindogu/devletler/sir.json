@@ -1,0 +1,17 @@
+{
+ "indeks": 13,
+ "id": "sir",
+ "ad": "Şirvanşahlar",
+ "ton": 0.062,
+ "etiket": [
+  48.43,
+  42.836,
+  1.012
+ ],
+ "alan": 7.03,
+ "kaynak": {
+  "ohmOran": 0,
+  "guven": "dusuk",
+  "ohm": []
+ }
+}

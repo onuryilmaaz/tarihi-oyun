@@ -1,0 +1,17 @@
+{
+ "indeks": 129,
+ "id": "may",
+ "ad": "Maya Şehir Devletleri",
+ "ton": 0.475,
+ "etiket": [
+  -89.087,
+  20.223,
+  1.382
+ ],
+ "alan": 23.82,
+ "kaynak": {
+  "ohmOran": 0,
+  "guven": "dusuk",
+  "ohm": []
+ }
+}

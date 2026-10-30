@@ -1,0 +1,17 @@
+{
+ "indeks": 126,
+ "id": "azt",
+ "ad": "Aztek Üçlü İttifakı",
+ "ton": 0.828,
+ "etiket": [
+  -99.392,
+  18.698,
+  1.206
+ ],
+ "alan": 19.88,
+ "kaynak": {
+  "ohmOran": 0,
+  "guven": "dusuk",
+  "ohm": []
+ }
+}

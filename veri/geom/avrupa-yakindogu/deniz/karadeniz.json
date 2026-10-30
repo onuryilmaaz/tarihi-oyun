@@ -1,0 +1,11 @@
+{
+ "id": "karadeniz",
+ "ad": "Karadeniz",
+ "lon": 34,
+ "lat": 43.2,
+ "komsu": [
+  "marmara",
+  "azak"
+ ],
+ "ticaretGecidi": "marmara"
+}

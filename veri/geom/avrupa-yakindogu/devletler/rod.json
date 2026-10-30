@@ -1,0 +1,17 @@
+{
+ "indeks": 24,
+ "id": "rod",
+ "ad": "Rodos Şövalyeleri",
+ "ton": 0.307,
+ "etiket": [
+  27.919,
+  37.815,
+  0.146
+ ],
+ "alan": 0.28,
+ "kaynak": {
+  "ohmOran": 0,
+  "guven": "dusuk",
+  "ohm": []
+ }
+}

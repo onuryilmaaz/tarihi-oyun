@@ -1,0 +1,17 @@
+{
+ "indeks": 107,
+ "id": "peg",
+ "ad": "Hanthawaddy",
+ "ton": 0.353,
+ "etiket": [
+  96.174,
+  18.413,
+  1.05
+ ],
+ "alan": 10.45,
+ "kaynak": {
+  "ohmOran": 0,
+  "guven": "dusuk",
+  "ohm": []
+ }
+}

@@ -1,0 +1,17 @@
+{
+ "indeks": 35,
+ "id": "lit",
+ "ad": "Litvanya Büyük Dükalığı",
+ "ton": 0.4,
+ "etiket": [
+  31.173,
+  57.69,
+  4.482
+ ],
+ "alan": 126.97,
+ "kaynak": {
+  "ohmOran": 0,
+  "guven": "dusuk",
+  "ohm": []
+ }
+}

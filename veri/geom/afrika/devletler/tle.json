@@ -1,0 +1,17 @@
+{
+ "indeks": 77,
+ "id": "tle",
+ "ad": "Tlemsen Sultanlığı",
+ "ton": 0.568,
+ "etiket": [
+  1.139,
+  36.934,
+  1.143
+ ],
+ "alan": 16.33,
+ "kaynak": {
+  "ohmOran": 0,
+  "guven": "dusuk",
+  "ohm": []
+ }
+}

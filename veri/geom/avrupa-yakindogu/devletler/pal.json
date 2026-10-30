@@ -1,0 +1,17 @@
+{
+ "indeks": 70,
+ "id": "pal",
+ "ad": "Pfalz",
+ "ton": 0.636,
+ "etiket": [
+  7.203,
+  54.695,
+  0.568
+ ],
+ "alan": 3.27,
+ "kaynak": {
+  "ohmOran": 0,
+  "guven": "dusuk",
+  "ohm": []
+ }
+}

@@ -1,0 +1,20 @@
+{
+ "indeks": 22,
+ "id": "ven",
+ "ad": "Venedik Cumhuriyeti",
+ "ton": 0.52,
+ "etiket": [
+  12.607,
+  49.657,
+  0.652
+ ],
+ "alan": 9.52,
+ "kaynak": {
+  "ohmOran": 0.64,
+  "guven": "dusuk",
+  "ohm": [
+   2800700,
+   2799688
+  ]
+ }
+}

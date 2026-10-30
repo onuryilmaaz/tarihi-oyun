@@ -1,0 +1,17 @@
+{
+ "indeks": 61,
+ "id": "brg",
+ "ad": "Burgonya Dükalığı",
+ "ton": 0.968,
+ "etiket": [
+  5.001,
+  55.713,
+  0.894
+ ],
+ "alan": 20.78,
+ "kaynak": {
+  "ohmOran": 0,
+  "guven": "dusuk",
+  "ohm": []
+ }
+}

@@ -1,8 +1,10 @@
 # DEVİR TESLİM — agent değişiminde kaldığın yer
 
-Son güncelleme: **2026-10-30, Claude — TASK-0021'in 4 alt teslimi de kod olarak tamamlandı (1/4, 2/4, 3/4
-commit+push edildi; 4/4 henüz commit edilmedi, kullanıcı testi/onayı bekleniyor). Doğrudan `main` üzerinde
-çalışılıyor (ayrı dal yok).**
+Son güncelleme: **2026-10-30, Claude — TASK-0021 tamamen bitti ve commit+push edildi (`a6f408a`). Yeni
+TASK-0022 (harita verisini varlık bazlı dosyalara ayırma, DEC-0071): kullanıcının isteğiyle 4 kıtanın da
+(avrupa-yakindogu, afrika, asya, amerika — 132 devletin tamamı) kaynak veri ayrıştırması aynı oturumda
+tamamlandı, henüz commit edilmedi — **~2439 yeni dosya**, commit öncesi kullanıcıya açıkça bildirilmeli.
+Doğrudan `main` üzerinde çalışılıyor (ayrı dal yok).**
 Bağlayıcı kurallar: `AGENTS.md`, `MASTER_SPEC.md`, `DECISIONS.md`.
 
 ## 0. En son — BURADAN BAŞLA
@@ -27,23 +29,51 @@ Bağlayıcı kurallar: `AGENTS.md`, `MASTER_SPEC.md`, `DECISIONS.md`.
   artık tehdit altında süvari, barışta %60 okçu/%40 piyade seçiyor; maaş/maliyet sınırları seçilen birimin
   gerçek yüzdesine göre hesaplanıyor. `para() <= 0` ise zar atmadan erken çıkan bir kontrol eklendi (determinizm
   testlerini düzeltti, casusluk kararındaki desenle tutarlı). 250 sim testi, typecheck, build geçti.
-- **4/4 kod olarak tamamlandı, henüz commit edilmedi — TASK-0021'in son alt teslimi:** AI vasallık teklif
-  etsin. Mevcut "gelen kutusu" altyapısına (`DiplomatikTeklif`) yeni `tur: "vasallik"` eklendi (`yz-diplomasi.ts`):
-  arazisi oyuncudan en az `VASAL_TEKLIF_ARAZI_KATI` (3) kat büyük, komşu, savaşta olmayan ve kendisi kimsenin
-  vasalı olmayan bir AI, oyuncu zaten başka birinin vasalı değilse vasallık teklif edebilir (ilişkiden bağımsız
-  bir eşik — dostluk teklifi değil, güç dengesine dayalı). Oyuncu kabul ederse `vasalKur(d, teklifEden, oyuncu)`
-  çağrılır — **asla zorla değil, yalnızca teklif/kabul/ret**. Şema değişikliği yok (tür birleşimine eklemeli
-  genişleme). Arayüzde gelen kutusunda vasallık için özel metin + kabul öncesi ayrı onay penceresi eklendi.
-  253 sim testi (3 yeni: doğru/yanlış koşullarda teklif gelip gelmediğini, kabul/ret'in `vasalliklar`'ı doğru
-  güncellediğini doğruluyor), typecheck, build geçti. Canlı Playwright: JS hatası yok; gerçek bir vasallık
-  teklifini 1453 senaryosunda tetiklemek pratikte zor (büyük bir devletin 3 kat büyük komşusu nadir — kasıtlı/
-  gerçekçi bir sınır, Osmanlı gibi büyük bir devlet küçük komşular tarafından vasallaştırılmamalı), mekanik sim
-  testlerinde uçtan uca kanıtlı.
-- **TASK-0021'in 4 alt teslimi de kod olarak tamamlandı.** Devralan agent önce kullanıcıdan 4/4'ün commit
-  onayını istesin. Sonrasında TASK-0021 tamamen biter; kullanıcıya yeni bir sonraki konu (varsa) sorulmalı —
-  bu oturumda öngörülmüş, onaylanmış bir sonraki iş yok.
-- `tasks/TASK-0021.md`, `CHANGELOG.md` güncel; `DECISIONS.md` DEC-0070 zaten commit edildi. 4/4 henüz commit
-  edilmedi.
+- **4/4 commit+push edildi (`a6f408a`) — TASK-0021 tamamen bitti:** AI vasallık teklif etsin. Mevcut "gelen
+  kutusu" altyapısına (`DiplomatikTeklif`) yeni `tur: "vasallik"` eklendi (`yz-diplomasi.ts`): arazisi oyuncudan
+  en az 3 kat büyük, komşu bir AI, oyuncu zaten başka birinin vasalı değilse vasallık teklif edebilir —
+  **asla zorla değil, yalnızca teklif/kabul/ret**. 253 sim testi, typecheck, build geçti.
+
+## TASK-0022 — harita verisini varlık bazlı ayrı dosyalarda tutma (DEC-0071, YENİ BÜYÜK İŞ)
+
+- Kullanıcı TASK-0021 sonrası tekrar "başka ne eklenebilir" dedi (ikinci fork araştırması yapıldı: ekonomi
+  çeşitliliği, savaş gerekçesi/claim, deniz savaşı derinliği, tarihî olay/kriz sistemi, isyan sonrası yeni
+  devlet, kültür asimilasyonu, zafer koşulu paneli bulundu) — **kullanıcı bunları "daha sonra yaparız" dedi**
+  ve bunun yerine çok daha büyük, ayrı bir altyapı işi istedi: harita verisini (devlet/bölge/şehir/deniz
+  geometrisi) varlık başına ayrı dosyalarda tutmak, kıta kıta, "parça parça" ilerleyen çok fazlı bir iş;
+  ileride gerekirse PostgreSQL/PostGIS'e taşınabilir (bu aşamada dosya tabanlı).
+- Agent'ın netleştirme sorularına kullanıcının yanıtı: amaç "düzenleme kolaylığı + performans + senaryolar
+  arası paylaşım" (üçü de); kapsam "önce kaynak veri, sonra istemci yükleme biçimi, sırayla"; başlangıç
+  "Avrupa + Yakındoğu, TASK-0022 olarak". **TASK-0022 / DEC-0071** onaylandı.
+- **Mimari bulgu (önemli):** `veri/senaryo-1453/harita.json` (4.7MB) aslında `prototypes/harita-gorsel-02/
+  public/veri/dunya-1453-v02.json`'ın `araclar/senaryo-uret.mjs` tarafından ham kopyasıdır — TopoJSON benzeri,
+  paylaşılan sınır yaylarıyla ("arklar") kodlanmış, **tüm dünyayı** kapsayan bir veri (3637 bölge, 132 devlet,
+  193 şehir — 1453 senaryosu aslında tüm dünyayı kapsıyor, Aztek/İnka/Ming/Delhi Sultanlığı dahil). `deniz.json`
+  deniz bölgelerini tutuyor ama **gerçek poligon geometrisi yok** — yalnızca nokta (lon/lat) + komşuluk grafı.
+  `devletler` dizisi coğrafi olarak gruplu (indeks 0–75: Avrupa+Yakındoğu/Balkanlar/Anadolu/Kafkasya/Rusya/
+  İtalya/Batı Avrupa + Memlûk; 76–89: Kuzey/Sahra-altı Afrika+Arabistan; 90+: Asya, Amerika) — bu, "kıta kıta"
+  ayrıştırmayı indeks aralığıyla basitçe yapılabilir kıldı.
+- **1. faz (kaynak veri ayrıştırması) kod olarak tamamlandı, henüz commit edilmedi — 4 kıtanın da tamamı:**
+  Yeni `araclar/harita-ayristir.mjs` (`npm run harita:ayristir`) ve `araclar/harita-derle.mjs`
+  (`npm run harita:derle`). Kullanıcı "diğer kıtaları da, denizleri dahil yap" deyince aynı oturumda devam
+  edildi: `avrupa-yakindogu` (devlet 0–75, 76 devlet, 1321 bölge, 133 şehir, 29 deniz bölgesi — deniz bölgelerinin
+  tamamı burada, çünkü hepsi Akdeniz/Karadeniz sularında), `afrika` (76–89, 14 devlet, 268 bölge), `asya`
+  (90–125, 36 devlet, 433 bölge), `amerika` (126–131, 6 devlet, 53 bölge). **132 devletin tamamı artık
+  `veri/geom/<kita>/` altında varlık başına ayrı dosyada.** `harita-ayristir.mjs`'e `--deniz` bayrağı eklendi
+  (yalnızca bir kıtada kullanılmalı, yoksa deniz verisi yinelenir); `harita-derle.mjs` artık her kıtayı ayrı
+  ayrı, eksik olanı atlayarak (`fs.existsSync`) işliyor ve **orijinal `harita.json`/`deniz.json` ile birebir
+  (byte-eşdeğer) eşleştiğini matematiksel olarak doğruluyor** (doğrulama geçti) — bu yüzden ayrıca canlı/görsel
+  doğrulamaya gerek kalmadı, mevcut dosyalar ve istemci kodu hiç değişmedi. Toplam **2439 dosya, 13MB**.
+  `npm test` (253, aynen geçti), `npm run build` geçti. `KAYNAKLAR.md` güncellendi.
+  **ÖNEMLİ — commit öncesi kullanıcıya açıkça söylenmeli: bu değişiklik ~2439 yeni dosya ekliyor.**
+  **Kasıtlı dışarıda kalan:** `d: -1` (sahipsiz/arka plan, hiçbir 1453 devletine ait olmayan) 1562 bölge —
+  hiçbir kıta devlet aralığına girmiyor; deniz bölgelerinin gerçek poligon geometrisi (şu an yalnızca
+  nokta+komşuluk grafı). İkisi de ayrı birer karar gerektirir.
+- **Sırada:** Kullanıcı onayı sonrası ya sahipsiz arka plan bölgelerinin ayrıştırılması, ya da istemci çalışma
+  zamanı yükleme fazına geçiş (TASK-0022'nin bu fazda kapsamı dışında bırakılmıştı, ayrı bir karar/onay
+  gerekir). Devralan agent kullanıcının bir sonraki tercihini sorsun.
+- `tasks/TASK-0022.md` (yeni), `CHANGELOG.md`, `KAYNAKLAR.md`, `DECISIONS.md` (DEC-0071) güncel; hepsi henüz
+  commit edilmedi (sim/istemci kod değişikliği yok, yalnızca veri/script/belge).
 
 ## Arşiv — TASK-0019 ve öncesi (bu oturumun önceki kısmı)
 

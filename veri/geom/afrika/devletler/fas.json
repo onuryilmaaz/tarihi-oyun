@@ -1,0 +1,17 @@
+{
+ "indeks": 76,
+ "id": "fas",
+ "ad": "Fas Sultanlığı",
+ "ton": 0.057,
+ "etiket": [
+  -6.569,
+  32.793,
+  2.353
+ ],
+ "alan": 60.65,
+ "kaynak": {
+  "ohmOran": 0,
+  "guven": "dusuk",
+  "ohm": []
+ }
+}

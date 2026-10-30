@@ -1,0 +1,17 @@
+{
+ "indeks": 93,
+ "id": "tum",
+ "ad": "Tümen Hanlığı",
+ "ton": 0.316,
+ "etiket": [
+  70.321,
+  64.982,
+  3.199
+ ],
+ "alan": 121.9,
+ "kaynak": {
+  "ohmOran": 0,
+  "guven": "dusuk",
+  "ohm": []
+ }
+}

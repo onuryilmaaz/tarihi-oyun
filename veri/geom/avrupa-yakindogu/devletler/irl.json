@@ -1,0 +1,17 @@
+{
+ "indeks": 60,
+ "id": "irl",
+ "ad": "İrlanda Lordlukları",
+ "ton": 0.602,
+ "etiket": [
+  -8.036,
+  58.752,
+  0.902
+ ],
+ "alan": 14.33,
+ "kaynak": {
+  "ohmOran": 0,
+  "guven": "dusuk",
+  "ohm": []
+ }
+}

@@ -1,0 +1,17 @@
+{
+ "indeks": 1,
+ "id": "biz",
+ "ad": "Bizans İmparatorluğu",
+ "ton": 0.79,
+ "etiket": [
+  28.938,
+  43.537,
+  0.076
+ ],
+ "alan": 0.03,
+ "kaynak": {
+  "ohmOran": 0,
+  "guven": "dusuk",
+  "ohm": []
+ }
+}

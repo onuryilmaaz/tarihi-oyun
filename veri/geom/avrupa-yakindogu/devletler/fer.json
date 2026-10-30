@@ -1,0 +1,17 @@
+{
+ "indeks": 49,
+ "id": "fer",
+ "ad": "Ferrara Markizliği",
+ "ton": 0.634,
+ "etiket": [
+  10.665,
+  47.595,
+  0.311
+ ],
+ "alan": 0.68,
+ "kaynak": {
+  "ohmOran": 0,
+  "guven": "dusuk",
+  "ohm": []
+ }
+}

@@ -1,0 +1,17 @@
+{
+ "indeks": 105,
+ "id": "aut",
+ "ad": "Ayutthaya Krallığı",
+ "ton": 0.114,
+ "etiket": [
+  101.316,
+  15.579,
+  2.058
+ ],
+ "alan": 38.39,
+ "kaynak": {
+  "ohmOran": 0,
+  "guven": "dusuk",
+  "ohm": []
+ }
+}

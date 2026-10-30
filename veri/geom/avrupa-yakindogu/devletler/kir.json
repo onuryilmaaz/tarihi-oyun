@@ -1,0 +1,19 @@
+{
+ "indeks": 30,
+ "id": "kir",
+ "ad": "Kırım Hanlığı",
+ "ton": 0.7,
+ "etiket": [
+  39.965,
+  49.878,
+  1.152
+ ],
+ "alan": 29.8,
+ "kaynak": {
+  "ohmOran": 0.79,
+  "guven": "dusuk",
+  "ohm": [
+   2849500
+  ]
+ }
+}

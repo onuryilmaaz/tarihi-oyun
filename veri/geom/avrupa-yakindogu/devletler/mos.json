@@ -1,0 +1,17 @@
+{
+ "indeks": 39,
+ "id": "mos",
+ "ad": "Moskova Büyük Knezliği",
+ "ton": 0.07,
+ "etiket": [
+  42.191,
+  65.62,
+  4.003
+ ],
+ "alan": 161.57,
+ "kaynak": {
+  "ohmOran": 0,
+  "guven": "dusuk",
+  "ohm": []
+ }
+}

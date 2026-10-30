@@ -1,0 +1,11 @@
+{
+ "id": "tiren",
+ "ad": "Tiren Denizi",
+ "lon": 11.8,
+ "lat": 40,
+ "komsu": [
+  "orta-akdeniz",
+  "ligurya",
+  "bati-akdeniz"
+ ]
+}

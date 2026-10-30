@@ -1,0 +1,17 @@
+{
+ "indeks": 91,
+ "id": "ozb",
+ "ad": "Özbek Hanlığı",
+ "ton": 0.012,
+ "etiket": [
+  67.912,
+  55.204,
+  5.884
+ ],
+ "alan": 253.19,
+ "kaynak": {
+  "ohmOran": 0,
+  "guven": "dusuk",
+  "ohm": []
+ }
+}

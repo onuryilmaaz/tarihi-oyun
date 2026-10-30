@@ -1,0 +1,17 @@
+{
+ "indeks": 78,
+ "id": "haf",
+ "ad": "Hafsî Sultanlığı",
+ "ton": 0.858,
+ "etiket": [
+  11.845,
+  31.781,
+  2.321
+ ],
+ "alan": 68.83,
+ "kaynak": {
+  "ohmOran": 0,
+  "guven": "dusuk",
+  "ohm": []
+ }
+}

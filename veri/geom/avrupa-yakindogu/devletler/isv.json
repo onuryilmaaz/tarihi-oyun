@@ -1,0 +1,17 @@
+{
+ "indeks": 73,
+ "id": "isv",
+ "ad": "İsviçre Konfederasyonu",
+ "ton": 0.189,
+ "etiket": [
+  7.865,
+  50.713,
+  0.772
+ ],
+ "alan": 5.2,
+ "kaynak": {
+  "ohmOran": 0,
+  "guven": "dusuk",
+  "ohm": []
+ }
+}

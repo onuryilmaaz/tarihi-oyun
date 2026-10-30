@@ -1,0 +1,17 @@
+{
+ "indeks": 102,
+ "id": "khm",
+ "ad": "Khmer Krallığı",
+ "ton": 0.612,
+ "etiket": [
+  104.454,
+  12.692,
+  1.694
+ ],
+ "alan": 18.85,
+ "kaynak": {
+  "ohmOran": 0,
+  "guven": "dusuk",
+  "ohm": []
+ }
+}

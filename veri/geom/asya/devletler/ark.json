@@ -1,0 +1,17 @@
+{
+ "indeks": 108,
+ "id": "ark",
+ "ad": "Arakan",
+ "ton": 0.993,
+ "etiket": [
+  93.699,
+  20.576,
+  0.357
+ ],
+ "alan": 3.1,
+ "kaynak": {
+  "ohmOran": 0,
+  "guven": "dusuk",
+  "ohm": []
+ }
+}

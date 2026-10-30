@@ -1,0 +1,19 @@
+{
+ "indeks": 15,
+ "id": "cer",
+ "ad": "Çerkes Beylikleri",
+ "ton": 0.994,
+ "etiket": [
+  40.35,
+  47.618,
+  1.08
+ ],
+ "alan": 9.84,
+ "kaynak": {
+  "ohmOran": 1,
+  "guven": "orta",
+  "ohm": [
+   2965979
+  ]
+ }
+}

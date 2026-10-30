@@ -1,0 +1,17 @@
+{
+ "indeks": 97,
+ "id": "min",
+ "ad": "Ming Hanedanı",
+ "ton": 0.1,
+ "etiket": [
+  109.803,
+  31.157,
+  8.452
+ ],
+ "alan": 436.35,
+ "kaynak": {
+  "ohmOran": 0,
+  "guven": "dusuk",
+  "ohm": []
+ }
+}

@@ -1,0 +1,17 @@
+{
+ "indeks": 21,
+ "id": "rag",
+ "ad": "Ragusa Cumhuriyeti",
+ "ton": 0.88,
+ "etiket": [
+  17.781,
+  45.678,
+  0.044
+ ],
+ "alan": 0.19,
+ "kaynak": {
+  "ohmOran": 0,
+  "guven": "dusuk",
+  "ohm": []
+ }
+}

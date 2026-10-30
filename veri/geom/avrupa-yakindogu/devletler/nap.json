@@ -1,0 +1,20 @@
+{
+ "indeks": 45,
+ "id": "nap",
+ "ad": "Napoli Krallığı",
+ "ton": 0.601,
+ "etiket": [
+  15.723,
+  43.172,
+  0.828
+ ],
+ "alan": 9.78,
+ "kaynak": {
+  "ohmOran": 1,
+  "guven": "orta",
+  "ohm": [
+   2826187,
+   2751179
+  ]
+ }
+}

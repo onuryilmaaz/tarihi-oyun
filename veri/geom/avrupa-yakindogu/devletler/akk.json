@@ -1,0 +1,17 @@
+{
+ "indeks": 9,
+ "id": "akk",
+ "ad": "Akkoyunlular",
+ "ton": 0.12,
+ "etiket": [
+  40.984,
+  39.948,
+  1.733
+ ],
+ "alan": 19.24,
+ "kaynak": {
+  "ohmOran": 0,
+  "guven": "dusuk",
+  "ohm": []
+ }
+}

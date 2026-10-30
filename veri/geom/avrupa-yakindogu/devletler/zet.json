@@ -1,0 +1,17 @@
+{
+ "indeks": 19,
+ "id": "zet",
+ "ad": "Zeta Beyliği",
+ "ton": 0.935,
+ "etiket": [
+  19.159,
+  45.339,
+  0.334
+ ],
+ "alan": 0.82,
+ "kaynak": {
+  "ohmOran": 0,
+  "guven": "dusuk",
+  "ohm": []
+ }
+}

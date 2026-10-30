@@ -1,0 +1,17 @@
+{
+ "indeks": 84,
+ "id": "mut",
+ "ad": "Mutapa",
+ "ton": 0.5,
+ "etiket": [
+  29.93,
+  -19.187,
+  2.751
+ ],
+ "alan": 34.64,
+ "kaynak": {
+  "ohmOran": 0,
+  "guven": "dusuk",
+  "ohm": []
+ }
+}

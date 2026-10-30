@@ -1,0 +1,17 @@
+{
+ "indeks": 118,
+ "id": "vij",
+ "ad": "Vijayanagara",
+ "ton": 0.892,
+ "etiket": [
+  77.504,
+  13.468,
+  2.553
+ ],
+ "alan": 44.48,
+ "kaynak": {
+  "ohmOran": 0,
+  "guven": "dusuk",
+  "ohm": []
+ }
+}

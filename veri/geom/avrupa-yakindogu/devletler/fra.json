@@ -1,0 +1,17 @@
+{
+ "indeks": 57,
+ "id": "fra",
+ "ad": "Fransa Krallığı",
+ "ton": 0.6,
+ "etiket": [
+  2.491,
+  48.156,
+  2.161
+ ],
+ "alan": 51.58,
+ "kaynak": {
+  "ohmOran": 0,
+  "guven": "dusuk",
+  "ohm": []
+ }
+}

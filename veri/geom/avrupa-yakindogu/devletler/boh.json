@@ -1,0 +1,19 @@
+{
+ "indeks": 66,
+ "id": "boh",
+ "ad": "Bohemya Krallığı",
+ "ton": 0.608,
+ "etiket": [
+  15.535,
+  54.619,
+  1.32
+ ],
+ "alan": 19.68,
+ "kaynak": {
+  "ohmOran": 0.05,
+  "guven": "dusuk",
+  "ohm": [
+   2830504
+  ]
+ }
+}

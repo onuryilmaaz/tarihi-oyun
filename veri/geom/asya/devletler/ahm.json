@@ -1,0 +1,17 @@
+{
+ "indeks": 124,
+ "id": "ahm",
+ "ad": "Ahom Krallığı",
+ "ton": 0.705,
+ "etiket": [
+  93.007,
+  26.854,
+  0.756
+ ],
+ "alan": 7.71,
+ "kaynak": {
+  "ohmOran": 0,
+  "guven": "dusuk",
+  "ohm": []
+ }
+}

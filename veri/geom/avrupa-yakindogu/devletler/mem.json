@@ -1,0 +1,19 @@
+{
+ "indeks": 11,
+ "id": "mem",
+ "ad": "Memlûk Sultanlığı",
+ "ton": 0.15,
+ "etiket": [
+  32.57,
+  21.154,
+  3.798
+ ],
+ "alan": 259.59,
+ "kaynak": {
+  "ohmOran": 0.72,
+  "guven": "dusuk",
+  "ohm": [
+   2960096
+  ]
+ }
+}

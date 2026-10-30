@@ -1,0 +1,17 @@
+{
+ "indeks": 112,
+ "id": "del",
+ "ad": "Delhi Sultanlığı",
+ "ton": 0.916,
+ "etiket": [
+  75.633,
+  31.302,
+  1.193
+ ],
+ "alan": 15.24,
+ "kaynak": {
+  "ohmOran": 0,
+  "guven": "dusuk",
+  "ohm": []
+ }
+}

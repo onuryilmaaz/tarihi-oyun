@@ -1,0 +1,17 @@
+{
+ "indeks": 127,
+ "id": "tlx",
+ "ad": "Tlaxcala",
+ "ton": 0.336,
+ "etiket": [
+  -98.163,
+  19.666,
+  0.25
+ ],
+ "alan": 0.34,
+ "kaynak": {
+  "ohmOran": 0,
+  "guven": "dusuk",
+  "ohm": []
+ }
+}

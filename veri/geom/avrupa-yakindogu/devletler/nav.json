@@ -1,0 +1,17 @@
+{
+ "indeks": 56,
+ "id": "nav",
+ "ad": "Navarra Krallığı",
+ "ton": 0.348,
+ "etiket": [
+  -1.69,
+  45.489,
+  0.471
+ ],
+ "alan": 1.33,
+ "kaynak": {
+  "ohmOran": 0,
+  "guven": "dusuk",
+  "ohm": []
+ }
+}

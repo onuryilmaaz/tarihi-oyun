@@ -1,0 +1,17 @@
+{
+ "indeks": 0,
+ "id": "osm",
+ "ad": "Osmanlı Devleti",
+ "ton": 0.02,
+ "etiket": [
+  29.226,
+  40.65,
+  2.043
+ ],
+ "alan": 77.09,
+ "kaynak": {
+  "ohmOran": 0,
+  "guven": "dusuk",
+  "ohm": []
+ }
+}

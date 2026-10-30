@@ -1,0 +1,17 @@
+{
+ "indeks": 12,
+ "id": "grc",
+ "ad": "Gürcistan Krallığı",
+ "ton": 0.642,
+ "etiket": [
+  42.927,
+  44.623,
+  1.158
+ ],
+ "alan": 11.56,
+ "kaynak": {
+  "ohmOran": 0,
+  "guven": "dusuk",
+  "ohm": []
+ }
+}

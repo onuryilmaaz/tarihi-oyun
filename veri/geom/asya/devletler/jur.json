@@ -1,0 +1,17 @@
+{
+ "indeks": 95,
+ "id": "jur",
+ "ad": "Cürçen Kabileleri",
+ "ton": 0.75,
+ "etiket": [
+  127.376,
+  49.61,
+  3.866
+ ],
+ "alan": 95.47,
+ "kaynak": {
+  "ohmOran": 0,
+  "guven": "dusuk",
+  "ohm": []
+ }
+}

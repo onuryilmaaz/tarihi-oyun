@@ -1,0 +1,19 @@
+{
+ "indeks": 52,
+ "id": "kas",
+ "ad": "Kastilya Krallığı",
+ "ton": 0.104,
+ "etiket": [
+  -4.236,
+  42.063,
+  2.632
+ ],
+ "alan": 45.5,
+ "kaynak": {
+  "ohmOran": 0.95,
+  "guven": "orta",
+  "ohm": [
+   2849131
+  ]
+ }
+}

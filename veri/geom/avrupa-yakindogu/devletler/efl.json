@@ -1,0 +1,19 @@
+{
+ "indeks": 28,
+ "id": "efl",
+ "ad": "Eflak Voyvodalığı",
+ "ton": 0.842,
+ "etiket": [
+  24.602,
+  47.885,
+  1.118
+ ],
+ "alan": 10.89,
+ "kaynak": {
+  "ohmOran": 1,
+  "guven": "orta",
+  "ohm": [
+   2929115
+  ]
+ }
+}

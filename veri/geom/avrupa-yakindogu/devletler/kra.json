@@ -1,0 +1,21 @@
+{
+ "indeks": 72,
+ "id": "kra",
+ "ad": "Kutsal Roma İmparatorluğu (diğer)",
+ "ton": 0.807,
+ "etiket": [
+  8.668,
+  57.478,
+  1.635
+ ],
+ "alan": 31.36,
+ "kaynak": {
+  "ohmOran": 0.04,
+  "guven": "dusuk",
+  "ohm": [
+   2852598,
+   2809505,
+   2830494
+  ]
+ }
+}

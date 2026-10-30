@@ -1,0 +1,17 @@
+{
+ "indeks": 63,
+ "id": "lor",
+ "ad": "Lorraine Dükalığı",
+ "ton": 0.301,
+ "etiket": [
+  6.086,
+  53.069,
+  0.789
+ ],
+ "alan": 3.71,
+ "kaynak": {
+  "ohmOran": 0,
+  "guven": "dusuk",
+  "ohm": []
+ }
+}

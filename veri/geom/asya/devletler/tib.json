@@ -1,0 +1,17 @@
+{
+ "indeks": 96,
+ "id": "tib",
+ "ad": "Tibet",
+ "ton": 0.404,
+ "etiket": [
+  88.197,
+  33.391,
+  4.552
+ ],
+ "alan": 207.26,
+ "kaynak": {
+  "ohmOran": 0,
+  "guven": "dusuk",
+  "ohm": []
+ }
+}

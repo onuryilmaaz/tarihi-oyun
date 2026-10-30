@@ -1,0 +1,20 @@
+{
+ "indeks": 36,
+ "id": "pol",
+ "ad": "Lehistan Krallığı",
+ "ton": 0.931,
+ "etiket": [
+  21.301,
+  57.022,
+  1.98
+ ],
+ "alan": 43.11,
+ "kaynak": {
+  "ohmOran": 0.09,
+  "guven": "dusuk",
+  "ohm": [
+   2696431,
+   2696429
+  ]
+ }
+}

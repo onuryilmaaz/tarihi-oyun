@@ -1,0 +1,17 @@
+{
+ "indeks": 43,
+ "id": "rya",
+ "ad": "Ryazan Büyük Knezliği",
+ "ton": 0.67,
+ "etiket": [
+  40.575,
+  60.522,
+  1.133
+ ],
+ "alan": 7.53,
+ "kaynak": {
+  "ohmOran": 0,
+  "guven": "dusuk",
+  "ohm": []
+ }
+}

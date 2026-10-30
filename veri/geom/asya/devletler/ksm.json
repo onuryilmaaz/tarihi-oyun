@@ -1,0 +1,17 @@
+{
+ "indeks": 121,
+ "id": "ksm",
+ "ad": "Keşmir Sultanlığı",
+ "ton": 0.66,
+ "etiket": [
+  74.625,
+  35.076,
+  1.02
+ ],
+ "alan": 5.94,
+ "kaynak": {
+  "ohmOran": 0,
+  "guven": "dusuk",
+  "ohm": []
+ }
+}

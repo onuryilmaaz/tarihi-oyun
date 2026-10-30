@@ -1,0 +1,17 @@
+{
+ "indeks": 74,
+ "id": "dan",
+ "ad": "Danimarka-Norveç",
+ "ton": 0.181,
+ "etiket": [
+  9.968,
+  70.604,
+  2.27
+ ],
+ "alan": 194.36,
+ "kaynak": {
+  "ohmOran": 0,
+  "guven": "dusuk",
+  "ohm": []
+ }
+}

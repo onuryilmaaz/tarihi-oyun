@@ -1,0 +1,17 @@
+{
+ "indeks": 10,
+ "id": "kkk",
+ "ad": "Karakoyunlular",
+ "ton": 0.45,
+ "etiket": [
+  46.488,
+  35.621,
+  4.681
+ ],
+ "alan": 166.61,
+ "kaynak": {
+  "ohmOran": 0,
+  "guven": "dusuk",
+  "ohm": []
+ }
+}

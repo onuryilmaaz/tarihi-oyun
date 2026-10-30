@@ -1,0 +1,19 @@
+{
+ "indeks": 25,
+ "id": "kib",
+ "ad": "Kıbrıs Krallığı",
+ "ton": 0.92,
+ "etiket": [
+  33.217,
+  36.522,
+  0.348
+ ],
+ "alan": 1.04,
+ "kaynak": {
+  "ohmOran": 1,
+  "guven": "orta",
+  "ohm": [
+   2800988
+  ]
+ }
+}

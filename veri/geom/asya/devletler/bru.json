@@ -1,0 +1,17 @@
+{
+ "indeks": 110,
+ "id": "bru",
+ "ad": "Brunei",
+ "ton": 0.591,
+ "etiket": [
+  113.77,
+  2.458,
+  1.025
+ ],
+ "alan": 16.48,
+ "kaynak": {
+  "ohmOran": 0,
+  "guven": "dusuk",
+  "ohm": []
+ }
+}

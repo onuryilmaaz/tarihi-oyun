@@ -1,5 +1,30 @@
 # CHANGELOG
 
+## 2026-10-30 — TASK-0022 (1. faz): harita verisini varlık bazlı ayrı dosyalarda tutma (Claude)
+
+- **Yeni `araclar/harita-ayristir.mjs`** (`npm run harita:ayristir`): `harita.json`/`deniz.json`'daki devlet/
+  bölge(birim)/şehir/deniz-bölgesi kayıtlarını, belirtilen devlet indeks aralığı için **varlık başına ayrı
+  dosyaya** ayırır; `veri/geom/<kita>/{devletler,bolgeler,sehirler,deniz}/*.json` + ortak `arklar.json`
+  (kullanılan sınır yayları) üretir.
+- **Yeni `araclar/harita-derle.mjs`** (`npm run harita:derle`): Ayrıştırılmış dosyaları, henüz ayrıştırılmamış
+  kıtaların verisiyle birleştirip `harita.json`/`deniz.json`'ı yeniden üretir ve orijinal dosyalarla **birebir
+  eşleştiğini doğrular** (varsayılan: yalnızca doğrular; `--yaz` ile üzerine yazar).
+- **Avrupa + Yakındoğu (devlet indeks 0–75) ayrıştırıldı:** 76 devlet, 1321 bölge, 133 şehir, 29 deniz bölgesi,
+  9190 yay → `veri/geom/avrupa-yakindogu/`. Doğrulama geçti: hem `harita.json` hem `deniz.json` birebir
+  eşleşiyor. **Mevcut dosyalar değiştirilmedi** (yalnızca paralel kaynak eklendi); istemci kodu hiç
+  değişmedi, oyun/harita birebir aynı kalır.
+- `npm test` (253, aynen geçti), `npm run build` geçti. `KAYNAKLAR.md` güncellendi.
+- **Kalan 3 kıta da aynı oturumda tamamlandı:** `afrika` (devlet 76–89, 14 devlet, 268 bölge), `asya`
+  (devlet 90–125, 36 devlet, 433 bölge), `amerika` (devlet 126–131, 6 devlet, 53 bölge) — **132 devletin
+  tamamı artık ayrıştırılmış durumda.** Deniz bölgelerinin tamamı (29 bölge) coğrafi olarak Avrupa+Yakındoğu
+  sularında olduğu için yalnızca o kıtada kaldı; `harita-ayristir.mjs`'e eklenen `--deniz` bayrağı yinelenmeyi
+  önlüyor, `harita-derle.mjs` artık her kıtayı ayrı ayrı işliyor. Toplam **2439 dosya**, 13MB. Doğrulama hâlâ
+  geçiyor (`harita.json`/`deniz.json` birebir eşleşiyor); `npm test` (253), `npm run build` geçti.
+  Kasıtlı dışarıda kalan: 1562 sahipsiz (`d: -1`, arka plan) bölge — ayrı bir karar gerektirir.
+- **Not:** Bu değişiklik ~2439 yeni dosya ekliyor (büyük bir commit).
+- **Sırada:** İstemci yükleme fazına geçiş ya da sahipsiz arka plan bölgelerinin ayrıştırılması (ayrı kararlar).
+  Kullanıcı testi ve commit onayı bekliyor.
+
 ## 2026-10-30 — TASK-0021 (4/4): AI vasallık teklif etsin — TASK-0021 tamamlandı (Claude)
 
 - **Mevcut "gelen kutusu" altyapısına (`DiplomatikTeklif`) yeni `tur: "vasallik"` eklendi** (`yz-diplomasi.ts`):

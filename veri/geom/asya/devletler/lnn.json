@@ -1,0 +1,17 @@
+{
+ "indeks": 104,
+ "id": "lnn",
+ "ad": "Lanna",
+ "ton": 0.874,
+ "etiket": [
+  99.575,
+  19.109,
+  1.113
+ ],
+ "alan": 9.18,
+ "kaynak": {
+  "ohmOran": 0,
+  "guven": "dusuk",
+  "ohm": []
+ }
+}

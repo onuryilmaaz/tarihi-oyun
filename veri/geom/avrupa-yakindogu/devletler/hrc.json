@@ -1,0 +1,17 @@
+{
+ "indeks": 18,
+ "id": "hrc",
+ "ad": "Hersek Dükalığı",
+ "ton": 0.203,
+ "etiket": [
+  18.049,
+  46.135,
+  0.463
+ ],
+ "alan": 2.12,
+ "kaynak": {
+  "ohmOran": 0,
+  "guven": "dusuk",
+  "ohm": []
+ }
+}

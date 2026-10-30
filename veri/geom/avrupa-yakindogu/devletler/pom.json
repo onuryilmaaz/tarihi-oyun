@@ -1,0 +1,17 @@
+{
+ "indeks": 71,
+ "id": "pom",
+ "ad": "Pomeranya Dükalığı",
+ "ton": 0.467,
+ "etiket": [
+  15.446,
+  59.402,
+  0.788
+ ],
+ "alan": 8.87,
+ "kaynak": {
+  "ohmOran": 0,
+  "guven": "dusuk",
+  "ohm": []
+ }
+}

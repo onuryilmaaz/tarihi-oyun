@@ -1,0 +1,17 @@
+{
+ "indeks": 92,
+ "id": "mgl",
+ "ad": "Moğolistan Hanlığı",
+ "ton": 0.688,
+ "etiket": [
+  83.623,
+  45.258,
+  7.907
+ ],
+ "alan": 329.35,
+ "kaynak": {
+  "ohmOran": 0,
+  "guven": "dusuk",
+  "ohm": []
+ }
+}
