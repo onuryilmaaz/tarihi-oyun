@@ -820,3 +820,15 @@ Kaynak belge: `MASTER_SPEC.md` (v1.3). Orijinal keşif çıktısı:
   antlaşma ve borç/faiz bu kartın kapsamı dışındadır. Her alt teslim ayrı test/onay/commit adımı olarak ilerler.
 - **Onay kaydı:** Kullanıcı: “1-öneri 2- seçilsin 3-ikiside” (2026-10-30).
 - **Durum:** GEÇERLİ
+
+## DEC-0067 — TASK-0018 onayı: ilhak sonrası ordu kaderi, vasallık, isyan/casusluk derinliği
+
+- **Tarih:** 2026-10-30
+- **Seçilen karar:** TASK-0018 onaylandı; sıra (1) ilhak sonrası ordu kaderi (OPEN-024) — yıkılan devletin ordusu
+  dağılır, (2) vasallık — yalnızca barış görüşmesinde "vasal yap" seçeneği, (3) isyan/casusluk derinliği — casuslukta
+  yanlış bilgi ihtimali + istikrarda "direniş" ara kademesi, ikisi aynı kartta. Birim çeşitliliği (piyade/okçu/süvari)
+  kasıtlı olarak bu kartın dışında bırakıldı; ayrı, daha büyük bir görev kartı (TASK-0019) olarak bu kart bitince
+  ayrıca planlanacak. Her alt teslim ayrı test/onay/commit adımı olarak ilerler.
+- **Onay kaydı:** Kullanıcı: "Ayrı, sonraki büyük görev olsun" / "Dağılır" / "Yalnızca barışta 'vasal yap' seçeneği" /
+  "İkisi birden, aynı kartta" (2026-10-30).
+- **Durum:** GEÇERLİ

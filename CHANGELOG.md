@@ -1,5 +1,15 @@
 # CHANGELOG
 
+## 2026-10-30 — TASK-0018 (1/3): ilhak sonrası ordu kaderi — OPEN-024 kapandı (Claude)
+
+- Bir devlet tüm toprağını/şehrini kaybedip yıkıldığında, kalan ordusu artık **dağılır** (silinir); günlüğe
+  "X yıkıldı; toprağı kalmayan N asker dağıldı" olayı yazılır (herkese görünür dünya olayı).
+  `packages/sim/src/savas-sonu.ts: yikilanDevletleriTemizle`. MASTER_SPEC OPEN-024 bu kapsamda kapandı.
+- 216 test (1 yeni + 1 güncellenen), typecheck ve build geçti. Değişiklik tek bir sim fonksiyonuyla sınırlı ve
+  dar kapsamlı olduğu için bu alt teslimde ayrıca 5173 taraycı denemesi yapılmadı; otomatik testler (tam sayı
+  kontrolü, değişmezler, günlük metni) davranışı doğruluyor.
+- Kullanıcı testi ve commit/push onayı bekleniyor. Sonraki alt teslim: 2/3 Vasallık (yalnızca barışta).
+
 ## 2026-10-30 — TASK-0017 (4/4 Temel diplomasi): ticaret anlaşması ve saldırmazlık paktı (Claude)
 
 - **Ticaret anlaşması:** oyuncu bir devlete teklif eder (eşik ilişki 10, ittifaktan daha kolay); kabul edilirse her iki

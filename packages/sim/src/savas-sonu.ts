@@ -1,5 +1,6 @@
 // TASK-0015 / H-02: barış ve devletin yıkılması aynı savaş temizliğini kullanır.
 import { olayEkle, type DunyaDurumu, type Savas } from "./durum";
+import { sayiMetni } from "./savas";
 
 export function savasiSonlandir(d: DunyaDurumu, s: Savas): void {
   const taraf = (i: number) => i === s.saldiran || i === s.savunan;
@@ -14,7 +15,7 @@ export function savasiSonlandir(d: DunyaDurumu, s: Savas): void {
   d.barisTeklifleri = d.barisTeklifleri.filter((t) => t.savas !== s.id);
 }
 
-/** Orduların kaderini değiştirmez (OPEN-024); yıkılan devletin savaş işlemlerini bitirir. */
+/** Yıkılan devletin savaş işlemlerini bitirir; kalan ordusu dağılır (TASK-0018, OPEN-024). */
 export function yikilanDevletleriTemizle(d: DunyaDurumu): void {
   const yasayan = new Set([...d.birimler.map((b) => b.sahip), ...d.sehirler.map((c) => c.devlet)]);
   for (const s of [...d.savaslar]) {
@@ -26,6 +27,16 @@ export function yikilanDevletleriTemizle(d: DunyaDurumu): void {
       metin: `${d.devletler[olu].ad} yıkıldığı için ${d.devletler[diger].ad} ile savaşı sona erdi.` });
   }
   d.ittifaklar = d.ittifaklar.filter((a) => yasayan.has(a.a) && yasayan.has(a.b));
+  const dagilanAsker = new Map<number, number>();
+  d.ordular = d.ordular.filter((o) => {
+    if (yasayan.has(o.devlet)) return true;
+    dagilanAsker.set(o.devlet, (dagilanAsker.get(o.devlet) ?? 0) + o.asker);
+    return false;
+  });
+  for (const [devlet, asker] of dagilanAsker) {
+    olayEkle(d, { tur: "devlet-yikildi", devlet: null,
+      metin: `${d.devletler[devlet].ad} yıkıldı; toprağı kalmayan ${sayiMetni(asker)} asker dağıldı.` });
+  }
 }
 
 /** Eski H-02 kayıtlarında zaten silinmiş savaştan kalan ilişkiler. Yeni sahiplik üretmez. */

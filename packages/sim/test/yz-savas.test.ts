@@ -2,7 +2,7 @@
 import { describe, expect, it } from "vitest";
 import {
   agHazirla, barisDogrula, barisiUygula, barisKararlari, baslangicDurumu, degismezler, DENGE, diplomasiOnHesap, durumOzeti, emirleriUygula, emirVer,
-  muharebeleriBaslat, muharebeGunleri,
+  muharebeleriBaslat, muharebeGunleri, sayiMetni,
   etkiEkle, gunIlerlet, kaydet, savasKarari, yikilanDevletleriTemizle, savasta, SEMA_SURUMU, seferKararlari, yukle, type DunyaDurumu, type SenaryoVerisi,
 } from "../src";
 
@@ -158,11 +158,27 @@ describe("AI savaş ve barış (6c)", () => {
     d.sehirler.forEach((c) => { if (c.devlet === C) { c.devlet = Bd; c.kontrol = Bd; } });
     yikilanDevletleriTemizle(d);
     expect(savasta(d, Bd, C)).toBe(false);
-    expect(d.gunluk.at(-1)?.metin).toMatch(/C yıkıldığı için B ile savaşı sona erdi/);
+    expect(d.gunluk.some((o) => /C yıkıldığı için B ile savaşı sona erdi/.test(o.metin))).toBe(true);
+    expect(d.gunluk.at(-1)?.metin).toMatch(/C yıkıldı; toprağı kalmayan .* asker dağıldı/); // TASK-0018, OPEN-024
     const e = yeni();
     e.savaslar.push({ id: e.sonrakiSavasId++, saldiran: Bd, savunan: C, baslangic: e.gun - 2 * DENGE.YZ_SAVAS_YORGUNLUK_GUN });
     barisKararlari(e, B, Bd);
     expect(savasta(e, Bd, C)).toBe(false);
     expect(degismezler(e)).toEqual([]);
+  });
+
+  it("TASK-0018 (OPEN-024): yıkılan devletin bütün orduları dağılır; diğer devletlerinki korunur", () => {
+    const d = yeni();
+    const ekOrdu = { ...d.ordular.find((o) => o.devlet === C)! };
+    d.ordular.push({ ...ekOrdu, id: d.sonrakiOrduId++, asker: 321 }); // C'nin ikinci ordusu
+    const toplamC = d.ordular.filter((o) => o.devlet === C).reduce((s, o) => s + o.asker, 0);
+    const oncekiBdSayisi = d.ordular.filter((o) => o.devlet === Bd).length;
+    d.birimler.forEach((b) => { if (b.sahip === C) { b.sahip = Bd; b.kontrol = Bd; } });
+    d.sehirler.forEach((c) => { if (c.devlet === C) { c.devlet = Bd; c.kontrol = Bd; } });
+    yikilanDevletleriTemizle(d);
+    expect(d.ordular.some((o) => o.devlet === C)).toBe(false);
+    expect(d.ordular.filter((o) => o.devlet === Bd)).toHaveLength(oncekiBdSayisi);
+    expect(d.gunluk.at(-1)?.metin).toContain(sayiMetni(toplamC));
+    expect(degismezler(d)).toEqual([]);
   });
 });

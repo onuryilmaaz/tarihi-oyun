@@ -1,6 +1,6 @@
 # DEVİR TESLİM — agent değişiminde kaldığın yer
 
-Son güncelleme: **2026-10-30, Claude — TASK-0017'nin 4 alt teslimi de kod olarak tamamlandı; kullanıcı testi ve commit/push onayı bekleniyor.**
+Son güncelleme: **2026-10-30, Claude — TASK-0017 bitti (commit edildi); TASK-0018 (1/3 ilhak sonrası ordu kaderi) kod olarak tamamlandı; kullanıcı testi ve commit/push onayı bekleniyor.**
 Bağlayıcı kurallar: `AGENTS.md`, `MASTER_SPEC.md`, `DECISIONS.md`.
 
 ## 0. En son — BURADAN BAŞLA
@@ -25,7 +25,15 @@ Bağlayıcı kurallar: `AGENTS.md`, `MASTER_SPEC.md`, `DECISIONS.md`.
   eşik 0, aktifken savaş ilanını her iki yönde de engeller, süre dolunca kalkar). Şema 20 → 21. Devlet panelinde yeni
   "Ticaret ve saldırmazlık" bölümü. 215 test (6 yeni), typecheck, build geçti; 5173'te agent tarafından doğrulandı
   (haritadan devlet seçip ticaret teklifi gönderildi, tahmini cevap/eşik metni doğru, tur ilerletildi, JS hatası yok).
-  **TASK-0017'nin 4 alt teslimi de kod olarak bitti. Kullanıcı testi ve commit/push onayı bekliyor.**
+  **TASK-0017'nin 4 alt teslimi de kod olarak bitti ve commit+push edildi** (`62c095a`).
+- Kullanıcı yeni eksikleri sordu: **TASK-0018 / DEC-0067** onaylandı — sıra (1) ilhak sonrası ordu kaderi (OPEN-024,
+  dağılır), (2) vasallık (yalnızca barışta "vasal yap"), (3) isyan/casusluk derinliği (yanlış istihbarat + direniş
+  kademesi). Birim çeşitliliği (piyade/okçu/süvari) kasıtlı olarak dışarıda bırakıldı; ayrı büyük görev (TASK-0019)
+  olarak TASK-0018 bitince planlanacak.
+- **1/3 İlhak sonrası ordu kaderi kod olarak tamamlandı, henüz commit edilmedi:** `savas-sonu.ts:
+  yikilanDevletleriTemizle` artık yıkılan devletin bütün ordularını dağıtıyor (siliyor), günlüğe dünya geneli bir olay
+  yazıyor. OPEN-024 bu kapsamda kapandı. 216 test (1 yeni + 1 güncellenen), typecheck, build geçti; değişiklik dar
+  kapsamlı olduğu için ek 5173 taraycı denemesi yapılmadı. **Kullanıcı testi ve commit/push onayı bekliyor.**
 - Kullanıcı "oyun mantığında eksiklikler var, Age of History gibi bir şey istiyorum: ekonomi, asker basma, ordu
   birleştirme/ayırma, diplomasi" dedi. **TASK-0017 / DEC-0066** ile tek görev kartı onaylandı: sıra Ekonomi → Asker basma →
   Ordu birleştirme/ayırma → Temel diplomasi. Açık sorular yanıtlandı: vergi düşük/orta/yüksek (varsayılan orta); pakt süresini
