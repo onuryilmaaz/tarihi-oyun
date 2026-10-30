@@ -1,5 +1,18 @@
 # CHANGELOG
 
+## 2026-10-30 — TASK-0017 (3/4 Ordu birleştirme/ayırma): checkbox listesi (Claude)
+
+- Ordu birleştirme arayüzü: tek seçimlik açılır liste (`<select>`) yerine, haritada tıkla-seç ile birlikte kullanılabilen
+  bir **tıklanabilir liste** (aynı konumdaki her aday ordu adı + asker sayısıyla, "etkin" vurgusu). İlk aday otomatik
+  ön-seçili; "Birleştir" düğmesi seçim yokken pasif. Haritada diğer ordunun işaretine sağ tıklama akışı değişmedi.
+  Ordu ayırma (asker sayısı girilen form) zaten vardı; değişmedi.
+  Yeni backend mekaniği yok — sadece istemci arayüzü (`main.ts`, `index.html`); sim tarafında değişiklik yok.
+- Derleme/tip kontrolü başarılı; sim testleri değişmediği için 209/209 geçti (bu teslim yalnızca istemci).
+- 5173'te agent tarafından Playwright ile doğrulandı: ordu bölündükten sonra aynı konumdaki "Rumeli Ordusu" liste
+  düğmesi olarak çıktı, seçili/etkin oldu, Birleştir ile iki ordu tek orduya indi (3 → 2). JS hatası yok.
+- Kullanıcı testi ve commit/push onayı bekleniyor. Sonraki alt teslim: 4/4 Temel diplomasi (ticaret anlaşması,
+  saldırmazlık/ateşkes paktı).
+
 ## 2026-10-30 — TASK-0017 (2/4 Asker basma): toplama iptali (Claude)
 
 - Süren bir asker toplamayı iptal etme emri eklendi (`toplamaIptal`): bedel ve insan gücü tam iade edilir, borç oluşmaz.

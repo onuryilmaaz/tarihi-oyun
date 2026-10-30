@@ -1,6 +1,6 @@
 # DEVİR TESLİM — agent değişiminde kaldığın yer
 
-Son güncelleme: **2026-10-30, Claude — TASK-0017 (2/4 Asker basma) uygulandı; kullanıcı testi ve commit/push onayı bekleniyor.**
+Son güncelleme: **2026-10-30, Claude — TASK-0017 (3/4 Ordu birleştirme/ayırma) uygulandı; kullanıcı testi ve commit/push onayı bekleniyor.**
 Bağlayıcı kurallar: `AGENTS.md`, `MASTER_SPEC.md`, `DECISIONS.md`.
 
 ## 0. En son — BURADAN BAŞLA
@@ -13,7 +13,13 @@ Bağlayıcı kurallar: `AGENTS.md`, `MASTER_SPEC.md`, `DECISIONS.md`.
   asker toplamayı iptal eder, bedeli ve insan gücünü tam iade eder (borç oluşmaz). Şema 19 → 20 (`AskerToplama.id`/`bedel`,
   `sonrakiToplamaId`). İstemci: "Asker toplama" listesindeki her kalemde "İptal" düğmesi.
   209 test (3 yeni), typecheck, build geçti; 5173'te agent tarafından Playwright ile doğrulandı (toplama → iptal → tam iade;
-  JS hatası yok). **Kullanıcı testi ve commit/push onayı bekliyor.**
+  JS hatası yok). **Kullanıcı telefondan test edemediği için "bilgisayara geçince test et" seçeneğini onayladı; agent
+  kendi testleriyle ilerlemeye devam ediyor.**
+- **3/4 Ordu birleştirme/ayırma (checkbox listesi) kod olarak tamamlandı, henüz commit edilmedi:** birleştirme hedefi artık
+  tek seçimlik `<select>` yerine tıklanabilir liste (ad + asker sayısı, ilk aday otomatik seçili); haritada sağ tıkla-seç
+  akışı korundu. Sadece istemci değişti (`main.ts`, `index.html`); sim tarafı değişmedi, 209 test aynen geçiyor.
+  5173'te agent tarafından doğrulandı: ordu bölündü, aynı konumdaki ordu listede çıktı, seçili/etkin oldu, Birleştir ile
+  2 orduya indi. JS hatası yok. **Kullanıcı testi ve commit/push onayı bekliyor.**
 - Kullanıcı "oyun mantığında eksiklikler var, Age of History gibi bir şey istiyorum: ekonomi, asker basma, ordu
   birleştirme/ayırma, diplomasi" dedi. **TASK-0017 / DEC-0066** ile tek görev kartı onaylandı: sıra Ekonomi → Asker basma →
   Ordu birleştirme/ayırma → Temel diplomasi. Açık sorular yanıtlandı: vergi düşük/orta/yüksek (varsayılan orta); pakt süresini

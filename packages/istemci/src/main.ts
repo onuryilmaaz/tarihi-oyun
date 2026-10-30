@@ -103,6 +103,7 @@ async function baslat() {
   let ozet: Ozet = (await sim.gonder({ tip: "yeniOyun", senaryo, tohum: TOHUM, oyuncu: parametreler.get("devlet") ?? undefined })).ozet;
   let mesgul = false;
   let seciliOrdu: number | null = null;
+  let seciliBirlestir: number | null = null; // TASK-0017: seçili ordu değişince orduListesi tıklamasında sıfırlanır
   let seciliDonanma: number | null = null;
   const bekleyenSavas = new Set<number>(); // ilan edildi, bir sonraki turda başlayacak
   const bekleyenTutum = new Map<number, Tutum>();
@@ -661,6 +662,7 @@ async function baslat() {
     const det = $("orduDetay");
     det.hidden = !o;
     if (!o) return;
+    if (!o.birlesebilir.includes(seciliBirlestir ?? -1)) seciliBirlestir = o.birlesebilir[0] ?? null;
     const p = planli.get(o.id);
     const tutum = bekleyenTutum.get(o.id) ?? o.tutum;
     det.innerHTML = `<div class="moral-satir"><span>Moral</span><i class="moral buyuk" style="--moral:${o.moral / 10}%"></i><b>${yuzde(o.moral)}</b></div>
@@ -677,14 +679,26 @@ async function baslat() {
         <label for="bolAsker">Ayrılacak asker <input id="bolAsker" type="number" min="1" max="${o.asker - 1}" value="${Math.max(1, Math.floor(o.asker / 2))}" /></label>
         <button id="orduBol" ${o.bolunebilir ? "" : "disabled"}>Orduyu böl</button>
         <p class="not">Bölme ve birleştirme için ordular beklemeli; bekleyen emirleri olmamalı.</p>
-        ${o.birlesebilir.length ? `<label for="birlestirOrdu">Aynı konumdaki ordu</label><select id="birlestirOrdu">${o.birlesebilir.map((id) => `<option value="${id}">${kacis(ozet.ordular.find((a) => a.id === id)!.ad)}</option>`).join("")}</select>
-        <button id="orduBirlestir">Birleştir</button><p class="not">Askerler toplanır; moral asker sayısına göre ortalanır. Seçili ordunun tutumu korunur.</p>`
+        ${o.birlesebilir.length ? `<p class="not">Aynı konumdaki ordu (haritada diğer ordunun işaretine sağ tıklayarak da seçebilirsiniz):</p>
+        <ul id="birlestirListesi" class="secim-listesi">${o.birlesebilir.map((id) => {
+          const a = ozet.ordular.find((x) => x.id === id)!;
+          return `<li><button data-birlestir-sec="${id}" class="${id === seciliBirlestir ? "etkin" : ""}">${kacis(a.ad)} <small>${a.asker.toLocaleString("tr-TR")} asker</small></button></li>`;
+        }).join("")}</ul>
+        <button id="orduBirlestir" ${seciliBirlestir !== null && o.birlesebilir.includes(seciliBirlestir) ? "" : "disabled"}>Birleştir</button>
+        <p class="not">Askerler toplanır; moral asker sayısına göre ortalanır. Seçili ordunun tutumu korunur.</p>`
         : '<p class="not">Birleştirmek için bu ordu seçiliyken diğer ordunun haritadaki işaretine sağ tıklayın; varınca birleştirebilirsiniz.</p>'}
       </div>`;
     $("orduBol").onclick = () => emirGonder({ tur: "orduBol", ordu: o.id, asker: $<HTMLInputElement>("bolAsker").valueAsNumber }, "Bölme emri verildi; bir sonraki turda uygulanır.");
+    const birlestirListesi = document.getElementById("birlestirListesi");
+    if (birlestirListesi) birlestirListesi.addEventListener("click", (e) => {
+      const b = (e.target as HTMLElement).closest<HTMLElement>("[data-birlestir-sec]");
+      if (!b) return;
+      seciliBirlestir = Number(b.dataset.birlestirSec);
+      ordularPaneli();
+    });
     const birlestir = document.getElementById("orduBirlestir");
-    if (birlestir) birlestir.onclick = () => emirGonder({ tur: "orduBirlestir", ordu: o.id,
-      diger: Number($<HTMLSelectElement>("birlestirOrdu").value) }, "Birleştirme emri verildi; bir sonraki turda uygulanır.");
+    if (birlestir) birlestir.onclick = () => { if (seciliBirlestir !== null) emirGonder({ tur: "orduBirlestir", ordu: o.id,
+      diger: seciliBirlestir }, "Birleştirme emri verildi; bir sonraki turda uygulanır."); };
     for (const b of det.querySelectorAll<HTMLButtonElement>("[data-tutum]")) {
       b.onclick = async () => {
         const t = b.dataset.tutum as Tutum;
@@ -708,6 +722,7 @@ async function baslat() {
   };
   const orduSec = (id: number | null) => {
     seciliOrdu = seciliOrdu === id ? null : id;
+    seciliBirlestir = null;
     if (seciliOrdu !== null) sekmeAc("ordu");
     arayuzuGuncelle();
   };
