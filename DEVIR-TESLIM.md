@@ -1,8 +1,8 @@
 # DEVİR TESLİM — agent değişiminde kaldığın yer
 
-Son güncelleme: **2026-10-30, Claude — TASK-0020 tamamen bitti ve commit+push edildi (`be98b9e`). Kullanıcı
-"eksikleri analiz et" dedi → TASK-0021/DEC-0070 onaylandı (4 alt teslim). TASK-0021 1/4 (muharebe raporu birim
-kırılımı) kod olarak tamamlandı, henüz commit edilmedi. Doğrudan `main` üzerinde çalışılıyor (ayrı dal yok).**
+Son güncelleme: **2026-10-30, Claude — TASK-0021 1/4 commit+push edildi (`383aa12`). 2/4 (elçi küçük
+başarısızlık/yakalanma riski) kod olarak tamamlandı, henüz commit edilmedi. Doğrudan `main` üzerinde çalışılıyor
+(ayrı dal yok).**
 Bağlayıcı kurallar: `AGENTS.md`, `MASTER_SPEC.md`, `DECISIONS.md`.
 
 ## 0. En son — BURADAN BAŞLA
@@ -15,18 +15,21 @@ Bağlayıcı kurallar: `AGENTS.md`, `MASTER_SPEC.md`, `DECISIONS.md`.
   (3) AI karışık ordu toplasın, (4) AI vasallık teklif etsin. Kapsam dışı bırakılanlar: çok taraflı diplomasi,
   teknoloji ağacı genişlemesi, yerel yönetici özerkliği, gelişmiş kayıt yönetimi, bildirim merkezi — bunlar ayrı
   gelecek görevler, bu oturumda ele alınmadı.
-- **1/4 kod olarak tamamlandı, henüz commit edilmedi:** `MuharebeTarafi`/`RaporTarafi`'ye `kayipKompozisyon`
-  eklendi (`durum.ts`); gün gün (`savas.ts: muharebeGunleri`) ve takip kaybında birikimli günceller (mevcut
-  toplam `kayip` alanıyla aynı desende). Şema 25 → 26. Arayüzde rapor penceresinin kayıp sütununa, TASK-0019'da
-  zaten canlı doğrulanmış `kompozisyonMetni` yardımcısıyla tür dökümü eklendi.
-  248 sim testi (2 yeni: `muharebe-kompozisyon.test.ts`), typecheck, build geçti. **Canlı Playwright testi kısmi
-  kaldı:** asker toplama ve savaş ilanı akışı denendi (ikisi de çalıştı), ama oyuncunun fiilen karışık birimli
-  bir muharebeye girmesi (ordu sevk + düşmanla temas, birkaç adım/zamanlama gerektiriyor) bu oturumda
-  tamamlanamadı — mekanik sim testlerinde uçtan uca kanıtlı, render kodu önceden canlı doğrulanmış bir yardımcıyı
-  yeniden kullanıyor.
-- **Sırada:** TASK-0021 2/4 elçi/casus küçük başarısızlık riski. Devralan agent önce kullanıcıdan 1/4'ün commit
-  onayını istesin, sonra 2/4'e geçsin.
-- `tasks/TASK-0021.md` (yeni), `CHANGELOG.md` güncel; `DECISIONS.md` DEC-0070 eklendi. 1/4 henüz commit edilmedi.
+- **1/4 commit+push edildi (`383aa12`):** `MuharebeTarafi`/`RaporTarafi`'ye `kayipKompozisyon` eklendi
+  (`durum.ts`); gün gün ve takip kaybında birikimli günceller. Şema 25 → 26. Rapor penceresinin kayıp sütununa
+  tür dökümü eklendi. 248 sim testi (2 yeni), typecheck, build geçti. Canlı Playwright testi kısmi kaldı (asker
+  toplama/savaş ilanı denendi, fiilen karışık birimli muharebeye girme bu oturumda tamamlanamadı) — mekanik sim
+  testlerinde uçtan uca kanıtlı.
+- **2/4 kod olarak tamamlandı, henüz commit edilmedi:** elçi küçük başarısızlık/yakalanma riski. `elci.ts:
+  elciIlerlet` artık varış gününde casusluğun yakalanma desenini mirror ediyor: %15 (`ELCI_BASARISIZLIK_YUZDE`)
+  ihtimalle elçi yakalanır — ilişki bozulur (`ELCI_YAKALANMA_ILISKI` −15), bedel geri gelmez; aksi halde eskisi
+  gibi +15 ilişki ekler. Şema değişikliği yok. Devlet panelindeki elçi açıklamasına risk cümlesi eklendi.
+  249 sim testi (1 yeni: tohum taraması ile yakalanma yolunu zorlar), typecheck, build geçti; 5173'te Playwright
+  ile canlı doğrulandı (panel metni doğru, JS hatası yok).
+- **Sırada:** TASK-0021 3/4 AI karışık ordu toplasın (`yz.ts`'e dokunur, orta risk — mevcut determinizm testleri
+  korunarak ilerlenmeli). Devralan agent önce kullanıcıdan 2/4'ün commit onayını istesin, sonra 3/4'e geçsin.
+- `tasks/TASK-0021.md`, `CHANGELOG.md` güncel; `DECISIONS.md` DEC-0070 zaten commit edildi. 2/4 henüz commit
+  edilmedi.
 
 ## Arşiv — TASK-0019 ve öncesi (bu oturumun önceki kısmı)
 

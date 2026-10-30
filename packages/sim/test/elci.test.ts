@@ -1,4 +1,4 @@
-// TASK-0020 (2/3, DEC-0069): elçi gönderme.
+// TASK-0020 (2/3, DEC-0069): elçi gönderme. TASK-0021 (2/4, DEC-0070): küçük başarısızlık/yakalanma riski.
 import { describe, expect, it } from "vitest";
 import {
   degismezler, DENGE, diplomasiOnHesap, elciEngeli, emirleriUygula, emirVer, etkiEkle, gunIlerlet, iliski, kullanilabilirHazine,
@@ -51,5 +51,23 @@ describe("elçi gönderme (TASK-0020 2/3)", () => {
     d2.devletler[A].hazine = 10;
     expect(emirVer(d2, { tur: "elciGonder", hedef: B }).gecerli).toBe(false);
     expect(emirVer(d2, { tur: "elciGonder", hedef: A }).gecerli).toBe(false); // kendine gönderilemez
+  });
+
+  it("küçük bir ihtimalle yakalanır; ilişki bozulur, birikime puan eklenmez (TASK-0021 2/4)", () => {
+    let bulundu = false;
+    for (let tohum = 1; tohum < 300 && !bulundu; tohum++) {
+      const d = yeniDurum(tohum);
+      d.devletler[A].hazine = 100000;
+      sonuc(d, { tur: "elciGonder", hedef: B });
+      for (let i = 0; i < DENGE.ELCI_GUN; i++) gunIlerlet(d);
+      const son = [...d.gunluk].reverse().find((o) => o.tur === "elci");
+      if (son?.metin.includes("yakalandı")) {
+        bulundu = true;
+        expect(son.metin).toContain(String(DENGE.ELCI_YAKALANMA_ILISKI));
+        expect(iliski(d, on(d), B, A)).toBeLessThanOrEqual(0);
+        expect(degismezler(d)).toEqual([]);
+      }
+    }
+    expect(bulundu).toBe(true); // %15 olasılıkla; 300 denemede pratikte her zaman en az bir kez görülür
   });
 });

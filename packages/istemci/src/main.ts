@@ -565,7 +565,8 @@ async function baslat() {
     const elci = k.elciYolda !== null
       ? `<p class="not">🕊 Elçiniz yolda; ${k.elciYolda} gün sonra varacak.</p>`
       : `<button data-eylem="elci" data-devlet="${devlet}"${k.bekleyen === "elciGonder" ? " disabled" : ""}>${k.bekleyen === "elciGonder" ? "Elçi gönderme emri bekliyor" : "Elçi gönder"}</button>
-        <p class="not">Bedel ${DENGE.ELCI_BEDEL.toLocaleString("tr-TR")} · ${DENGE.ELCI_GUN} gün sonra ilişki +${DENGE.ELCI_ILISKI} (hediyeyle aynı birikim sınırı); hediyeden ucuz ama gecikmeli.</p>`;
+        <p class="not">Bedel ${DENGE.ELCI_BEDEL.toLocaleString("tr-TR")} · ${DENGE.ELCI_GUN} gün sonra ilişki +${DENGE.ELCI_ILISKI} (hediyeyle aynı birikim sınırı); hediyeden ucuz ama gecikmeli.
+          %${DENGE.ELCI_BASARISIZLIK_YUZDE} ihtimalle yakalanır; ilişki bozulur (${DENGE.ELCI_YAKALANMA_ILISKI}), bedel geri gelmez.</p>`;
     const ticaret = k.savasta ? "" : k.ticaretVar
       ? `<button data-eylem="ticaretBoz" data-devlet="${devlet}"${k.bekleyen ? " disabled" : ""}>${k.bekleyen === "ticaretBoz" ? "Çıkma emri bekliyor" : "Ticaret anlaşmasından çık"}</button>
         <p class="not">Liman gelirinize +%${DENGE.TICARET_ANLASMA_YUZDE} ekler.</p>`

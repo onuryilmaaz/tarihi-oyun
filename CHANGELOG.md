@@ -1,5 +1,18 @@
 # CHANGELOG
 
+## 2026-10-30 — TASK-0021 (2/4): elçi küçük başarısızlık/yakalanma riski (Claude)
+
+- **`elci.ts: elciIlerlet`** artık varış gününde casusluğun yakalanma desenini mirror ediyor: %15
+  (`ELCI_BASARISIZLIK_YUZDE`) ihtimalle elçi yakalanır — ilişki bozulur (`ELCI_YAKALANMA_ILISKI` −15, zamanla
+  söner), bedel geri gelmez; aksi halde eskisi gibi hediyeyle aynı birikim kuralına tabi +15 ilişki ekler.
+  Şema değişikliği yok (yalnızca varış anında hesaplanan bir olasılık, saklanan yeni veri yok).
+- **Arayüz:** Devlet panelindeki elçi açıklamasına risk cümlesi eklendi ("%15 ihtimalle yakalanır; ilişki
+  bozulur (−15), bedel geri gelmez").
+- 249 sim testi (1 yeni: `elci.test.ts`'e eklenen yakalanma testi, tohum taraması ile yakalanma yolunu zorlayıp
+  ilişkinin bozulduğunu ve birikime puan eklenmediğini doğruluyor), typecheck, build geçti. 5173'te Playwright
+  ile canlı doğrulandı (panel metni doğru göründü, JS hatası yok).
+- **Sırada:** TASK-0021 3/4 (AI karışık ordu toplasın). Kullanıcı testi ve commit onayı bekliyor.
+
 ## 2026-10-30 — TASK-0021 (1/4): muharebe raporunda birim kırılımı (Claude)
 
 - **`MuharebeTarafi`/`RaporTarafi`'ye `kayipKompozisyon: Kompozisyon` eklendi** (`durum.ts`): gün gün
