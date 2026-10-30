@@ -809,3 +809,14 @@ Kaynak belge: `MASTER_SPEC.md` (v1.3). Orijinal keşif çıktısı:
   Kullanıcının talebi özelliği eklemektir; agent mevcut kullanıcı kayıtlarını silmez. Commit/push izni verilmedi.
 - **Onay kaydı:** Kullanıcı: “oyun kayıtlarının hepsin silme eklensin” (2026-10-29).
 - **Durum:** GEÇERLİ
+
+## DEC-0066 — TASK-0017 onayı: ekonomi, asker basma, ordu birleştirme/ayırma, temel diplomasi
+
+- **Tarih:** 2026-10-30
+- **Seçilen karar:** TASK-0017 tek görev kartı olarak onaylandı; sıra Ekonomi → Asker basma →
+  Ordu birleştirme/ayırma → Temel diplomasi. Açık sorular: (1) vergi oranı düşük/orta/yüksek, varsayılan orta;
+  (2) saldırmazlık/ateşkes paktı süresini oyuncu seçer (12/24/36 ay, varsayılan 24); (3) ordu birleştirme/ayırma
+  arayüzünde hem checkbox listesi hem haritada tıkla-seç bulunur. Birim çeşitliliği, vasallık, çok taraflı
+  antlaşma ve borç/faiz bu kartın kapsamı dışındadır. Her alt teslim ayrı test/onay/commit adımı olarak ilerler.
+- **Onay kaydı:** Kullanıcı: “1-öneri 2- seçilsin 3-ikiside” (2026-10-30).
+- **Durum:** GEÇERLİ
