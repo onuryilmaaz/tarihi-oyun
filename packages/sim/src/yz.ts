@@ -15,6 +15,7 @@ import { insaatMaliyeti, sehirdeInsaatVar } from "./yatirim";
 import { gundenTarih } from "./takvim";
 import { barisKararlari, savasKarari } from "./yz-savas";
 import { diplomatikTeklifKarari } from "./yz-diplomasi";
+import { aylikMaasYuzde, toplamaMaliyetiYuzde, type BirimTuru } from "./birim";
 
 /** Tehdit nedeni (herkesin bildiği bilgilerden) ya da null. */
 export function tehditNedeni(d: DunyaDurumu, on: DiplomasiOnHesap, devlet: number): string | null {
@@ -57,15 +58,18 @@ export function devletKarari(d: DunyaDurumu, b: Baglam, on: DiplomasiOnHesap, de
     const bekleyen = d.askerToplamalar.filter((t) => t.devlet === devlet).reduce((t, x) => t + x.asker, 0);
     const hedef = on.arazi[devlet] * DENGE.YZ_ASKER_ARAZI_BASINA * (tehdit ? DENGE.YZ_TEHDIT_ASKER_CARPANI : 1);
     const eksik = hedef - butce.askerSayisi - bekleyen;
-    const maasPayi = Math.max(0, butce.aylikNet) * (tehdit ? 100 : DENGE.YZ_MAAS_NET_YUZDE) / 100;
-    const maasSiniri = Math.floor((maasPayi * 1000) / DENGE.AYLIK_ASKER_MAASI_BINDE);
-    const yuzde = toplamaBedelYuzde(d, devlet);
-    const paraSiniri = Math.floor((Math.max(0, para()) * 100000) / (DENGE.TOPLAMA_ASKER_BASINA_MALIYET_BINDE * yuzde));
+    if (eksik < DENGE.YZ_TOPLAMA_EN_AZ || para() <= 0) return false; // zar atmadan erken çık (gereksiz rastgele tüketimi yok)
     const sehir = [...sehirler].sort((x, y) => d.sehirler[y].insanGucu - d.sehirler[x].insanGucu || x - y)[0];
     if (sehir === undefined) return false;
+    const maasPayi = Math.max(0, butce.aylikNet) * (tehdit ? 100 : DENGE.YZ_MAAS_NET_YUZDE) / 100;
+    // TASK-0021 (3/4): tehdit altında süvari ağırlıklı, barışta ucuz okçu ağırlıklı, aksi halde piyade.
+    const birim: BirimTuru = tehdit ? "suvari" : aralik(d, 10) < DENGE.YZ_OKCU_OLASILIK ? "okcu" : "piyade";
+    const maasSiniri = Math.floor((maasPayi * 100000) / (DENGE.AYLIK_ASKER_MAASI_BINDE * aylikMaasYuzde(birim)));
+    const yuzde = toplamaBedelYuzde(d, devlet);
+    const paraSiniri = Math.floor((Math.max(0, para()) * 10000000) / (DENGE.TOPLAMA_ASKER_BASINA_MALIYET_BINDE * yuzde * toplamaMaliyetiYuzde(birim)));
     const n = Math.min(eksik, maasSiniri, paraSiniri, d.sehirler[sehir].insanGucu);
-    if (n < DENGE.YZ_TOPLAMA_EN_AZ || toplamaMaliyeti(n, yuzde) > para()) return false;
-    if (!dene({ tur: "askerTopla", sehir, asker: n, devlet })) return false;
+    if (n < DENGE.YZ_TOPLAMA_EN_AZ || toplamaMaliyeti(n, yuzde, birim) > para()) return false;
+    if (!dene({ tur: "askerTopla", sehir, asker: n, devlet, birim })) return false;
     d.yzSayac.asker += n;
     return true;
   };

@@ -144,6 +144,7 @@ export const DENGE = {
   YZ_MAAS_NET_YUZDE: 50, // yeni askerin maaşı aylık fazlanın en çok bu yüzdesi
   YZ_TOPLAMA_EN_AZ: 500,
   YZ_DUSMANCA_ESIK: -40, // bu ilişkideki büyük komşu tehdit sayılır
+  YZ_OKCU_OLASILIK: 6, // TASK-0021 (3/4): tehdit yokken /10 ihtimalle piyade yerine ucuz okçu toplanır
   // 6c — AI savaş ve barış (DEC-0040); hepsi [TASLAK]
   YZ_SAVAS_ILISKI: -30, // en az bu kadar kötü ilişki
   YZ_SAVAS_GUC_YUZDE: 150, // kendi ordusu / (hedef + müttefikleri tahmini) en az bu yüzde

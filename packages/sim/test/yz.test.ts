@@ -62,6 +62,37 @@ describe("AI ekonomi (6b)", () => {
     expect(d.askerToplamalar.filter((t) => t.devlet === B).length).toBe(1);
     expect(d.devletler[B].hazine).toBeGreaterThanOrEqual(yedek(d, B));
     expect(degismezler(d)).toEqual([]);
+    // TASK-0021 (3/4): tehdit altındaki AI artık süvari toplar (piyadeden daha pahalı/hızlı/saldırgan)
+    expect(d.askerToplamalar.find((t) => t.devlet === B)!.birim).toBe("suvari");
+  });
+
+  it("barışta AI zamanla hem okçu hem piyade toplar (TASK-0021 3/4)", () => {
+    const S: SenaryoVerisi = {
+      id: "yz-test-2", surum: "1", baslangic: { yil: 1453, ay: 4, gun: 1 }, varsayilanOyuncu: "a",
+      devletler: [{ id: "a", ad: "A" }, { id: "b", ad: "B" }],
+      birimler: ["a", "b", "b"].map((devlet) => ({ devlet })),
+      sehirler: [
+        { ad: "A1", devlet: "a", birim: 0, dugum: 0, x: 0, y: 0, baskent: true, nufus: 40000 },
+        { ad: "B1", devlet: "b", birim: 1, dugum: 1, x: 10000, y: 0, baskent: true, nufus: 40000 },
+      ],
+      ag: { dugumler: [0, 1, 2].map((b) => ({ b, x: b * 10000, y: 0, kx: 10000, ky: 10000, z: 100 })),
+        kenarlar: [0, 1].map((a) => ({ a, b: a + 1, mx: a * 10000 + 5000, my: 0, da: 5000, db: 5000, n: 0, g: 0 })) },
+    };
+    const ag = agHazirla(S.ag!);
+    const gorulenler = new Set<string>();
+    for (let tohum = 1; tohum < 60 && gorulenler.size < 2; tohum++) {
+      const d = baslangicDurumu(S, { tohum });
+      d.ordular = d.ordular.filter((o) => o.devlet !== B); // ordusu yok: hedef büyüklüğün altında
+      d.devletler[B].hazine = 20000;
+      const on = diplomasiOnHesap(d, ag);
+      devletKarari(d, { ag }, on, B);
+      const t = d.askerToplamalar.find((x) => x.devlet === B);
+      if (t) gorulenler.add(t.birim);
+      expect(degismezler(d)).toEqual([]);
+    }
+    expect(gorulenler.has("okcu")).toBe(true);
+    expect(gorulenler.has("piyade")).toBe(true);
+    expect(gorulenler.has("suvari")).toBe(false); // barışta süvari toplamaz
   });
 
   it("yıllık dünya özeti oyuncuya yalnızca toplu sayı verir", () => {

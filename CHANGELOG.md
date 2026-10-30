@@ -1,5 +1,22 @@
 # CHANGELOG
 
+## 2026-10-30 — TASK-0021 (3/4): AI karışık ordu toplasın (Claude)
+
+- **`yz.ts: devletKarari`'nin `asker()` kararı artık tehdit altında süvari, barışta %60 okçu/%40 piyade**
+  (`YZ_OKCU_OLASILIK: 6`/10) seçiyor; maaş/maliyet sınırları seçilen birimin gerçek maliyet/maaş yüzdesine göre
+  hesaplanıyor (önceden hep piyade varsayıyordu, süvari/okçu için yanlış bütçe sınırı verirdi).
+- Zar atmadan önce artık `eksik`/`para()` eşiği kontrol ediliyor: hem gereksiz rastgele tüketimini engelliyor
+  hem de "parası yedeğin altındaysa hiçbir şey yapmaz" determinizm invariantını korumayı kolaylaştırıyor
+  (mevcut `casusluk` kararındaki "önce bedel, sonra zar" deseniyle tutarlı).
+- AI'nın güç kıyas formülleri bilinçli olarak değişmedi (zaten yaklaşık sayı kullanıyorlar, AT-013); şema
+  değişikliği yok; yeni arayüz yüzeyi yok (oyuncu düşman ordu kompozisyonunu zaten göremiyor).
+- 250 sim testi (2 yeni: tehdit altında süvari seçtiğini, barışta tohum taramasıyla hem okçu hem piyade
+  gördüğünü doğruluyor), typecheck, build geçti. Yeni görsel yüzey olmadığı için canlı Playwright kontrolü
+  gerekmedi; 10 yıllık `senaryo-1453.test.ts` determinizm testi de aynen geçti (yeni rastgele tüketimi bu
+  testin tohumunda invariant'ı bozmadı).
+- **Sırada:** TASK-0021 4/4 (AI vasallık teklif etsin) — son ve en karmaşık alt teslim. Kullanıcı testi ve
+  commit onayı bekliyor.
+
 ## 2026-10-30 — TASK-0021 (2/4): elçi küçük başarısızlık/yakalanma riski (Claude)
 
 - **`elci.ts: elciIlerlet`** artık varış gününde casusluğun yakalanma desenini mirror ediyor: %15

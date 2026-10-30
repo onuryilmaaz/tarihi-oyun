@@ -1,8 +1,7 @@
 # DEVİR TESLİM — agent değişiminde kaldığın yer
 
-Son güncelleme: **2026-10-30, Claude — TASK-0021 1/4 commit+push edildi (`383aa12`). 2/4 (elçi küçük
-başarısızlık/yakalanma riski) kod olarak tamamlandı, henüz commit edilmedi. Doğrudan `main` üzerinde çalışılıyor
-(ayrı dal yok).**
+Son güncelleme: **2026-10-30, Claude — TASK-0021 2/4 commit+push edildi (`337b0f1`). 3/4 (AI karışık ordu
+toplasın) kod olarak tamamlandı, henüz commit edilmedi. Doğrudan `main` üzerinde çalışılıyor (ayrı dal yok).**
 Bağlayıcı kurallar: `AGENTS.md`, `MASTER_SPEC.md`, `DECISIONS.md`.
 
 ## 0. En son — BURADAN BAŞLA
@@ -20,15 +19,26 @@ Bağlayıcı kurallar: `AGENTS.md`, `MASTER_SPEC.md`, `DECISIONS.md`.
   tür dökümü eklendi. 248 sim testi (2 yeni), typecheck, build geçti. Canlı Playwright testi kısmi kaldı (asker
   toplama/savaş ilanı denendi, fiilen karışık birimli muharebeye girme bu oturumda tamamlanamadı) — mekanik sim
   testlerinde uçtan uca kanıtlı.
-- **2/4 kod olarak tamamlandı, henüz commit edilmedi:** elçi küçük başarısızlık/yakalanma riski. `elci.ts:
-  elciIlerlet` artık varış gününde casusluğun yakalanma desenini mirror ediyor: %15 (`ELCI_BASARISIZLIK_YUZDE`)
-  ihtimalle elçi yakalanır — ilişki bozulur (`ELCI_YAKALANMA_ILISKI` −15), bedel geri gelmez; aksi halde eskisi
-  gibi +15 ilişki ekler. Şema değişikliği yok. Devlet panelindeki elçi açıklamasına risk cümlesi eklendi.
-  249 sim testi (1 yeni: tohum taraması ile yakalanma yolunu zorlar), typecheck, build geçti; 5173'te Playwright
-  ile canlı doğrulandı (panel metni doğru, JS hatası yok).
-- **Sırada:** TASK-0021 3/4 AI karışık ordu toplasın (`yz.ts`'e dokunur, orta risk — mevcut determinizm testleri
-  korunarak ilerlenmeli). Devralan agent önce kullanıcıdan 2/4'ün commit onayını istesin, sonra 3/4'e geçsin.
-- `tasks/TASK-0021.md`, `CHANGELOG.md` güncel; `DECISIONS.md` DEC-0070 zaten commit edildi. 2/4 henüz commit
+- **2/4 commit+push edildi (`337b0f1`):** elçi küçük başarısızlık/yakalanma riski. `elci.ts: elciIlerlet` artık
+  varış gününde casusluğun yakalanma desenini mirror ediyor: %15 ihtimalle elçi yakalanır — ilişki bozulur,
+  bedel geri gelmez. Şema değişikliği yok. 249 sim testi, typecheck, build geçti; 5173'te canlı doğrulandı.
+- **3/4 kod olarak tamamlandı, henüz commit edilmedi:** AI karışık ordu toplasın. `yz.ts: devletKarari`'nin
+  `asker()` kararı artık tehdit altında süvari, barışta %60 okçu/%40 piyade (`YZ_OKCU_OLASILIK`) seçiyor;
+  maaş/maliyet sınırları artık seçilen birimin gerçek yüzdesine göre hesaplanıyor (önceden hep piyade
+  varsayıyordu — süvari/okçu için yanlış bütçe sınırı verirdi, bu da bir yan düzeltme). **Determinizm notu:**
+  Yeni `aralik()` çağrısı birkaç golden-hash testini bozdu (TASK-0020 1/3'teki kesinti-sıklığı sorunuyla aynı
+  kategori); `para() <= 0` ise zar atmadan erken çıkan bir kontrol eklenerek hem gereksiz rastgele tüketimi
+  önlendi hem de "parası yedeğin altındaysa hiçbir şey yapmaz" testi (ve elçi testleri) yeniden yeşile döndü —
+  casusluk kararındaki "önce bedel, sonra zar" deseniyle tutarlı. Şema değişikliği yok, yeni arayüz yüzeyi yok
+  (oyuncu düşman kompozisyonunu zaten göremiyor, AT-013). 250 sim testi (2 yeni), typecheck, build geçti.
+  Yeni görsel yüzey olmadığı için canlı Playwright kontrolü gerekmedi; 10 yıllık `senaryo-1453.test.ts`
+  determinizm testi de aynen geçti.
+- **Sırada:** TASK-0021 4/4 AI vasallık teklif etsin — **en karmaşık ve en riskli alt teslim**, dikkatli
+  tasarım gerekir (oyuncunun asla zorla vasal yapılmaması şart — yalnızca teklif/kabul/ret; TASK-0020 1/3'teki
+  "gelen kutusu AŞIRI sıklıkta teklif gönderiyor" riskiyle aynı kategori, aynı komşuluk/soğuma kısıtları
+  uygulanmalı). Devralan agent önce kullanıcıdan 3/4'ün commit onayını istesin, sonra 4/4'e geçsin.
+  4/4 bitince TASK-0021 tamamen kapanır; kullanıcıya yeni bir sonraki konu (varsa) sorulmalı.
+- `tasks/TASK-0021.md`, `CHANGELOG.md` güncel; `DECISIONS.md` DEC-0070 zaten commit edildi. 3/4 henüz commit
   edilmedi.
 
 ## Arşiv — TASK-0019 ve öncesi (bu oturumun önceki kısmı)
