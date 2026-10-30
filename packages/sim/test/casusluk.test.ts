@@ -2,7 +2,7 @@
 import { describe, expect, it } from "vitest";
 import {
   agHazirla, baslangicDurumu, casusGorevleriIlerlet, degismezler, DENGE, diplomasiOnHesap, durumOzeti, emirleriUygula, emirVer,
-  gorunurYabanciOrdular, gunIlerlet, iliskiBilesenleri, istihbaratVar, kaydet, kullanilabilirHazine, riskBilesenleri, SEMA_SURUMU, yukle,
+  disDestek, gorunurYabanciOrdular, gunIlerlet, iliskiBilesenleri, istihbaratVar, kaydet, kullanilabilirHazine, riskBilesenleri, SEMA_SURUMU, yukle,
   type DunyaDurumu, type GorevTuru, type SenaryoVerisi,
 } from "../src";
 
@@ -34,6 +34,19 @@ function gorev(tohum: number, tur: GorevTuru, sehir: number | null = null) {
 const basarili = (d: DunyaDurumu) => d.gunluk.some((o) => /başarılı/.test(o.metin));
 
 describe("casusluk (8c)", () => {
+  it("isyan desteği alınan kendi şehrini etkilemez; eski etki günlük temizlenir (H-06)", () => {
+    const d = yeni();
+    d.casusEtkileri.push({ devlet: A, hedef: B, tur: "isyan", sehir: B1, bitis: d.gun + 90 });
+    expect(disDestek(d, B1)).toBe(DENGE.CASUS_ISYAN_RISK);
+    d.sehirler[B1].devlet = A;
+    expect(disDestek(d, B1)).toBe(0);
+    const copy = yukle(kaydet(d));
+    expect(disDestek(copy, B1)).toBe(0);
+    casusGorevleriIlerlet(copy);
+    expect(copy.casusEtkileri).toHaveLength(0);
+    copy.sehirler[B1].devlet = B; // eski sahibine dönse bile bitmiş destek dirilmez
+    expect(disDestek(copy, B1)).toBe(0);
+  });
   it("doğrulama: hedef, şehir, eş zamanlı görev sınırı ve bedel (borç yok)", () => {
     const d = yeni();
     expect(emirVer(d, { tur: "casusluk", hedef: A, gorev: "askeri", sehir: null }).gecerli).toBe(false);

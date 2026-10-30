@@ -5,7 +5,7 @@ import {
   agHazirla, baslangicDurumu, durumOzeti, emirVer, gorunurYabanciOrdular, kalanYol, kaydet, orduKonumu, orduRotasi,
   tarihMetni, turSuresiAyarla, turuIlerlet, yukle, TUR_SURESI_ADLARI, type Baglam, type DunyaDurumu,
   aylikMaas, devletMaasi, emirDogrula, ikmalDurumu, kullanilabilirHazine, kullanilabilirInsanGucu, DENGE,
-  barisBedeli, barisDogrula, kusatmaGucu, orduKusatmasi, savasSkoru,
+  barisBedeli, barisDevirOzeti, barisDogrula, kusatmaGucu, orduKusatmasi, savasSkoru,
   butceOzeti, insaatMaliyeti, insaatSuresi, sehirYapiGeliri, yapiSeviyesi, yapiEnYuksek, pazarGeliriSeviyeBasina, YAPI_ADLARI, YAPI_TURLERI,
   diplomasiOnHesap, etkiDegeri, hediyePuanBedeli, iliski, iliskiBilesenleri, ittifakDegerlendir, komsuMu, muttefik, muttefikleri, savasta,
   asayisAskeri, gerekenAsayis,
@@ -215,7 +215,15 @@ function ozet(durum: DunyaDurumu): Ozet {
   };
 }
 
+// Tur hesaplanırken hata olursa dünya yarım kalmış olabilir (10b): yalnızca yeni oyun ya da kayıt yüklemeye izin verilir
+let bozuk = false;
+
 function isle(i: Istek): Yanit {
+  if (bozuk && i.tip !== "yeniOyun" && i.tip !== "yukle") {
+    return { id: i.id, tamam: false, hata: "Simülasyon bir hatadan sonra güvenilir değil; son otomatik kayda dönün." };
+  }
+  if (i.tip === "yeniOyun" || i.tip === "yukle") bozuk = false;
+  if (i.tip === "testSimHatasi") { bozuk = true; throw new Error("Test: simülasyon tur ortasında durdu (geliştirici denemesi)"); }
   switch (i.tip) {
     case "barisOnizle": {
       if (!d) return { id: i.id, tamam: false, hata: "Oyun başlatılmadı." };
@@ -225,6 +233,7 @@ function isle(i: Istek): Yanit {
         puan: karsi >= 0 ? barisBedeli(d, d.ayarlar.oyuncu, karsi, i.talep) : 0,
         skor: karsi >= 0 ? savasSkoru(d, d.ayarlar.oyuncu, karsi).skor : 0,
         dogrulama: barisDogrula(d, i.talep),
+        devir: karsi >= 0 ? barisDevirOzeti(d, karsi, i.talep) : null,
       } };
     }
     case "yeniOyun":
@@ -278,7 +287,9 @@ self.onmessage = (e: MessageEvent<Istek>) => {
   try {
     y = isle(e.data);
   } catch (hata) {
-    y = { id: e.data.id, tamam: false, hata: hata instanceof Error ? hata.message : String(hata) };
+    if (e.data.tip === "turuIlerlet") bozuk = true;
+    y = { id: e.data.id, tamam: false, hata: hata instanceof Error ? hata.message : String(hata),
+      yigin: hata instanceof Error ? hata.stack : undefined, bozuk };
   }
   self.postMessage(y);
 };

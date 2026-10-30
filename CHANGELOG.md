@@ -1,5 +1,33 @@
 # CHANGELOG
 
+## 2026-10-29 — TASK-0015: oynanış hatalarının düzeltilmesi (Codex)
+
+- DEC-0064 ile H-01…H-07, ilhak arayüzü ve kayıt/test doğrulaması düzeltildi; kullanıcı kabulü bekleniyor.
+- Bütçe düşürünce geçmiş harcama ve kayıt yüklenebilirliği korunur. Ortak `savas-sonu.ts` ilhakın bitirdiği üçüncü devlet
+  savaşlarındaki muharebe/işgali temizler; sağlam içerik özetli eski savaş kalıntıları yüklemede açıklamayla onarılır.
+- Barışta devredilen ve kalan arazi/şehir, tam ilhak bilgisi; ayrı sahibi olan şehre harita etiketi ve çevre sahipliği açıklaması.
+- Dünya değişiminde otomatik kayıt dönemi/rapor önbelleği sıfırlanır. Ayaklanmada tersane bekler; taşınan asker toplamda sayılır;
+  fetih sonrası geçersiz isyan desteği uygulanmaz. Şema 18 korunur.
+- 198 test; gerçek hareket ağıyla kampanya, kayıt/determinizm ve ilişkisel değişmezler. Tip kontrolü ve derleme başarılı.
+- Ayrıntılar ve tıklama adımları: `docs/qa/BUG-DUZELTMELERI-TEST.md`. Commit/push yapılmadı.
+
+## 2026-10-29 — TASK-0014: oynanış hataları incelemesi (Codex)
+
+- DEC-0063: kullanıcı Osmanlı–Eflak ilhakı ve benzer sorunların ayrıntılı araştırılmasını istedi.
+- `docs/qa/OYNANIS-HATA-INCELEMESI.md`: 7 doğrulanmış oynanış hatası; ilhak önizlemesi, kayıt doğrulaması ve test kapsamı bulguları;
+  tekrar üretme sonuçları ve düzeltme sırası. Üretim kodu düzeltmesi yapılmadı.
+- 190 test, typecheck ve build geçti; 5173'te ayrı profil ve gerçek hareket ağıyla 3 tohum × 10 yıl denendi.
+- `DEVIR-TESLIM.md`: güncel iş ve araştırma sonucu öne alındı; eski notlar arşiv olarak korundu. Commit/push yapılmadı.
+
+## 2026-10-29 — TASK-0013 / 10b: hata yakalama ve kurtarma (Claude)
+
+- DEC-0062: 10a kabul; otomatik kayıt sıklığı ayarı istendi.
+- İstemci: genel hata yakalama (arayüz hataları, reddedilen sözler, simülasyon işçisinin çökmesi), oyunun kendi hata penceresi,
+  yerel **hata raporu** dosyası (kişisel veri yok, gönderim yok), **son otomatik kayda dön** kurtarması (işçi yeniden başlatılır,
+  eski otomatik kayıtlara sırayla düşer). İşçi tur ortasındaki hatadan sonra yeni oyun/yükleme dışındaki istekleri reddeder.
+- Ayar: **Otomatik kayıt** sıklığı (her tur / oyunda ayda bir / yılda bir / kapalı). `surum.ts`: 0.9.0.
+- `docs/qa/ASAMA-10B-TEST.md`.
+
 ## 2026-10-29 — TASK-0013 / 10a: kayıt güvenilirliği (Claude)
 
 - DEC-0061: Aşama 10 kartı (sürüm 0.9.0; dağıtım yalnızca yerel zip).

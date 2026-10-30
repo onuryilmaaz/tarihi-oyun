@@ -1,8 +1,43 @@
 import { describe, expect, it } from "vitest";
-import { KayitHatasi, SEMA_SURUMU, durumOzeti, kaydet, turSuresiAyarla, turuIlerlet, yukle } from "../src";
+import { KayitHatasi, SEMA_SURUMU, degismezler, durumOzeti, kaydet, muharebeleriBaslat, turSuresiAyarla, turuIlerlet, yukle } from "../src";
 import { yeniDurum } from "./yardimci";
 
 describe("kayıt / yükleme", () => {
+  it("kesirli, eksik ve aralık dışı oyuncu indeksi özeti doğru olsa da reddedilir (K-01)", () => {
+    for (const oyuncu of [0.5, -1, 999, null, "0", undefined]) {
+      const p = JSON.parse(kaydet(yeniDurum()));
+      p.durum.ayarlar.oyuncu = oyuncu;
+      p.ozet = durumOzeti(p.durum);
+      expect(() => yukle(JSON.stringify(p))).toThrow(/oyuncu devleti geçersiz/);
+    }
+  });
+
+  it("değişmezler bitmiş savaşı yakalar; eski H-02 kaydı açık günlük kaydıyla onarılır (T-02)", () => {
+    const d = yeniDurum();
+    const ordu = { id: 1, ad: "B Ordusu", devlet: 1, asker: 10000, dugum: 0, x: 0, y: 0, hiz: 1000,
+      rota: [], ilerleme: 0, hedef: null, moral: 1000, tutum: "dengeli" as const, cekiliyor: false, muharebe: null };
+    d.ordular = [ordu, { ...ordu, id: 2, ad: "C Ordusu", devlet: 2 }];
+    d.sonrakiOrduId = 3;
+    d.savaslar.push({ id: d.sonrakiSavasId++, saldiran: 1, savunan: 2, baslangic: d.gun });
+    muharebeleriBaslat(d);
+    d.savaslar = []; // eski hata: savaş silinmiş, muharebe ve işgal kalmış
+    d.birimler.forEach((b) => { if (b.sahip === 1) b.sahip = b.kontrol = 0; });
+    d.sehirler.forEach((s) => { if (s.devlet === 1) s.devlet = s.kontrol = 0; });
+    d.birimler[8].kontrol = 1;
+    d.sehirler[4].kontrol = 1;
+    expect(degismezler(d)).toEqual(expect.arrayContaining([
+      expect.stringContaining("bitmiş savaşa"), expect.stringContaining("araziyi yıkılmış"), expect.stringContaining("şehri yıkılmış"),
+    ]));
+    const e = yukle(kaydet(d));
+    expect(e.muharebeler).toHaveLength(0);
+    expect(e.ordular.every((o) => o.muharebe === null)).toBe(true);
+    expect(e.birimler[8].kontrol).toBe(2);
+    expect(e.sehirler[4].kontrol).toBe(2);
+    expect(e.gunluk.at(-1)?.tur).toBe("kayit-onarildi");
+    expect(degismezler(e)).toEqual([]);
+    const p = JSON.parse(kaydet(d)); p.durum.devletler[0].hazine++;
+    expect(() => yukle(JSON.stringify(p))).toThrow(KayitHatasi); // özeti bozuk dosya onarımla kabul edilmez
+  });
   it("AT-016 iskeleti: kaydet → yükle → devam = kesintisiz devam", () => {
     const a = yeniDurum();
     turSuresiAyarla(a, "ceyrek");

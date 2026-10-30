@@ -97,7 +97,7 @@ describe("ordu hareketi", () => {
     expect(yil.varis).toBe(hafta.varis);
     while (hafta.d.gun < yil.d.gun) gunIlerlet(hafta.d, B); // aynı bağlam: AI kararları ağa bağlıdır
     expect(dunyaOzeti(hafta.d)).toBe(dunyaOzeti(yil.d));
-  });
+  }, 30000); // gerçek dünyadaki iki kampanya paralel test yükünde 5 saniyeyi aşabilir
 
   it("yürüyüş sırasında kayıt/yükleme yolculuğu korur; durdurulan ordu bulunduğu yerde kalır", () => {
     const d = yeni();

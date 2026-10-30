@@ -20,7 +20,7 @@ import { insaatlariIlerlet } from "./yatirim";
 import { arastirmalariIlerlet } from "./teknoloji";
 import { diplomasiSonumu } from "./diplomasi";
 import { yzKararlari, yzYillikOzet } from "./yz";
-import { seferKararlari, teklifSureleri } from "./yz-savas";
+import { seferKararlari, teklifSureleri, yikilanDevletleriTemizle } from "./yz-savas";
 import { hukumdarlariIlerlet } from "./hanedan";
 import { iskanlariIlerlet, nufusArtisi, savasGocu } from "./nufus";
 
@@ -73,6 +73,7 @@ export const SISTEMLER: Sistem[] = [
   // 6c: savaştaki AI orduları birkaç günde bir yeni hedef alır; oyuncuya gelen teklifler 30 gün geçerli
   { id: "yz-sefer", siklik: "gunluk", calistir: seferKararlari },
   { id: "baris-teklif-suresi", siklik: "gunluk", calistir: teklifSureleri },
+  { id: "yikilan-devletler", siklik: "gunluk", calistir: yikilanDevletleriTemizle },
   // 7b: yoldaki iskânlar; aylık savaş kaybı/göçü; yıllık doğal artış (test amaçlı günlük rastgele artış kaldırıldı, DEC-0045)
   { id: "iskan", siklik: "gunluk", calistir: iskanlariIlerlet },
   { id: "istikrar", siklik: "aylik", calistir: istikrarAyi },

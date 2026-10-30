@@ -390,7 +390,7 @@ export function degismezler(d: DunyaDurumu): string[] {
     if (!tam(c.nufus) || c.nufus < 0) h.push(`şehir ${i} nüfusu geçersiz`);
     if (!tam(c.insanGucu) || c.insanGucu < 0) h.push(`şehir ${i} insan gücü geçersiz`);
     if (!tam(c.sur) || c.sur < 0 || !tam(c.garnizon) || c.garnizon < 0) h.push(`şehir ${i} savunması geçersiz`);
-    if (c.devlet < 0 || c.devlet >= n) h.push(`şehir ${i} devleti geçersiz`);
+    if (!tam(c.devlet) || c.devlet < 0 || c.devlet >= n) h.push(`şehir ${i} devleti geçersiz`);
     if (!tam(c.kontrol) || c.kontrol < 0 || c.kontrol >= n) h.push(`şehir ${i} kontrolü geçersiz`);
   });
   if (!Array.isArray(d.askerToplamalar)) h.push("asker toplama listesi eksik");
@@ -402,7 +402,7 @@ export function degismezler(d: DunyaDurumu): string[] {
   d.ordular.forEach((o, i) => {
     if (idler.has(o.id)) h.push(`ordu ${i} kimliği tekrar ediyor`);
     idler.add(o.id);
-    if (o.devlet < 0 || o.devlet >= n) h.push(`ordu ${i} devleti geçersiz`);
+    if (!tam(o.devlet) || o.devlet < 0 || o.devlet >= n) h.push(`ordu ${i} devleti geçersiz`);
     if (!tam(o.asker) || o.asker < 0) h.push(`ordu ${i} asker sayısı geçersiz`);
     if (![o.x, o.y, o.dugum, o.hiz, o.ilerleme].every(tam) || o.hiz <= 0) h.push(`ordu ${i} konum/hız tam sayı değil`);
     if (o.rota.some((a) => ![a.x, a.y, a.d, a.m].every(tam) || a.m <= 0)) h.push(`ordu ${i} rotası geçersiz`);
@@ -504,7 +504,8 @@ export function degismezler(d: DunyaDurumu): string[] {
   for (const g of d.gemiInsalari) if (!d.sehirler[g.sehir] || (d.deniz.limanlar[g.sehir] ?? -1) < 0 || !GEMI_TURLERI.includes(g.gemi)
     || !tam(g.adet) || g.adet <= 0 || !tam(g.kalanGun) || g.kalanGun <= 0) h.push("gemi inşası geçersiz");
   const yy = d.yerelYonetim;
-  if (!yy || ![yy.butce, yy.altSinir, yy.harcanan].every((x) => tam(x) && x >= 0) || yy.harcanan > yy.butce) h.push("yerel yönetim geçersiz");
+  // Tavan sonradan düşürülebilir; bu ay gerçekleşmiş harcama yeni tavandan büyük olabilir.
+  if (!yy || ![yy.butce, yy.altSinir, yy.harcanan].every((x) => tam(x) && x >= 0)) h.push("yerel yönetim geçersiz");
   d.sehirler.forEach((c, i) => { if (typeof c.yonetici !== "boolean") h.push(`şehir ${i} yönetici alanı geçersiz`); });
   const y = d.yzSayac;
   if (!y || ![y.insaat, y.arastirma, y.asker].every((x) => tam(x) && x >= 0)) h.push("AI sayacı geçersiz");
@@ -520,6 +521,13 @@ export function degismezler(d: DunyaDurumu): string[] {
     if (!d.devletler[i.a] || !d.devletler[i.b] || i.a >= i.b || ittifak.has(`${i.a}:${i.b}`)) h.push("ittifak geçersiz");
     ittifak.add(`${i.a}:${i.b}`);
   }
-  if (d.ayarlar.oyuncu < 0 || d.ayarlar.oyuncu >= n) h.push("oyuncu devleti geçersiz");
+  if (!d.ayarlar || !tam(d.ayarlar.oyuncu) || d.ayarlar.oyuncu < 0 || d.ayarlar.oyuncu >= n) h.push("oyuncu devleti geçersiz");
+  const yasayan = new Set([...d.birimler.map((b) => b.sahip), ...d.sehirler.map((s) => s.devlet)]);
+  const savasVar = (a: number, b: number) => d.savaslar.some((s) =>
+    (s.saldiran === a && s.savunan === b) || (s.saldiran === b && s.savunan === a));
+  for (const m of d.muharebeler) if (!savasVar(m.taraflar[0].devlet, m.taraflar[1].devlet))
+    h.push(`savaş ilişkisi: muharebe ${m.id} bitmiş savaşa ait`);
+  for (const b of d.birimler) if (b.kontrol >= 0 && !yasayan.has(b.kontrol)) h.push("savaş ilişkisi: araziyi yıkılmış devlet kontrol ediyor");
+  for (const s of d.sehirler) if (!yasayan.has(s.kontrol)) h.push("savaş ilişkisi: şehri yıkılmış devlet kontrol ediyor");
   return h;
 }

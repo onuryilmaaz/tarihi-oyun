@@ -19,6 +19,22 @@ const hazirla = (butce: number, hazine = 10000) => {
 const otomatik = (d: DunyaDurumu) => d.insaatlar.filter((i) => i.devlet === A);
 
 describe("yerel yönetim (7d)", () => {
+  it("harcamadan sonra tavan düşürülünce geçmiş harcama ve kayıt yüklenebilirliği korunur (H-01)", () => {
+    const d = hazirla(400);
+    yerelYoneticiler(d, B);
+    const hazine = d.devletler[A].hazine;
+    expect(d.yerelYonetim.harcanan).toBe(300);
+    expect(yerelYonetimAyarla(d, { butce: 0 })).toEqual({ gecerli: true });
+    expect(d.yerelYonetim.harcanan).toBe(300);
+    expect(degismezler(d)).toEqual([]);
+    const e = yukle(kaydet(d));
+    expect(e.yerelYonetim).toEqual({ butce: 0, altSinir: 0, harcanan: 300 });
+    yerelYoneticiler(e, B); // sonraki ayın sıfır tavanı harcamayı durdurur
+    expect(e.devletler[A].hazine).toBe(hazine);
+    expect(yerelYonetimAyarla(d, { sehir: A1, acik: false, butce: 50, altSinir: -1 }).gecerli).toBe(false);
+    expect(d.sehirler[A1].yonetici).toBe(true);
+    expect(d.yerelYonetim.butce).toBe(0);
+  });
   it("varsayılan kapalı ve bütçe 0: hiçbir şey harcanmaz; ayar doğrulanır", () => {
     const d = yeniDurum();
     d.devletler[A].hazine = 10000;

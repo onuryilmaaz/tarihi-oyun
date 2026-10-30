@@ -99,13 +99,20 @@ export function barisKararlari(d: DunyaDurumu, b: Baglam, devlet: number): void 
       continue;
     }
     // İki AI: kazanan dayatır (kaybeden aynı kuralla kabul eder); dengeli uzun savaşı küçük indeksli taraf bitirir
+    const bos = { savas: w.id, birimler: [], sehirler: [], tazminat: 0 };
     if (skor >= DENGE.YZ_BARIS_SKOR) {
       const talep = talepKur(d, w.id, devlet, karsi, skor);
-      if (barisDogrula(d, talep, devlet).gecerli) barisiUygula(d, b, talep, devlet);
+      if (barisDogrula(d, talep, devlet).gecerli) { barisiUygula(d, b, talep, devlet); continue; }
     } else if (yorgun && devlet < karsi) {
       const alan = skor >= 0 ? devlet : karsi;
-      const talep = { savas: w.id, birimler: [], sehirler: [], tazminat: 0 };
+      if (barisDogrula(d, bos, alan).gecerli) { barisiUygula(d, b, bos, alan); continue; }
+    }
+    // Güvenlik ağı: talep hiç geçerli kurulamıyorsa (skor iki yönden farklı ölçeklenir) savaş sonsuza dek sürmesin (9e/mantık)
+    if (devlet < karsi && sure >= 2 * DENGE.YZ_SAVAS_YORGUNLUK_GUN) {
+      const alan = skor >= 0 ? devlet : karsi, veren = alan === devlet ? karsi : devlet;
+      const talep = talepKur(d, w.id, alan, veren, Math.max(0, savasSkoru(d, alan, veren).skor));
       if (barisDogrula(d, talep, alan).gecerli) barisiUygula(d, b, talep, alan);
+      else if (barisDogrula(d, bos, alan).gecerli) barisiUygula(d, b, bos, alan);
     }
   }
 }
@@ -186,3 +193,6 @@ export function seferKararlari(d: DunyaDurumu, b: Baglam): void {
     }
   }
 }
+
+// Ortak savaş temizliği: barış anında ve günlük sistemde aynı yol.
+export { yikilanDevletleriTemizle } from "./savas-sonu";

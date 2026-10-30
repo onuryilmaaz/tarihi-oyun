@@ -1,7 +1,7 @@
 // DOM üstü etiketler: devlet adları (iç daireye sığacak boyutta) ve şehir adları.
 // Öncelik sırası: devletler (alana göre) → başkentler → diğer şehirler; çakışan etiket gizlenir.
 
-import type { Harita } from "./veri";
+import { birimBul, type Harita } from "./veri";
 import type { Tema } from "./temalar";
 
 export interface Gorunum { cx: number; cy: number; z: number; w: number; h: number }
@@ -53,7 +53,21 @@ export class Etiketler {
     }
     const sehirler = h.paket.sehirler.map((s, i) => ({ s, i }))
       .sort((a, b) => b.s.b - a.s.b || h.paket.devletler[b.s.d].alan - h.paket.devletler[a.s.d].alan);
-    for (const { s } of sehirler) this.ekle(s.b ? "baskent" : "sehir", s.ad, s.x, s.y, 0);
+    for (const { s } of sehirler) {
+      const bi = birimBul(h, s.x, s.y), cevre = h.paket.birimler[bi]?.d;
+      const ayri = cevre !== undefined && cevre !== s.d;
+      const sahip = h.paket.devletler[s.d].ad;
+      this.ekle(s.b ? "baskent" : "sehir", ayri ? `⚑ ${s.ad} · ${sahip}` : s.ad, s.x, s.y, 0);
+      if (ayri) {
+        const el = this.liste[this.liste.length - 1].el;
+        el.classList.add("ayri-sehir");
+        if (!h.devletBirimleri[s.d].length) el.classList.add("topraksiz-sehir");
+        el.title = `Şehir: ${sahip}. Çevre arazi: ${cevre >= 0 ? h.paket.devletler[cevre].ad : "devletsiz"}.`;
+      }
+    }
+    // Ayrı sahibi olan şehir kaybolmasın: çakışma hesabında devlet adlarından önce yer ayır.
+    const oncelik = (e: Etiket) => e.el.classList.contains("topraksiz-sehir") ? 0 : e.el.classList.contains("ayri-sehir") ? 1 : 2;
+    this.liste.sort((a, b) => oncelik(a) - oncelik(b));
     if (this.tema) this.temaAyarla(this.tema);
   }
 
@@ -136,14 +150,16 @@ export class Etiketler {
         const w = et.genislik * fs * (baskent ? 1.06 : 1); // kalın yazı biraz daha geniş
         const x0 = sx + ara - 2, y0 = sy - fs * 0.65, x1 = sx + ara + 1 + w, y1 = sy + fs * 0.65;
         // nokta her zaman çizilir; yalnızca yazı çakışmaya bakar
-        if (!cakisir(x0, y0, x1, y1)) {
-          kutular.push(x0, y0, x1, y1);
+        const kayma = (et.el.classList.contains("ayri-sehir") ? [0, fs * 1.5, -fs * 1.5] : [0])
+          .find((dy) => !cakisir(x0, y0 + dy, x1, y1 + dy));
+        if (kayma !== undefined) {
+          kutular.push(x0, y0 + kayma, x1, y1 + kayma);
           goster = true;
           if (baskent) {
             et.el.style.fontWeight = "700";
             et.el.style.fontSize = `${fs}px`;
           }
-          et.el.style.transform = `translate(${(sx + ara).toFixed(1)}px,${sy.toFixed(1)}px) translate(0,-50%)`;
+          et.el.style.transform = `translate(${(sx + ara).toFixed(1)}px,${(sy + kayma).toFixed(1)}px) translate(0,-50%)`;
         }
       }
       if (goster !== et.gorunur) {

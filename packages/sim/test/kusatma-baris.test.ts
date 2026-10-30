@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 import {
-  agHazirla, barisBedeli, barisDogrula, baslangicDurumu, degismezler, DENGE, durumOzeti, emirleriUygula, emirVer,
+  agHazirla, barisBedeli, barisDevirOzeti, barisDogrula, baslangicDurumu, degismezler, DENGE, durumOzeti, emirleriUygula, emirVer,
   gunIlerlet, kaydet, muharebeleriBaslat, savasSkoru, turSuresiAyarla, turuIlerlet, yukle,
   type BarisTalebi, type KusatmaYontemi, type SenaryoVerisi,
 } from "../src";
@@ -34,6 +34,14 @@ function kusat(yontem: KusatmaYontemi = "abluka") {
   return d;
 }
 const talep = (t: Partial<BarisTalebi> = {}): BarisTalebi => ({ savas: 1, birimler: [], sehirler: [], tazminat: 0, ...t });
+
+it("barış önizlemesi tüm arazi seçilse bile geride kalan şehirleri bildirir (UX-01)", () => {
+  const d = yeni(), once = durumOzeti(d);
+  expect(barisDevirOzeti(d, 1, talep({ birimler: [1, 2] })))
+    .toEqual({ alinanArazi: 2, alinanSehir: 0, kalanArazi: 0, kalanSehir: 2, tamIlhak: false });
+  expect(barisDevirOzeti(d, 1, talep({ birimler: [1, 2], sehirler: [1, 2] })).tamIlhak).toBe(true);
+  expect(durumOzeti(d)).toBe(once);
+});
 
 describe("gerçek işgal ve kuşatma", () => {
   it("AT-009: yalnızca şehre yürümek şehri düşürmez; çevre arazi süre sonunda ayrı işgal edilir", () => {

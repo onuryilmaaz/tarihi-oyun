@@ -3,7 +3,7 @@
 import type { DunyaDurumu } from "./durum";
 import { DENGE } from "./denge";
 import { kullanilabilirHazine } from "./emirler";
-import { devletMaasi } from "./ordu";
+import { devletMaasi, toplamAskerSayisi } from "./ordu";
 import { sehirYapiGeliri } from "./yatirim";
 import { ticaretGelirleri } from "./ticaret";
 import { araziGeliriBirimBasina } from "./teknoloji";
@@ -56,5 +56,5 @@ export function butceOzeti(d: DunyaDurumu, devlet: number): ButceOzeti {
   return { hazine, ayrilan: hazine - kullanilabilir, kullanilabilir, aylikGelir, aylikAraziGeliri, aylikYapiGeliri, aylikTicaretGeliri, aylikMaas,
     aylikNet: aylikGelir - aylikMaas,
     araziSayisi: d.birimler.filter((b) => b.sahip === devlet).length,
-    askerSayisi: d.ordular.filter((o) => o.devlet === devlet).reduce((s, o) => s + o.asker, 0) };
+    askerSayisi: toplamAskerSayisi(d, devlet) };
 }

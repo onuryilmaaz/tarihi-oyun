@@ -19,6 +19,11 @@ export function savasArayuzuKur(a: {
   bildir(metin: string): void;
 }) {
   let barisSavasi: number | null = null, onizlemeNo = 0;
+  const devirMetni = (r: BarisOnizleme) => !r.devir ? "" :
+    ` Devir: ${r.devir.alinanArazi} arazi, ${r.devir.alinanSehir} şehir. `
+    + (r.devir.tamIlhak ? "Tam ilhak: karşı tarafın arazi ve şehri kalmayacak."
+      : `Karşı tarafta ${r.devir.kalanArazi} arazi ve ${r.devir.kalanSehir} şehir kalacak; devlet varlığını sürdürecek.`)
+    + " Şehirler çevre araziyle otomatik devredilmez.";
   function barisKapat() { $("baris").hidden = true; barisSavasi = null; onizlemeNo++; }
   $("barisKapat").onclick = barisKapat;
   window.addEventListener("keydown", (e) => {
@@ -38,7 +43,8 @@ export function savasArayuzuKur(a: {
       if (no !== onizlemeNo || $("baris").hidden) return;
       $("barisSonuc").dataset.gecerli = String(r.dogrulama.gecerli);
       $("barisSonuc").textContent = `Talep: ${Number.isFinite(r.puan) ? r.puan : "—"} puan · Savaş skoru: ${r.skor}. `
-        + (r.dogrulama.gecerli ? "Bu koşullar kabul edilebilir. Antlaşma bir sonraki turun başında yeniden kontrol edilir." : r.dogrulama.neden);
+        + (r.dogrulama.gecerli ? "Bu koşullar kabul edilebilir. Antlaşma bir sonraki turun başında yeniden kontrol edilir." : r.dogrulama.neden)
+        + devirMetni(r);
       $<HTMLButtonElement>("barisGonder").disabled = !r.dogrulama.gecerli;
     } catch (e) { if (no === onizlemeNo) $("barisSonuc").textContent = (e as Error).message; }
   }
@@ -51,7 +57,7 @@ export function savasArayuzuKur(a: {
     const r = await a.onizle(t);
     if (!r.dogrulama.gecerli) { a.bildir(r.dogrulama.neden); return onizle(); }
     const yerler = [...t.birimler.map(a.birimAdi), ...t.sehirler.map(a.sehirAdi)];
-    if (!await a.onay("Barış antlaşması", `${a.devletAdi(s.karsi)} ile ${yerler.length ? yerler.join(", ") + " devri ve " : "toprak devri olmadan "}${t.tazminat} peşin tazminat karşılığında barış yapılsın mı? Seçilmeyen işgaller kalkacak.`, "Barış teklif et")) return;
+    if (!await a.onay("Barış antlaşması", `${a.devletAdi(s.karsi)} ile ${yerler.length ? yerler.join(", ") + " devri ve " : "toprak devri olmadan "}${t.tazminat} peşin tazminat karşılığında barış yapılsın mı? Seçilmeyen işgaller kalkacak.${devirMetni(r)}`, "Barış teklif et")) return;
     if (await a.emir({ tur: "baris", ...t }, "Barış teklifi verildi; bir sonraki turun başında uygulanacak.")) barisKapat();
   };
   function barisAc(savas: number) {

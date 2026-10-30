@@ -18,7 +18,9 @@ kaynak: `MASTER_SPEC.md` §21 ve §27.
 ## Mevcut durum
 
 - **Aşama:** 0–9 kapandı; Aşama 9 ile oynanabilir sürüm kabul edildi (DEC-0060). Aşama 10 (yayın hazırlığı) sürüyor;
-  TASK-0013 onaylandı (DEC-0061), 10a uygulanıyor; sürüm 0.9.0, dağıtım yalnızca yerel zip. Üretime çıkış ayrı açık onay ister. Kayıt şeması 18. Durum için `DEVIR-TESLIM.md`.
+  TASK-0013 onaylandı (DEC-0061), 10a kabul edildi, 10b uygulandı. TASK-0015 hata düzeltmeleri tamamlandı (DEC-0064),
+  kullanıcı testi bekleniyor; 10c/10d bekliyor. Sürüm 0.9.0, dağıtım yalnızca yerel zip. Üretime çıkış ayrı açık onay ister.
+  Kayıt şeması 18. Durum için `DEVIR-TESLIM.md`.
 - **Yerel sunucu (DEC-0036):** Kullanıcı da agent da **5173**'teki geliştirme sunucusunu kullanır
   (kullanıcı başlattı, kapatılmaz; kod değişince kendini yeniler). Kullanıcıya test adımı 5173 ile verilir;
   4175 önizlemesi kullanılmaz. Aşama 2 kapandı

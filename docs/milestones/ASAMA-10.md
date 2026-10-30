@@ -1,6 +1,6 @@
 # Aşama 10 — Yayın hazırlığı ve sonraki yol haritası
 
-**Durum:** Başlama onayı var (DEC-0060). Görev kartı `tasks/TASK-0013.md` onaylandı (DEC-0061); 10a kabul edildi (DEC-0062); 10b sürüyor.
+**Durum:** Başlama onayı var (DEC-0060). Görev kartı `tasks/TASK-0013.md` onaylandı (DEC-0061); 10a kabul edildi (DEC-0062); 10b tamamlandı, kullanıcı testi bekliyor.
 
 **Çıktılar (MASTER_SPEC §22):** Paketleme, test dağıtımı, çökme raporları, veri gizliliği, mağaza gereksinimleri, sürüm notları, geri bildirim döngüsü.
 

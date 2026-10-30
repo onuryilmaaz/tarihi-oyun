@@ -84,6 +84,61 @@ export function haritaGorunumuKur(h: Harita, wikidata: Record<string, WdDevlet>,
   let secim: Secim = null;
   let oyuncu = -1;
   const ilkEtiketler = h.paket.devletler.map((d) => d.etiket ? [...d.etiket] as [number, number, number] : null);
+  // Sınırlar değişince devlet adı etiketi için: birim alanı/ağırlık merkezi ve birim komşulukları (bir kez hesaplanır)
+  const birimGeo = h.halkalar.map((polys) => {
+    let alan = 0, mx = 0, my = 0;
+    for (const hs of polys) {
+      const r = hs[0];
+      let a = 0, x = 0, y = 0;
+      for (let i = 0, n = r.length; i < n; i += 2) {
+        const j = (i + 2) % n, c = r[i] * r[j + 1] - r[j] * r[i + 1];
+        a += c; x += (r[i] + r[j]) * c; y += (r[i + 1] + r[j + 1]) * c;
+      }
+      a /= 2;
+      if (Math.abs(a) < 1e-9) continue;
+      alan += Math.abs(a); mx += (x / (6 * a)) * Math.abs(a); my += (y / (6 * a)) * Math.abs(a);
+    }
+    return alan > 0 ? { alan, x: mx / alan, y: my / alan } : null;
+  });
+  const birimKomsu: number[][] = h.paket.birimler.map(() => []);
+  for (let a = 0; a < h.arklar.length; a++) {
+    const x = h.yaySahipA[a], y = h.yaySahipB[a];
+    if (x >= 0 && y >= 0 && x !== y) { birimKomsu[x].push(y); birimKomsu[y].push(x); }
+  }
+  /** Devletin en büyük bitişik toprak parçasının ortası ve o parçaya uygun yazı boyutu. */
+  const etiketHesapla = (devlet: number, ilk: [number, number, number] | null): [number, number, number] | null => {
+    const kendi = new Set(h.devletBirimleri[devlet]);
+    if (!kendi.size) return null;
+    const gorulen = new Set<number>();
+    let enIyi: number[] = [], enAlan = -1;
+    for (const bas of kendi) {
+      if (gorulen.has(bas)) continue;
+      const parca: number[] = [], kuyruk = [bas];
+      gorulen.add(bas);
+      while (kuyruk.length) {
+        const b = kuyruk.pop()!;
+        parca.push(b);
+        for (const k of birimKomsu[b]) if (kendi.has(k) && !gorulen.has(k)) { gorulen.add(k); kuyruk.push(k); }
+      }
+      const alan = parca.reduce((t, b) => t + (birimGeo[b]?.alan ?? 0), 0);
+      if (alan > enAlan) { enAlan = alan; enIyi = parca; }
+    }
+    const parca = new Set(enIyi);
+    // İlk (veriden gelen) konum hâlâ en büyük parçanın içindeyse korunur
+    if (ilk) { const bi = birimBul(h, ilk[0], ilk[1]); if (bi >= 0 && parca.has(bi)) return [...ilk]; }
+    let x = 0, y = 0;
+    for (const b of enIyi) { const g = birimGeo[b]; if (g) { x += g.x * g.alan; y += g.y * g.alan; } }
+    x /= Math.max(enAlan, 1e-9); y /= Math.max(enAlan, 1e-9);
+    const icinde = birimBul(h, x, y);
+    if (!(icinde >= 0 && parca.has(icinde))) { // ağırlık merkezi parçanın dışındaysa en yakın birimin ortasına
+      let en = enIyi[0], enU = Infinity;
+      for (const b of enIyi) { const g = birimGeo[b]; if (!g) continue; const u = (g.x - x) ** 2 + (g.y - y) ** 2; if (u < enU) { enU = u; en = b; } }
+      const g = birimGeo[en];
+      if (g) { x = g.x; y = g.y; }
+    }
+    const yaricap = Math.sqrt(enAlan / Math.PI) * 0.55;
+    return [x, y, Math.max(0.25, Math.min(ilk?.[2] ?? yaricap, yaricap))];
+  };
   const olaylar: HaritaGorunumu["olaylar"] = {};
 
   // --- Ordu ve işgal katmanları (TASK-0006)
@@ -236,6 +291,7 @@ export function haritaGorunumuKur(h: Harita, wikidata: Record<string, WdDevlet>,
       yol.push(`<span class="yol-sabit">${kacis(s.ad)}</span>`);
       govde = `<h3>${s.b ? "★ " : ""}${kacis(s.ad)}</h3><dl>
         <dt>Devlet</dt><dd>${kacis(p.devletler[s.d].ad)}</dd>
+        ${bi >= 0 && p.birimler[bi].d !== s.d ? `<dt>Çevre arazi</dt><dd>${p.birimler[bi].d >= 0 ? kacis(p.devletler[p.birimler[bi].d].ad) : "Devletsiz"} · şehir ayrı mülkiyettedir</dd>` : ""}
         <dt>Statü</dt><dd>${s.b ? "Başkent" : "Şehir"}</dd>
         ${kontrolSatiri(sehirIsgal.get(secim.id))}
       </dl>`;
@@ -438,17 +494,8 @@ export function haritaGorunumuKur(h: Harita, wikidata: Record<string, WdDevlet>,
       h.devletSehirleri = h.paket.devletler.map(() => []);
       h.paket.birimler.forEach((b, i) => { if (b.d >= 0) h.devletBirimleri[b.d].push(i); });
       h.paket.sehirler.forEach((s, i) => h.devletSehirleri[s.d].push(i));
-      h.paket.devletler.forEach((d, i) => {
-        const et = ilkEtiketler[i];
-        d.etiket = h.devletBirimleri[i].length && et ? [...et] : null;
-        if (!d.etiket) return;
-        const bi = birimBul(h, d.etiket[0], d.etiket[1]);
-        if (bi >= 0 && h.paket.birimler[bi].d === i) return;
-        const c = h.paket.sehirler.find((s) => s.d === i && s.b)
-          ?? h.paket.sehirler.find((s) => s.d === i);
-        const ring = h.halkalar[h.devletBirimleri[i][0]][0]?.[0];
-        d.etiket = c ? [c.x, c.y, Math.min(et![2], 1)] : ring ? [ring[0], ring[1], 0.5] : null;
-      });
+      // Etiket: devletin elinde kalan en büyük bitişik toprak parçasında (başkent başka devletin toprağında kalsa bile)
+      h.paket.devletler.forEach((d, i) => { d.etiket = etiketHesapla(i, ilkEtiketler[i]); });
       mulkiyetKatmanlariniGuncelle(k, h, tema, sahne);
       boyutAyarla(k, W, H, oran);
       secimiCiz(k, h, tema, secim);

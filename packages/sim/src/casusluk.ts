@@ -21,7 +21,10 @@ export const istihbaratVar = (d: DunyaDurumu, devlet: number, hedef: number, tur
   d.casusEtkileri.some((e) => e.devlet === devlet && e.hedef === hedef && e.tur === tur && e.bitis > d.gun);
 /** Şehre yabancı isyan desteği (7c risk bileşeni). */
 export const disDestek = (d: DunyaDurumu, sehir: number) =>
-  d.casusEtkileri.some((e) => e.tur === "isyan" && e.sehir === sehir && e.bitis > d.gun) ? DENGE.CASUS_ISYAN_RISK : 0;
+  d.casusEtkileri.some((e) => e.tur === "isyan" && e.sehir === sehir && isyanHedefiGecerli(d, e) && e.bitis > d.gun) ? DENGE.CASUS_ISYAN_RISK : 0;
+
+const isyanHedefiGecerli = (d: DunyaDurumu, e: CasusEtkisi) =>
+  e.sehir !== null && d.sehirler[e.sehir]?.devlet === e.hedef && e.devlet !== e.hedef;
 
 /** Görevi başlatılabilir mi? (gerekçe ya da null) */
 export function gorevEngeli(d: DunyaDurumu, devlet: number, hedef: number, tur: GorevTuru, sehir: number | null, bekleyen = 0): string | null {
@@ -39,7 +42,7 @@ export function gorevEngeli(d: DunyaDurumu, devlet: number, hedef: number, tur: 
 /** Günlük: hazırlığı biten görev sonuçlanır. */
 export function casusGorevleriIlerlet(d: DunyaDurumu): void {
   const oyuncu = d.ayarlar.oyuncu;
-  d.casusEtkileri = d.casusEtkileri.filter((e) => e.bitis > d.gun);
+  d.casusEtkileri = d.casusEtkileri.filter((e) => e.bitis > d.gun && (e.tur !== "isyan" || isyanHedefiGecerli(d, e)));
   for (const g of [...d.casusGorevleri]) {
     if (--g.kalanGun > 0) continue;
     d.casusGorevleri = d.casusGorevleri.filter((x) => x !== g);

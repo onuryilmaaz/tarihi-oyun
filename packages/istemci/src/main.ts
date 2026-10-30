@@ -20,8 +20,9 @@ import { SOZLUK } from "./sozluk";
 ozelSecimleriKur();
 import { haritaYukle } from "./harita/veri";
 import { haritaGorunumuKur, kacis, KONUMLAR, type Katmanlar, type WdDevlet } from "./harita/gorunum";
-import { SimIstemcisi, type Ozet, type RotaOnizleme } from "./sim-protokol";
-import { kayitlariListele, kayitOku, kayitSil, kayitYaz, type Yuva } from "./kayit-deposu";
+import { SimHatasi, SimIstemcisi, type Ozet, type RotaOnizleme } from "./sim-protokol";
+import { SURUM } from "./surum";
+import { kayitlariListele, kayitOku, kayitSil, kayitYaz, tumKayitlariSil, type Yuva } from "./kayit-deposu";
 import { savasArayuzuKur } from "./savas-arayuzu";
 
 const $ = <T extends HTMLElement = HTMLElement>(id: string) => document.getElementById(id) as T;
@@ -308,7 +309,7 @@ async function baslat() {
     const insaatlar = ozet.sehirYatirimlari.filter((s) => s.insaat);
     $("insaatListesi").innerHTML = insaatlar.map((s) => `<li><button class="bag" data-sehir-sec="${s.indeks}">${kacis(s.ad)}</button>: ${kacis(s.insaat!.ad)} ${s.insaat!.hedef}. seviye · ${s.insaat!.emir ? "emir bekliyor" : s.insaat!.durdu ? "kuşatma/ayaklanma nedeniyle durdu" : `${s.insaat!.kalanGun} gün kaldı`}</li>`).join("")
       || '<li class="bos">Süren inşaat yok. Bir şehir seçip “Şehri aç”a basın ya da haritada şehrinize tıklayın.</li>';
-    $("insaatListesi").insertAdjacentHTML("beforeend", ozet.gemiInsalari.map((g) => `<li>Tersane: ${kacis(senaryo.sehirler[g.sehir].ad)} · ${g.adet} ${DENGE.GEMI[g.gemi as "kadirga" | "kalyon"].ad.toLowerCase()} · ${g.emir ? "emir bekliyor" : `${g.kalanGun} gün kaldı`}</li>`).join(""));
+    $("insaatListesi").insertAdjacentHTML("beforeend", ozet.gemiInsalari.map((g) => `<li>Tersane: ${kacis(senaryo.sehirler[g.sehir].ad)} · ${g.adet} ${DENGE.GEMI[g.gemi as "kadirga" | "kalyon"].ad.toLowerCase()} · ${g.emir ? "emir bekliyor" : ozet.istikrar[g.sehir].ayaklanma || ozet.kusatmalar.some((k) => k.sehir === g.sehir) ? "kuşatma/ayaklanma nedeniyle bekliyor" : `${g.kalanGun} gün kaldı`}</li>`).join(""));
     $("insaatListesi").insertAdjacentHTML("beforeend", ozet.iskanlar.map((k) => `<li>İskân: ${kacis(senaryo.sehirler[k.kaynak].ad)} → ${kacis(senaryo.sehirler[k.hedef].ad)} · ${k.miktar.toLocaleString("tr-TR")} kişi · ${k.emir ? "emir bekliyor" : `${k.kalanGun} gün kaldı`}</li>`).join(""));
     const suren = ozet.teknoloji.kartlar.filter((t) => t.durum === "suruyor" || t.durum === "emir");
     $("arastirmaListesi").innerHTML = suren.map((t) => `<li>${kacis(t.ad)} · ${t.durum === "emir" ? "emir bekliyor" : `${t.kalanGun} gün kaldı`}</li>`).join("")
@@ -321,6 +322,7 @@ async function baslat() {
     if (document.activeElement?.id !== "yonetimButce") $<HTMLInputElement>("yonetimButce").value = String(yy.butce);
     if (document.activeElement?.id !== "yonetimAlt") $<HTMLInputElement>("yonetimAlt").value = String(yy.altSinir);
     $("yonetimBilgi").textContent = `Bu ay harcanan: ${yy.harcanan.toLocaleString("tr-TR")} / ${yy.butce.toLocaleString("tr-TR")}. `
+      + (yy.harcanan > yy.butce ? "Tavan düşürüldü; geçmiş harcama korunur, bu ay yeni otomatik harcama yapılmaz. " : "")
       + (acikSehir.length ? `Yönetici açık: ${acikSehir.map((x) => x.ad).join(", ")}.` : "Hiçbir şehirde yönetici açık değil; şehir panelinden açabilirsiniz.")
       + " Yönetici yalnızca bağış ve tarla/pazar yapar; her harcama günlüğe yazılır, borç yapmaz.";
     if (!ozet.verasetSecimi) secilenAday = null;
@@ -479,7 +481,7 @@ async function baslat() {
             return `<option value="${t}"${kapali ? " disabled" : ""}>${DENGE.GEMI[t].ad} — ${DENGE.GEMI[t].bedel}, ${DENGE.GEMI[t].sure} gün${kapali ? " (Kalyon İnşası gerekli)" : ""}</option>`;
           }).join("")}</select>
           <input id="gemiAdet" type="number" min="1" max="${DENGE.GEMI_INSA_EN_COK}" value="5" aria-label="Adet" />
-          <button data-eylem="gemi" data-sehir="${s.id}">Gemi yap</button></div>
+          <button data-eylem="gemi" data-sehir="${s.id}"${st.ayaklanma || k ? ' disabled title="Ayaklanma veya kuşatma sırasında tersane bekler"' : ""}>Gemi yap</button></div>
         <p class="not">Kadırga: güç ${DENGE.GEMI.kadirga.guc}, ${DENGE.GEMI.kadirga.kapasite} asker taşır, bölgeyi ${DENGE.GEMI.kadirga.hizGun} günde geçer. Kalyon: güç ${DENGE.GEMI.kalyon.guc}, ${DENGE.GEMI.kalyon.kapasite} asker, ${DENGE.GEMI.kalyon.hizGun} gün. Aylık bakım ${DENGE.GEMI.kadirga.bakim} / ${DENGE.GEMI.kalyon.bakim}.</p>`;
       return `${istikrar}${nufus}${iskan}${ticaret}${tersane}<h4>Şehir savunması (prototip değerleri)</h4><dl><dt>Sur seviyesi</dt><dd>${c.sur}</dd>
         <dt>Garnizon</dt><dd>${c.garnizonTahmin ? "Yaklaşık " : ""}${c.garnizon.toLocaleString("tr-TR")}</dd></dl>
@@ -744,7 +746,7 @@ async function baslat() {
       }
       await otomatikKaydet();
     } catch (e) {
-      bildir(`Tur hesaplanamadı: ${(e as Error).message}`, "hata");
+      hataGoster(e, true);
     } finally {
       mesgul = false;
       $<HTMLButtonElement>("ilerleBtn").disabled = false;
@@ -826,6 +828,8 @@ async function baslat() {
   // --- Kayıt yuvaları, ana menü, devlet seçimi (TASK-0012/9a)
   const sifirla = () => {
     planli.clear(); bekleyenSavas.clear(); bekleyenTutum.clear(); gosterilenTeklifler.clear();
+    gorulenRaporlar.clear(); // kimlikler yalnızca ait oldukları dünyada benzersizdir (H-07)
+    sonOtoDonem = ""; // ilk tur yeni/yüklenen dünyanın otomatik kaydını yazmalı (H-03)
     seciliOrdu = null; seciliDonanma = null; secilenAday = null;
     for (const r of ozet.raporlar) gorulenRaporlar.add(r.id);
   };
@@ -840,7 +844,20 @@ async function baslat() {
   };
   // Dönüşümlü otomatik kayıt (10a): son tur, 1 tur önce, 2 tur önce
   const OTOMATIK = ["otomatik", "otomatik-2", "otomatik-3"];
+  // Otomatik kayıt sıklığı (DEC-0062): her tur / oyunda ayda bir / yılda bir / kapalı; tarayıcıda hatırlanır
+  let otoSiklik = "tur", sonOtoDonem = "";
+  try { otoSiklik = localStorage.getItem("tarihi-oto-kayit") ?? "tur"; } catch { /* yok */ }
+  $<HTMLSelectElement>("otoKayitSiklik").value = otoSiklik;
+  $("otoKayitSiklik").addEventListener("change", (e) => {
+    otoSiklik = (e.target as HTMLSelectElement).value;
+    try { localStorage.setItem("tarihi-oto-kayit", otoSiklik); } catch { /* yok */ }
+  });
   const otomatikKaydet = async () => {
+    if (otoSiklik === "kapali") return;
+    const [, ay, yil] = ozet.tarih.split(" ");
+    const donem = otoSiklik === "ay" ? `${ay} ${yil}` : otoSiklik === "yil" ? yil : "";
+    if (otoSiklik !== "tur" && donem === sonOtoDonem) return;
+    sonOtoDonem = donem;
     try {
       for (let i = OTOMATIK.length - 1; i > 0; i--) {
         const k = await kayitOku(OTOMATIK[i - 1]);
@@ -909,6 +926,8 @@ async function baslat() {
     if (kayitKipi === "kaydet") $<HTMLInputElement>("kayitAdi").value = `${ozet.oyuncu.ad} · ${ozet.tarih}`;
     let liste: Awaited<ReturnType<typeof kayitlariListele>> = [];
     try { liste = await kayitlariListele(); } catch { bildir("Tarayıcı deposuna erişilemiyor.", "hata"); }
+    $<HTMLButtonElement>("tumKayitlariSil").disabled = liste.length === 0;
+    $("tumKayitlariSil").textContent = liste.length ? `Tüm kayıtları sil (${liste.length})` : "Tüm kayıtları sil";
     const oto = (y: string) => y.startsWith("otomatik");
     $("kayitListesi").innerHTML = liste.map(({ yuva, kayit }) => `<li><span><b>${kacis(yuvaAdi(yuva, kayit))}</b>
         <small>${kacis(kayit.devlet)} · ${kacis(kayit.oyunTarihi)} · ${zamanMetni(kayit.zaman)}</small></span>
@@ -918,6 +937,19 @@ async function baslat() {
       || '<li class="bos">Henüz kayıt yok.</li>';
   };
   const kayitPenceresi = async (kip: "kaydet" | "yukle") => { kayitKipi = kip; await kayitlariCiz(); menuGoster("kayit"); };
+  $("tumKayitlariSil").onclick = async () => {
+    if (mesgul) return bildir("Tur tamamlanınca kayıtları silebilirsiniz.", "uyari");
+    try {
+      const liste = await kayitlariListele();
+      if (!liste.length) return kayitlariCiz();
+      if (!await onayIste("Tüm kayıtları sil", `Bu tarayıcıdaki ${liste.length} kaydın tamamı (manuel ve otomatik kayıtlar) kalıcı olarak silinecek. Bu işlem geri alınamaz. İndirdiğiniz dosyalar etkilenmez; açık oyun devam eder ve sonraki turlarda yeni otomatik kayıt oluşabilir.`, "Tümünü sil", true)) return;
+      await tumKayitlariSil();
+      sonOtoDonem = "";
+      await kayitlariCiz();
+      await anaMenuyuHazirla();
+      bildir("Bu tarayıcıdaki tüm oyun kayıtları silindi.");
+    } catch (e) { bildir(`Kayıtlar silinemedi: ${(e as Error).message}`, "hata"); }
+  };
   $("kayitDosyaIndir").onclick = async () => {
     const y = await sim.gonder({ tip: "kaydet" });
     dosyayaIndir(y.metin!, dosyaAdi({ devlet: y.ozet.oyuncu.ad, oyunTarihi: y.ozet.tarih }));
@@ -1038,6 +1070,54 @@ async function baslat() {
     <li>three.js (MIT), earcut (ISC); Cinzel, Cormorant Garamond, Inter yazı tipleri (SIL Open Font License 1.1).</li>
     <li>Oyun çalışırken dış bir sunucuya bağlanmaz; kayıtlar yalnızca bu tarayıcıda tutulur.</li></ul>`;
   $("menuBtn").onclick = async () => { await anaMenuyuHazirla(); menuGoster("ana", false); };
+
+  // --- Hata yakalama ve kurtarma (TASK-0013/10b)
+  const hataGunlugu: { zaman: string; mesaj: string; yigin?: string }[] = [];
+  let hataSimBozuk = false;
+  const hataGoster = (e: unknown, turHatasi = false) => {
+    const h = e instanceof Error ? e : new Error(String(e));
+    hataGunlugu.push({ zaman: new Date().toISOString(), mesaj: h.message, yigin: h instanceof SimHatasi ? h.yigin : h.stack });
+    if (hataGunlugu.length > 20) hataGunlugu.shift();
+    hataSimBozuk ||= turHatasi || (h instanceof SimHatasi && h.bozuk);
+    $("hataAciklama").textContent = hataSimBozuk
+      ? "Simülasyon bir hatayla durdu; dünya yarım kalmış olabilir. Son otomatik kayda dönün (gerekirse daha eski bir otomatik kayda). İsterseniz önce hata raporunu indirin."
+      : "Arayüzde bir hata oluştu. Oyun büyük olasılıkla sürebilir; sorun tekrarlarsa son otomatik kayda dönün.";
+    $("hataMetni").textContent = h.message;
+    $("hataDevam").hidden = hataSimBozuk;
+    $("hataPenceresi").hidden = false;
+  };
+  $("hataDevam").onclick = () => { $("hataPenceresi").hidden = true; };
+  $("hataRapor").onclick = async () => {
+    const satirlar = [
+      `Tarihî Strateji 1453 — hata raporu`, `Sürüm: ${SURUM}`, `Zaman: ${new Date().toISOString()}`,
+      `Tarayıcı: ${navigator.userAgent}`, `Ekran: ${innerWidth}×${innerHeight} @${devicePixelRatio}`,
+      `Oyun: ${ozet.oyuncu.ad} · ${ozet.tarih} · tur ${ozet.turNo} · durum özeti ${ozet.hash}`, "",
+      "Hatalar:", ...hataGunlugu.map((x) => `- ${x.zaman} ${x.mesaj}\n${(x.yigin ?? "").split("\n").slice(0, 8).map((l) => "    " + l).join("\n")}`), "",
+      "Son olaylar:", ...ozet.gunluk.slice(-15).map((o) => `- ${tarihMetni(o.gun)} ${o.metin}`),
+    ];
+    if ($<HTMLInputElement>("hataKayitEkle").checked) {
+      try { satirlar.push("", "Kayıt:", (await kayitOku("otomatik"))?.metin ?? "(otomatik kayıt yok)"); } catch { satirlar.push("", "Kayıt okunamadı."); }
+    }
+    dosyayaIndir(satirlar.join("\n"), `tarihi-1453-hata-raporu-${Date.now()}.txt`);
+    bildir("Hata raporu indirildi.");
+  };
+  $("hataKurtar").onclick = async () => {
+    try {
+      sim.yenidenBaslat();
+      await sim.gonder({ tip: "yeniOyun", senaryo, tohum: 1453 }); // hareket ağı ve bağlamı yeniden kurar
+      for (const yuva of ["otomatik", "otomatik-2", "otomatik-3"]) {
+        if (await kayitOku(yuva) && await yukle(yuva)) { hataSimBozuk = false; $("hataPenceresi").hidden = true; return; }
+      }
+      bildir("Kullanılabilir otomatik kayıt bulunamadı; ana menüden bir kayıt yükleyin ya da yeni oyun başlatın.", "uyari");
+      hataSimBozuk = false; $("hataPenceresi").hidden = true;
+      await anaMenuyuHazirla(); menuGoster("ana", false);
+    } catch (err) { bildir(`Kurtarma başarısız: ${(err as Error).message}`, "hata"); }
+  };
+  sim.coktuginde = (m) => hataGoster(new SimHatasi(m, undefined, true));
+  window.addEventListener("error", (e) => hataGoster(e.error ?? e.message));
+  window.addEventListener("unhandledrejection", (e) => hataGoster(e.reason));
+  $("testSimHata").onclick = async () => { try { await sim.gonder({ tip: "testSimHatasi" }); } catch (e) { hataGoster(e, true); } };
+  $("testHata").onclick = () => { setTimeout(() => { throw new Error("Test hatası (geliştirici denemesi)"); }); };
 
   // --- Denetimler
   for (const b of document.querySelectorAll<HTMLButtonElement>("[data-sure]")) {

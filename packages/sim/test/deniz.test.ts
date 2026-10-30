@@ -1,7 +1,8 @@
 // TASK-0011/8a: donanma, deniz kontrolü, abluka, çıkarma, boğaz (DEC-0051)
 import { describe, expect, it } from "vitest";
 import {
-  agHazirla, baslangicDurumu, bolgeKontrolu, degismezler, DENGE, denizAblukasi, devletMaasi, donanmaGucu, durumOzeti,
+  agHazirla, baslangicDurumu, bolgeKontrolu, butceOzeti, degismezler, DENGE, denizAblukasi, devletMaasi, donanmaGucu, durumOzeti,
+  gemiInsalariIlerlet,
   emirleriUygula, emirVer, gemiSayisi, gunIlerlet, kaydet, kullanilabilirHazine, rotaBul, SEMA_SURUMU, yukle,
   type DunyaDurumu, type SenaryoVerisi,
 } from "../src";
@@ -33,6 +34,24 @@ const gun = (d: DunyaDurumu, n: number) => { for (let i = 0; i < n; i++) { gunIl
 const fa = (d: DunyaDurumu) => d.donanmalar.find((f) => f.devlet === A)!;
 
 describe("donanma ve deniz (8a)", () => {
+  it("ayaklanmada yeni tersane emri reddedilir; süren inşaat bekler ve sonra aynı yerden sürer (H-04)", () => {
+    const d = yeni(); d.devletler[A].hazine = 10000;
+    const e = { tur: "gemiInsa" as const, sehir: 0, gemi: "kadirga" as const, adet: 1 };
+    expect(emirVer(d, e, B).gecerli).toBe(true);
+    emirleriUygula(d, B);
+    gemiInsalariIlerlet(d);
+    const kalan = d.gemiInsalari[0].kalanGun, para = d.devletler[A].hazine;
+    d.sehirler[0].istikrar.ayaklanma = true;
+    expect(emirVer(d, e, B).gecerli).toBe(false);
+    for (let i = 0; i < 100; i++) gemiInsalariIlerlet(d);
+    expect(d.gemiInsalari[0].kalanGun).toBe(kalan);
+    expect(fa(d).kadirga).toBe(10);
+    const copy = yukle(kaydet(d));
+    copy.sehirler[0].istikrar.ayaklanma = false;
+    for (let i = 0; i < kalan; i++) gemiInsalariIlerlet(copy);
+    expect(fa(copy).kadirga).toBe(11);
+    expect(copy.devletler[A].hazine).toBe(para);
+  });
   it("başlangıç donanmaları, limanlar ve bölge kontrolü yüklenir; bakım zorunlu gidere eklenir", () => {
     const d = yeni();
     expect(d.deniz.limanlar).toEqual([Z0, Z1]);
@@ -102,14 +121,17 @@ describe("donanma ve deniz (8a)", () => {
     f.kalyon = 6; // + 3.600 asker kapasitesi
     expect(emirVer(d, { tur: "cikarma", donanma: f.id, ordu: o.id, sehir: 1 }, B).gecerli).toBe(true);
     const maas = devletMaasi(d, A);
+    const toplam = butceOzeti(d, A).askerSayisi;
     emirleriUygula(d, B);
     expect(d.ordular).toHaveLength(0);
     expect(f.yuk?.id).toBe(o.id);
     expect(devletMaasi(d, A)).toBe(maas);
+    expect(butceOzeti(d, A).askerSayisi).toBe(toplam); // H-05: gemiye binince kaybolmaz
     expect(degismezler(d)).toEqual([]);
     gun(d, DENGE.GEMI.kalyon.hizGun + 1); // kalyon donanmayı yavaşlatır
     expect(d.ordular[0]).toMatchObject({ id: o.id, dugum: 3, x: 30000 });
     expect(f.yuk).toBeNull();
+    expect(butceOzeti(d, A).askerSayisi).toBe(d.ordular.reduce((s, o) => s + o.asker, 0)); // inince çift sayılmaz
     expect(d.gunluk.some((x) => /kıyısına çıktı/.test(x.metin))).toBe(true);
   });
 

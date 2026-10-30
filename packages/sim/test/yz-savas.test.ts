@@ -1,8 +1,9 @@
 // TASK-0009/6c: AI savaş ilanı, sefer, barış ve oyuncuya gelen teklifler (DEC-0038, DEC-0040)
 import { describe, expect, it } from "vitest";
 import {
-  agHazirla, barisKararlari, baslangicDurumu, degismezler, DENGE, diplomasiOnHesap, durumOzeti, emirleriUygula, emirVer,
-  etkiEkle, gunIlerlet, kaydet, savasKarari, savasta, SEMA_SURUMU, seferKararlari, yukle, type DunyaDurumu, type SenaryoVerisi,
+  agHazirla, barisDogrula, barisiUygula, barisKararlari, baslangicDurumu, degismezler, DENGE, diplomasiOnHesap, durumOzeti, emirleriUygula, emirVer,
+  muharebeleriBaslat, muharebeGunleri,
+  etkiEkle, gunIlerlet, kaydet, savasKarari, yikilanDevletleriTemizle, savasta, SEMA_SURUMU, seferKararlari, yukle, type DunyaDurumu, type SenaryoVerisi,
 } from "../src";
 
 // Doğrusal dünya: a (oyuncu) | b | c — düğüm i, birim i'de; her devletin başkenti kendi ilk biriminde
@@ -25,6 +26,35 @@ const yeni = () => baslangicDurumu(S, { tohum: 3 });
 const savasAc = (d: DunyaDurumu, saldiran: number, savunan: number) => d.savaslar.push({ id: d.sonrakiSavasId++, saldiran, savunan, baslangic: d.gun });
 
 describe("AI savaş ve barış (6c)", () => {
+  it("tam ilhak üçüncü devletle muharebe ve işgali anında bitirir; diğer savaş sürer (H-02)", () => {
+    const d = yeni();
+    savasAc(d, Bd, C); savasAc(d, A, Bd); savasAc(d, A, C);
+    const bo = d.ordular.find((o) => o.devlet === Bd)!;
+    const co = d.ordular.find((o) => o.devlet === C)!;
+    bo.asker = co.asker = 50000;
+    co.dugum = bo.dugum; co.x = bo.x; co.y = bo.y;
+    muharebeleriBaslat(d);
+    expect(d.muharebeler).toHaveLength(1);
+    d.birimler[4].kontrol = Bd; d.birimler[4].isgalBaslangic = d.gun;
+    d.sehirler[2].kontrol = Bd; d.sehirler[2].isgalBaslangic = d.gun;
+    d.birimler[5].kontrol = A; // ayrı A–C savaşının işgali
+    d.birimler[2].kontrol = d.birimler[3].kontrol = A;
+    d.sehirler[1].kontrol = A;
+    const t = { savas: d.savaslar[1].id, birimler: [2, 3], sehirler: [1], tazminat: 0 };
+    expect(barisDogrula(d, t).gecerli).toBe(true);
+    barisiUygula(d, B, t);
+    expect(savasta(d, Bd, C)).toBe(false);
+    expect(savasta(d, A, C)).toBe(true);
+    expect(d.muharebeler).toHaveLength(0);
+    expect(bo.muharebe).toBeNull(); expect(co.muharebe).toBeNull();
+    expect(d.birimler[4]).toMatchObject({ sahip: C, kontrol: C, isgalBaslangic: null });
+    expect(d.sehirler[2]).toMatchObject({ devlet: C, kontrol: C, isgalBaslangic: null });
+    expect(d.birimler[5].kontrol).toBe(A);
+    const asker = bo.asker;
+    muharebeGunleri(d, B.ag);
+    expect(bo.asker).toBe(asker);
+    expect(degismezler(d)).toEqual([]);
+  });
   it("kötü ilişkili, açıkça zayıf komşuya gerekçesiyle savaş ilan eder; ateşkes ve müttefiklik engeller", () => {
     const ilan = (hazirla: (d: DunyaDurumu) => void) => {
       const d = yeni();
@@ -120,5 +150,19 @@ describe("AI savaş ve barış (6c)", () => {
     const g = yukle(JSON.stringify(p));
     expect(g.sema).toBe(SEMA_SURUMU);
     expect(degismezler(g)).toEqual([]);
+  });
+  it("mantık: yıkılan devletin savaşı biter; talep kurulamayan AI savaşı 4 yılda bir şekilde biter", () => {
+    const d = yeni();
+    savasAc(d, Bd, C);
+    d.birimler.forEach((b) => { if (b.sahip === C) { b.sahip = Bd; b.kontrol = Bd; } });
+    d.sehirler.forEach((c) => { if (c.devlet === C) { c.devlet = Bd; c.kontrol = Bd; } });
+    yikilanDevletleriTemizle(d);
+    expect(savasta(d, Bd, C)).toBe(false);
+    expect(d.gunluk.at(-1)?.metin).toMatch(/C yıkıldığı için B ile savaşı sona erdi/);
+    const e = yeni();
+    e.savaslar.push({ id: e.sonrakiSavasId++, saldiran: Bd, savunan: C, baslangic: e.gun - 2 * DENGE.YZ_SAVAS_YORGUNLUK_GUN });
+    barisKararlari(e, B, Bd);
+    expect(savasta(e, Bd, C)).toBe(false);
+    expect(degismezler(e)).toEqual([]);
   });
 });

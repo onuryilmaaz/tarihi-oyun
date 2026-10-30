@@ -10,10 +10,14 @@ import type { Baglam } from "./emirler";
 export const toplamaMaliyeti = (asker: number, yuzde = 100): number => Math.ceil(asker * DENGE.TOPLAMA_ASKER_BASINA_MALIYET_BINDE * yuzde / 100000);
 // Devlet toplamı üzerinden yuvarlanır: orduyu bölmek maaşı değiştirmez.
 export const aylikMaas = (asker: number): number => Math.ceil(asker * DENGE.AYLIK_ASKER_MAASI_BINDE / 1000);
+/** Kara ve gemideki ordular birlikte; bir ordu yalnızca bir listede bulunur. */
+export function toplamAskerSayisi(d: DunyaDurumu, devlet: number): number {
+  return d.ordular.filter((o) => o.devlet === devlet).reduce((s, o) => s + o.asker, 0)
+    + d.donanmalar.filter((f) => f.devlet === devlet && f.yuk).reduce((s, f) => s + f.yuk!.asker, 0);
+}
 /** Zorunlu aylık askerî gider: ordu maaşı (gemideki ordular dahil) + donanma bakımı (8a). */
 export function devletMaasi(d: DunyaDurumu, devlet: number): number {
-  const asker = d.ordular.filter((o) => o.devlet === devlet).reduce((s, o) => s + o.asker, 0)
-    + d.donanmalar.filter((f) => f.devlet === devlet && f.yuk).reduce((s, f) => s + f.yuk!.asker, 0);
+  const asker = toplamAskerSayisi(d, devlet);
   return aylikMaas(asker) + aylikBakim(d, devlet);
 }
 

@@ -781,3 +781,31 @@ Kaynak belge: `MASTER_SPEC.md` (v1.3). Orijinal keşif çıktısı:
   3. 10b (hata yakalama, kurtarma ekranı, yerel hata raporu) başlar.
 - **Onay kaydı:** Kullanıcı: "1- başarılı, her turu kendi kendine kayıt mı edecek saçma değil mi 2- evet 3- evet" (2026-10-29)
 - **Durum:** GEÇERLİ
+
+## DEC-0063 — Oynanış hatalarının ayrıntılı araştırılması
+
+- **Tarih:** 2026-10-29
+- **Seçilen karar:** Kullanıcının bildirdiği ilhak sonrası şehirde eski devlet adı görünmesi ve benzer oynanış sorunları
+  TASK-0014 kapsamında araştırılır. Kod, kayıt ve arayüz bağlantıları incelenir; doğrulanmış hatalar, beklenen kurallar ve
+  ertelenmiş özellikler ayrı raporlanır. Bu talep yeni mekanik, üretim kodu düzeltmesi, yayın veya commit/push onayı değildir.
+- **Onay kaydı:** Kullanıcı: “devletleri tamamen ilhak ediyorum ama şehirlerine tıklayınca eski devlet adları çıkıyor …
+  sen bi detaylı araştırma yap”; örnek sorusuna “osmanlı ile eflak ı”; sonrasında “kaldığın yerden devam” (2026-10-29).
+- **Durum:** GEÇERLİ
+
+## DEC-0064 — İnceleme bulgularının düzeltilmesi
+
+- **Tarih:** 2026-10-29
+- **Seçilen karar:** TASK-0014 raporundaki H-01…H-07, UX-01, K-01 ve test kapsamı bulguları TASK-0015 ile sırayla
+  düzeltilir. Ayrı şehir/arazi devri korunur. Ertelenmiş yeni mekanikler ve yayın bu onayın kapsamında değildir.
+  Commit/push için ayrıca kullanıcı onayı gerekir (DEC-0017).
+- **Onay kaydı:** Kullanıcı: “hepsini sırayla yap” (2026-10-29).
+- **Durum:** GEÇERLİ
+
+## DEC-0065 — Bütün yerel oyun kayıtlarını silme
+
+- **Tarih:** 2026-10-29
+- **Seçilen karar:** TASK-0016 ile Kayıtlar ekranına oyunun kendi onay penceresini kullanan “Tüm kayıtları sil” eklenir.
+  Bu tarayıcıdaki manuel/eski manuel ve otomatik kayıtlar temizlenir. Açık oyun, ayarlar ve indirilmiş dosyalar korunur.
+  Kullanıcının talebi özelliği eklemektir; agent mevcut kullanıcı kayıtlarını silmez. Commit/push izni verilmedi.
+- **Onay kaydı:** Kullanıcı: “oyun kayıtlarının hepsin silme eklensin” (2026-10-29).
+- **Durum:** GEÇERLİ

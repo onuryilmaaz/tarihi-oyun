@@ -1,4 +1,4 @@
-import type { Istikrar } from "@tarihi/sim";
+import type { Istikrar, BarisDevirOzeti } from "@tarihi/sim";
 // Ana iş parçacığı ↔ simülasyon Worker'ı mesaj protokolü.
 
 import type { Alan, Degerlendirme, IliskiBileseni, TeknolojiId, YapiTuru, BarisKaydi, BarisTalebi, ButceOzeti, Dogrulama, Emir, KusatmaYontemi, MuharebeRaporu, OlayKaydi, RotaKirilimi, SenaryoVerisi, Tutum, TurSonucu, TurSuresi, YabanciOrdu } from "@tarihi/sim";
@@ -14,6 +14,7 @@ export type Istek = { id: number } & (
   | { tip: "kaydet" }
   | { tip: "rotaOnizle"; ordu: number; x: number; y: number; dugum: number }
   | { tip: "barisOnizle"; talep: BarisTalebi }
+  | { tip: "testSimHatasi" } // geliştirici denemesi: tur ortasında hata gibi davranır (10b)
 );
 
 export interface OrduOzeti {
@@ -111,23 +112,48 @@ export interface Ozet {
 }
 
 export type Yanit =
-  | { id: number; tamam: true; ozet: Ozet; sonuc?: TurSonucu; sureMs?: number; metin?: string; dogrulama?: Dogrulama; rota?: RotaOnizleme; baris?: { puan: number; skor: number; dogrulama: Dogrulama } }
-  | { id: number; tamam: false; hata: string };
+  | { id: number; tamam: true; ozet: Ozet; sonuc?: TurSonucu; sureMs?: number; metin?: string; dogrulama?: Dogrulama; rota?: RotaOnizleme; baris?: { puan: number; skor: number; dogrulama: Dogrulama; devir: BarisDevirOzeti | null } }
+  | { id: number; tamam: false; hata: string; yigin?: string; bozuk?: boolean };
 
 type IstekGovdesi = Istek extends infer T ? (T extends { id: number } ? Omit<T, "id"> : never) : never;
 
 /** Worker'a söz (promise) tabanlı erişim. İstekler sırayla işlenir. */
+/** Simülasyon hatası: yığın bilgisi ve dünyanın güvenilirliğini taşır (10b). */
+export class SimHatasi extends Error {
+  constructor(mesaj: string, readonly yigin?: string, readonly bozuk = false) { super(mesaj); this.name = "SimHatasi"; }
+}
+
 export class SimIstemcisi {
-  private isci = new Worker(new URL("./sim-isci.ts", import.meta.url), { type: "module" });
+  private isci!: Worker;
   private sonrakiId = 1;
   private bekleyen = new Map<number, (y: Yanit) => void>();
+  /** İşçinin kendisi çöktüğünde (ör. bellek) çağrılır; bekleyen istekler hatayla sonlanır. */
+  coktuginde?: (mesaj: string) => void;
 
-  constructor() {
+  constructor() { this.kur(); }
+
+  private kur() {
+    this.isci = new Worker(new URL("./sim-isci.ts", import.meta.url), { type: "module" });
     this.isci.onmessage = (e: MessageEvent<Yanit>) => {
       const cozum = this.bekleyen.get(e.data.id);
       this.bekleyen.delete(e.data.id);
       cozum?.(e.data);
     };
+    this.isci.onerror = (e) => {
+      e.preventDefault();
+      const mesaj = `Simülasyon işçisi çöktü: ${e.message || "bilinmeyen hata"}`;
+      for (const [id, cozum] of this.bekleyen) cozum({ id, tamam: false, hata: mesaj, bozuk: true });
+      this.bekleyen.clear();
+      this.coktuginde?.(mesaj);
+    };
+  }
+
+  /** Çöken ya da güvenilmez işçiyi kapatıp yenisini başlatır (ardından yeniOyun/yukle gönderilmelidir). */
+  yenidenBaslat() {
+    this.isci.terminate();
+    for (const [id, cozum] of this.bekleyen) cozum({ id, tamam: false, hata: "Simülasyon yeniden başlatıldı.", bozuk: true });
+    this.bekleyen.clear();
+    this.kur();
   }
 
   async gonder(govde: IstekGovdesi): Promise<Extract<Yanit, { tamam: true }>> {
@@ -136,7 +162,7 @@ export class SimIstemcisi {
       this.bekleyen.set(id, cozum);
       this.isci.postMessage({ id, ...govde } as Istek);
     });
-    if (!y.tamam) throw new Error(y.hata);
+    if (!y.tamam) throw new SimHatasi(y.hata, y.yigin, y.bozuk ?? false);
     return y;
   }
 }

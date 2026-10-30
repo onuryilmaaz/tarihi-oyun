@@ -71,3 +71,17 @@ export async function kayitSil(yuva: Yuva): Promise<void> {
   });
   vt.close();
 }
+
+/** Manuel ve otomatik bütün yuvalar tek işlemde silinir; ayarlar/dünya belleği değişmez. */
+export async function tumKayitlariSil(): Promise<void> {
+  const vt = await ac();
+  try {
+    await new Promise<void>((cozum, red) => {
+      const islem = vt.transaction(DEPO, "readwrite");
+      islem.objectStore(DEPO).clear();
+      islem.oncomplete = () => cozum();
+      islem.onerror = () => red(islem.error);
+      islem.onabort = () => red(islem.error ?? new Error("Kayıt silme işlemi iptal edildi."));
+    });
+  } finally { vt.close(); }
+}

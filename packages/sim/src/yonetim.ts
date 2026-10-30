@@ -18,13 +18,15 @@ export function yerelYonetimAyarla(d: DunyaDurumu, a: { sehir?: number; acik?: b
   if (a.sehir !== undefined) {
     const s = d.sehirler[a.sehir];
     if (!s || s.devlet !== d.ayarlar.oyuncu) return { gecerli: false, neden: "Yalnızca kendi şehrinize yönetici atayabilirsiniz." };
-    s.yonetici = !!a.acik;
   }
-  for (const [ad, x] of [["butce", a.butce], ["altSinir", a.altSinir]] as const) {
+  for (const x of [a.butce, a.altSinir]) {
     if (x === undefined) continue;
     if (!Number.isSafeInteger(x) || x < 0) return { gecerli: false, neden: "Bütçe ve alt sınır sıfır veya pozitif tam sayı olmalı." };
-    d.yerelYonetim[ad] = x;
   }
+  // Önce tüm alanlar doğrulanır; reddedilen ayar kısmen uygulanmaz.
+  if (a.sehir !== undefined) d.sehirler[a.sehir].yonetici = !!a.acik;
+  if (a.butce !== undefined) d.yerelYonetim.butce = a.butce;
+  if (a.altSinir !== undefined) d.yerelYonetim.altSinir = a.altSinir;
   return { gecerli: true };
 }
 

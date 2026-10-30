@@ -185,6 +185,7 @@ export function emirDogrula(d: DunyaDurumu, e: Emir, b: Baglam = BOS_BAGLAM, kuy
     case "gemiInsa": {
       const s = d.sehirler[e.sehir], devlet = e.devlet ?? d.ayarlar.oyuncu;
       if (!s || s.devlet !== devlet || s.kontrol !== devlet || (d.deniz.limanlar[e.sehir] ?? -1) < 0) return { gecerli: false, neden: "Gemi yalnızca kontrolünüzdeki kendi liman şehrinizde yapılır." };
+      if (s.istikrar.ayaklanma) return { gecerli: false, neden: "Ayaklanmadaki limanda gemi inşası başlatılamaz." };
       if (!GEMI_TURLERI.includes(e.gemi)) return { gecerli: false, neden: "Geçersiz gemi türü." };
       if (e.gemi === "kalyon" && !biliyor(d, devlet, "kalyon")) return { gecerli: false, neden: "Kalyon yapmak için önce \"Kalyon İnşası\" teknolojisini araştırın." };
       if (d.kusatmalar.some((k) => k.sehir === e.sehir)) return { gecerli: false, neden: "Kuşatma altındaki limanda gemi yapılamaz." };

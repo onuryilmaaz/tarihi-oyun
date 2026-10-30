@@ -113,13 +113,15 @@ export function gorunurDonanmalar(d: DunyaDurumu, devlet: number): { id: number;
 /** Tamamlanan gemiler, şehrin bölgesinde bekleyen kendi donanmasına katılır; yoksa yeni donanma kurulur. */
 export function gemiInsalariIlerlet(d: DunyaDurumu): void {
   for (const g of [...d.gemiInsalari]) {
-    if (--g.kalanGun > 0) continue;
-    d.gemiInsalari = d.gemiInsalari.filter((x) => x !== g);
     const s = d.sehirler[g.sehir], bolge = d.deniz.limanlar[g.sehir];
     if (s.devlet !== g.devlet || s.kontrol !== g.devlet) {
+      d.gemiInsalari = d.gemiInsalari.filter((x) => x !== g);
       olayEkle(d, { tur: "gemi-iptal", devlet: g.devlet, metin: `${s.ad} elden çıktığı için ${g.adet} ${DENGE.GEMI[g.gemi].ad.toLowerCase()} tamamlanamadı.` });
       continue;
     }
+    if (s.istikrar.ayaklanma || d.kusatmalar.some((k) => k.sehir === g.sehir)) continue;
+    if (--g.kalanGun > 0) continue;
+    d.gemiInsalari = d.gemiInsalari.filter((x) => x !== g);
     let f = d.donanmalar.find((x) => x.devlet === g.devlet && x.bolge === bolge && !x.rota.length && !x.yuk);
     if (!f) {
       f = { id: d.sonrakiDonanmaId++, ad: `${d.devletler[g.devlet].ad} Donanması (${s.ad})`, devlet: g.devlet, bolge,

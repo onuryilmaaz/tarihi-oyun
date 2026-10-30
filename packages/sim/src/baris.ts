@@ -3,8 +3,18 @@ import { olayEkle, type BarisTalebi, type DunyaDurumu } from "./durum";
 import { DENGE } from "./denge";
 import type { Baglam, Dogrulama } from "./emirler";
 import { gecilebilir, orduKonumu, rotaBul } from "./hareket";
+import { savasiSonlandir, yikilanDevletleriTemizle } from "./savas-sonu";
 
 export const sehirDegeri = (d: DunyaDurumu, sehir: number): number => d.sehirler[sehir].baskent ? DENGE.BASKENT_DEGERI : DENGE.SEHIR_DEGERI;
+export interface BarisDevirOzeti { alinanArazi: number; alinanSehir: number; kalanArazi: number; kalanSehir: number; tamIlhak: boolean }
+/** Talepte seçilmeyen şehirler araziyle birlikte otomatik devredilmez (UX-01). */
+export function barisDevirOzeti(d: DunyaDurumu, karsi: number, t: BarisTalebi): BarisDevirOzeti {
+  const alinanArazi = d.birimler.filter((b, i) => b.sahip === karsi && t.birimler.includes(i)).length;
+  const alinanSehir = d.sehirler.filter((s, i) => s.devlet === karsi && t.sehirler.includes(i)).length;
+  const kalanArazi = d.birimler.filter((b) => b.sahip === karsi).length - alinanArazi;
+  const kalanSehir = d.sehirler.filter((s) => s.devlet === karsi).length - alinanSehir;
+  return { alinanArazi, alinanSehir, kalanArazi, kalanSehir, tamIlhak: kalanArazi === 0 && kalanSehir === 0 };
+}
 function toplamDeger(d: DunyaDurumu, devlet: number): number {
   return d.birimler.filter((b) => b.sahip === devlet).length * DENGE.BOLGE_DEGERI
     + d.sehirler.reduce((s, c, i) => s + (c.devlet === devlet ? sehirDegeri(d, i) : 0), 0);
@@ -61,29 +71,19 @@ export function barisiUygula(d: DunyaDurumu, b: Baglam, t: BarisTalebi, devlet =
   const s = d.savaslar.find((v) => v.id === t.savas)!;
   const karsi = s.saldiran === devlet ? s.savunan : s.saldiran;
   const taraflar = [devlet, karsi];
-  // Önce bu savaşa ait muharebe ve kuşatmaları bitir; diğer savaşlar sürer.
-  const bitenMuharebeler = d.muharebeler.filter((m) => m.taraflar.every((a) => taraflar.includes(a.devlet))).map((m) => m.id);
-  for (const o of d.ordular) if (o.muharebe !== null && bitenMuharebeler.includes(o.muharebe)) o.muharebe = null;
-  d.muharebeler = d.muharebeler.filter((m) => !bitenMuharebeler.includes(m.id));
-  d.kusatmalar = d.kusatmalar.filter((k) => !(taraflar.includes(k.devlet) && taraflar.includes(k.savunan)));
-  d.isgalHazirliklari = d.isgalHazirliklari.filter((p) => !(taraflar.includes(p.devlet) && taraflar.includes(d.birimler[p.birim].sahip)));
   for (const i of t.birimler) d.birimler[i].sahip = devlet;
   for (const i of t.sehirler) {
     d.sehirler[i].devlet = devlet;
     d.sehirler[i].istikrar.fetihGun = d.gun;
     d.sehirler[i].istikrar.bagis = 0;
   }
-  for (const a of d.birimler) if (taraflar.includes(a.sahip) && taraflar.includes(a.kontrol)) {
-    a.kontrol = a.sahip; a.isgalBaslangic = null;
-  }
-  for (const c of d.sehirler) if (taraflar.includes(c.devlet) && taraflar.includes(c.kontrol)) {
-    c.kontrol = c.devlet; c.isgalBaslangic = null;
-  }
+  savasiSonlandir(d, s);
+  // Turun ilk günlük muharebe adımından önce üçüncü devletlerle biten savaşlar da temizlenir.
+  yikilanDevletleriTemizle(d);
   // Kaybedilen şehirlerde devam eden toplama iptal edilir; harcanmış havuz/paralar yeniden kullanılmaz.
   d.askerToplamalar = d.askerToplamalar.filter((a) => d.sehirler[a.sehir].devlet === a.devlet);
   d.devletler[karsi].hazine -= t.tazminat;
   d.devletler[devlet].hazine += t.tazminat;
-  d.savaslar = d.savaslar.filter((a) => a !== s);
   baskentleriGuncelle(d);
 
   // Yeni sınır dışında kalan ordular eski savaşın erişimini sadece dönüş rotası için kullanır.

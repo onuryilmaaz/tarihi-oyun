@@ -1,12 +1,13 @@
 // Kayıt ve yükleme (ADR-0002 Karar 4). Biçim: JSON; şema sürümü ve senaryo kimliği taşır.
 // Depolama (IndexedDB) istemcinin işidir; burada yalnızca serileştirme ve doğrulama vardır.
 
-import { SEMA_SURUMU, degismezler, type DunyaDurumu } from "./durum";
+import { SEMA_SURUMU, degismezler, olayEkle, type DunyaDurumu } from "./durum";
 import { DENGE } from "./denge";
 import { kurgusalHukumdar } from "./hanedan";
 import { bosIstikrar } from "./istikrar";
 import { BILINMIYOR } from "./nufus";
 import { gundenTarih } from "./takvim";
+import { eskiSavasKalintilariniTemizle } from "./savas-sonu";
 
 export interface KayitPaketi {
   tur: "tarihi-oyun-kayit";
@@ -158,7 +159,16 @@ export function yukle(metin: string, beklenenSenaryo?: string): DunyaDurumu {
     d.sema = SEMA_SURUMU;
   }
   if (d.sema !== SEMA_SURUMU) throw new KayitHatasi("Kayıt tutarsız: dünya şema sürümü uyuşmuyor.");
-  const hatalar = degismezler(d);
+  let hatalar = degismezler(d);
+  // İçerik özeti doğru eski H-02 kayıtlarını dar kapsamda onar; diğer bozuk veriler reddedilir.
+  if (!ozetUyusmuyor && hatalar.length && hatalar.every((h) => h.startsWith("savaş ilişkisi:"))) {
+    eskiSavasKalintilariniTemizle(d);
+    hatalar = degismezler(d);
+    if (!hatalar.length) {
+      olayEkle(d, { tur: "kayit-onarildi", devlet: d.ayarlar.oyuncu,
+        metin: "Eski kayıttaki sona ermiş savaşın muharebe ve işgal kalıntıları temizlendi." });
+    }
+  }
   if (hatalar.length) throw new KayitHatasi(`Kayıt tutarsız: ${hatalar.slice(0, 3).join("; ")}`);
   if (ozetUyusmuyor) throw new KayitHatasi("Kayıt bozulmuş ya da elle değiştirilmiş (içerik özeti tutmuyor). Önceki bir otomatik kaydı deneyin.");
   return d;

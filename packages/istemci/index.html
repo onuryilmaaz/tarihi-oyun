@@ -32,6 +32,7 @@
       letter-spacing: var(--et-devlet-aralik); text-transform: var(--et-donusum); text-align: center; line-height: 1.1; }
     .et-sehir { font-family: var(--et-sehir-font); font-weight: var(--et-sehir-agirlik); color: var(--et-sehir-renk);
       font-size: var(--et-sehir-boyut); font-style: var(--et-sehir-stil); line-height: 1; }
+    .et-sehir.ayri-sehir { border-bottom: 1px dashed currentColor; padding-bottom: 2px; }
 
     .panel { position: fixed; background: var(--panel); border: 1px solid var(--cizgi); border-radius: 10px;
       padding: 14px; backdrop-filter: blur(8px); box-shadow: 0 6px 24px rgba(0,0,0,.2); }
@@ -266,6 +267,13 @@
     #sozluk { margin: 10px 0; max-height: 38vh; overflow: auto; display: grid; grid-template-columns: 170px 1fr; gap: 6px 12px; font-size: 13px; }
     #sozluk dt { color: var(--vurgu); font-weight: 600; }
     #sozluk dd { margin: 0; color: var(--metin); }
+    #hataPenceresi { position: fixed; inset: 0; z-index: 50; display: grid; place-items: center; background: rgba(15, 12, 9, .7); }
+    #hataPenceresi .panel { position: static; width: min(560px, calc(100% - 32px)); padding: 22px; }
+    #hataPenceresi h3 { font-family: "Cinzel", serif; margin: 0 0 8px; color: var(--hata); }
+    #hataMetni { max-height: 140px; overflow: auto; background: #1d1813; border: 1px solid var(--cizgi); border-radius: 6px; padding: 8px;
+      font-size: 11px; white-space: pre-wrap; color: var(--soluk); }
+    #hataPenceresi .satir { display: flex; gap: 8px; align-items: center; margin-top: 10px; }
+    #hataPenceresi .satir span { flex: 1; }
     #onay { position: fixed; inset: 0; display: grid; place-items: center; background: rgba(15, 12, 9, .5); z-index: 40; } /* menünün (30) de üstünde */
     #onay .panel { position: static; width: min(440px, calc(100% - 32px)); padding: 22px; text-align: center; }
     #onay h3 { font-family: "Cinzel", serif; margin: 0 0 8px; font-size: 18px; }
@@ -483,6 +491,8 @@
         <h2>Görünüm</h2>
         <label for="arayuzOlcek">Arayüz boyutu <select id="arayuzOlcek"><option value="0.9">%90</option><option value="1" selected>%100</option><option value="1.15">%115</option><option value="1.3">%130</option></select></label>
         <p class="not">Paneller, menüler ve pencereler büyür; harita etkilenmez. Klavye: Tab ile gezin, sekmelerde ← →, Esc ile kapatın, Boşluk ile turu ilerletin.</p>
+        <label for="otoKayitSiklik">Otomatik kayıt <select id="otoKayitSiklik"><option value="tur">Her tur sonunda</option><option value="ay">Oyunda ayda bir</option><option value="yil">Oyunda yılda bir</option><option value="kapali">Kapalı</option></select></label>
+        <p class="not">Son üç otomatik kayıt tutulur. Kapalıysa yalnızca sizin aldığınız kayıtlar kalır.</p>
         <h2>Katmanlar</h2>
         <label><input type="checkbox" id="kEtiket" checked /> Devlet adları</label>
         <label><input type="checkbox" id="kSehir" checked /> Şehirler</label>
@@ -499,6 +509,8 @@
         <div class="satir">
           <button id="testKesinti">Test kesintisi (10 gün)</button>
           <button id="testHarca">Test harcaması (50.000)</button>
+          <button id="testHata">Test hatası</button>
+          <button id="testSimHata">Simülasyon hatası testi</button>
         </div>
         <p class="not">Aşama 2 altyapısını sınamak içindir; gerçek oyun mekaniği değildir. Gelir ve nüfus değerleri test değeridir.</p>
         <p class="not"><span id="sonTur"></span><br />Durum özeti: <span id="ozetHash"></span></p>
@@ -563,6 +575,17 @@
     </div>
   </div>
 
+  <div id="hataPenceresi" hidden>
+    <div class="panel" role="alertdialog" aria-modal="true" aria-labelledby="hataBaslik">
+      <h3 id="hataBaslik">Beklenmeyen bir hata oluştu</h3>
+      <p id="hataAciklama"></p>
+      <pre id="hataMetni"></pre>
+      <label><input type="checkbox" id="hataKayitEkle" /> Rapora mevcut oyun kaydını da ekle (hatayı yeniden üretmeye yardımcı olur)</label>
+      <p class="not">Hata raporu yalnızca bilgisayarınıza dosya olarak kaydedilir; hiçbir yere gönderilmez. Kişisel veri içermez.</p>
+      <div class="satir"><button id="hataRapor">Hata raporunu indir</button><span></span><button id="hataDevam">Devam et</button><button id="hataKurtar" class="birincil">Son otomatik kayda dön</button></div>
+    </div>
+  </div>
+
   <div id="menuKatmani" hidden>
     <div class="menu-kart panel" role="dialog" aria-modal="true" aria-labelledby="menuBaslik">
       <section data-menu="ana">
@@ -589,7 +612,7 @@
         <div id="kayitDosya" class="satir"><button id="kayitDosyaAc">⭱ Dosyadan yükle…</button><input id="kayitDosyaGirdi" type="file" accept=".json,application/json" hidden />
           <span class="not">Dosyaya indirdiğiniz kayıtlar tarayıcı verisi silinse de kaybolmaz.</span></div>
         <ul id="kayitListesi"></ul>
-        <div class="menu-alt"><button data-menu-git="geri">‹ Geri</button></div>
+        <div class="menu-alt"><button data-menu-git="geri">‹ Geri</button><button id="tumKayitlariSil" class="tehlike" disabled>Tüm kayıtları sil</button></div>
       </section>
       <section data-menu="nasil" hidden>
         <h2 class="menu-h">Nasıl oynanır</h2>

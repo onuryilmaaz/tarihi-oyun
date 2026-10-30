@@ -1,22 +1,62 @@
 # DEVİR TESLİM — agent değişiminde kaldığın yer
 
-Son güncelleme: **2026-10-29, Codex — 7c tamamlandı; kullanıcı kabulü bekleniyor.** Bağlayıcı kurallar: `AGENTS.md`, `MASTER_SPEC.md`, `DECISIONS.md`.
-
-## 1. İlk okunacaklar
-
-1. Bu belge, `AGENTS.md`, `MASTER_SPEC.md` tamamen ve `DECISIONS.md` (DEC-0001 … DEC-0047).
-2. Aktif görev `tasks/TASK-0010.md`, aşama `docs/milestones/ASAMA-7.md`.
-3. Son rapor `docs/qa/ASAMA-7C-TEST.md`.
+Son güncelleme: **2026-10-29, Codex — TASK-0015 düzeltmeleri tamamlandı; kullanıcı testi ve commit/push onayı bekleniyor.**
+Bağlayıcı kurallar: `AGENTS.md`, `MASTER_SPEC.md`, `DECISIONS.md`.
 
 ## 0. En son — BURADAN BAŞLA
+
+- Kullanıcı Osmanlı ile Eflak ilhakı ve benzer sorunlar için ayrıntılı araştırma istedi (DEC-0063 / TASK-0014).
+  Sonra **“hepsini sırayla yap”** dedi; rapordaki bütün hata ve doğrulama düzeltmeleri onaylandı (DEC-0064 / TASK-0015).
+- **Uygulama ve agent doğrulaması tamamlandı.** Güncel rapor `docs/qa/BUG-DUZELTMELERI-TEST.md`.
+  Orijinal hata kanıtları `docs/qa/OYNANIS-HATA-INCELEMESI.md` içinde; onun “henüz düzeltilmedi” ifadeleri araştırma tarihine ait.
+- **Tamamlananlar:** H-01 bütçeyi düşürünce harcama geçmişi/kayıt geçerliliği; H-02 ortak savaş sonlandırma ve tam ilhakın
+  bitirdiği üçüncü devlet muharebe/işgal temizliği; UX-01 barışta kalan arazi/şehir ve tam ilhak özeti, farklı şehir/çevre sahipliği
+  paneli ve harita etiketi; H-03 dünya değişiminde otomatik kayıt dönemi; H-04 ayaklanma/kuşatmada tersane beklemesi;
+  H-05 gemideki askerin toplamda sayılması; H-06 fetih sonrası geçersiz isyan desteği filtresi; H-07 rapor kimliği önbelleği.
+- **K-01/T-01/T-02:** Kesirli/eksik devlet indeksleri reddedilir. Bitmiş savaşın muharebesi ve yıkılmış devletin kontrolü
+  değişmezlerde yakalanır. Gerçek 1453 senaryosu hareket ağıyla 10 yıllık deterministik kampanyayı artık otomatik testte çalıştırır.
+- **Şema 18 korunuyor; yeni durum alanı eklenmedi.** Yeni modül `packages/sim/src/savas-sonu.ts`.
+  Sağlam özetli/özetsiz desteklenen eski H-02 kaydında yalnız savaş ilişkileri hatalıysa kalıntılar temizlenir;
+  günlükte `kayit-onarildi` mesajı görünür. Başka bozukluk veya uyuşmayan içerik özeti onarımla kabul edilmez.
+- **Son kontroller başarılı:** `npm test` 25 dosya / **198 test**; `npm run typecheck`; `npm run build`; `git diff --check`.
+  Bir ara mevcut gerçek dünya hareket testi 5 saniyelik sınırı aştı, tekrarı geçti; o testin sınırı gerçek kampanya/paralel yük
+  için 30 saniye yapıldı, sonuç kontrolleri korunuyor. Son test çalışması 26 saniye; bütün testler geçti.
+- **5173 tarayıcı sonuçları:** Gerçek düğmelerle yönetici 300 harcadı → tavan 0 → kaydedilen kayıt artık yükleniyor.
+  Aynı ayda farklı dünyaya geçince otomatik kayıt yeni 12.345 hazinesini yazıyor. Karaman raporu 1 sonrası farklı Eflak muharebesi 1
+  bitince rapor penceresi açılıyor. Eflak barış önizlemesi 26 arazi/0 şehir için 1 şehrin kalacağını, 26/1 için tam ilhakı söylüyor;
+  onay ve tur düğmeleriyle uygulandı, Tırgovişte paneli Osmanlı oldu. Yalnız arazi devrinde panel Eflak + çevre Osmanlı diyor;
+  `⚑ Tırgovişte · Eflak Voyvodalığı` etiketi görünür olarak test edildi, ekran görüntüsü incelendi.
+- Savaş ve rapor kurulumları için hazırlanmış kayıtlar kullanıldı; kullanıcının kendi kaydı incelenmedi/değiştirilmedi.
+  Kullanıcının şehir kutusunu seçmediğini kesin neden diye sunma. Şehir ve arazi ayrı devredilir; otomatik şehir ilhakı eklenmedi.
+  İlhak edilen devletin ordusunun siyasi kaderi OPEN-024 olarak kalır; ordu otomatik silinmez/devredilmez.
+- **Kullanıcı kabulü henüz yok; commit/push izni yok ve işlem yapılmadı (DEC-0017).** Son kullanıcı talimatı yalnız düzeltmeleri
+  yapmak. Sonraki iş kullanıcı test sonucunu almak, varsa takip hatasını düzeltmek; commit/push istenirse güncel ağacı gözden geçirmek.
+  Aşama 10c/10d'ye kendiliğinden geçme; ertelenmiş büyük mekanikler bu işte eklenmedi.
+- **Çalışma ağacı:** Devralırken zaten commit edilmemiş 10b kod/belgeleri vardı; korundu. Araştırma (TASK-0014/DEC-0063/QA)
+  ve düzeltme (TASK-0015/DEC-0064/QA) belgeleri de commit edilmemiştir. Güncel toplam dosya listesi için `git status`.
+  Yeni kaynak `savas-sonu.ts`; önceki agent'ın yeni `surum.ts` ve `ASAMA-10B-TEST.md` dosyaları da ağacın parçasıdır.
+- **Yarım kod yok.** 5173 kapatılmadı; 4175 kullanılmaz. Ayrı test tarayıcısı son temizlikte kapatıldı;
+  kullanıcı profiline dokunulmadı. Geçici profil `/tmp/tarihi-fix-iFYlW6`, betikler `/tmp/tarihi-audit-*` ve `/tmp/tarihi-fix-*`,
+  incelenmiş görsel `/tmp/tarihi-fix-eflak-ayri.png`. Bunlar kalıcı depo bağımlılığı değildir.
+
+## 1. İlk okunacaklar ve sıradaki iş
+
+1. Bu bölüm, `AGENTS.md`, `MASTER_SPEC.md`, `DECISIONS.md` (DEC-0001 … DEC-0064).
+2. `tasks/TASK-0015.md` ve `docs/qa/BUG-DUZELTMELERI-TEST.md`; asıl inceleme için TASK-0014 ve hata raporu.
+3. Yayın hazırlığı bağlamı: `tasks/TASK-0013.md`, `docs/milestones/ASAMA-10.md`. 10b önceden uygulanmıştı; 10c/10d bekliyor.
+4. Son kullanıcı yanıtını esas al. Kullanıcı testi veya commit onayı uydurma. Aşağıdaki eski 7c/7d bekleyişleri güncel değildir.
+
+## Arşiv — önceki agent'ın 10b/7c ve daha eski notları
+
+**Aşağısı geçmiş oturum kaydıdır; güncel görev, onay veya commit durumu için üstteki §0–1 geçerlidir.**
 
 Son güncelleme: **2026-10-29, Claude** (Codex'ten devraldı). **7c kullanıcı tarafından kabul edildi (DEC-0048).**
 7c ve 7d kabul edildi, commit edildi. **Aşama 7 kapandı (DEC-0050).** Aşama 8 başladı; TASK-0011 onaylandı (DEC-0051).
 **8a kabul edildi ve commit edildi (DEC-0052).** Sol panel düzeni, kalyon teknolojisi ve **8b ticaret tamamlandı**
 (şema 16, 179 test) — kabul ve commit (DEC-0053; panel 340 px, temalı form alanları). **8c kabul; Aşama 8 kapandı (DEC-0054).** Açılır liste tasarımı commit edildi. **Aşama 9 onaylandı (DEC-0055); 9a kabul edildi ve commit edildi (DEC-0056).** **9b kabul edildi ve commit edildi (DEC-0057).** Not: kullanıcı dünyayı "biraz durağan" buldu (ileride AI
 savaş olasılıkları artırılabilir). **9c kabul edildi ve commit edildi (DEC-0058).** **9d kabul edildi ve commit edildi (DEC-0059).** **Aşama 9 kapandı: oynanabilir sürüm kabul edildi (DEC-0060).** Aşama 10 (yayın hazırlığı) sürüyor;
-`tasks/TASK-0013.md` onaylandı (DEC-0061): sürüm 0.9.0, dağıtım yalnızca yerel zip. **10a kabul edildi ve commit edildi (DEC-0062).** **10b uygulanıyor:** hata kurtarma ekranı, yerel hata raporu,
-Ayar'da otomatik kayıt sıklığı (varsayılan kullanıcıya sorulacak).
+`tasks/TASK-0013.md` onaylandı (DEC-0061): sürüm 0.9.0, dağıtım yalnızca yerel zip. **10a kabul edildi ve commit edildi (DEC-0062).** **10b tamamlandı** (hata penceresi, yerel rapor, kurtarma, otomatik kayıt sıklığı) — commit edilmedi;
+kullanıcı testi, otomatik kayıt varsayılanı kararı ve commit izni bekleniyor. Sonra 10c (sürüm notları, paket, kontrol listesi).
 Not: açılışta menü gelir; puppeteer betikleri için `?devlet=osm` menüyü atlar.
 
 - Aşama 0–6 kapalı. 7a kabul DEC-0044, 7b kabul DEC-0046 (son commit `0192de4`).
