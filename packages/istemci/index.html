@@ -208,6 +208,12 @@
     #devletArmasi { width: 40px; height: 48px; flex: none; }
     #devletArmasi svg, .arma svg { width: 100%; height: 100%; display: block; }
     .arma { width: 34px; height: 41px; float: right; margin: 0 0 6px 8px; }
+    #hukumdarSatir { display: flex; gap: 10px; align-items: flex-start; }
+    #hukumdarPortre, .portre { width: 40px; height: 40px; flex: none; }
+    #hukumdarPortre svg, .portre svg { width: 100%; height: 100%; display: block; }
+    #hukumdarPortre:empty { display: none; }
+    .aday-icerik { display: flex; gap: 10px; align-items: center; }
+    .portre { flex: none; }
     #sekmeler { display: grid; grid-template-columns: repeat(7, 1fr); border-bottom: 1px solid var(--cizgi); }
     #sekmeler button { border: 0; border-radius: 0; background: none; padding: 7px 0 6px; font-size: 10.5px; color: var(--soluk);
       display: flex; flex-direction: column; align-items: center; gap: 1px; position: relative; min-width: 0; }
@@ -433,7 +439,7 @@
     <div id="sekmeIcerik">
       <section data-sekme="devlet">
         <h2>Hükümdar</h2>
-        <div id="hukumdarKarti" class="not"></div>
+        <div id="hukumdarSatir"><div id="hukumdarPortre" aria-hidden="true"></div><div id="hukumdarKarti" class="not"></div></div>
         <details id="butceOzeti" open>
           <summary>Aylık bütçe</summary>
           <div id="vergiSecim" role="group" aria-label="Vergi oranı">

@@ -1,5 +1,20 @@
 # CHANGELOG
 
+## 2026-10-30 — TASK-0020 (3/3): hükümdar/devlet portresi — TASK-0020 tamamlandı (Claude)
+
+- **Yeni `packages/istemci/src/portre.ts: portreSvg(ad, hanedan)`:** Basit, deterministik insan silüeti SVG'si.
+  Kişinin adı ten/saç rengini, hanedanı aksesuar (taç şeridi) rengini belirler — aynı hanedandan hükümdarlar ortak
+  bir renk paylaşır, ayrı kişiler farklı ten/saç tonuyla ayrışır. Saf görsel: tarihî/fotoğrafik iddia taşımaz, sim
+  tarafına, şemaya ya da oyun mantığına dokunmaz (kapsam dışı değildi, aynı zamanda hiçbir yeni veri gerektirmedi).
+- **Arayüz:** Sol paneldeki kendi hükümdar kartına (`#hukumdarPortre`), devlet panelindeki (`diplomasiBolumu`)
+  hükümdar bölümüne ve veraset seçimi aday listesine eklendi; mevcut soyut arma (`arma.ts`) yanında, onun yerine
+  geçmeden.
+- Sim tarafı değişmedi (246 test aynen geçti), typecheck ve build geçti. 5173'te Playwright ile canlı doğrulandı:
+  kendi hükümdarım (II. Mehmed) ve Brandenburg'un hükümdarı (Karl) için birbirinden farklı, deterministik
+  portreler göründü, JS hatası yok (kullanıcıya ekran görüntüsü gönderildi).
+- **TASK-0020'nin 3 alt teslimi de kod olarak tamamlandı:** (1) AI'dan gelen diplomatik teklifler + gelen kutusu,
+  (2) elçi gönderme, (3) hükümdar/devlet portresi. Kullanıcı testi ve son commit onayı bekliyor.
+
 ## 2026-10-30 — TASK-0020 (2/3): elçi gönderme (Claude)
 
 - **Yeni emir `elciGonder` (`elci.ts`, yeni):** Orta maliyet (`ELCI_BEDEL` 180), 60 gün (`ELCI_GUN`) süren bir

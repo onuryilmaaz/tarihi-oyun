@@ -1,8 +1,8 @@
 # DEVİR TESLİM — agent değişiminde kaldığın yer
 
-Son güncelleme: **2026-10-30, Claude — TASK-0020 2/3 (elçi gönderme) kod olarak tamamlandı; kullanıcı testi ve
-commit onayı bekleniyor. 1/3 commit+push edilmiş ve kullanıcı isteğiyle main'e fast-forward edilmiştir
-(şu an `main` üzerinde çalışılıyor — ayrı dal yok).**
+Son güncelleme: **2026-10-30, Claude — TASK-0020'nin 3 alt teslimi de kod olarak tamamlandı (1/3, 2/3 commit+push
+edildi; 3/3 henüz commit edilmedi, kullanıcı testi/onayı bekleniyor). Artık doğrudan `main` üzerinde çalışılıyor
+(kullanıcı isteğiyle, ayrı dal yok).**
 Bağlayıcı kurallar: `AGENTS.md`, `MASTER_SPEC.md`, `DECISIONS.md`.
 
 ## 0. En son — BURADAN BAŞLA
@@ -26,16 +26,24 @@ Bağlayıcı kurallar: `AGENTS.md`, `MASTER_SPEC.md`, `DECISIONS.md`.
   242 sim testi (4 yeni: `yz-diplomasi.test.ts`), typecheck, build geçti; 5173'te Playwright ile canlı doğrulandı
   (Candaroğulları'ndan saldırmazlık paktı teklifi kesintiyle geldi, `#dipTeklifi` doğru metinle açıldı, "Kabul et"
   JS hatasız çalıştı; kullanıcıya ekran görüntüsü gönderildi).
-- **2/3 kod olarak tamamlandı, henüz commit edilmedi:** Yeni `elci.ts` — emir `elciGonder` (bedel 180, 60 gün);
-  varınca hediyeyle aynı birikim/sönüm kuralına tabi +15 ilişki ekler (`ELCI_EN_COK` 30 tavanlı, bağımsız havuz).
-  Aynı devlete ikinci elçi, ilki yoldayken gönderilemez. Şema 24 → 25 (`elciler`, `sonrakiElciId`). İstemci:
-  devlet panelinde hediyenin yanına "Elçi gönder" düğmesi / "🕊 Elçiniz yolda; N gün sonra varacak" bildirimi.
+- **2/3 commit+push edildi (`538bef9`):** Yeni `elci.ts` — emir `elciGonder` (bedel 180, 60 gün); varınca
+  hediyeyle aynı birikim/sönüm kuralına tabi +15 ilişki ekler (`ELCI_EN_COK` 30 tavanlı, bağımsız havuz). Aynı
+  devlete ikinci elçi, ilki yoldayken gönderilemez. Şema 24 → 25 (`elciler`, `sonrakiElciId`). İstemci: devlet
+  panelinde hediyenin yanına "Elçi gönder" düğmesi / "🕊 Elçiniz yolda; N gün sonra varacak" bildirimi.
   246 sim testi (3 yeni: `elci.test.ts`), typecheck, build geçti; 5173'te Playwright ile canlı doğrulandı
   (Brandenburg'a elçi gönderildi, hazineden 180 düştü, tur sonrası panelde "Elçiniz yolda" göründü, JS hatası yok;
   kullanıcıya ekran görüntüsü gönderildi).
-- **Sırada:** TASK-0020 3/3 hükümdar/devlet portresi (saf görsel, `arma.ts` genişletilecek). Devralan agent önce
-  kullanıcıdan 2/3'ün commit onayını istesin, sonra 3/3'e geçsin.
-- `tasks/TASK-0020.md`, `CHANGELOG.md` güncel; henüz commit edilmedi.
+- **3/3 kod olarak tamamlandı, henüz commit edilmedi — TASK-0020'nin son alt teslimi:** Yeni
+  `packages/istemci/src/portre.ts: portreSvg(ad, hanedan)` — basit, deterministik insan silüeti SVG'si (ad ten/saç
+  rengini, hanedan aksesuar/taç şeridi rengini belirler). Saf görsel; sim tarafına/şemaya dokunmadı, yeni test
+  gerektirmedi (246 sim testi aynen geçti). Sol paneldeki kendi hükümdar kartına, devlet panelindeki hükümdar
+  bölümüne ve veraset aday listesine eklendi, mevcut arma'nın (`arma.ts`) yanında. Typecheck, build geçti; 5173'te
+  Playwright ile canlı doğrulandı (kendi hükümdarım II. Mehmed ve Brandenburg'un hükümdarı Karl için farklı
+  portreler göründü, JS hatası yok; ekran görüntüsü gönderildi).
+- **TASK-0020'nin 3 alt teslimi de kod olarak tamamlandı.** Devralan agent önce kullanıcıdan 3/3'ün commit onayını
+  istesin. Sonrasında TASK-0020 tamamen biter; kullanıcıya yeni bir sonraki konu (varsa) sorulmalı — bu oturumda
+  öngörülmüş, onaylanmış bir sonraki iş yok.
+- `tasks/TASK-0020.md`, `CHANGELOG.md` güncel; 3/3 henüz commit edilmedi.
 
 ## Arşiv — TASK-0019 ve öncesi (bu oturumun önceki kısmı)
 

@@ -13,6 +13,7 @@ import "@fontsource/inter/latin-ext-700.css";
 import { type YapiTuru, DENGE, tarihMetni, toplamaMaliyeti, type Emir, type MuharebeRaporu, type SenaryoVerisi, type Tutum, type TurSuresi, type VergiOrani, BIRIM_TURLERI, BIRIM_ADLARI, type BirimTuru } from "@tarihi/sim";
 import { Color } from "three";
 import { armaSvg } from "./arma";
+import { portreSvg } from "./portre";
 import { ozelSecimleriKur } from "./secim";
 import { rehberAcik, rehberGoruldu, rehberiBaslat } from "./rehber";
 import { SOZLUK } from "./sozluk";
@@ -176,6 +177,7 @@ async function baslat() {
   const kurguRozeti = (h: HukOz) => (h.kurgusal ? '<span class="rozet-kurgu" title="Tarihî kişi değil; oyunun ürettiği kurgusal kişi">kurgusal</span>' : "");
   const hukumdarKarti = () => {
     const h = ozet.hukumdar;
+    $("hukumdarPortre").innerHTML = h ? portreSvg(h.ad, h.hanedan) : "";
     $("hukumdarKarti").innerHTML = h
       ? `<b>${kacis(h.ad)}</b>${kurguRozeti(h)} · ${h.yas} yaşında<br />${kacis(h.hanedan)} · meşruiyet ${h.mesruiyet}<br />${yetenekMetni(h)}<br />
         Veraset: ${kacis(ozet.veraset)}${ozet.tarihiHalef ? ` · tarihî halef: ${kacis(ozet.tarihiHalef)}` : ""}`
@@ -186,8 +188,8 @@ async function baslat() {
     const v = ozet.verasetSecimi;
     if (!v) { $("verasetPencere").hidden = true; return; }
     $("verasetBilgi").textContent = `${v.onceki} öldü. Veraset geleneği: ${v.veraset}. Geleneğe uygun aday daha yüksek meşruiyetle başlar.`;
-    $("verasetAdaylar").innerHTML = v.adaylar.map((a, i) => `<div class="aday${secilenAday === i ? " secili" : ""}"><span><b>${kacis(a.ad)}</b>${kurguRozeti(a)}${a.tarihi ? " · tarihî halef" : ""}
-      <small>${a.yas} yaşında · ${yetenekMetni(a)} · meşruiyet ${a.mesruiyet}${a.gelenek ? "" : " (geleneğe aykırı)"}</small></span>
+    $("verasetAdaylar").innerHTML = v.adaylar.map((a, i) => `<div class="aday${secilenAday === i ? " secili" : ""}"><div class="aday-icerik"><div class="portre" aria-hidden="true">${portreSvg(a.ad, a.hanedan)}</div><span><b>${kacis(a.ad)}</b>${kurguRozeti(a)}${a.tarihi ? " · tarihî halef" : ""}
+      <small>${a.yas} yaşında · ${yetenekMetni(a)} · meşruiyet ${a.mesruiyet}${a.gelenek ? "" : " (geleneğe aykırı)"}</small></span></div>
       <button data-aday="${i}"${secilenAday !== null ? " disabled" : ""}>${secilenAday === i ? "Seçildi" : "Tahta çıkar"}</button></div>`).join("");
   };
   const verasetAc = () => { if (ozet.verasetSecimi) { verasetCiz(); $("verasetPencere").hidden = false; } };
@@ -587,7 +589,8 @@ async function baslat() {
         En düşmanca baktıkları: ${rap.enKotu.map(([m, p]) => `${kacis(dev[m].ad)} (${p})`).join(", ")}<br />En dostça: ${rap.enIyi.map(([m, p]) => `${kacis(dev[m].ad)} (${p})`).join(", ")}<br />Hazine ≈ ${rap.hazine.toLocaleString("tr-TR")}</p>` : ""}`;
     const inanc = `<p class="not">Resmî din: ${kacis(dinAdi(ozet.devletDinleri[devlet]))}</p>`;
     const arma = `<div class="arma">${armaSvg(gorunum.devletRengiHex(devlet), ozet.devletDinleri[devlet], h.paket.devletler[devlet].ad)}</div>`;
-    const huk = k.hukumdar ? `<h4>Hükümdar</h4><p class="not"><b>${kacis(k.hukumdar.ad)}</b>${kurguRozeti(k.hukumdar)} · ${k.hukumdar.yas} yaşında · ${kacis(k.hukumdar.hanedan)}<br />${yetenekMetni(k.hukumdar)} · meşruiyet ${k.hukumdar.mesruiyet}</p>` : "";
+    const huk = k.hukumdar ? `<h4>Hükümdar</h4><div class="aday-icerik"><div class="portre" aria-hidden="true">${portreSvg(k.hukumdar.ad, k.hukumdar.hanedan)}</div>
+      <p class="not"><b>${kacis(k.hukumdar.ad)}</b>${kurguRozeti(k.hukumdar)} · ${k.hukumdar.yas} yaşında · ${kacis(k.hukumdar.hanedan)}<br />${yetenekMetni(k.hukumdar)} · meşruiyet ${k.hukumdar.mesruiyet}</p></div>` : "";
     return `${arma}${huk}${inanc}${dipTeklifBanner}<h4>Diplomasi</h4><dl><dt>Size bakışı</dt><dd>${isaretli(k.bakisi)} · ${iliskiAdi(k.bakisi)}</dd>
       <dt>Sizin bakışınız</dt><dd>${isaretli(k.bakisimiz)} · ${iliskiAdi(k.bakisimiz)}</dd></dl>
       ${k.bilesenler.length ? `<ul class="iliski-bilesen">${k.bilesenler.map((b) => `<li><span>${kacis(b.ad)}</span>${isaretli(b.deger)}</li>`).join("")}</ul>` : '<p class="not">Aranızda özel bir etken yok.</p>'}
