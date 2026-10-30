@@ -4,6 +4,7 @@ import { DENGE } from "./denge";
 import type { Baglam, Dogrulama } from "./emirler";
 import { gecilebilir, orduKonumu, rotaBul } from "./hareket";
 import { savasiSonlandir, yikilanDevletleriTemizle } from "./savas-sonu";
+import { efendisi, vasalKur, vasalMi } from "./vasallik";
 
 export const sehirDegeri = (d: DunyaDurumu, sehir: number): number => d.sehirler[sehir].baskent ? DENGE.BASKENT_DEGERI : DENGE.SEHIR_DEGERI;
 export interface BarisDevirOzeti { alinanArazi: number; alinanSehir: number; kalanArazi: number; kalanSehir: number; tamIlhak: boolean }
@@ -53,6 +54,11 @@ export function barisDogrula(d: DunyaDurumu, t: BarisTalebi, devlet = d.ayarlar.
   if (t.tazminat > Math.max(0, d.devletler[karsi].hazine)) return { gecerli: false, neden: "Karşı taraf bu tazminatı peşin ödeyemiyor. Borçlanma yoktur; tazminatı azaltın." };
   const skor = savasSkoru(d, devlet, karsi).skor, bedel = barisBedeli(d, devlet, karsi, t);
   if (bedel > skor) return { gecerli: false, neden: `Talep ${bedel} puan; savaş skorunuz ${skor}. Daha az talep edin veya işgali genişletin.` };
+  if (t.vasalYap) {
+    if (!barisDevirOzeti(d, karsi, t).tamIlhak) return { gecerli: false, neden: "Vasal yapmak için düşmanın bütün kalan arazi ve şehirlerini talep etmelisiniz (tam ilhak düzeyinde)." };
+    if (vasalMi(d, karsi)) return { gecerli: false, neden: `${d.devletler[karsi].ad} zaten başka bir devletin vasalı.` };
+    if (vasalMi(d, devlet) && efendisi(d, devlet) === karsi) return { gecerli: false, neden: "Kendi efendinizi vasal yapamazsınız." };
+  }
   return { gecerli: true };
 }
 
@@ -71,11 +77,15 @@ export function barisiUygula(d: DunyaDurumu, b: Baglam, t: BarisTalebi, devlet =
   const s = d.savaslar.find((v) => v.id === t.savas)!;
   const karsi = s.saldiran === devlet ? s.savunan : s.saldiran;
   const taraflar = [devlet, karsi];
-  for (const i of t.birimler) d.birimler[i].sahip = devlet;
-  for (const i of t.sehirler) {
-    d.sehirler[i].devlet = devlet;
-    d.sehirler[i].istikrar.fetihGun = d.gun;
-    d.sehirler[i].istikrar.bagis = 0;
+  if (t.vasalYap) {
+    vasalKur(d, devlet, karsi);
+  } else {
+    for (const i of t.birimler) d.birimler[i].sahip = devlet;
+    for (const i of t.sehirler) {
+      d.sehirler[i].devlet = devlet;
+      d.sehirler[i].istikrar.fetihGun = d.gun;
+      d.sehirler[i].istikrar.bagis = 0;
+    }
   }
   savasiSonlandir(d, s);
   // Turun ilk günlük muharebe adımından önce üçüncü devletlerle biten savaşlar da temizlenir.
@@ -122,10 +132,13 @@ export function barisiUygula(d: DunyaDurumu, b: Baglam, t: BarisTalebi, devlet =
   if (d.barislar.length > DENGE.BARIS_GECMISI_SINIRI) d.barislar.shift();
   // İki AI arasındaki barış herkesin bildiği bir dünya haberidir (devlet: null)
   const oyuncu = d.ayarlar.oyuncu;
+  const devir = t.vasalYap
+    ? `${d.devletler[karsi].ad} ${d.devletler[devlet].ad}'nın vasalı oldu (toprağı kaldı, aylık vergi ödeyecek)`
+    : `${t.birimler.length} arazi, ${t.sehirler.length} şehir ${d.devletler[devlet].ad}'na geçti`;
   olayEkle(d, { tur: "baris", devlet: taraflar.includes(oyuncu) ? oyuncu : null,
     metin: !taraflar.includes(oyuncu)
-      ? `${d.devletler[devlet].ad} ile ${d.devletler[karsi].ad} barış yaptı: ${t.birimler.length} arazi, ${t.sehirler.length} şehir ${d.devletler[devlet].ad}'na geçti.`
+      ? `${d.devletler[devlet].ad} ile ${d.devletler[karsi].ad} barış yaptı: ${devir}.`
       : devlet !== oyuncu
-        ? `${d.devletler[devlet].ad} ile barış yapıldı: ${t.birimler.length} arazi, ${t.sehirler.length} şehir onlara geçti, ${t.tazminat} tazminat.`
-        : `${d.devletler[karsi].ad} ile barış yapıldı: ${t.birimler.length} arazi, ${t.sehirler.length} şehir, ${t.tazminat} tazminat. Talep edilmeyen işgaller kaldırıldı.` });
+        ? `${d.devletler[devlet].ad} ile barış yapıldı: ${devir}, ${t.tazminat} tazminat.`
+        : `${d.devletler[karsi].ad} ile barış yapıldı: ${devir}, ${t.tazminat} tazminat.${t.vasalYap ? "" : " Talep edilmeyen işgaller kaldırıldı."}` });
 }

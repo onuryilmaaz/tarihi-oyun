@@ -92,6 +92,7 @@ export interface Ozet {
   iskanlar: { kaynak: number; hedef: number; miktar: number; kalanGun: number; emir: boolean }[];
   diplomasi: (DiplomasiKarti | null)[]; // devlet başına; oyuncunun kendisi null (TASK-0009/6a)
   saldirganlik: number; // oyuncunun saldırganlığı
+  efendim: number | null; // TASK-0018 (2/3): oyuncu bir vasalsa efendisinin indeksi
   barisTeklifleri: { id: number; devlet: number; gerekce: string; size: boolean; birimler: number[]; sehirler: number[]; kalanGun: number; cevap: boolean | null }[]; // 6c
   toplamaKurali: { bedelYuzde: number; gun: number }; // teknolojiyle değişir (Asker Kayıt Defterleri)
   askerSehirleri: { indeks: number; ad: string; insanGucu: number; uygun: boolean; ayaklanma: boolean }[];
@@ -197,7 +198,9 @@ export interface DiplomasiKarti {
   ticaret: Degerlendirme; // teklif etseniz bugünkü tahmini cevap
   saldirmazlikVar: boolean;
   saldirmazlik: Degerlendirme;
-  bekleyen: "ittifakTeklif" | "ittifakBoz" | "ticaretTeklif" | "ticaretBoz" | "saldirmazlikTeklif" | null;
+  vasalim: boolean; // TASK-0018 (2/3): bu devlet benim vasalım mı
+  onunEfendisi: number | null; // bu devletin efendisi varsa indeksi (ben de olabilirim, başkası da)
+  bekleyen: "ittifakTeklif" | "ittifakBoz" | "ticaretTeklif" | "ticaretBoz" | "saldirmazlikTeklif" | "vasalSerbestBirak" | null;
 }
 
 export interface TeknolojiKarti {

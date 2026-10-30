@@ -1,5 +1,20 @@
 # CHANGELOG
 
+## 2026-10-30 — TASK-0018 (2/3): vasallık — yalnızca barışta "vasal yap" (Claude)
+
+- Tam ilhak düzeyinde talepte (düşmanın bütün kalan arazi/şehri), galip taraf toprak devri yerine **vasal yap**
+  seçebilir: kaybeden toprağını korur, efendisine aylık gelirinin %15'ini öder, efendisinin
+  savaşlarına (saldıran ya da savunan tarafta) zorunlu katılır, kendi başına savaş ilan edemez. Efendisi
+  "Serbest bırak" ile bağı koparır (ilişki +15, zamanla söner). Devlet yıkılırsa vasallık da kalkar.
+  Yeni modül `packages/sim/src/vasallik.ts`; `baris.ts`, `emirler.ts`, `sistemler.ts` entegrasyonu. Kayıt şeması 21 → 22.
+- İstemci: barış panelinde tam ilhak talebinde görünen "Vasal yap" seçeneği; devlet panelinde vasallık durumu ve
+  "Serbest bırak" düğmesi; oyuncunun kendisi vasalsa "Savaş ilan et" düğmesi nedenle birlikte pasif.
+- 222 test (5 yeni), typecheck ve build geçti. 5173'te agent tarafından doğrulandı: savaş ilan edilip barış penceresi
+  açıldı, tam ilhak koşulu sağlanmadığında "Vasal yap" seçeneği doğru şekilde gizli kaldı, JS hatası yok.
+  (Gerçek bir tam ilhak + vasal akışı, kuşatma/işgal gerektirdiği için ayrıca canlı denenmedi; sim testleri davranışı
+  uçtan uca doğruluyor: kurma, savaş engeli, zorunlu katılım, vergi, serbest bırakma, şema dönüşümü.)
+- Kullanıcı testi ve commit/push onayı bekleniyor. Sonraki alt teslim: 3/3 İsyan/casusluk derinliği.
+
 ## 2026-10-30 — TASK-0018 (1/3): ilhak sonrası ordu kaderi — OPEN-024 kapandı (Claude)
 
 - Bir devlet tüm toprağını/şehrini kaybedip yıkıldığında, kalan ordusu artık **dağılır** (silinir); günlüğe

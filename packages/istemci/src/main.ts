@@ -518,7 +518,8 @@ async function baslat() {
     const k = ozet.diplomasi[s.id];
     const amb = ozet.ambargolarim.includes(s.id);
     const ambargo = `<button data-eylem="ambargo" data-devlet="${s.id}" data-acik="${amb ? 0 : 1}"${!amb && k?.muttefik ? " disabled" : ""}>${amb ? "Ambargoyu kaldır" : "Ambargo koy"}</button>`;
-    return `${dip}<div class="satir eylem">${ambargo}<button class="tehlike" data-eylem="savas" data-devlet="${s.id}"${k?.muttefik ? ' disabled title="Müttefikinize savaş ilan edemezsiniz; önce ittifaktan çıkın."' : ""}>Savaş ilan et</button></div>
+    const vasalEngeli = ozet.efendim !== null ? ' disabled title="Vasal bir devlet kendi başına savaş ilan edemez."' : "";
+    return `${dip}<div class="satir eylem">${ambargo}<button class="tehlike" data-eylem="savas" data-devlet="${s.id}"${k?.muttefik ? ' disabled title="Müttefikinize savaş ilan edemezsiniz; önce ittifaktan çıkın."' : vasalEngeli}>Savaş ilan et</button></div>
       ${ozet.bizeAmbargo.includes(s.id) ? '<p class="not">Bu devlet size ticaret ambargosu uyguluyor.</p>' : ""}`;
   };
   const isaretli = (n: number) => `<span class="${n > 0 ? "arti" : n < 0 ? "eksi" : ""}">${n > 0 ? "+" : ""}${n}</span>`;
@@ -545,6 +546,10 @@ async function baslat() {
           `<option value="${ay}"${ay === DENGE.SALDIRMAZLIK_VARSAYILAN_AY ? " selected" : ""}>${ay} ay</option>`).join("")}</select>
         <button data-eylem="saldirmazlik" data-devlet="${devlet}"${k.bekleyen ? " disabled" : ""}>${k.bekleyen === "saldirmazlikTeklif" ? "Teklif bekliyor" : "Saldırmazlık paktı teklif et"}</button></div>
         <p class="not">Tahmini cevap: <b class="${k.saldirmazlik.kabul ? "zafer" : "yenilgi"}">${k.saldirmazlik.kabul ? "kabul" : "ret"}</b> — ${kacis(k.saldirmazlik.nedenler.join(" "))}</p>`;
+    const vasallik = k.vasalim
+      ? `<p class="not">Bu devlet sizin vasalınız: aylık geliri'nin %${DENGE.VASAL_VERGI_YUZDE}'si size akar, savaşlarınıza zorunlu katılır, kendi başına savaş ilan edemez.</p>
+        <button data-eylem="vasalSerbest" data-devlet="${devlet}"${k.bekleyen ? " disabled" : ""}>${k.bekleyen === "vasalSerbestBirak" ? "Serbest bırakma emri bekliyor" : "Serbest bırak"}</button>`
+      : k.onunEfendisi !== null ? `<p class="not">Bu devlet ${kacis(h.paket.devletler[k.onunEfendisi].ad)}'nın vasalı.</p>` : "";
     const dev = h.paket.devletler, rap = ozet.diplomatikRapor[devlet];
     const casusSehirleri = senaryo.sehirler.flatMap((c, i) => (ozet.sehirDurumlari[i].devlet === devlet ? [i] : []));
     const casus = `<h4>Casusluk</h4><div class="casus-satir">
@@ -561,7 +566,7 @@ async function baslat() {
     return `${arma}${huk}${inanc}<h4>Diplomasi</h4><dl><dt>Size bakışı</dt><dd>${isaretli(k.bakisi)} · ${iliskiAdi(k.bakisi)}</dd>
       <dt>Sizin bakışınız</dt><dd>${isaretli(k.bakisimiz)} · ${iliskiAdi(k.bakisimiz)}</dd></dl>
       ${k.bilesenler.length ? `<ul class="iliski-bilesen">${k.bilesenler.map((b) => `<li><span>${kacis(b.ad)}</span>${isaretli(b.deger)}</li>`).join("")}</ul>` : '<p class="not">Aranızda özel bir etken yok.</p>'}
-      ${durum ? `<p class="not">${durum}</p>` : ""}${ittifak}${hediye}<h4>Ticaret ve saldırmazlık</h4>${ticaret}${saldirmazlik}${casus}`;
+      ${durum ? `<p class="not">${durum}</p>` : ""}${ittifak}${hediye}<h4>Ticaret ve saldırmazlık</h4>${ticaret}${saldirmazlik}${vasallik}${casus}`;
   };
   $("bilgi").addEventListener("click", async (e) => {
     const bagis = (e.target as HTMLElement).closest<HTMLElement>("[data-bagis]");
@@ -622,7 +627,7 @@ async function baslat() {
       return;
     }
     const dip = (e.target as HTMLElement).closest<HTMLButtonElement>(
-      '[data-eylem="ittifak"], [data-eylem="ittifakBoz"], [data-eylem="hediye"], [data-eylem="ticaret"], [data-eylem="ticaretBoz"], [data-eylem="saldirmazlik"]');
+      '[data-eylem="ittifak"], [data-eylem="ittifakBoz"], [data-eylem="hediye"], [data-eylem="ticaret"], [data-eylem="ticaretBoz"], [data-eylem="saldirmazlik"], [data-eylem="vasalSerbest"]');
     if (dip) {
       const hedef = Number(dip.dataset.devlet), ad = h.paket.devletler[hedef].ad;
       if (dip.dataset.eylem === "ittifak") {
@@ -638,6 +643,9 @@ async function baslat() {
       } else if (dip.dataset.eylem === "saldirmazlik") {
         const ay = Number($<HTMLSelectElement>("saldirmazlikAy").value);
         await emirGonder({ tur: "saldirmazlikTeklif", hedef, ay }, `${ad}'na ${ay} aylık saldırmazlık paktı teklifi gönderildi; cevap bir sonraki turun başında gelir.`);
+      } else if (dip.dataset.eylem === "vasalSerbest") {
+        if (!await onayIste("Vasalı serbest bırak", `${ad} serbest bırakılsın mı? Artık vergi ödemeyecek ve savaşlarınıza katılmayacak.`, "Serbest bırak", true)) return;
+        await emirGonder({ tur: "vasalSerbestBirak", hedef }, `${ad} serbest bırakma emri verildi.`);
       } else {
         const miktar = $<HTMLInputElement>("hediyeMiktar").valueAsNumber;
         const k = ozet.diplomasi[hedef]!;

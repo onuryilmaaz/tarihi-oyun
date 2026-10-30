@@ -20,6 +20,7 @@ import { isgalleriIlerlet, kusatmalariIlerlet } from "./kusatma";
 import { insaatlariIlerlet } from "./yatirim";
 import { arastirmalariIlerlet } from "./teknoloji";
 import { diplomasiSonumu } from "./diplomasi";
+import { vasalVergisiAl } from "./vasallik";
 import { yzKararlari, yzYillikOzet } from "./yz";
 import { seferKararlari, teklifSureleri, yikilanDevletleriTemizle } from "./yz-savas";
 import { hukumdarlariIlerlet } from "./hanedan";
@@ -90,6 +91,7 @@ export const SISTEMLER: Sistem[] = [
     },
   },
   { id: "ordu-maasi", siklik: "aylik", calistir: (d) => maaslariOde(d) },
+  { id: "vasal-vergi", siklik: "aylik", calistir: (d) => vasalVergisiAl(d, prototipGelirleri(d)) }, // TASK-0018 (2/3)
   {
     // TASK-0017: bütçe panelindeki hazine geçmişi; gelir ve maaş bu ay uygulandıktan sonraki net fark
     id: "hazine-gecmisi",

@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
 import {
   agHazirla, barisBedeli, barisDevirOzeti, barisDogrula, baslangicDurumu, degismezler, DENGE, durumOzeti, emirleriUygula, emirVer,
-  gunIlerlet, kaydet, muharebeleriBaslat, savasSkoru, turSuresiAyarla, turuIlerlet, yukle,
+  gunIlerlet, kaydet, muharebeleriBaslat, prototipGelirleri, savasSkoru, turSuresiAyarla, turuIlerlet, vasalVergisiAl, yukle,
   type BarisTalebi, type KusatmaYontemi, type SenaryoVerisi,
 } from "../src";
 import { dunyaOzeti } from "./yardimci";
@@ -197,6 +197,69 @@ describe("barış ve sahiplik", () => {
     expect(savasSkoru(d, 0, 1).skor).toBe(100); expect(barisBedeli(d, 0, 1, t)).toBe(100);
     expect(emirVer(d, { tur: "baris", ...t }, B).gecerli).toBe(true); emirleriUygula(d, B);
     expect(d.devletler).toHaveLength(3); expect(d.devletler[1].baskent).toBeNull(); expect(degismezler(d)).toEqual([]);
+  });
+
+  it("TASK-0018 (2/3): tam ilhak düzeyinde talep + vasalYap, toprağı alıkoyar ve vasallık kurar", () => {
+    const d = yeni();
+    for (const b of d.birimler) if (b.sahip === 1) b.kontrol = 0;
+    for (const c of d.sehirler) if (c.devlet === 1) c.kontrol = 0;
+    const t = talep({ birimler: [1, 2], sehirler: [1, 2], vasalYap: true });
+    expect(emirVer(d, { tur: "baris", ...t }, B).gecerli).toBe(true);
+    emirleriUygula(d, B);
+    expect(d.birimler[1].sahip).toBe(1); // toprak hâlâ B'de
+    expect(d.sehirler[1].devlet).toBe(1);
+    expect(d.devletler[1].baskent).not.toBeNull(); // devlet yıkılmadı
+    expect(d.vasalliklar).toEqual([{ efendi: 0, vasal: 1, baslangic: d.gun }]);
+    expect(degismezler(d)).toEqual([]);
+  });
+
+  it("vasal yapmak için tam ilhak düzeyinde talep şart; eksik talep reddedilir", () => {
+    const d = yeni();
+    for (const b of d.birimler) if (b.sahip === 1) b.kontrol = 0;
+    for (const c of d.sehirler) if (c.devlet === 1) c.kontrol = 0;
+    expect(emirVer(d, { tur: "baris", ...talep({ birimler: [1], sehirler: [1, 2], vasalYap: true }) }, B).gecerli).toBe(false);
+  });
+
+  it("vasal kendi başına savaş ilan edemez; efendisinin savaşına zorunlu katılır; serbest bırakılabilir", () => {
+    const d = yeni();
+    for (const b of d.birimler) if (b.sahip === 1) b.kontrol = 0;
+    for (const c of d.sehirler) if (c.devlet === 1) c.kontrol = 0;
+    emirVer(d, { tur: "baris", ...talep({ birimler: [1, 2], sehirler: [1, 2], vasalYap: true }) }, B);
+    emirleriUygula(d, B);
+    expect(emirVer(d, { tur: "savasIlan", devlet: 1, hedef: 2 }).gecerli).toBe(false);
+    expect(emirVer(d, { tur: "savasIlan", devlet: 0, hedef: 2 }).gecerli).toBe(true);
+    emirleriUygula(d, B);
+    expect(d.savaslar).toContainEqual(expect.objectContaining({ saldiran: 1, savunan: 2 }));
+    expect(degismezler(d)).toEqual([]);
+    expect(emirVer(d, { tur: "vasalSerbestBirak", hedef: 1 }).gecerli).toBe(true);
+    emirleriUygula(d, B);
+    expect(d.vasalliklar).toEqual([]);
+    expect(emirVer(d, { tur: "savasIlan", devlet: 1, hedef: 2 }).gecerli).toBe(false); // zaten savaşta
+  });
+
+  it("vasal aylık vergi öder: gelirinin DENGE.VASAL_VERGI_YUZDE'si efendiye aktarılır", () => {
+    const d = yeni();
+    for (const b of d.birimler) if (b.sahip === 1) b.kontrol = 0;
+    for (const c of d.sehirler) if (c.devlet === 1) c.kontrol = 0;
+    emirVer(d, { tur: "baris", ...talep({ birimler: [1, 2], sehirler: [1, 2], vasalYap: true }) }, B);
+    emirleriUygula(d, B);
+    const efendiOnce = d.devletler[0].hazine, vasalOnce = d.devletler[1].hazine;
+    const gelir = prototipGelirleri(d), vergi = Math.floor((gelir[1] * DENGE.VASAL_VERGI_YUZDE) / 100);
+    vasalVergisiAl(d, gelir);
+    expect(vergi).toBeGreaterThan(0);
+    expect(d.devletler[0].hazine).toBe(efendiOnce + vergi);
+    expect(d.devletler[1].hazine).toBe(vasalOnce - vergi);
+    expect(degismezler(d)).toEqual([]);
+  });
+
+  it("şema 21 → 22: eski kayıtta vasallık yok, boş listeyle taşınır", () => {
+    const d = yeni();
+    const p = JSON.parse(kaydet(d));
+    delete p.ozet; delete p.durum.vasalliklar;
+    p.sema = 21; p.durum.sema = 21;
+    const g = yukle(JSON.stringify(p), d.senaryo);
+    expect(g.vasalliklar).toEqual([]);
+    expect(degismezler(g)).toEqual([]);
   });
 
   it("barış sadece ilgili savaşı temizler; dışarıdaki ordu ışınlanmadan dönüşe başlar", () => {

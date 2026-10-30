@@ -176,6 +176,11 @@ export function yukle(metin: string, beklenenSenaryo?: string): DunyaDurumu {
   if (d.sema === 20) {
     // Şema 20 → 21 (TASK-0017): eski kayıtta ticaret anlaşması/saldırmazlık paktı yok
     d.ticaretAnlasmalari = []; d.saldirmazlikPaktlari = [];
+    d.sema = 21;
+  }
+  if (d.sema === 21) {
+    // Şema 21 → 22 (TASK-0018): eski kayıtta vasallık yok
+    d.vasalliklar = [];
     d.sema = SEMA_SURUMU;
   }
   if (d.sema !== SEMA_SURUMU) throw new KayitHatasi("Kayıt tutarsız: dünya şema sürümü uyuşmuyor.");

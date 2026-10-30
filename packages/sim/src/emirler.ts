@@ -19,6 +19,7 @@ import {
   diplomasiOnHesap, etkiEkle, hediyePuani, ittifakBoz, ittifakDegerlendir, ittifakKur, muttefik, muttefikleri, savasIlaniSonuclari,
   saldirmazlikDegerlendir, saldirmazlikKur, saldirmazlikVar, ticaretAnlasmasiBoz, ticaretAnlasmasiKur, ticaretAnlasmasiVar, ticaretDegerlendir,
 } from "./diplomasi";
+import { efendisi, vasalMi, vasallari, vasalSerbestBirak } from "./vasallik";
 import { biliyor, arastirmaEngeli, teknolojiBul, teknolojiGecerli, toplamaBedelYuzde, toplamaSuresi, type TeknolojiId } from "./teknoloji";
 import { VERGI_ADLARI, vergiOraniGecerli, type VergiOrani } from "./vergi";
 
@@ -62,6 +63,7 @@ export type Emir =
   | { tur: "ticaretTeklif"; hedef: number } // TASK-0017 (4/4)
   | { tur: "ticaretBoz"; hedef: number }
   | { tur: "saldirmazlikTeklif"; hedef: number; ay: number }
+  | { tur: "vasalSerbestBirak"; hedef: number } // TASK-0018 (2/3)
   // AI barış teklifine cevap (TASK-0009/6c)
   | { tur: "barisCevap"; teklif: number; kabul: boolean }
   // Oyuncu hükümdarı ölünce halef seçimi (TASK-0010/7a)
@@ -288,6 +290,13 @@ export function emirDogrula(d: DunyaDurumu, e: Emir, b: Baglam = BOS_BAGLAM, kuy
       if (!(DENGE.SALDIRMAZLIK_AYLARI as readonly number[]).includes(e.ay)) return { gecerli: false, neden: `Süre ${DENGE.SALDIRMAZLIK_AYLARI.join("/")} aydan biri olmalı.` };
       return { gecerli: true };
     }
+    case "vasalSerbestBirak": {
+      const oyuncu = d.ayarlar.oyuncu;
+      if (!Number.isSafeInteger(e.hedef) || !d.devletler[e.hedef]) return { gecerli: false, neden: "Geçersiz hedef devlet." };
+      if (efendisi(d, e.hedef) !== oyuncu) return { gecerli: false, neden: `${d.devletler[e.hedef].ad} sizin vasalınız değil.` };
+      if (!kuyrukHaric && d.emirKuyrugu.some((x) => x.tur === "vasalSerbestBirak" && x.hedef === e.hedef)) return { gecerli: false, neden: "Bu emir zaten bir sonraki tur için bekliyor." };
+      return { gecerli: true };
+    }
     case "arastir": {
       if (!teknolojiGecerli(e.teknoloji)) return { gecerli: false, neden: "Geçersiz teknoloji." };
       const oyuncu = e.devlet ?? d.ayarlar.oyuncu;
@@ -375,6 +384,7 @@ export function emirDogrula(d: DunyaDurumu, e: Emir, b: Baglam = BOS_BAGLAM, kuy
       if (savasta(d, e.devlet, e.hedef)) return { gecerli: false, neden: `${d.devletler[e.hedef].ad} ile zaten savaştasınız.` };
       if (muttefik(d, e.devlet, e.hedef)) return { gecerli: false, neden: `${d.devletler[e.hedef].ad} müttefikiniz; önce ittifaktan çıkın.` };
       if (saldirmazlikVar(d, e.devlet, e.hedef)) return { gecerli: false, neden: `${d.devletler[e.hedef].ad} ile saldırmazlık paktınız var; süresi dolmadan savaş ilan edemezsiniz.` };
+      if (vasalMi(d, e.devlet)) return { gecerli: false, neden: "Vasal bir devlet kendi başına savaş ilan edemez." };
       if (!kuyrukHaric && d.emirKuyrugu.some((x) => x.tur === "savasIlan" && x.devlet === e.devlet && x.hedef === e.hedef)) {
         return { gecerli: false, neden: "Bu savaş ilanı zaten bir sonraki tur için bekliyor." };
       }
@@ -565,6 +575,24 @@ export function emirUygula(d: DunyaDurumu, e: Emir, b: Baglam = BOS_BAGLAM): voi
         if (e.hedef === oyuncu && e.devlet !== oyuncu && !d.aktifKesinti) d.aktifKesinti = { gun: d.gun, neden: metin };
       }
       savasIlaniSonuclari(d, b.ag, e.devlet, e.hedef);
+      // TASK-0018 (2/3): vasallar efendilerinin savaşlarına zorunlu katılır
+      for (const vasal of vasallari(d, e.devlet)) {
+        if (!savasta(d, vasal, e.hedef)) {
+          d.savaslar.push({ id: d.sonrakiSavasId++, saldiran: vasal, savunan: e.hedef, baslangic: d.gun });
+          olayEkle(d, { tur: "vasal-savasa-katildi", devlet: [vasal, e.hedef].includes(d.ayarlar.oyuncu) ? d.ayarlar.oyuncu : null,
+            metin: `Vasal ${d.devletler[vasal].ad}, efendisi ${d.devletler[e.devlet].ad}'nın savaşına katıldı.` });
+        }
+      }
+      for (const vasal of vasallari(d, e.hedef)) {
+        if (!savasta(d, vasal, e.devlet)) {
+          d.savaslar.push({ id: d.sonrakiSavasId++, saldiran: e.devlet, savunan: vasal, baslangic: d.gun });
+          olayEkle(d, { tur: "vasal-savasa-katildi", devlet: [vasal, e.devlet].includes(d.ayarlar.oyuncu) ? d.ayarlar.oyuncu : null,
+            metin: `Vasal ${d.devletler[vasal].ad}, efendisi ${d.devletler[e.hedef].ad}'nın savunduğu savaşa katıldı.` });
+        }
+      }
+      break;
+    case "vasalSerbestBirak":
+      vasalSerbestBirak(d, d.ayarlar.oyuncu, e.hedef);
       break;
     case "casusluk": {
       const devlet = e.devlet ?? d.ayarlar.oyuncu, c = DENGE.CASUS[e.gorev];

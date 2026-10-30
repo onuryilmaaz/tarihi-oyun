@@ -8,7 +8,7 @@ import {
   barisBedeli, barisDevirOzeti, barisDogrula, kusatmaGucu, orduKusatmasi, savasSkoru,
   butceOzeti, insaatMaliyeti, insaatSuresi, sehirYapiGeliri, yapiSeviyesi, yapiEnYuksek, pazarGeliriSeviyeBasina, YAPI_ADLARI, YAPI_TURLERI,
   diplomasiOnHesap, etkiDegeri, hediyePuanBedeli, iliski, iliskiBilesenleri, ittifakDegerlendir, komsuMu, muttefik, muttefikleri, savasta,
-  ticaretAnlasmasiVar, ticaretDegerlendir, saldirmazlikVar, saldirmazlikDegerlendir,
+  ticaretAnlasmasiVar, ticaretDegerlendir, saldirmazlikVar, saldirmazlikDegerlendir, efendisi,
   asayisAskeri, gerekenAsayis,
   hukumdarYasi, VERASET_ADLARI, yerelYonetimAyarla, bolgeKontrolu, gorunurDonanmalar, kapasite, sehirMenzilinde, sehirTicareti, type Hukumdar,
   ALAN_ADLARI, TEKNOLOJILER, teknolojiBul, biliyor, toplamaBedelYuzde, toplamaSuresi,
@@ -130,7 +130,7 @@ function ozet(durum: DunyaDurumu): Ozet {
       const on = diplomasiOnHesap(durum, baglam.ag), p = durum.ayarlar.oyuncu;
       return durum.devletler.map((_, i) => {
         if (i === p) return null;
-        const bekleyenTurler = ["ittifakTeklif", "ittifakBoz", "ticaretTeklif", "ticaretBoz", "saldirmazlikTeklif"] as const;
+        const bekleyenTurler = ["ittifakTeklif", "ittifakBoz", "ticaretTeklif", "ticaretBoz", "saldirmazlikTeklif", "vasalSerbestBirak"] as const;
         const bekleyen = durum.emirKuyrugu.find((e) => (bekleyenTurler as readonly string[]).includes(e.tur) && "hedef" in e && e.hedef === i);
         return {
           hukumdar: hukumdarOzeti(durum, durum.devletler[i].hukumdar),
@@ -140,11 +140,13 @@ function ozet(durum: DunyaDurumu): Ozet {
           hediyeKalan: Math.max(0, DENGE.HEDIYE_EN_COK - etkiDegeri(durum, p, i, "hediye")),
           ticaretVar: ticaretAnlasmasiVar(durum, p, i), ticaret: ticaretDegerlendir(durum, on, p, i),
           saldirmazlikVar: saldirmazlikVar(durum, p, i), saldirmazlik: saldirmazlikDegerlendir(durum, on, p, i),
+          vasalim: efendisi(durum, i) === p, onunEfendisi: efendisi(durum, i),
           bekleyen: bekleyen && (bekleyenTurler as readonly string[]).includes(bekleyen.tur) ? (bekleyen.tur as typeof bekleyenTurler[number]) : null,
         };
       });
     })(),
     saldirganlik: durum.saldirganlik[durum.ayarlar.oyuncu],
+    efendim: efendisi(durum, durum.ayarlar.oyuncu),
     barisTeklifleri: durum.barisTeklifleri.map((t) => {
       const c = durum.emirKuyrugu.find((e) => e.tur === "barisCevap" && e.teklif === t.id);
       return { id: t.id, devlet: t.teklifEden, gerekce: t.gerekce, size: t.alan === durum.ayarlar.oyuncu,

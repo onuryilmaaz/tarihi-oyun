@@ -77,7 +77,7 @@ export interface Kusatma {
   erzak: number; // binde; yalnızca mevcut kuşatma süresince takip edilir
 }
 export interface IsgalHazirligi { birim: number; devlet: number; gun: number }
-export interface BarisTalebi { savas: number; birimler: number[]; sehirler: number[]; tazminat: number }
+export interface BarisTalebi { savas: number; birimler: number[]; sehirler: number[]; tazminat: number; vasalYap?: boolean } // TASK-0018
 export interface BarisKaydi extends BarisTalebi { gun: number; devlet: number; karsi: number }
 /** AI'dan oyuncuya barış teklifi (TASK-0009/6c); alan: talep edilen yerleri alacak taraf */
 export interface BarisTeklifi { id: number; savas: number; teklifEden: number; alan: number; talep: BarisTalebi; gun: number; gerekce: string }
@@ -86,6 +86,9 @@ export interface Ateskes { a: number; b: number; bitis: number } // a < b
 // TASK-0017 (4/4, DEC-0066): temel diplomasi — ticaret anlaşması ve saldırmazlık paktı (a < b)
 export interface TicaretAnlasmasi { a: number; b: number; baslangic: number }
 export interface SaldirmazlikPakti { a: number; b: number; bitis: number }
+
+/** TASK-0018 (2/3, DEC-0067): yalnızca barışta kurulan vasallık; bir devletin en çok bir efendisi olur. */
+export interface Vasallik { efendi: number; vasal: number; baslangic: number }
 
 /** Geri çekilme tutumu: muharebede moral bu eşiğin altına düşünce çekilir (DEC-0008, DEC-0027/3) */
 export type Tutum = "temkinli" | "dengeli" | "inatci";
@@ -196,6 +199,7 @@ export interface DunyaDurumu {
   ittifaklar: Ittifak[];
   ticaretAnlasmalari: TicaretAnlasmasi[]; // TASK-0017 (21)
   saldirmazlikPaktlari: SaldirmazlikPakti[]; // TASK-0017 (21)
+  vasalliklar: Vasallik[]; // TASK-0018 (22)
   yzSayac: { insaat: number; arastirma: number; asker: number }; // yıllık dünya özeti (6b)
   barisTeklifleri: BarisTeklifi[]; // 6c
   sonrakiTeklifId: number;
@@ -268,7 +272,7 @@ export interface SenaryoVerisi {
 // 5: kuşatma, gerçek işgal ve barış (TASK-0007/4c); şema 3–4 için eklemeli dönüşüm var.
 // Şema geçmişi: 6 şehir yatırımları (5b), 7 teknoloji (5c), 8 diplomasi (6a), 9 AI ekonomi (6b), 10 AI savaş/barış (6c),
 // 11 hükümdar ve veraset (7a), 12 nüfus grupları ve iskân (7b), 13 istikrar (7c), 14 yerel yönetim (7d)
-export const SEMA_SURUMU = 21; // 21 ticaret anlaşması ve saldırmazlık paktı (TASK-0017), 20 asker toplama iptali (TASK-0017),
+export const SEMA_SURUMU = 22; // 22 vasallık (TASK-0018), 21 ticaret anlaşması ve saldırmazlık paktı (TASK-0017), 20 asker toplama iptali (TASK-0017),
 // 19 vergi oranı ve hazine geçmişi (TASK-0017), 18 arazi verimi (9b), 15 donanma ve deniz (8a), 16 ticaret ve ambargo (8b), 17 casusluk (8c)
 
 export function baslangicDurumu(s: SenaryoVerisi, secenek: { tohum: number; oyuncu?: string }): DunyaDurumu {
@@ -366,6 +370,7 @@ export function baslangicDurumu(s: SenaryoVerisi, secenek: { tohum: number; oyun
     }),
     ticaretAnlasmalari: [],
     saldirmazlikPaktlari: [],
+    vasalliklar: [],
     kusatmalar: [],
     isgalHazirliklari: [],
     barislar: [],
@@ -499,6 +504,14 @@ export function degismezler(d: DunyaDurumu): string[] {
   for (const a of d.ateskesler) if (!d.devletler[a.a] || !d.devletler[a.b] || a.a >= a.b || !tam(a.bitis)) h.push("ateşkes geçersiz");
   for (const t of d.ticaretAnlasmalari) if (!d.devletler[t.a] || !d.devletler[t.b] || t.a >= t.b || !tam(t.baslangic)) h.push("ticaret anlaşması geçersiz");
   for (const p of d.saldirmazlikPaktlari) if (!d.devletler[p.a] || !d.devletler[p.b] || p.a >= p.b || !tam(p.bitis)) h.push("saldırmazlık paktı geçersiz");
+  {
+    const vasallar = new Set<number>();
+    for (const v of d.vasalliklar) {
+      if (!d.devletler[v.efendi] || !d.devletler[v.vasal] || v.efendi === v.vasal || !tam(v.baslangic)) h.push("vasallık geçersiz");
+      else if (vasallar.has(v.vasal)) h.push(`devlet ${v.vasal} birden çok efendiye vasal`);
+      else vasallar.add(v.vasal);
+    }
+  }
   d.devletler.forEach((v, i) => {
     const k = v.hukumdar;
     if (!["babadan", "acik", "secimli"].includes(v.veraset) || !["turk", "slav", "rum", "latin", "asya", "genel"].includes(v.adHavuzu)) h.push(`devlet ${i} veraset/ad havuzu geçersiz`);

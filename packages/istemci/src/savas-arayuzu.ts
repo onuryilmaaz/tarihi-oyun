@@ -32,7 +32,8 @@ export function savasArayuzuKur(a: {
   function formTalebi(): BarisTalebi {
     return { savas: barisSavasi!, tazminat: $<HTMLInputElement>("barisTazminat").valueAsNumber,
       birimler: [...document.querySelectorAll<HTMLInputElement>("[data-baris-birim]:checked")].map((e) => Number(e.dataset.barisBirim)),
-      sehirler: [...document.querySelectorAll<HTMLInputElement>("[data-baris-sehir]:checked")].map((e) => Number(e.dataset.barisSehir)) };
+      sehirler: [...document.querySelectorAll<HTMLInputElement>("[data-baris-sehir]:checked")].map((e) => Number(e.dataset.barisSehir)),
+      vasalYap: !$("barisVasalEtiket").hidden && $<HTMLInputElement>("barisVasal").checked }; // TASK-0018 (2/3)
   }
   async function onizle() {
     const no = ++onizlemeNo;
@@ -41,6 +42,8 @@ export function savasArayuzuKur(a: {
     try {
       const r = await a.onizle(formTalebi());
       if (no !== onizlemeNo || $("baris").hidden) return;
+      $("barisVasalEtiket").hidden = !r.devir?.tamIlhak;
+      if (!r.devir?.tamIlhak) $<HTMLInputElement>("barisVasal").checked = false;
       $("barisSonuc").dataset.gecerli = String(r.dogrulama.gecerli);
       $("barisSonuc").textContent = `Talep: ${Number.isFinite(r.puan) ? r.puan : "—"} puan · Savaş skoru: ${r.skor}. `
         + (r.dogrulama.gecerli ? "Bu koşullar kabul edilebilir. Antlaşma bir sonraki turun başında yeniden kontrol edilir." : r.dogrulama.neden)
@@ -50,6 +53,7 @@ export function savasArayuzuKur(a: {
   }
   $("barisKosullari").onchange = onizle;
   $("barisTazminat").oninput = onizle;
+  $("barisVasal").onchange = onizle;
   $("barisGonder").onclick = async () => {
     if (barisSavasi === null) return;
     const t = formTalebi(), s = a.ozet().savaslar.find((v) => v.id === t.savas);
@@ -57,7 +61,10 @@ export function savasArayuzuKur(a: {
     const r = await a.onizle(t);
     if (!r.dogrulama.gecerli) { a.bildir(r.dogrulama.neden); return onizle(); }
     const yerler = [...t.birimler.map(a.birimAdi), ...t.sehirler.map(a.sehirAdi)];
-    if (!await a.onay("Barış antlaşması", `${a.devletAdi(s.karsi)} ile ${yerler.length ? yerler.join(", ") + " devri ve " : "toprak devri olmadan "}${t.tazminat} peşin tazminat karşılığında barış yapılsın mı? Seçilmeyen işgaller kalkacak.${devirMetni(r)}`, "Barış teklif et")) return;
+    const ozetMetni = t.vasalYap
+      ? `${a.devletAdi(s.karsi)}'yı vasal yapıp ${t.tazminat} peşin tazminat alacaksınız. Toprağı kalacak, ama aylık vergi ödeyecek ve savaşlarınıza zorunlu katılacak.`
+      : `${a.devletAdi(s.karsi)} ile ${yerler.length ? yerler.join(", ") + " devri ve " : "toprak devri olmadan "}${t.tazminat} peşin tazminat karşılığında barış yapılsın mı? Seçilmeyen işgaller kalkacak.`;
+    if (!await a.onay("Barış antlaşması", `${ozetMetni}${devirMetni(r)}`, "Barış teklif et")) return;
     if (await a.emir({ tur: "baris", ...t }, "Barış teklifi verildi; bir sonraki turun başında uygulanacak.")) barisKapat();
   };
   function barisAc(savas: number) {
@@ -70,6 +77,8 @@ export function savasArayuzuKur(a: {
       `<fieldset><legend>${baslik}</legend>${liste.map((i) => `<label><input type="checkbox" data-baris-${tur}="${i}" /> ${kacis(ad(i))}</label>`).join("") || '<span class="not">Talep edilebilir işgal yok.</span>'}</fieldset>`;
     $("barisKosullari").innerHTML = kutu("Arazi", s.birimler, "birim", a.birimAdi) + kutu("Şehir", s.sehirler, "sehir", a.sehirAdi);
     $<HTMLInputElement>("barisTazminat").value = "0";
+    $<HTMLInputElement>("barisVasal").checked = false;
+    $("barisVasalEtiket").hidden = true;
     $("baris").hidden = false;
     $("barisKapat").focus();
     void onizle();

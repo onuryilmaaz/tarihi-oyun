@@ -229,4 +229,7 @@ export const DENGE = {
   SALDIRMAZLIK_ESIGI: 0, // kabul için en az bu ilişki
   SALDIRMAZLIK_AYLARI: [12, 24, 36] as const,
   SALDIRMAZLIK_VARSAYILAN_AY: 24,
+  // TASK-0018 (2/3) — vasallık; hepsi [TASLAK]
+  VASAL_VERGI_YUZDE: 15, // vasalın aylık gelirinden efendiye aktarılan pay
+  VASAL_SERBEST_ILISKI: 15, // serbest bırakılınca vasalın efendiye bakışı iyileşir
 };
