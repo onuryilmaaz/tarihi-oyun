@@ -1,0 +1,11 @@
+{
+ "id": "bengal",
+ "ad": "Bengal Körfezi ve Seylan",
+ "lon": 86,
+ "lat": 13,
+ "komsu": [
+  "arap-denizi",
+  "malakka"
+ ],
+ "sinirdasDevlet": "ori"
+}

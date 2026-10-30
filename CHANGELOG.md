@@ -21,9 +21,19 @@
   önlüyor, `harita-derle.mjs` artık her kıtayı ayrı ayrı işliyor. Toplam **2439 dosya**, 13MB. Doğrulama hâlâ
   geçiyor (`harita.json`/`deniz.json` birebir eşleşiyor); `npm test` (253), `npm run build` geçti.
   Kasıtlı dışarıda kalan: 1562 sahipsiz (`d: -1`, arka plan) bölge — ayrı bir karar gerektirir.
-- **Not:** Bu değişiklik ~2439 yeni dosya ekliyor (büyük bir commit).
-- **Sırada:** İstemci yükleme fazına geçiş ya da sahipsiz arka plan bölgelerinin ayrıştırılması (ayrı kararlar).
-  Kullanıcı testi ve commit onayı bekliyor.
+- **Sahipsiz bölgeler + deniz bölgelerinin devlete göre dağıtımı (aynı oturumda, kullanıcı talebiyle):**
+  Yeni `harita-ayristir.mjs sahipsiz` modu: 1562 `d:-1` bölgeyi `veri/geom/sahipsiz/bolgeler/` altına
+  `durum: "sahipsiz"` etiketiyle ayırır (7023 yay). Önceki varsayım (29 deniz bölgesinin tamamı Avrupa+
+  Yakındoğu'ya ait) yanlıştı — gerçekte bazı bölgeler Asya/Afrika'daki devletlere sınırdaş. Yeni
+  `araclar/deniz-ayristir.mjs`: her deniz bölgesini, limanının sahibi olan **her devlete** bir kopya olarak
+  dağıtır (`veri/geom/<kita>/deniz/<devlet-id>/<id>.json`, `sinirdasDevlet` etiketiyle) → 66 devlet-parçası;
+  limanı olmayan 2 bölge (Azak, Manş) `veri/geom/uluslararasi-sular/` altına `durum: "uluslararasi"` etiketiyle
+  yazıldı. Eski düz `avrupa-yakindogu/deniz/` klasörü silindi. `harita-derle.mjs` güncellendi: `"sahipsiz"`
+  kıtası eklendi, `temizle()` yeni etiketleri siliyor, deniz birleştirmesi `deniz-sira.json`/`deniz-ekstra.json`
+  üzerinden her kıtanın `deniz/<devletId>/` klasörlerinde arıyor. Doğrulama geçti: `harita.json`/`deniz.json`
+  birebir eşleşiyor. `npm test` (253), `npm run typecheck`, `npm run build` geçti. Toplam **4041 dosya, 22MB**.
+- **Not:** Bu değişiklik toplamda ~4041 yeni dosya ekliyor (büyük bir commit).
+- **Sırada:** İstemci yükleme fazına geçiş — ayrı karar, kullanıcı onayı bekliyor.
 
 ## 2026-10-30 — TASK-0021 (4/4): AI vasallık teklif etsin — TASK-0021 tamamlandı (Claude)
 

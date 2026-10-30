@@ -1,0 +1,13 @@
+{
+ "id": "iyon",
+ "ad": "İyon Denizi",
+ "lon": 19,
+ "lat": 37.5,
+ "komsu": [
+  "ege",
+  "adriyatik",
+  "orta-akdeniz",
+  "dogu-akdeniz"
+ ],
+ "sinirdasDevlet": "ven"
+}

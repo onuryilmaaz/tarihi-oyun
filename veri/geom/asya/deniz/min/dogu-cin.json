@@ -1,0 +1,10 @@
+{
+ "id": "dogu-cin",
+ "ad": "Doğu Çin ve Japon denizleri",
+ "lon": 126,
+ "lat": 33,
+ "komsu": [
+  "guney-cin"
+ ],
+ "sinirdasDevlet": "min"
+}

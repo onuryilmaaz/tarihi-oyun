@@ -1,0 +1,11 @@
+{
+ "id": "guney-cin",
+ "ad": "Güney Çin Denizi",
+ "lon": 113,
+ "lat": 15,
+ "komsu": [
+  "malakka",
+  "dogu-cin"
+ ],
+ "sinirdasDevlet": "cha"
+}

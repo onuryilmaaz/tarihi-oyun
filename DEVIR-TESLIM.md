@@ -2,8 +2,9 @@
 
 Son güncelleme: **2026-10-30, Claude — TASK-0021 tamamen bitti ve commit+push edildi (`a6f408a`). Yeni
 TASK-0022 (harita verisini varlık bazlı dosyalara ayırma, DEC-0071): kullanıcının isteğiyle 4 kıtanın da
-(avrupa-yakindogu, afrika, asya, amerika — 132 devletin tamamı) kaynak veri ayrıştırması aynı oturumda
-tamamlandı, henüz commit edilmedi — **~2439 yeni dosya**, commit öncesi kullanıcıya açıkça bildirilmeli.
+(avrupa-yakindogu, afrika, asya, amerika — 132 devletin tamamı) kaynak veri ayrıştırması, ardından sahipsiz
+(`d:-1`) bölgeler ve deniz bölgelerinin sınırdaş devletlere göre dağıtımı aynı oturumda tamamlandı, henüz
+commit edilmedi — **~4041 dosya toplam**, commit öncesi kullanıcıya açıkça bildirilmeli.
 Doğrudan `main` üzerinde çalışılıyor (ayrı dal yok).**
 Bağlayıcı kurallar: `AGENTS.md`, `MASTER_SPEC.md`, `DECISIONS.md`.
 
@@ -66,13 +67,21 @@ Bağlayıcı kurallar: `AGENTS.md`, `MASTER_SPEC.md`, `DECISIONS.md`.
   doğrulamaya gerek kalmadı, mevcut dosyalar ve istemci kodu hiç değişmedi. Toplam **2439 dosya, 13MB**.
   `npm test` (253, aynen geçti), `npm run build` geçti. `KAYNAKLAR.md` güncellendi.
   **ÖNEMLİ — commit öncesi kullanıcıya açıkça söylenmeli: bu değişiklik ~2439 yeni dosya ekliyor.**
-  **Kasıtlı dışarıda kalan:** `d: -1` (sahipsiz/arka plan, hiçbir 1453 devletine ait olmayan) 1562 bölge —
-  hiçbir kıta devlet aralığına girmiyor; deniz bölgelerinin gerçek poligon geometrisi (şu an yalnızca
-  nokta+komşuluk grafı). İkisi de ayrı birer karar gerektirir.
-- **Sırada:** Kullanıcı onayı sonrası ya sahipsiz arka plan bölgelerinin ayrıştırılması, ya da istemci çalışma
-  zamanı yükleme fazına geçiş (TASK-0022'nin bu fazda kapsamı dışında bırakılmıştı, ayrı bir karar/onay
-  gerekir). Devralan agent kullanıcının bir sonraki tercihini sorsun.
-- `tasks/TASK-0022.md` (yeni), `CHANGELOG.md`, `KAYNAKLAR.md`, `DECISIONS.md` (DEC-0071) güncel; hepsi henüz
+  Deniz bölgelerinin gerçek poligon geometrisi hâlâ yalnızca nokta+komşuluk grafı — ayrı bir karar gerektirir.
+- **Sahipsiz bölgeler + deniz→devlet dağıtımı da aynı oturumda tamamlandı (kullanıcı: "sahipsiz bölgeleri de
+  parçalar şeklinde sahipsiz bölge tagi ile kaydet, denizleri sınırları olan devletlere parça ver, geri
+  kalanları uluslararası deniz alanı gibi kalsın"):** Yeni `harita-ayristir.mjs sahipsiz` modu 1562 `d:-1`
+  bölgeyi `veri/geom/sahipsiz/bolgeler/` altına `durum: "sahipsiz"` etiketiyle ayırdı (7023 yay). Önceki "tüm
+  denizler Avrupa+Yakındoğu'da" varsayımı yanlış çıktı (bazı bölgeler Asya/Afrika devletlerine sınırdaş); yeni
+  `araclar/deniz-ayristir.mjs` her deniz bölgesini limanının sahibi olan **her devlete** kopyalıyor
+  (`veri/geom/<kita>/deniz/<devlet-id>/<id>.json`, 66 devlet-parçası); limansız 2 bölge (Azak, Manş)
+  `veri/geom/uluslararasi-sular/` altında `durum: "uluslararasi"`. `harita-derle.mjs` güncellendi (yeni
+  `"sahipsiz"` kıtası, yeni etiketlerin temizlenmesi, deniz-sira/deniz-ekstra üzerinden birleştirme).
+  Doğrulama geçti (`harita.json`/`deniz.json` birebir), `npm test` (253), `npm run typecheck`, `npm run build`
+  geçti. **Toplam 4041 dosya, 22MB.**
+- **Sırada:** İstemci çalışma zamanı yükleme fazına geçiş (TASK-0022'nin bu fazda kapsamı dışında bırakılmıştı,
+  ayrı bir karar/onay gerekir). Devralan agent kullanıcının bir sonraki tercihini sorsun.
+- `tasks/TASK-0022.md`, `CHANGELOG.md`, `KAYNAKLAR.md`, `DECISIONS.md` (DEC-0071) güncel; hepsi henüz
   commit edilmedi (sim/istemci kod değişikliği yok, yalnızca veri/script/belge).
 
 ## Arşiv — TASK-0019 ve öncesi (bu oturumun önceki kısmı)

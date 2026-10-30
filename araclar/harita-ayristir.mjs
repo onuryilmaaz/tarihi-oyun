@@ -1,32 +1,55 @@
 // TASK-0022 (1. faz, DEC-0071): harita verisini kıta bazında, varlık başına ayrı dosyalara ayırır.
-// Girdi: veri/senaryo-1453/harita.json, deniz.json (mevcut, tek dosyalık kaynak).
-// Çıktı: veri/geom/<kita>/{devletler,bolgeler,sehirler,deniz}/*.json + arklar.json + _sira.json manifestleri.
+// Girdi: veri/senaryo-1453/harita.json (mevcut, tek dosyalık kaynak).
+// Çıktı: veri/geom/<kita>/{devletler,bolgeler,sehirler}/*.json + arklar.json + _sira.json manifestleri.
+// Deniz bölgeleri için bkz. deniz-ayristir.mjs (sınırı olan devletlere göre dağıtılır, ayrı bir desen).
 // Orijinal dosyalara DOKUNMAZ; yalnızca yeni kaynak dosyaları üretir. Tersi için bkz. harita-derle.mjs.
-// Çalıştırma: node araclar/harita-ayristir.mjs <kita-id> <devlet-indeks-baslangic> <devlet-indeks-bitis> [--deniz]
-//   örnek (Avrupa + Yakındoğu, devlet indeks 0-75, deniz bölgeleri dahil):
-//     node araclar/harita-ayristir.mjs avrupa-yakindogu 0 75 --deniz
-//   deniz.json'daki TÜM bölgeler zaten Avrupa+Yakındoğu sularında (Akdeniz/Karadeniz); --deniz yalnızca BİR
-//   kıtada verilmeli, yoksa aynı deniz bölgesi birden çok kıta klasöründe yinelenir (bkz. harita-derle.mjs).
+// Çalıştırma:
+//   node araclar/harita-ayristir.mjs <kita-id> <devlet-indeks-baslangic> <devlet-indeks-bitis>
+//     örnek (Avrupa + Yakındoğu, devlet indeks 0-75): node araclar/harita-ayristir.mjs avrupa-yakindogu 0 75
+//   node araclar/harita-ayristir.mjs sahipsiz
+//     hiçbir devlete ait olmayan (d: -1, arka plan) bölgeleri "sahipsiz" etiketiyle veri/geom/sahipsiz/bolgeler/
+//     altına ayırır (devlet/şehir yok, yalnızca bölge+yay).
 
 import fs from "node:fs";
 
-const [, , kita, bas, bit, ...bayraklar] = process.argv;
-if (!kita || bas === undefined || bit === undefined) {
-  console.error("Kullanım: node araclar/harita-ayristir.mjs <kita-id> <devlet-indeks-baslangic> <devlet-indeks-bitis> [--deniz]");
+const [, , kita, bas, bit] = process.argv;
+if (!kita) {
+  console.error("Kullanım: node araclar/harita-ayristir.mjs <kita-id> <devlet-indeks-baslangic> <devlet-indeks-bitis>  |  node araclar/harita-ayristir.mjs sahipsiz");
+  process.exit(1);
+}
+const sahipsizMi = kita === "sahipsiz";
+if (!sahipsizMi && (bas === undefined || bit === undefined)) {
+  console.error("Kullanım: node araclar/harita-ayristir.mjs <kita-id> <devlet-indeks-baslangic> <devlet-indeks-bitis>");
   process.exit(1);
 }
 const devletBas = Number(bas), devletBit = Number(bit);
-const denizDahil = bayraklar.includes("--deniz");
 
 const kok = new URL("../", import.meta.url);
 const kaynakDizin = new URL("veri/senaryo-1453/", kok);
 const hedef = new URL(`veri/geom/${kita}/`, kok);
 
 const harita = JSON.parse(fs.readFileSync(new URL("harita.json", kaynakDizin), "utf8"));
-const deniz = denizDahil ? JSON.parse(fs.readFileSync(new URL("deniz.json", kaynakDizin), "utf8")) : null;
 
 const dizin = (p) => { const u = new URL(p, hedef); fs.mkdirSync(u, { recursive: true }); return u; };
 const yaz = (dizinUrl, ad, veri) => fs.writeFileSync(new URL(ad, dizinUrl), JSON.stringify(veri, null, 1) + "\n");
+
+if (sahipsizMi) {
+  // --- Sahipsiz bölgeler (d: -1; hiçbir 1453 devletine ait olmayan arka plan) ---
+  const bolgelerDizin = dizin("bolgeler/");
+  const kullanilanYaylar = new Set();
+  let bolgeSayisi = 0;
+  harita.birimler.forEach((b, i) => {
+    if (b.d !== -1) return;
+    bolgeSayisi++;
+    yaz(bolgelerDizin, `${i}.json`, { indeks: i, durum: "sahipsiz", ...b });
+    for (const halka of b.p) for (const yuzuk of halka) for (const ref of yuzuk) kullanilanYaylar.add(ref < 0 ? ~ref : ref);
+  });
+  const arklarObj = {};
+  for (const idx of kullanilanYaylar) arklarObj[idx] = harita.arklar[idx];
+  yaz(hedef, "arklar.json", arklarObj);
+  console.log(`[sahipsiz] ${bolgeSayisi} bölge, ${kullanilanYaylar.size} yay ayrıştırıldı → ${hedef.pathname}`);
+  process.exit(0);
+}
 
 // --- Devletler ---
 const devletlerDizin = dizin("devletler/");
@@ -63,15 +86,4 @@ const arklarObj = {};
 for (const idx of kullanilanYaylar) arklarObj[idx] = harita.arklar[idx];
 yaz(hedef, "arklar.json", arklarObj);
 
-// --- Deniz bölgeleri (şu an yalnızca nokta + komşuluk grafı; gerçek poligon yok) — yalnızca --deniz verilirse ---
-let denizSayisi = 0;
-if (denizDahil) {
-  const denizDizin = dizin("deniz/");
-  const denizSirasi = deniz.bolgeler.map((b) => b.id);
-  deniz.bolgeler.forEach((b) => yaz(denizDizin, `${b.id}.json`, b));
-  yaz(denizDizin, "_sira.json", denizSirasi);
-  yaz(hedef, "deniz-ekstra.json", { aciklama: deniz.aciklama, limanlar: deniz.limanlar, bogazlar: deniz.bogazlar, donanmalar: deniz.donanmalar });
-  denizSayisi = denizSirasi.length;
-}
-
-console.log(`[${kita}] ${devletSirasi.length} devlet, ${bolgeSayisi} bölge, ${sehirSayisi} şehir, ${kullanilanYaylar.size} yay, ${denizSayisi} deniz bölgesi ayrıştırıldı → ${hedef.pathname}`);
+console.log(`[${kita}] ${devletSirasi.length} devlet, ${bolgeSayisi} bölge, ${sehirSayisi} şehir, ${kullanilanYaylar.size} yay ayrıştırıldı → ${hedef.pathname}`);

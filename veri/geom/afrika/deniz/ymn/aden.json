@@ -1,0 +1,12 @@
+{
+ "id": "aden",
+ "ad": "Aden Körfezi",
+ "lon": 47,
+ "lat": 12.5,
+ "komsu": [
+  "kizildeniz",
+  "arap-denizi",
+  "dogu-afrika"
+ ],
+ "sinirdasDevlet": "ymn"
+}

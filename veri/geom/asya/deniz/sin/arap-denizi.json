@@ -1,0 +1,13 @@
+{
+ "id": "arap-denizi",
+ "ad": "Arap Denizi",
+ "lon": 64,
+ "lat": 16,
+ "komsu": [
+  "aden",
+  "basra",
+  "dogu-afrika",
+  "bengal"
+ ],
+ "sinirdasDevlet": "sin"
+}

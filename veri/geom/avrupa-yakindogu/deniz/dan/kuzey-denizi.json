@@ -1,0 +1,12 @@
+{
+ "id": "kuzey-denizi",
+ "ad": "Kuzey Denizi",
+ "lon": 3,
+ "lat": 56,
+ "komsu": [
+  "mans",
+  "irlanda",
+  "kattegat"
+ ],
+ "sinirdasDevlet": "dan"
+}

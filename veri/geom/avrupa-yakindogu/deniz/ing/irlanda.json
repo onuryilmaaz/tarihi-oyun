@@ -1,0 +1,12 @@
+{
+ "id": "irlanda",
+ "ad": "İrlanda Denizi",
+ "lon": -5.5,
+ "lat": 53.5,
+ "komsu": [
+  "biskay",
+  "mans",
+  "kuzey-denizi"
+ ],
+ "sinirdasDevlet": "ing"
+}

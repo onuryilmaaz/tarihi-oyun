@@ -1,0 +1,21 @@
+{
+ "indeks": 9,
+ "durum": "sahipsiz",
+ "ad": "Antofagasta bölgesi",
+ "ulke": "Chile",
+ "d": -1,
+ "k": "tahmin",
+ "p": [
+  [
+   [
+    -59,
+    59,
+    60,
+    61,
+    62,
+    63,
+    -53
+   ]
+  ]
+ ]
+}

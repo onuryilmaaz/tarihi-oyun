@@ -1,0 +1,12 @@
+{
+ "id": "malakka",
+ "ad": "Malakka Boğazı",
+ "lon": 99,
+ "lat": 4,
+ "komsu": [
+  "bengal",
+  "guney-cin",
+  "cava"
+ ],
+ "sinirdasDevlet": "mlk"
+}

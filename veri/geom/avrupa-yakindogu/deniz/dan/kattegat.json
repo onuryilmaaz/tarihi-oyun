@@ -1,0 +1,11 @@
+{
+ "id": "kattegat",
+ "ad": "Kattegat ve Öresund",
+ "lon": 11.5,
+ "lat": 57,
+ "komsu": [
+  "kuzey-denizi",
+  "baltik"
+ ],
+ "sinirdasDevlet": "dan"
+}

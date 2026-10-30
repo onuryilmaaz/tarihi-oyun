@@ -29,10 +29,18 @@ ileride kıta bazlı yükleme ve senaryolar arası geometri paylaşımı için; 
 dosyalarının yerini **almaz** — onlar hâlâ istemcinin okuduğu tek dosyalardır; `araclar/harita-derle.mjs`,
 `veri/geom/` içindeki dosyaları orijinal dosyalarla **birebir eşleştiğini doğrular** (`npm run harita:derle`).
 132 devletin tamamı 4 kıtaya ayrıştırıldı: `avrupa-yakindogu` (devlet indeks 0–75, Osmanlı/Balkanlar/Anadolu/
-Kafkasya'dan Batı ve Kuzey Avrupa'ya, ayrıca Memlûk üzerinden Mısır/Levant — deniz bölgelerinin tamamı da
-burada, çünkü hepsi Akdeniz/Karadeniz sularında), `afrika` (76–89), `asya` (90–125), `amerika` (126–131).
-Sahipsiz (`d: -1`, hiçbir devlete ait olmayan arka plan) 1562 bölge ve deniz bölgelerinin gerçek poligon
-geometrisi (şu an yalnızca nokta+komşuluk grafı) bu fazın kapsamı dışıdır (bkz. `tasks/TASK-0022.md`).
+Kafkasya'dan Batı ve Kuzey Avrupa'ya, ayrıca Memlûk üzerinden Mısır/Levant), `afrika` (76–89), `asya` (90–125),
+`amerika` (126–131). Sahipsiz (`d: -1`, hiçbir devlete ait olmayan arka plan) 1562 bölge
+`veri/geom/sahipsiz/bolgeler/` altında `durum: "sahipsiz"` etiketiyle tutulur (devlet/şehir yoktur, yalnızca
+bölge+yay).
+
+Deniz bölgeleri (29 adet) coğrafi konumlarına göre değil, **sınırı olan (limanı bulunan) devletlere** göre
+dağıtılır: her deniz bölgesi, limanının sahibi olan her devletin kendi kıta klasörüne bir kopya olarak yazılır
+(`veri/geom/<kita>/deniz/<devlet-id>/<id>.json`, `sinirdasDevlet` etiketiyle — içerik küçük olduğu için
+yineleme zararsızdır). Hiçbir devletin limanı bulunmayan bölgeler (Azak Denizi, Manş) "uluslararası deniz
+alanı" sayılır ve `veri/geom/uluslararasi-sular/<id>.json` altına yazılır. Üretim: `araclar/deniz-ayristir.mjs`.
+Deniz bölgelerinin gerçek poligon geometrisi (şu an yalnızca nokta+komşuluk grafı) hâlâ bu fazın kapsamı
+dışıdır (bkz. `tasks/TASK-0022.md`).
 
 Ham ETOPO indirmesi depoya alınmaz (`veri-ham/`, ~59 MB):
 

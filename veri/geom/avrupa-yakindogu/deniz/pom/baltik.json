@@ -1,0 +1,11 @@
+{
+ "id": "baltik",
+ "ad": "Baltık Denizi",
+ "lon": 18.5,
+ "lat": 56.5,
+ "komsu": [
+  "kattegat"
+ ],
+ "ticaretGecidi": "kattegat",
+ "sinirdasDevlet": "pom"
+}
