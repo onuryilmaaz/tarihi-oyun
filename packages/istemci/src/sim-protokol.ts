@@ -202,7 +202,8 @@ export interface DiplomasiKarti {
   saldirmazlik: Degerlendirme;
   vasalim: boolean; // TASK-0018 (2/3): bu devlet benim vasalım mı
   onunEfendisi: number | null; // bu devletin efendisi varsa indeksi (ben de olabilirim, başkası da)
-  bekleyen: "ittifakTeklif" | "ittifakBoz" | "ticaretTeklif" | "ticaretBoz" | "saldirmazlikTeklif" | "vasalSerbestBirak" | null;
+  elciYolda: number | null; // TASK-0020 (2/3): yoldaki elçinin kalan günü (yoksa null)
+  bekleyen: "ittifakTeklif" | "ittifakBoz" | "ticaretTeklif" | "ticaretBoz" | "saldirmazlikTeklif" | "vasalSerbestBirak" | "elciGonder" | null;
 }
 
 export interface TeknolojiKarti {

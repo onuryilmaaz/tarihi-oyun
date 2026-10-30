@@ -9,11 +9,11 @@ import { savasta } from "./savas";
 import { hukumdarDiplomasiPuani } from "./hanedan";
 import { dinBileseni } from "./nufus";
 
-export type IliskiNedeni = "tarih" | "savas" | "hediye" | "ittifakBozma" | "cagriReddi" | "casusluk" | "vasalSerbest";
+export type IliskiNedeni = "tarih" | "savas" | "hediye" | "ittifakBozma" | "cagriReddi" | "casusluk" | "vasalSerbest" | "elci";
 export const ILISKI_NEDEN_ADLARI: Record<IliskiNedeni, string> = {
   tarih: "Tarihî ilişki (1453)", savas: "Geçmiş savaşlar", hediye: "Hediyeler",
   ittifakBozma: "Bozulan ittifak", cagriReddi: "Reddedilen yardım çağrısı", casusluk: "Yakalanan casus",
-  vasalSerbest: "Serbest bırakılan vasallık",
+  vasalSerbest: "Serbest bırakılan vasallık", elci: "Elçi ziyaretleri", // TASK-0020 (2/3)
 };
 
 /** İki devlet arasındaki simetrik, kalıcı ya da sönümlenen etki (a < b). */

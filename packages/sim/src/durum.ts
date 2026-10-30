@@ -17,6 +17,7 @@ import { BILINMIYOR, DIN_AILELERI, baslangicGruplari, type Iskan, type NufusGrub
 import { baslangicHanedanlari, type AdHavuzu, type Hukumdar, type TarihiHalef, type Veraset, type VerasetSecimi } from "./hanedan";
 import type { VergiOrani } from "./vergi";
 import { BIRIM_TURLERI, kompozisyonHizi, kompozisyonToplami, tekTurKompozisyon, type BirimTuru, type Kompozisyon } from "./birim";
+import type { Elci } from "./elci";
 
 export type TurSuresi = "hafta" | "ay" | "ceyrek" | "yil";
 export const TUR_SURESI_ADLARI: Record<TurSuresi, string> = {
@@ -212,6 +213,8 @@ export interface DunyaDurumu {
   diplomatikTeklifler: DiplomatikTeklif[]; // TASK-0020 (1/3)
   sonrakiDiplomatikTeklifId: number;
   diplomatikTeklifSoguma: number[]; // devlet başına son teklif günü; gelen kutusunu boğmaması için soğuma süresi (TASK-0020 1/3)
+  elciler: Elci[]; // yoldaki elçiler (TASK-0020 2/3)
+  sonrakiElciId: number;
   ateskesler: Ateskes[];
   verasetSecimi: VerasetSecimi | null; // oyuncunun halef seçimi (7a)
   iskanlar: Iskan[]; // yoldaki iskânlar (7b)
@@ -281,7 +284,7 @@ export interface SenaryoVerisi {
 // 5: kuşatma, gerçek işgal ve barış (TASK-0007/4c); şema 3–4 için eklemeli dönüşüm var.
 // Şema geçmişi: 6 şehir yatırımları (5b), 7 teknoloji (5c), 8 diplomasi (6a), 9 AI ekonomi (6b), 10 AI savaş/barış (6c),
 // 11 hükümdar ve veraset (7a), 12 nüfus grupları ve iskân (7b), 13 istikrar (7c), 14 yerel yönetim (7d)
-export const SEMA_SURUMU = 24; // 24 AI diplomatik teklifleri (TASK-0020), 23 birim çeşitliliği (TASK-0019), 22 vasallık (TASK-0018), 21 ticaret anlaşması ve saldırmazlık paktı (TASK-0017), 20 asker toplama iptali (TASK-0017),
+export const SEMA_SURUMU = 25; // 25 elçi gönderme (TASK-0020), 24 AI diplomatik teklifleri (TASK-0020), 23 birim çeşitliliği (TASK-0019), 22 vasallık (TASK-0018), 21 ticaret anlaşması ve saldırmazlık paktı (TASK-0017), 20 asker toplama iptali (TASK-0017),
 // 19 vergi oranı ve hazine geçmişi (TASK-0017), 18 arazi verimi (9b), 15 donanma ve deniz (8a), 16 ticaret ve ambargo (8b), 17 casusluk (8c)
 
 export function baslangicDurumu(s: SenaryoVerisi, secenek: { tohum: number; oyuncu?: string }): DunyaDurumu {
@@ -366,6 +369,8 @@ export function baslangicDurumu(s: SenaryoVerisi, secenek: { tohum: number; oyun
     diplomatikTeklifler: [],
     sonrakiDiplomatikTeklifId: 1,
     diplomatikTeklifSoguma: s.devletler.map(() => -DENGE.YZ_DIPLOMASI_SOGUMA_GUN),
+    elciler: [],
+    sonrakiElciId: 1,
     ateskesler: [],
     verasetSecimi: null,
     iskanlar: [],
@@ -526,6 +531,10 @@ export function degismezler(d: DunyaDurumu): string[] {
     }
   }
   if (d.diplomatikTeklifSoguma.length !== d.devletler.length || d.diplomatikTeklifSoguma.some((x) => !tam(x))) h.push("diplomatik teklif soğuması geçersiz");
+  for (const e of d.elciler) {
+    if (!d.devletler[e.hedef] || e.hedef === d.ayarlar.oyuncu || !tam(e.id) || e.id >= d.sonrakiElciId
+      || !tam(e.kalanGun) || e.kalanGun <= 0 || e.kalanGun > DENGE.ELCI_GUN) h.push(`elçi ${e.id} geçersiz`);
+  }
   for (const a of d.ateskesler) if (!d.devletler[a.a] || !d.devletler[a.b] || a.a >= a.b || !tam(a.bitis)) h.push("ateşkes geçersiz");
   for (const t of d.ticaretAnlasmalari) if (!d.devletler[t.a] || !d.devletler[t.b] || t.a >= t.b || !tam(t.baslangic)) h.push("ticaret anlaşması geçersiz");
   for (const p of d.saldirmazlikPaktlari) if (!d.devletler[p.a] || !d.devletler[p.b] || p.a >= p.b || !tam(p.bitis)) h.push("saldırmazlık paktı geçersiz");

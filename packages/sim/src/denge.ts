@@ -246,4 +246,9 @@ export const DENGE = {
   // TASK-0020 (1/3, DEC-0069) — AI'dan oyuncuya diplomatik teklifler; hepsi [TASLAK]
   YZ_DIPLOMASI_TEKLIF_OLASILIK: 1, // AI'nın aylık kararında, ilişki uygunsa teklif sunma olasılığı (%)
   YZ_DIPLOMASI_SOGUMA_GUN: 180, // bir devlet, cevaplanan/süresi dolan teklifinden sonra bu kadar gün yeni teklif göndermez
+  // TASK-0020 (2/3) — elçi gönderme: hediyenin ucuz ama gecikmeli alternatifi; hepsi [TASLAK]
+  ELCI_BEDEL: 180,
+  ELCI_GUN: 60,
+  ELCI_ILISKI: 15, // varınca eklenen puan
+  ELCI_EN_COK: 30, // hediyeyle aynı birikim sınırı mantığı (bağımsız havuz)
 };

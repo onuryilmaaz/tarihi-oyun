@@ -132,7 +132,7 @@ function ozet(durum: DunyaDurumu): Ozet {
       const on = diplomasiOnHesap(durum, baglam.ag), p = durum.ayarlar.oyuncu;
       return durum.devletler.map((_, i) => {
         if (i === p) return null;
-        const bekleyenTurler = ["ittifakTeklif", "ittifakBoz", "ticaretTeklif", "ticaretBoz", "saldirmazlikTeklif", "vasalSerbestBirak"] as const;
+        const bekleyenTurler = ["ittifakTeklif", "ittifakBoz", "ticaretTeklif", "ticaretBoz", "saldirmazlikTeklif", "vasalSerbestBirak", "elciGonder"] as const;
         const bekleyen = durum.emirKuyrugu.find((e) => (bekleyenTurler as readonly string[]).includes(e.tur) && "hedef" in e && e.hedef === i);
         return {
           hukumdar: hukumdarOzeti(durum, durum.devletler[i].hukumdar),
@@ -143,6 +143,7 @@ function ozet(durum: DunyaDurumu): Ozet {
           ticaretVar: ticaretAnlasmasiVar(durum, p, i), ticaret: ticaretDegerlendir(durum, on, p, i),
           saldirmazlikVar: saldirmazlikVar(durum, p, i), saldirmazlik: saldirmazlikDegerlendir(durum, on, p, i),
           vasalim: efendisi(durum, i) === p, onunEfendisi: efendisi(durum, i),
+          elciYolda: durum.elciler.find((e) => e.hedef === i)?.kalanGun ?? null,
           bekleyen: bekleyen && (bekleyenTurler as readonly string[]).includes(bekleyen.tur) ? (bekleyen.tur as typeof bekleyenTurler[number]) : null,
         };
       });

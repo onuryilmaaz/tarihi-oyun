@@ -1,10 +1,24 @@
 # CHANGELOG
 
+## 2026-10-30 — TASK-0020 (2/3): elçi gönderme (Claude)
+
+- **Yeni emir `elciGonder` (`elci.ts`, yeni):** Orta maliyet (`ELCI_BEDEL` 180), 60 gün (`ELCI_GUN`) süren bir
+  diplomatik eylem. Bedel emir anında ayrılır; elçi varınca ilişkiye hediyeyle aynı birikim/sönüm kuralına tabi
+  +15 puan (`ELCI_ILISKI`, `ELCI_EN_COK` 30 tavanlı, bağımsız havuz) ekler. Her zaman başarılı (yakalanma riski
+  kapsam dışı). Aynı devlete ikinci elçi, ilki yoldayken gönderilemez (`elciEngeli`).
+- **Şema 24 → 25:** `elciler` (yoldaki elçiler) ve `sonrakiElciId` eklendi; eski kayıtlarda boş başlar.
+- **Arayüz:** Devlet panelinde hediyenin yanına "Elçi gönder" düğmesi (bedel/süre/puan bilgisiyle) ya da
+  "🕊 Elçiniz yolda; N gün sonra varacak" bildirimi.
+- 246 sim testi (3 yeni: `elci.test.ts`), typecheck ve build geçti. 5173'te Playwright ile canlı doğrulandı:
+  Brandenburg'a elçi gönderildi, hazineden 180 düştü, tur ilerletilince panelde "Elçiniz yolda; 59 gün sonra
+  varacak" göründü, JS hatası yok (kullanıcıya ekran görüntüsü gönderildi).
+- **Sırada:** TASK-0020 3/3 (hükümdar/devlet portresi). Kullanıcı testi ve commit onayı bekliyor.
+
 ## 2026-10-30 — TASK-0020 (1/3): AI'dan gelen diplomatik teklifler + gelen kutusu (Claude)
 
 - **AI kararı (`yz-diplomasi.ts`, yeni):** Her AI devleti, oyuncunun sınır komşusuysa, savaşta değillerse ve
   180 gün içinde ona teklif göndermediyse, aylık kararında küçük bir olasılıkla (`YZ_DIPLOMASI_TEKLIF_OLASILIK`
-  %8) ilişkisine göre ittifak (eşik 25) / ticaret anlaşması (eşik 10) / saldırmazlık paktı (eşik 0, 24 ay) teklif
+  %1) ilişkisine göre ittifak (eşik 25) / ticaret anlaşması (eşik 10) / saldırmazlık paktı (eşik 0, 24 ay) teklif
   eder; en yüksek eşiği karşılayan tür seçilir. Uzak (komşu olmayan) devletler teklif göndermez — ilk denemede
   132 devletli senaryoda sınırsız teklif akışı 10 yıllık turları sürekli kesintiye uğratıyordu (bkz. riskler).
 - **Oyuncu cevabı:** Yeni emir `diplomatikTeklifCevap` (kabul/ret), barış teklifiyle aynı doğrulama/uygulama
@@ -15,7 +29,7 @@
   sayaç artık bekleyen diplomatik teklifleri de sayıyor.
 - **Şema 23 → 24:** `diplomatikTeklifler` (bekleyen teklifler) ve `diplomatikTeklifSoguma` (devlet başına son
   teklif günü, soğuma için) eklendi; eski kayıtlarda boş/soğuma süresi dolmuş başlar.
-- **Riskler/düzeltme:** İlk sürümde (tüm 132 devlet, %8 olasılık, soğuma yok) 10 yıllık senaryo testinde yıllık
+- **Riskler/düzeltme:** İlk sürümde (tüm 132 devlet, %8 olasılık, soğuma yok; sonradan %1'e düşürüldü) 10 yıllık senaryo testinde yıllık
   turlar sürekli kesintiye uğrayıp yalnızca ~4 ay ilerliyordu. Sınır komşusu kısıtı ve 180 günlük soğuma eklenerek
   10 yılda makul sayıda (gerçek oyunda birkaç yılda bir) teklife indirildi; `senaryo-1453.test.ts`'teki 10 yıllık
   test artık kesintileri reddederek ilerliyor ve en az 10 yıl geçtiğini doğruluyor (kesintiler nedeniyle takvim

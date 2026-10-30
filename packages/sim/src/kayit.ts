@@ -193,6 +193,11 @@ export function yukle(metin: string, beklenenSenaryo?: string): DunyaDurumu {
     // Şema 23 → 24 (TASK-0020): eski kayıtlarda AI'dan gelen diplomatik teklif yok
     d.diplomatikTeklifler = []; d.sonrakiDiplomatikTeklifId = 1;
     d.diplomatikTeklifSoguma = d.devletler.map(() => -DENGE.YZ_DIPLOMASI_SOGUMA_GUN);
+    d.sema = 24;
+  }
+  if (d.sema === 24) {
+    // Şema 24 → 25 (TASK-0020): eski kayıtlarda yoldaki elçi yok
+    d.elciler = []; d.sonrakiElciId = 1;
     d.sema = SEMA_SURUMU;
   }
   if (d.sema !== SEMA_SURUMU) throw new KayitHatasi("Kayıt tutarsız: dünya şema sürümü uyuşmuyor.");

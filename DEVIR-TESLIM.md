@@ -1,7 +1,8 @@
 # DEVİR TESLİM — agent değişiminde kaldığın yer
 
-Son güncelleme: **2026-10-30, Claude — TASK-0020 1/3 (AI'dan gelen diplomatik teklifler + gelen kutusu) kod olarak
-tamamlandı; kullanıcı testi ve commit/push onayı bekleniyor.**
+Son güncelleme: **2026-10-30, Claude — TASK-0020 2/3 (elçi gönderme) kod olarak tamamlandı; kullanıcı testi ve
+commit onayı bekleniyor. 1/3 commit+push edilmiş ve kullanıcı isteğiyle main'e fast-forward edilmiştir
+(şu an `main` üzerinde çalışılıyor — ayrı dal yok).**
 Bağlayıcı kurallar: `AGENTS.md`, `MASTER_SPEC.md`, `DECISIONS.md`.
 
 ## 0. En son — BURADAN BAŞLA
@@ -9,9 +10,11 @@ Bağlayıcı kurallar: `AGENTS.md`, `MASTER_SPEC.md`, `DECISIONS.md`.
 - Kullanıcı "testleri sonra yaparız, eksikleri analiz et" dedi (TASK-0019 sonrası), sonra elçi gönderme/gelen
   teklifleri görme/figürlerle gösterme istedi → **TASK-0020 / DEC-0069** onaylandı: 3 alt teslim sırayla
   (1) AI'dan gelen diplomatik teklifler + gelen kutusu, (2) elçi gönderme, (3) hükümdar/devlet portresi.
-- **1/3 kod olarak tamamlandı, henüz commit edilmedi:** Yeni `yz-diplomasi.ts` — her AI devleti, oyuncunun sınır
+- **1/3 commit edildi (`10d0e70`), kullanıcı "main'den devam" dedi → main bu commit'e fast-forward edilip push
+  edildi; artık doğrudan `main` üzerinde çalışılıyor (DEC-0015 ile tutarlı), ayrı dal açılmıyor.**
+  Yeni `yz-diplomasi.ts` — her AI devleti, oyuncunun sınır
   komşusuysa, savaşta değillerse ve 180 gün içinde ona teklif göndermediyse, aylık kararında küçük bir olasılıkla
-  (`YZ_DIPLOMASI_TEKLIF_OLASILIK` %8) ilişkisine göre ittifak/ticaret/saldırmazlık teklif eder. Yeni emir
+  (`YZ_DIPLOMASI_TEKLIF_OLASILIK` %1) ilişkisine göre ittifak/ticaret/saldırmazlık teklif eder. Yeni emir
   `diplomatikTeklifCevap` (kabul/ret), barış teklifiyle aynı doğrulama/uygulama deseninde. Şema 23 → 24
   (`diplomatikTeklifler`, `diplomatikTeklifSoguma`). İstemci: barış teklifiyle aynı desende genelleştirilmiş
   pencere (`#dipTeklifi`), devlet panelinde "📨 ... teklif ediyor" bildirimi, savaş rozeti sayacı güncellendi.
@@ -23,9 +26,16 @@ Bağlayıcı kurallar: `AGENTS.md`, `MASTER_SPEC.md`, `DECISIONS.md`.
   242 sim testi (4 yeni: `yz-diplomasi.test.ts`), typecheck, build geçti; 5173'te Playwright ile canlı doğrulandı
   (Candaroğulları'ndan saldırmazlık paktı teklifi kesintiyle geldi, `#dipTeklifi` doğru metinle açıldı, "Kabul et"
   JS hatasız çalıştı; kullanıcıya ekran görüntüsü gönderildi).
-- **Sırada:** TASK-0020 2/3 elçi gönderme (orta maliyet, 60 gün, tamamlanınca +15 ilişki), 3/3 hükümdar/devlet
-  portresi (saf görsel). Devralan agent önce kullanıcıdan 1/3'ün commit/push onayını istesin, sonra 2/3'e geçsin.
-- `tasks/TASK-0020.md`, `DECISIONS.md` (DEC-0069), `CHANGELOG.md` güncel; henüz commit edilmedi.
+- **2/3 kod olarak tamamlandı, henüz commit edilmedi:** Yeni `elci.ts` — emir `elciGonder` (bedel 180, 60 gün);
+  varınca hediyeyle aynı birikim/sönüm kuralına tabi +15 ilişki ekler (`ELCI_EN_COK` 30 tavanlı, bağımsız havuz).
+  Aynı devlete ikinci elçi, ilki yoldayken gönderilemez. Şema 24 → 25 (`elciler`, `sonrakiElciId`). İstemci:
+  devlet panelinde hediyenin yanına "Elçi gönder" düğmesi / "🕊 Elçiniz yolda; N gün sonra varacak" bildirimi.
+  246 sim testi (3 yeni: `elci.test.ts`), typecheck, build geçti; 5173'te Playwright ile canlı doğrulandı
+  (Brandenburg'a elçi gönderildi, hazineden 180 düştü, tur sonrası panelde "Elçiniz yolda" göründü, JS hatası yok;
+  kullanıcıya ekran görüntüsü gönderildi).
+- **Sırada:** TASK-0020 3/3 hükümdar/devlet portresi (saf görsel, `arma.ts` genişletilecek). Devralan agent önce
+  kullanıcıdan 2/3'ün commit onayını istesin, sonra 3/3'e geçsin.
+- `tasks/TASK-0020.md`, `CHANGELOG.md` güncel; henüz commit edilmedi.
 
 ## Arşiv — TASK-0019 ve öncesi (bu oturumun önceki kısmı)
 
