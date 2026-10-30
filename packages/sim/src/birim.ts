@@ -67,6 +67,9 @@ export function kompozisyonHizYuzde(k: Kompozisyon): number {
   return Math.round(BIRIM_TURLERI.reduce((s, t) => s + k[t] * hizYuzde(t), 0) / toplam);
 }
 
+/** Kompozisyona göre ordu hızı (TASK-0019, 3/4): temel hızı ağırlıklı yüzdeyle ölçekler (süvari ağırlıklı ordu daha hızlı). */
+export const kompozisyonHizi = (k: Kompozisyon, temelHiz: number): number => Math.round((temelHiz * kompozisyonHizYuzde(k)) / 100);
+
 /** Kompozisyonun ağırlıklı ortalama saldırı/savunma yüzdesi (100 = taban); boş kompozisyonda 100.
  * TASK-0019 (2/4): muharebe ve kuşatma gücüne çarpan olarak uygulanır. */
 export function kompozisyonMuharebeYuzde(k: Kompozisyon, savunuyor: boolean): number {

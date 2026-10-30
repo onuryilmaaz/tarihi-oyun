@@ -5,7 +5,7 @@ import { DENGE } from "./denge";
 import { HAREKET, type HareketAgi } from "./hareket";
 import { savasta } from "./savas";
 import type { Baglam } from "./emirler";
-import { BIRIM_TURLERI, kompozisyonCikar, kompozisyonOransalAl, toplamaMaliyetiYuzde, aylikMaasYuzde, tekTurKompozisyon, type BirimTuru, type Kompozisyon } from "./birim";
+import { BIRIM_TURLERI, kompozisyonCikar, kompozisyonHizi, kompozisyonOransalAl, toplamaMaliyetiYuzde, aylikMaasYuzde, tekTurKompozisyon, type BirimTuru, type Kompozisyon } from "./birim";
 
 // yuzde: teknoloji indirimi (Asker Kayıt Defterleri, 5c); varsayılan indirimsiz. birim: TASK-0019, varsayılan piyade
 // (piyadenin maliyetYuzde'si 100 olduğu için eski çağrılar aynı sonucu verir).
@@ -49,9 +49,10 @@ export function toplamalariIlerlet(d: DunyaDurumu, b: Baglam): void {
     t.kalanGun = Math.max(0, t.kalanGun - 1);
     if (t.kalanGun > 0) return true;
     const konum = b.sehirKonumlari?.[t.sehir] ?? n;
+    const kompozisyon = tekTurKompozisyon(t.birim, t.asker);
     d.ordular.push({ id: d.sonrakiOrduId++, ad: `${s.ad} Ordusu`, devlet: t.devlet, asker: t.asker,
-      kompozisyon: tekTurKompozisyon(t.birim, t.asker),
-      dugum: s.dugum, x: konum.x, y: konum.y, hiz: HAREKET.TEMEL_HIZ, rota: [], ilerleme: 0, hedef: null,
+      kompozisyon,
+      dugum: s.dugum, x: konum.x, y: konum.y, hiz: kompozisyonHizi(kompozisyon, HAREKET.TEMEL_HIZ), rota: [], ilerleme: 0, hedef: null, // TASK-0019 (3/4)
       moral: DENGE.MORAL_EN_YUKSEK, tutum: "dengeli", cekiliyor: false, muharebe: null });
     olayEkle(d, { tur: "asker-toplandi", devlet: t.devlet, metin: `${s.ad}: ${t.asker} asker hazır; yeni ordu kuruldu.` });
     return false;

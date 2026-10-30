@@ -3,7 +3,7 @@
 
 import { olayEkle, type BarisTalebi, type DunyaDurumu, type KusatmaYontemi, type OrduDurumu, type Tutum } from "./durum";
 import { sayiMetni, savasta } from "./savas";
-import { orduKonumu, rotaBul, type HareketAgi, type RotaSonucu } from "./hareket";
+import { orduKonumu, rotaBul, HAREKET, type HareketAgi, type RotaSonucu } from "./hareket";
 import { tarihMetni } from "./takvim";
 import { toplamaMaliyeti } from "./ordu";
 import { DENGE } from "./denge";
@@ -20,7 +20,7 @@ import {
   saldirmazlikDegerlendir, saldirmazlikKur, saldirmazlikVar, ticaretAnlasmasiBoz, ticaretAnlasmasiKur, ticaretAnlasmasiVar, ticaretDegerlendir,
 } from "./diplomasi";
 import { efendisi, vasalMi, vasallari, vasalSerbestBirak } from "./vasallik";
-import { BIRIM_ADLARI, birimTuruGecerli, kompozisyonCikar, kompozisyonOransalAl, kompozisyonTopla, tekTurKompozisyon, type BirimTuru } from "./birim";
+import { BIRIM_ADLARI, birimTuruGecerli, kompozisyonCikar, kompozisyonHizi, kompozisyonOransalAl, kompozisyonTopla, tekTurKompozisyon, type BirimTuru } from "./birim";
 import { biliyor, arastirmaEngeli, teknolojiBul, teknolojiGecerli, toplamaBedelYuzde, toplamaSuresi, type TeknolojiId } from "./teknoloji";
 import { VERGI_ADLARI, vergiOraniGecerli, type VergiOrani } from "./vergi";
 
@@ -529,7 +529,9 @@ export function emirUygula(d: DunyaDurumu, e: Emir, b: Baglam = BOS_BAGLAM): voi
       const alinanKomp = kompozisyonOransalAl(o.kompozisyon, e.asker); // TASK-0019: türler oransal ayrılır
       o.kompozisyon = kompozisyonCikar(o.kompozisyon, alinanKomp);
       o.asker -= e.asker;
-      const yeni = { ...o, id: d.sonrakiOrduId++, asker: e.asker, kompozisyon: alinanKomp, ad: `${o.ad} · Ayrılan birlik`, rota: [], hedef: null };
+      o.hiz = kompozisyonHizi(o.kompozisyon, HAREKET.TEMEL_HIZ); // TASK-0019 (3/4)
+      const yeni = { ...o, id: d.sonrakiOrduId++, asker: e.asker, kompozisyon: alinanKomp,
+        hiz: kompozisyonHizi(alinanKomp, HAREKET.TEMEL_HIZ), ad: `${o.ad} · Ayrılan birlik`, rota: [], hedef: null };
       d.ordular.push(yeni);
       olayEkle(d, { tur: "ordu-bolundu", devlet: o.devlet, metin: `${o.ad}: ${e.asker} asker ayrı orduya ayrıldı; moral ve tutum korundu.` });
       break;
@@ -539,6 +541,7 @@ export function emirUygula(d: DunyaDurumu, e: Emir, b: Baglam = BOS_BAGLAM): voi
       o.moral = Math.floor((o.moral * o.asker + a.moral * a.asker) / (o.asker + a.asker));
       o.kompozisyon = kompozisyonTopla(o.kompozisyon, a.kompozisyon); // TASK-0019
       o.asker += a.asker;
+      o.hiz = kompozisyonHizi(o.kompozisyon, HAREKET.TEMEL_HIZ); // TASK-0019 (3/4)
       d.ordular = d.ordular.filter((x) => x.id !== a.id);
       olayEkle(d, { tur: "ordu-birlesti", devlet: o.devlet, metin: `${a.ad}, ${o.ad} ile birleşti (${o.asker} asker); seçili ordunun tutumu korundu.` });
       break;

@@ -1,6 +1,6 @@
 # DEVİR TESLİM — agent değişiminde kaldığın yer
 
-Son güncelleme: **2026-10-30, Claude — TASK-0019 1/4 ve 2/4 (muharebe gücü, en riskli faz) kod olarak tamamlandı; kullanıcı testi ve commit/push onayı bekleniyor.**
+Son güncelleme: **2026-10-30, Claude — TASK-0019 1/4, 2/4 (en riskli faz) ve 3/4 (hareket hızı) kod olarak tamamlandı; kullanıcı testi ve commit/push onayı bekleniyor.**
 Bağlayıcı kurallar: `AGENTS.md`, `MASTER_SPEC.md`, `DECISIONS.md`.
 
 ## 0. En son — BURADAN BAŞLA
@@ -63,7 +63,13 @@ Bağlayıcı kurallar: `AGENTS.md`, `MASTER_SPEC.md`, `DECISIONS.md`.
   çarpanı uyguluyor (süvari saldırırken, okçu savunurken güçlü). Parametre verilmezse eski davranışla birebir aynı
   (tüm eski testler değişmeden geçti). Kuşatma gücü bu fazda değişmedi (4. fazda). Şema değişikliği yok.
   234 test (3 yeni), typecheck, build geçti; 5173'te 20 turluk gerçek kampanya (ilan edilmiş savaş + çok sayıda AI
-  savaşı) hatasız çalıştı. **Kullanıcı testi ve commit/push onayı bekliyor.**
+  savaşı) hatasız çalıştı. Commit+push edildi (`1af1668`).
+- **3/4 Hareket hızı kod olarak tamamlandı, henüz commit edilmedi:** ordu hızı artık kompozisyonun ağırlıklı
+  ortalama yüzdesine göre (süvari %150, piyade/okçu %100); yeni toplama/bölme/birleştirme sonrası yeniden
+  hesaplanır. Düşük riskli, `hareket.ts`'e dokunulmadı. Şema değişikliği yok. 236 test (2 yeni), typecheck, build
+  geçti; 5173'te süvari toplama/tur ilerletme denendi, JS hatası yok; ETA karşılaştırma canlı testi bir betik
+  sorunu yüzünden tamamlanamadı, hız formülü sim testlerinde tam sayılarla doğrulandı.
+  **Kullanıcı testi ve commit/push onayı bekliyor.**
 - Kullanıcı "oyun mantığında eksiklikler var, Age of History gibi bir şey istiyorum: ekonomi, asker basma, ordu
   birleştirme/ayırma, diplomasi" dedi. **TASK-0017 / DEC-0066** ile tek görev kartı onaylandı: sıra Ekonomi → Asker basma →
   Ordu birleştirme/ayırma → Temel diplomasi. Açık sorular yanıtlandı: vergi düşük/orta/yüksek (varsayılan orta); pakt süresini

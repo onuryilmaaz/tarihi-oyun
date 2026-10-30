@@ -2,7 +2,7 @@
 import { describe, expect, it } from "vitest";
 import {
   agHazirla, baslangicDurumu, degismezler, DENGE, devletMaasi, emirleriUygula, emirVer,
-  kaydet, muharebeleriBaslat, muharebeGunleri, SEMA_SURUMU, toplamaMaliyeti, turSuresiAyarla, turuIlerlet, yukle, type SenaryoVerisi,
+  HAREKET, kaydet, muharebeleriBaslat, muharebeGunleri, SEMA_SURUMU, toplamaMaliyeti, turSuresiAyarla, turuIlerlet, yukle, type SenaryoVerisi,
 } from "../src";
 
 const senaryo: SenaryoVerisi = {
@@ -134,5 +134,38 @@ describe("TASK-0019 (2/4): muharebe gücü ve kayıp dağılımı", () => {
     expect(kayipOkcu[okculu.a.id]).toBeGreaterThan(kayipEsit[esit.a.id]); // A'nın (saldıran) kaybı arttı
     expect(kayipOkcu[okculu.b.id]).toBe(kayipEsit[esit.b.id]); // B'nin kendi kaybı A'nın gücüne bağlı, değişmez
     expect(degismezler(okculu.d)).toEqual([]);
+  });
+});
+
+describe("TASK-0019 (3/4): hareket hızı kompozisyona göre değişir", () => {
+  it("süvari toplanan ordu temel hızdan hızlı, okçu/piyade temel hızda kurulur", () => {
+    const d = yeni(); d.devletler[0].hazine = 1000;
+    expect(emirVer(d, { tur: "askerTopla", sehir: 0, asker: 1000, birim: "suvari" }, B).gecerli).toBe(true);
+    expect(emirVer(d, { tur: "askerTopla", sehir: 0, asker: 500, birim: "okcu" }, B).gecerli).toBe(true);
+    emirleriUygula(d, B);
+    turSuresiAyarla(d, "hafta");
+    for (let i = 0; i < 5; i++) turuIlerlet(d, B);
+    const suvariOrdusu = d.ordular.find((o) => o.kompozisyon.suvari > 0)!;
+    const okcuOrdusu = d.ordular.find((o) => o.kompozisyon.okcu > 0)!;
+    expect(suvariOrdusu.hiz).toBe(Math.round((HAREKET.TEMEL_HIZ * DENGE.BIRIM.suvari.hizYuzde) / 100));
+    expect(suvariOrdusu.hiz).toBeGreaterThan(HAREKET.TEMEL_HIZ);
+    expect(okcuOrdusu.hiz).toBe(HAREKET.TEMEL_HIZ);
+    expect(degismezler(d)).toEqual([]);
+  });
+
+  it("bölme/birleştirme sonrası hız yeni kompozisyona göre yeniden hesaplanır", () => {
+    const d = yeni(), o = d.ordular[0];
+    o.asker = 1000; o.kompozisyon = { piyade: 0, okcu: 0, suvari: 1000 };
+    o.hiz = Math.round((HAREKET.TEMEL_HIZ * DENGE.BIRIM.suvari.hizYuzde) / 100);
+    expect(emirVer(d, { tur: "orduBol", ordu: o.id, asker: 400 }, B).gecerli).toBe(true);
+    emirleriUygula(d, B);
+    const a = d.ordular.find((x) => x.id !== o.id)!;
+    expect(o.hiz).toBe(Math.round((HAREKET.TEMEL_HIZ * DENGE.BIRIM.suvari.hizYuzde) / 100)); // tamamen süvari kaldı, hız aynı
+    expect(a.hiz).toBe(o.hiz); // bölünen de tamamen süvari
+    o.hiz = 1; // birleştirmede yeniden hesaplanacağını görmek için bozulur
+    expect(emirVer(d, { tur: "orduBirlestir", ordu: o.id, diger: a.id }, B).gecerli).toBe(true);
+    emirleriUygula(d, B);
+    expect(o.hiz).toBe(Math.round((HAREKET.TEMEL_HIZ * DENGE.BIRIM.suvari.hizYuzde) / 100));
+    expect(degismezler(d)).toEqual([]);
   });
 });

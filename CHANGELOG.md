@@ -1,5 +1,16 @@
 # CHANGELOG
 
+## 2026-10-30 — TASK-0019 (3/4): hareket hızı kompozisyona göre değişir (Claude)
+
+- Ordu hızı artık kompozisyonun ağırlıklı ortalama hız yüzdesine göre hesaplanır (süvari ağırlıklı ordu temel
+  hızın %150'si, piyade/okçu %100'ünde). Yeni asker toplama, ordu bölme ve birleştirme sonrası hız yeniden
+  hesaplanır. Düşük riskli faz: `hareket.ts` dokunulmadı (zaten her orduyu kendi `hiz` alanından okuyor),
+  değişiklik yalnızca ordu oluşturma/bölme/birleştirme noktalarında. Şema değişikliği yok.
+- 236 test (2 yeni), typecheck ve build geçti. 5173'te agent tarafından süvari toplama ve tur ilerletme denendi
+  (500 süvari toplandı, ordu listesinde çıktı), JS hatası yok; haritada hedef verip ETA karşılaştırma denemesi
+  test betiğindeki bir seçici sorunu yüzünden tamamlanamadı — hız formülü sim testlerinde tam sayılarla doğrulandı.
+- Kullanıcı testi ve commit/push onayı bekleniyor. Sonraki ve son faz: 4/4 Kuşatma gücü + arayüz tamamlama.
+
 ## 2026-10-30 — TASK-0019 (2/4): muharebe gücü ve kayıp dağılımı (Claude)
 
 - **En riskli faz — savaş dengesini ilk kez gerçekten değiştiriyor.** Muharebe günü formülüne (`savas.ts:

@@ -16,7 +16,7 @@ import type { IliskiEtkisi, Ittifak } from "./diplomasi";
 import { BILINMIYOR, DIN_AILELERI, baslangicGruplari, type Iskan, type NufusGrubu } from "./nufus";
 import { baslangicHanedanlari, type AdHavuzu, type Hukumdar, type TarihiHalef, type Veraset, type VerasetSecimi } from "./hanedan";
 import type { VergiOrani } from "./vergi";
-import { BIRIM_TURLERI, kompozisyonToplami, tekTurKompozisyon, type BirimTuru, type Kompozisyon } from "./birim";
+import { BIRIM_TURLERI, kompozisyonHizi, kompozisyonToplami, tekTurKompozisyon, type BirimTuru, type Kompozisyon } from "./birim";
 
 export type TurSuresi = "hafta" | "ay" | "ceyrek" | "yil";
 export const TUR_SURESI_ADLARI: Record<TurSuresi, string> = {
@@ -301,11 +301,12 @@ export function baslangicDurumu(s: SenaryoVerisi, secenek: { tohum: number; oyun
       garnizon: c.baskent ? DENGE.BASKENT_GARNIZON : DENGE.SEHIR_GARNIZON, yapilar: { tarla: 0, pazar: 0 },
       istikrar: bosIstikrar(), yonetici: false, gruplar: baslangicGruplari(s, c.ad, c.devlet, c.nufus) };
   });
-  // TASK-0019: senaryo/garnizon orduları başlangıçta tamamen piyade sayılır.
-  const yeniOrdu = (id: number, ad: string, devlet: number, asker: number, dugum: number, x: number, y: number): OrduDurumu => ({
-    id, ad, devlet, asker, kompozisyon: tekTurKompozisyon("piyade", asker), dugum, x, y, hiz: HAREKET.TEMEL_HIZ, rota: [], ilerleme: 0, hedef: null,
-    moral: DENGE.MORAL_EN_YUKSEK, tutum: "dengeli", cekiliyor: false, muharebe: null,
-  });
+  // TASK-0019: senaryo/garnizon orduları başlangıçta tamamen piyade sayılır; hız kompozisyondan hesaplanır.
+  const yeniOrdu = (id: number, ad: string, devlet: number, asker: number, dugum: number, x: number, y: number): OrduDurumu => {
+    const kompozisyon = tekTurKompozisyon("piyade", asker);
+    return { id, ad, devlet, asker, kompozisyon, dugum, x, y, hiz: kompozisyonHizi(kompozisyon, HAREKET.TEMEL_HIZ), rota: [], ilerleme: 0, hedef: null,
+      moral: DENGE.MORAL_EN_YUKSEK, tutum: "dengeli", cekiliyor: false, muharebe: null };
+  };
   const ordular: OrduDurumu[] = (s.ordular ?? []).map((o, i) => yeniOrdu(i + 1, o.ad, bul(o.devlet), o.asker, o.dugum, o.x, o.y));
   // Garnizon orduları (DEC-0025/4, DEC-0027/1): senaryoda ordusu olmayan her devlete başkentinde bir ordu
   // [TASLAK — büyüklük test formülü: taban + birim başına; üst sınırlı]
