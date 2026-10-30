@@ -227,7 +227,7 @@ describe("barış ve sahiplik", () => {
 
   it("kaybedilen şehirde toplama iptal edilir; aynı hazineden peşin ödeme iki kez alınamaz", () => {
     const d = yeni(); d.sehirler[1].kontrol = 0; d.birimler[1].kontrol = 0;
-    d.askerToplamalar.push({ sehir: 1, devlet: 1, asker: 200, kalanGun: 10 });
+    d.askerToplamalar.push({ id: d.sonrakiToplamaId++, sehir: 1, devlet: 1, asker: 200, kalanGun: 10, bedel: 20 });
     expect(emirVer(d, { tur: "baris", ...talep({ sehirler: [1] }) }, B).gecerli).toBe(true);
     emirleriUygula(d, B); expect(d.askerToplamalar).toHaveLength(0);
     expect(d.sehirler[1].devlet).toBe(0);

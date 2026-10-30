@@ -162,10 +162,12 @@ export interface Kesinti {
 }
 
 export interface AskerToplama {
+  id: number; // TASK-0017 (20): iptal emriyle adreslemek için
   sehir: number;
   devlet: number;
   asker: number;
   kalanGun: number;
+  bedel: number; // iptalde tam iade edilen tutar (sonradan teknolojiyle oran değişse de sabit kalır)
 }
 
 export interface DunyaDurumu {
@@ -182,6 +184,7 @@ export interface DunyaDurumu {
   ordular: OrduDurumu[];
   sonrakiOrduId: number;
   askerToplamalar: AskerToplama[];
+  sonrakiToplamaId: number; // TASK-0017 (20)
   insaatlar: Insaat[];
   arastirmalar: Arastirma[];
   iliskiEtkileri: IliskiEtkisi[]; // TASK-0009/6a
@@ -259,7 +262,7 @@ export interface SenaryoVerisi {
 // 5: kuşatma, gerçek işgal ve barış (TASK-0007/4c); şema 3–4 için eklemeli dönüşüm var.
 // Şema geçmişi: 6 şehir yatırımları (5b), 7 teknoloji (5c), 8 diplomasi (6a), 9 AI ekonomi (6b), 10 AI savaş/barış (6c),
 // 11 hükümdar ve veraset (7a), 12 nüfus grupları ve iskân (7b), 13 istikrar (7c), 14 yerel yönetim (7d)
-export const SEMA_SURUMU = 19; // 19 vergi oranı ve hazine geçmişi (TASK-0017), 18 arazi verimi (9b), 15 donanma ve deniz (8a), 16 ticaret ve ambargo (8b), 17 casusluk (8c)
+export const SEMA_SURUMU = 20; // 20 asker toplama iptali (TASK-0017), 19 vergi oranı ve hazine geçmişi (TASK-0017), 18 arazi verimi (9b), 15 donanma ve deniz (8a), 16 ticaret ve ambargo (8b), 17 casusluk (8c)
 
 export function baslangicDurumu(s: SenaryoVerisi, secenek: { tohum: number; oyuncu?: string }): DunyaDurumu {
   const indeks = new Map(s.devletler.map((d, i) => [d.id, i]));
@@ -327,6 +330,7 @@ export function baslangicDurumu(s: SenaryoVerisi, secenek: { tohum: number; oyun
     ordular,
     sonrakiOrduId: ordular.length + 1,
     askerToplamalar: [],
+    sonrakiToplamaId: 1,
     insaatlar: [],
     arastirmalar: [],
     iliskiEtkileri: (s.iliskiler ?? []).map((r) => {
@@ -404,9 +408,16 @@ export function degismezler(d: DunyaDurumu): string[] {
     if (!tam(c.kontrol) || c.kontrol < 0 || c.kontrol >= n) h.push(`şehir ${i} kontrolü geçersiz`);
   });
   if (!Array.isArray(d.askerToplamalar)) h.push("asker toplama listesi eksik");
-  else for (const t of d.askerToplamalar) {
-    if (!t || !tam(t.sehir) || !d.sehirler[t.sehir] || !tam(t.devlet) || !d.devletler[t.devlet]
-      || !tam(t.asker) || t.asker <= 0 || !tam(t.kalanGun) || t.kalanGun < 0) h.push("asker toplama geçersiz");
+  else {
+    const toplamaIdler = new Set<number>();
+    for (const t of d.askerToplamalar) {
+      if (!t || !tam(t.sehir) || !d.sehirler[t.sehir] || !tam(t.devlet) || !d.devletler[t.devlet]
+        || !tam(t.asker) || t.asker <= 0 || !tam(t.kalanGun) || t.kalanGun < 0 || !tam(t.id) || !tam(t.bedel) || t.bedel < 0) h.push("asker toplama geçersiz");
+      else if (toplamaIdler.has(t.id)) h.push(`asker toplama kimliği tekrar ediyor: ${t.id}`);
+      else toplamaIdler.add(t.id);
+    }
+    if (!tam(d.sonrakiToplamaId) || d.sonrakiToplamaId < 1 || d.askerToplamalar.some((t) => t && t.id >= d.sonrakiToplamaId))
+      h.push("sonraki asker toplama kimliği geçersiz");
   }
   const idler = new Set<number>();
   d.ordular.forEach((o, i) => {

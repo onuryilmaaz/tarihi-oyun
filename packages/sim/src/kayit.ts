@@ -3,6 +3,7 @@
 
 import { SEMA_SURUMU, degismezler, olayEkle, type DunyaDurumu } from "./durum";
 import { DENGE } from "./denge";
+import { toplamaMaliyeti } from "./ordu";
 import { kurgusalHukumdar } from "./hanedan";
 import { bosIstikrar } from "./istikrar";
 import { BILINMIYOR } from "./nufus";
@@ -161,6 +162,15 @@ export function yukle(metin: string, beklenenSenaryo?: string): DunyaDurumu {
   if (d.sema === 18) {
     // Şema 18 → 19 (TASK-0017): eski kayıtta vergi oranı yok; varsayılan orta, hazine geçmişi boş
     for (const v of d.devletler) { v.vergiOrani = "orta"; v.hazineGecmisi = []; }
+    d.sema = 19;
+  }
+  if (d.sema === 19) {
+    // Şema 19 → 20 (TASK-0017): eski kayıtta toplama iptali yok; süren toplamalara kimlik ve iade bedeli eklenir
+    d.askerToplamalar.forEach((t, i) => {
+      t.id = i + 1;
+      t.bedel = toplamaMaliyeti(t.asker); // teknoloji indirimi bilinmiyor; taban oranla iade edilir
+    });
+    d.sonrakiToplamaId = d.askerToplamalar.length + 1;
     d.sema = SEMA_SURUMU;
   }
   if (d.sema !== SEMA_SURUMU) throw new KayitHatasi("Kayıt tutarsız: dünya şema sürümü uyuşmuyor.");

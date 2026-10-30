@@ -95,7 +95,7 @@ export interface Ozet {
   barisTeklifleri: { id: number; devlet: number; gerekce: string; size: boolean; birimler: number[]; sehirler: number[]; kalanGun: number; cevap: boolean | null }[]; // 6c
   toplamaKurali: { bedelYuzde: number; gun: number }; // teknolojiyle değişir (Asker Kayıt Defterleri)
   askerSehirleri: { indeks: number; ad: string; insanGucu: number; uygun: boolean; ayaklanma: boolean }[];
-  toplamalar: { sehir: string; asker: number; kalanGun: number; bekliyor: boolean; emir: boolean }[];
+  toplamalar: { id: number | null; sehir: string; asker: number; kalanGun: number; bekliyor: boolean; emir: boolean }[];
   planliKesinti: { tarih: string; neden: string }[];
   hash: string;
   ordular: OrduOzeti[];

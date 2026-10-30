@@ -2,7 +2,7 @@ import { describe, expect, it } from "vitest";
 import {
   agHazirla, baslangicDurumu, degismezler, DENGE, devletMaasi, durumOzeti, emirleriUygula, emirVer,
   gunIlerlet, ikmalDurumu, kaydet, kullanilabilirHazine, kullanilabilirInsanGucu, maaslariOde,
-  toplamaMaliyeti, turSuresiAyarla, turuIlerlet, yukle, type SenaryoVerisi,
+  SEMA_SURUMU, toplamaMaliyeti, turSuresiAyarla, turuIlerlet, yukle, type SenaryoVerisi,
 } from "../src";
 import { dunyaOzeti } from "./yardimci";
 
@@ -94,6 +94,45 @@ describe("asker toplama (4b)", () => {
     for (let i = 0; i < kalan; i++) gunIlerlet(d, B);
     expect(d.askerToplamalar).toHaveLength(0);
     expect(d.ordular.reduce((s, o) => s + o.asker, 0)).toBe(1500);
+  });
+});
+
+describe("TASK-0017: asker toplama iptali", () => {
+  it("iptal tam hazine ve insan gücü iadesi yapar; toplama kuyruktan düşer", () => {
+    const d = yeni(); emirVer(d, topla, B); emirleriUygula(d, B);
+    const hazineOnce = d.devletler[0].hazine, insanGucuOnce = d.sehirler[0].insanGucu;
+    const id = d.askerToplamalar[0].id;
+    expect(id).toBeGreaterThan(0);
+    expect(emirVer(d, { tur: "toplamaIptal", id }, B).gecerli).toBe(true);
+    emirleriUygula(d, B);
+    expect(d.askerToplamalar).toHaveLength(0);
+    expect(d.devletler[0].hazine).toBe(hazineOnce + toplamaMaliyeti(500));
+    expect(d.sehirler[0].insanGucu).toBe(insanGucuOnce + 500);
+    expect(degismezler(d)).toEqual([]);
+  });
+
+  it("olmayan ya da başka devletin toplamasını iptal etmek reddedilir; iki kez iptal edilemez", () => {
+    const d = yeni(); emirVer(d, topla, B); emirleriUygula(d, B);
+    const id = d.askerToplamalar[0].id;
+    expect(emirVer(d, { tur: "toplamaIptal", id: id + 999 }, B).gecerli).toBe(false);
+    expect(emirVer(d, { tur: "toplamaIptal", id, devlet: 1 }, B).gecerli).toBe(false);
+    expect(emirVer(d, { tur: "toplamaIptal", id }, B).gecerli).toBe(true);
+    expect(emirVer(d, { tur: "toplamaIptal", id }, B).gecerli).toBe(false);
+  });
+
+  it("şema 19 → 20: eski kayıttaki süren toplamaya kimlik ve iade bedeli eklenir", () => {
+    const d = yeni(); emirVer(d, topla, B); emirleriUygula(d, B);
+    const p = JSON.parse(kaydet(d));
+    delete p.ozet;
+    delete p.durum.sonrakiToplamaId;
+    for (const t of p.durum.askerToplamalar) { delete t.id; delete t.bedel; }
+    p.sema = 19; p.durum.sema = 19;
+    const g = yukle(JSON.stringify(p), d.senaryo);
+    expect(g.sema).toBe(SEMA_SURUMU);
+    expect(g.askerToplamalar[0].id).toBe(1);
+    expect(g.askerToplamalar[0].bedel).toBe(toplamaMaliyeti(500));
+    expect(g.sonrakiToplamaId).toBe(2);
+    expect(degismezler(g)).toEqual([]);
   });
 });
 

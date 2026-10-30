@@ -1,5 +1,20 @@
 # CHANGELOG
 
+## 2026-10-30 — TASK-0017 (2/4 Asker basma): toplama iptali (Claude)
+
+- Süren bir asker toplamayı iptal etme emri eklendi (`toplamaIptal`): bedel ve insan gücü tam iade edilir, borç oluşmaz.
+  Kuyruk görünürlüğü ve maliyet/süre önizlemesi zaten vardı (mevcut `toplamaListesi`/`toplamaBilgi`); bu teslim onu tamamlıyor.
+  Sol panelde "Asker toplama" listesindeki her sürmekte olan toplamanın yanında "İptal" düğmesi.
+- Kayıt şeması 19 → **20**: süren toplamalara kimlik ve sabit iade bedeli eklendi (teknoloji sonradan değişse de iade
+  toplandığı andaki orana göre sabit kalır); eski kayıtlarda otomatik atanır.
+- `packages/sim/src/durum.ts` (AskerToplama.id/bedel, sonrakiToplamaId, değişmezler), `kayit.ts` (19→20 dönüşümü),
+  `emirler.ts` (yeni emir + doğrulama + uygulama). İstemci `sim-protokol.ts`, `sim-isci.ts`, `main.ts`.
+- 209 test (3 yeni), typecheck ve build geçti. 5173'te agent tarafından doğrulandı: 1.000 asker toplama emri (bedel 100,
+  hazine 9.400 → 9.300), bir hafta sonra listede "23 gün kaldı · İptal"; iptal sonrası hazine 9.400'e döndü, liste boşaldı.
+  JS hatası yok.
+- Kullanıcı testi ve commit/push onayı bekleniyor. Sonraki alt teslim: 3/4 Ordu birleştirme/ayırma (checkbox listesi +
+  haritada tıkla-seç).
+
 ## 2026-10-30 — TASK-0017 (1/4 Ekonomi): vergi oranı, şehir bazlı gelir dökümü, hazine geçmişi (Claude)
 
 - DEC-0066: ekonomi, asker basma, ordu birleştirme/ayırma, temel diplomasi derinleştirmesi onaylandı; ilk alt teslim ekonomi.

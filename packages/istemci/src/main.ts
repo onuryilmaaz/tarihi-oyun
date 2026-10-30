@@ -385,7 +385,7 @@ async function baslat() {
     const once = secim.value;
     secim.innerHTML = ozet.askerSehirleri.map((s) => `<option value="${s.indeks}">${kacis(s.ad)}${s.uygun ? "" : " · toplama yapılamaz"}</option>`).join("");
     if (ozet.askerSehirleri.some((s) => String(s.indeks) === once)) secim.value = once;
-    $("toplamaListesi").innerHTML = ozet.toplamalar.map((t) => `<li>${kacis(t.sehir)} · ${t.asker.toLocaleString("tr-TR")} asker · ${t.emir ? "Emir bekliyor" : t.bekliyor ? "Şehirde işler durduğu için bekliyor" : `${t.kalanGun} gün kaldı`}</li>`).join("");
+    $("toplamaListesi").innerHTML = ozet.toplamalar.map((t) => `<li>${kacis(t.sehir)} · ${t.asker.toLocaleString("tr-TR")} asker · ${t.emir ? "Emir bekliyor" : t.bekliyor ? "Şehirde işler durduğu için bekliyor" : `${t.kalanGun} gün kaldı`}${t.id !== null ? `<button class="bag" data-toplama-iptal="${t.id}"${mesgul ? " disabled" : ""}>İptal</button>` : ""}</li>`).join("");
     toplamaBilgisi();
   };
   const toplamaBilgisi = () => {
@@ -403,6 +403,10 @@ async function baslat() {
   $("toplamaAsker").oninput = toplamaBilgisi;
   $("toplaBtn").onclick = () => emirGonder({ tur: "askerTopla", sehir: Number($<HTMLSelectElement>("toplamaSehir").value),
     asker: $<HTMLInputElement>("toplamaAsker").valueAsNumber }, "Asker toplama emri verildi; bir sonraki turda başlar.");
+  $("toplamaListesi").addEventListener("click", (e) => {
+    const b = (e.target as HTMLElement).closest<HTMLElement>("[data-toplama-iptal]");
+    if (b) emirGonder({ tur: "toplamaIptal", id: Number(b.dataset.toplamaIptal) }, "Toplama iptal emri verildi; bedel bir sonraki turda iade edilir.");
+  });
   const yuzde = (binde: number) => `%${Math.round(binde / 10)}`;
   const raporGoster = (r: MuharebeRaporu) => {
     const satir = (t: MuharebeRaporu["taraflar"][number]) => `<tr>

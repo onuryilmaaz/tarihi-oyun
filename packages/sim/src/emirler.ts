@@ -42,6 +42,7 @@ export type Emir =
   | { tur: "orduTutum"; ordu: number; tutum: Tutum }
   // devlet: yalnızca AI kararlarında (TASK-0009/6b); oyuncu emrinde boş bırakılır
   | { tur: "askerTopla"; sehir: number; asker: number; devlet?: number }
+  | { tur: "toplamaIptal"; id: number; devlet?: number } // TASK-0017: bedel ve insan gücü tam iade edilir
   | { tur: "orduBol"; ordu: number; asker: number }
   | { tur: "orduBirlestir"; ordu: number; diger: number }
   | { tur: "kusat"; ordu: number; sehir: number; yontem: KusatmaYontemi }
@@ -286,6 +287,13 @@ export function emirDogrula(d: DunyaDurumu, e: Emir, b: Baglam = BOS_BAGLAM, kuy
       if (para < 0 || toplamaMaliyeti(e.asker, toplamaBedelYuzde(d, s.devlet)) > para) return { gecerli: false, neden: `Hazine yetersiz: ${para} kullanılabilir. Borçlanma yoktur.` };
       return { gecerli: true };
     }
+    case "toplamaIptal": {
+      const t = d.askerToplamalar.find((x) => x.id === e.id);
+      const devlet = e.devlet ?? d.ayarlar.oyuncu;
+      if (!t || t.devlet !== devlet) return { gecerli: false, neden: "Bu toplama bulunamadı ya da size ait değil." };
+      if (!kuyrukHaric && d.emirKuyrugu.some((x) => x.tur === "toplamaIptal" && x.id === e.id)) return { gecerli: false, neden: "Bu toplama için zaten bir iptal emri bekliyor." };
+      return { gecerli: true };
+    }
     case "orduBol":
     case "orduBirlestir": {
       const o = orduBul(d, e.ordu);
@@ -383,7 +391,7 @@ export function orduyuDurdur(o: OrduDurumu): void {
 export function emirVer(d: DunyaDurumu, e: Emir, b: Baglam = BOS_BAGLAM): Dogrulama {
   // Oyuncu yalnızca kendi devleti ve kendi orduları adına emir verir; AI aynı doğrulamayı emirUygula ile kullanır (6b/6c)
   const oyuncu = d.ayarlar.oyuncu;
-  if (((e.tur === "insaat" || e.tur === "arastir" || e.tur === "askerTopla" || e.tur === "bagis" || e.tur === "vergiAyarla") && e.devlet !== undefined && e.devlet !== oyuncu)
+  if (((e.tur === "insaat" || e.tur === "arastir" || e.tur === "askerTopla" || e.tur === "bagis" || e.tur === "vergiAyarla" || e.tur === "toplamaIptal") && e.devlet !== undefined && e.devlet !== oyuncu)
     || (e.tur === "savasIlan" && e.devlet !== oyuncu)
     || ("ordu" in e && orduBul(d, e.ordu) && orduBul(d, e.ordu)!.devlet !== oyuncu)
     || ("donanma" in e && d.donanmalar.find((f) => f.id === e.donanma) && d.donanmalar.find((f) => f.id === e.donanma)!.devlet !== oyuncu)
@@ -465,8 +473,17 @@ export function emirUygula(d: DunyaDurumu, e: Emir, b: Baglam = BOS_BAGLAM): voi
       const sure = toplamaSuresi(d, s.devlet);
       d.devletler[s.devlet].hazine -= bedel;
       s.insanGucu -= e.asker;
-      d.askerToplamalar.push({ sehir: e.sehir, devlet: s.devlet, asker: e.asker, kalanGun: sure });
+      d.askerToplamalar.push({ id: d.sonrakiToplamaId++, sehir: e.sehir, devlet: s.devlet, asker: e.asker, kalanGun: sure, bedel });
       olayEkle(d, { tur: "asker-toplama", devlet: s.devlet, metin: `${s.ad}: ${e.asker} asker toplanıyor (${sure} gün). Bedel: −${bedel}.` });
+      break;
+    }
+    case "toplamaIptal": {
+      const i = d.askerToplamalar.findIndex((x) => x.id === e.id), t = d.askerToplamalar[i];
+      const s = d.sehirler[t.sehir];
+      d.devletler[t.devlet].hazine += t.bedel;
+      s.insanGucu += t.asker;
+      d.askerToplamalar.splice(i, 1);
+      olayEkle(d, { tur: "toplama-iptal", devlet: t.devlet, metin: `${s.ad}: ${t.asker} askerlik toplama iptal edildi; ${t.bedel} hazineye iade edildi.` });
       break;
     }
     case "orduBol": {

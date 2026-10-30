@@ -1,12 +1,19 @@
 # DEVİR TESLİM — agent değişiminde kaldığın yer
 
-Son güncelleme: **2026-10-30, Claude — TASK-0017 (1/4 Ekonomi) uygulandı; kullanıcı testi ve commit/push onayı bekleniyor.**
+Son güncelleme: **2026-10-30, Claude — TASK-0017 (2/4 Asker basma) uygulandı; kullanıcı testi ve commit/push onayı bekleniyor.**
 Bağlayıcı kurallar: `AGENTS.md`, `MASTER_SPEC.md`, `DECISIONS.md`.
 
 ## 0. En son — BURADAN BAŞLA
 
-- **TASK-0015 (önceki oturum) commit/push edilmiş bulundu** (main'de `8d01be8`, commit mesajı hatalı/eksik ".....").
-  Bu oturumda ayrıca commit/push yapılmadı; sadece durum not edildi.
+- **TASK-0015 (önceki oturum) commit/push edilmiş bulundu** (main'de `8d01be8`, commit mesajı hatalı/eksik "....."). Bu
+  oturumda GitHub App erişimi düzeltildikten sonra bu dal (`claude/game-logic-gaps-rk0oge`) origin'e push edildi.
+- **1/4 Ekonomi commit+push edildi** (`78ff386`, kullanıcı onayıyla — "2-et"). Kullanıcı telefonda olduğu için henüz
+  kendi 5173'ünde denemedi; test hâlâ bekliyor.
+- **2/4 Asker basma (toplama iptali) kod olarak tamamlandı, henüz commit edilmedi:** yeni emir `toplamaIptal` — süren bir
+  asker toplamayı iptal eder, bedeli ve insan gücünü tam iade eder (borç oluşmaz). Şema 19 → 20 (`AskerToplama.id`/`bedel`,
+  `sonrakiToplamaId`). İstemci: "Asker toplama" listesindeki her kalemde "İptal" düğmesi.
+  209 test (3 yeni), typecheck, build geçti; 5173'te agent tarafından Playwright ile doğrulandı (toplama → iptal → tam iade;
+  JS hatası yok). **Kullanıcı testi ve commit/push onayı bekliyor.**
 - Kullanıcı "oyun mantığında eksiklikler var, Age of History gibi bir şey istiyorum: ekonomi, asker basma, ordu
   birleştirme/ayırma, diplomasi" dedi. **TASK-0017 / DEC-0066** ile tek görev kartı onaylandı: sıra Ekonomi → Asker basma →
   Ordu birleştirme/ayırma → Temel diplomasi. Açık sorular yanıtlandı: vergi düşük/orta/yüksek (varsayılan orta); pakt süresini
