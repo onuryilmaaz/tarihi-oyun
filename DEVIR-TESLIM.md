@@ -1,6 +1,6 @@
 # DEVİR TESLİM — agent değişiminde kaldığın yer
 
-Son güncelleme: **2026-10-30, Claude — TASK-0019 1/4, 2/4 (en riskli faz) ve 3/4 (hareket hızı) kod olarak tamamlandı; kullanıcı testi ve commit/push onayı bekleniyor.**
+Son güncelleme: **2026-10-30, Claude — TASK-0019'un 4 fazı da kod olarak tamamlandı (son görev); kullanıcı testi ve commit/push onayı bekleniyor.**
 Bağlayıcı kurallar: `AGENTS.md`, `MASTER_SPEC.md`, `DECISIONS.md`.
 
 ## 0. En son — BURADAN BAŞLA
@@ -68,8 +68,14 @@ Bağlayıcı kurallar: `AGENTS.md`, `MASTER_SPEC.md`, `DECISIONS.md`.
   ortalama yüzdesine göre (süvari %150, piyade/okçu %100); yeni toplama/bölme/birleştirme sonrası yeniden
   hesaplanır. Düşük riskli, `hareket.ts`'e dokunulmadı. Şema değişikliği yok. 236 test (2 yeni), typecheck, build
   geçti; 5173'te süvari toplama/tur ilerletme denendi, JS hatası yok; ETA karşılaştırma canlı testi bir betik
-  sorunu yüzünden tamamlanamadı, hız formülü sim testlerinde tam sayılarla doğrulandı.
-  **Kullanıcı testi ve commit/push onayı bekliyor.**
+  sorunu yüzünden tamamlanamadı, hız formülü sim testlerinde tam sayılarla doğrulandı. Commit+push edildi (`ce840a1`).
+- **4/4 Kuşatma gücü + arayüz tamamlama kod olarak tamamlandı, henüz commit edilmedi — TASK-0019'un son fazı:**
+  `kusatma.ts: kusatmaGucu` kompozisyona göre saldırı çarpanı kullanıyor (sur saldırısı garnizon kaybı otomatik
+  etkilendi). Ordu listesi/detayı/birleştirme listesinde piyade dışı ordularda tür kırılımı gösteriliyor (örn.
+  "500 asker (500 süvari)"); tamamen piyade ordularda ekstra bilgi yok. Muharebe raporu kırılımı bilinçli olarak
+  kapsam dışı bırakıldı (ayrı şema değişikliği gerektirirdi, ek risk). 237 test (1 yeni), typecheck, build geçti;
+  5173'te agent tarafından doğrulandı (500 süvari toplandı, liste ve detayda doğru gösterildi, JS hatası yok).
+  **TASK-0019'un 4 fazı da kod olarak tamamlandı. Kullanıcı testi ve commit/push onayı bekliyor.**
 - Kullanıcı "oyun mantığında eksiklikler var, Age of History gibi bir şey istiyorum: ekonomi, asker basma, ordu
   birleştirme/ayırma, diplomasi" dedi. **TASK-0017 / DEC-0066** ile tek görev kartı onaylandı: sıra Ekonomi → Asker basma →
   Ordu birleştirme/ayırma → Temel diplomasi. Açık sorular yanıtlandı: vergi düşük/orta/yüksek (varsayılan orta); pakt süresini

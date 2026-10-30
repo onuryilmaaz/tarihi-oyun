@@ -5,7 +5,7 @@ import type { Baglam } from "./emirler";
 import { savasta } from "./savas";
 import { kusatmaSaldiriYuzde } from "./teknoloji";
 import { denizAblukasi } from "./deniz";
-import { kompozisyonCikar, kompozisyonOransalAl } from "./birim";
+import { kompozisyonCikar, kompozisyonMuharebeYuzde, kompozisyonOransalAl } from "./birim";
 
 export function sehirMenzilinde(d: DunyaDurumu, b: Baglam, o: OrduDurumu, sehir: number): boolean {
   const s = d.sehirler[sehir], n = s && b.ag?.dugumler[s.dugum];
@@ -20,9 +20,12 @@ export function orduKusatmasi(d: DunyaDurumu, id: number): Kusatma | undefined {
 }
 
 export function kusatmaGucu(d: DunyaDurumu, k: Kusatma): { guc: number; gereken: number; yeterli: boolean } {
+  // TASK-0019 (4/4): kuşatan her zaman saldırır; kompozisyona göre saldırı yüzdesi çarpan olarak uygulanır.
   const guc = k.ordular.reduce((s, id) => {
     const o = d.ordular.find((a) => a.id === id);
-    return s + (o ? Math.floor(o.asker * o.moral / DENGE.MORAL_EN_YUKSEK) : 0);
+    if (!o) return s;
+    const birimYuzde = kompozisyonMuharebeYuzde(o.kompozisyon, false);
+    return s + Math.floor((o.asker * o.moral * birimYuzde) / (DENGE.MORAL_EN_YUKSEK * 100));
   }, 0);
   const gereken = Math.max(1, d.sehirler[k.sehir].garnizon) * (d.sehirler[k.sehir].sur + 1);
   return { guc, gereken, yeterli: guc >= gereken };

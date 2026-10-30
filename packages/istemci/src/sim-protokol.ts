@@ -1,7 +1,7 @@
 import type { Istikrar, BarisDevirOzeti } from "@tarihi/sim";
 // Ana iş parçacığı ↔ simülasyon Worker'ı mesaj protokolü.
 
-import type { Alan, Degerlendirme, IliskiBileseni, TeknolojiId, YapiTuru, BarisKaydi, BarisTalebi, ButceOzeti, Dogrulama, Emir, KusatmaYontemi, MuharebeRaporu, OlayKaydi, RotaKirilimi, SenaryoVerisi, Tutum, TurSonucu, TurSuresi, YabanciOrdu, BirimTuru } from "@tarihi/sim";
+import type { Alan, Degerlendirme, IliskiBileseni, TeknolojiId, YapiTuru, BarisKaydi, BarisTalebi, ButceOzeti, Dogrulama, Emir, KusatmaYontemi, MuharebeRaporu, OlayKaydi, RotaKirilimi, SenaryoVerisi, Tutum, TurSonucu, TurSuresi, YabanciOrdu, BirimTuru, Kompozisyon } from "@tarihi/sim";
 
 export type Istek = { id: number } & (
   | { tip: "yeniOyun"; senaryo: SenaryoVerisi; tohum: number; oyuncu?: string }
@@ -22,6 +22,7 @@ export interface OrduOzeti {
   ad: string;
   devlet: number;
   asker: number;
+  kompozisyon: Kompozisyon; // TASK-0019 (4/4)
   x: number; // anlık konum, Miller × 10⁴
   y: number;
   yuruyor: boolean;

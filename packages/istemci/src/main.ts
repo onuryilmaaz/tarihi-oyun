@@ -685,6 +685,11 @@ async function baslat() {
     bildir(`${h.paket.devletler[hedef].ad}'na savaş ilan edildi; bir sonraki turda başlar.`, "uyari");
   });
 
+  // TASK-0019 (4/4): tamamen piyadeyse boş döner (asker sayısı zaten yeterli bilgi); aksi halde türler dökülür.
+  const kompozisyonMetni = (k: { piyade: number; okcu: number; suvari: number }) => {
+    if (!k.okcu && !k.suvari) return "";
+    return BIRIM_TURLERI.filter((t) => k[t] > 0).map((t) => `${k[t].toLocaleString("tr-TR")} ${BIRIM_ADLARI[t].toLowerCase()}`).join(", ");
+  };
   const kirilimMetni = (r: RotaOnizleme) => {
     const k = r.kirilim!;
     const km = (m: number) => `${Math.round(m / 1000).toLocaleString("tr-TR")} km`;
@@ -695,8 +700,9 @@ async function baslat() {
       const p = planli.get(o.id);
       const durum = p ? `Emir verildi · varış ${kacis(p.varisTarihi!)} (${p.gun} gün)`
         : o.kusatma !== null ? `${kacis(senaryo.sehirler[o.kusatma].ad)} kuşatılıyor` : o.yuruyor ? `Yürüyor · varış ${kacis(o.varisTarihi!)} (${o.kalanGun} gün)` : "Bekliyor";
+      const kirilim = kompozisyonMetni(o.kompozisyon);
       return `<li><button class="ordu-satir${o.id === seciliOrdu ? " etkin" : ""}" data-ordu="${o.id}">
-        ${gorunum.devletRenkKutusu(o.devlet)}<span><b>${kacis(o.ad)}</b> · ${o.asker.toLocaleString("tr-TR")} asker<small>${durum}</small></span></button></li>`;
+        ${gorunum.devletRenkKutusu(o.devlet)}<span><b>${kacis(o.ad)}</b> · ${o.asker.toLocaleString("tr-TR")} asker${kirilim ? ` <small class="not">(${kacis(kirilim)})</small>` : ""}<small>${durum}</small></span></button></li>`;
     }).join("") || '<li class="bos">Ordu yok.</li>';
     const o = ozet.ordular.find((x) => x.id === seciliOrdu);
     const det = $("orduDetay");
@@ -705,7 +711,9 @@ async function baslat() {
     if (!o.birlesebilir.includes(seciliBirlestir ?? -1)) seciliBirlestir = o.birlesebilir[0] ?? null;
     const p = planli.get(o.id);
     const tutum = bekleyenTutum.get(o.id) ?? o.tutum;
+    const kirilim = kompozisyonMetni(o.kompozisyon);
     det.innerHTML = `<div class="moral-satir"><span>Moral</span><i class="moral buyuk" style="--moral:${o.moral / 10}%"></i><b>${yuzde(o.moral)}</b></div>
+      ${kirilim ? `<p class="not">${o.asker.toLocaleString("tr-TR")} asker: ${kacis(kirilim)}.</p>` : ""}
       <p class="not">${o.muharebede ? "⚔ Muharebede." : o.cekiliyor ? "Kendi toprağına dönüyor." : o.kusatma !== null ? `${kacis(senaryo.sehirler[o.kusatma].ad)} kuşatmasında. Yürüyüş emri verirseniz kuşatmadan ayrılır.` : p ? `Planlanan rota: ${kirilimMetni(p)}. Yürüyüş bir sonraki turda başlar.`
       : o.yuruyor ? "Yürüyor. Haritada sağ tıklayarak yeni hedef verebilirsiniz."
       : "Hedef vermek için haritada bir noktaya <b>sağ tıklayın</b>."}</p>
@@ -722,7 +730,8 @@ async function baslat() {
         ${o.birlesebilir.length ? `<p class="not">Aynı konumdaki ordu (haritada diğer ordunun işaretine sağ tıklayarak da seçebilirsiniz):</p>
         <ul id="birlestirListesi" class="secim-listesi">${o.birlesebilir.map((id) => {
           const a = ozet.ordular.find((x) => x.id === id)!;
-          return `<li><button data-birlestir-sec="${id}" class="${id === seciliBirlestir ? "etkin" : ""}">${kacis(a.ad)} <small>${a.asker.toLocaleString("tr-TR")} asker</small></button></li>`;
+          const aKirilim = kompozisyonMetni(a.kompozisyon);
+          return `<li><button data-birlestir-sec="${id}" class="${id === seciliBirlestir ? "etkin" : ""}">${kacis(a.ad)} <small>${a.asker.toLocaleString("tr-TR")} asker${aKirilim ? ` (${kacis(aKirilim)})` : ""}</small></button></li>`;
         }).join("")}</ul>
         <button id="orduBirlestir" ${seciliBirlestir !== null && o.birlesebilir.includes(seciliBirlestir) ? "" : "disabled"}>Birleştir</button>
         <p class="not">Askerler toplanır; moral asker sayısına göre ortalanır. Seçili ordunun tutumu korunur.</p>`

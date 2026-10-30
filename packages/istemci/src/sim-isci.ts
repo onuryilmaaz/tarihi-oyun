@@ -178,7 +178,7 @@ function ozet(durum: DunyaDurumu): Ozet {
       const kalan = kalanYol(o);
       const ikmal = ikmalDurumu(durum, baglam.ag, o);
       return {
-        id: o.id, ad: o.ad, devlet: o.devlet, asker: o.asker, x: k.x, y: k.y,
+        id: o.id, ad: o.ad, devlet: o.devlet, asker: o.asker, kompozisyon: o.kompozisyon, x: k.x, y: k.y,
         yuruyor: o.rota.length > 0,
         rota: o.rota.map((a) => [a.x, a.y] as [number, number]),
         kalanGun: o.rota.length ? kalan.gun : 0,

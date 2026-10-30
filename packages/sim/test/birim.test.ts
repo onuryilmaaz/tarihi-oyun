@@ -2,7 +2,7 @@
 import { describe, expect, it } from "vitest";
 import {
   agHazirla, baslangicDurumu, degismezler, DENGE, devletMaasi, emirleriUygula, emirVer,
-  HAREKET, kaydet, muharebeleriBaslat, muharebeGunleri, SEMA_SURUMU, toplamaMaliyeti, turSuresiAyarla, turuIlerlet, yukle, type SenaryoVerisi,
+  HAREKET, kaydet, kusatmaGucu, muharebeleriBaslat, muharebeGunleri, SEMA_SURUMU, toplamaMaliyeti, turSuresiAyarla, turuIlerlet, yukle, type SenaryoVerisi,
 } from "../src";
 
 const senaryo: SenaryoVerisi = {
@@ -167,5 +167,25 @@ describe("TASK-0019 (3/4): hareket hızı kompozisyona göre değişir", () => {
     emirleriUygula(d, B);
     expect(o.hiz).toBe(Math.round((HAREKET.TEMEL_HIZ * DENGE.BIRIM.suvari.hizYuzde) / 100));
     expect(degismezler(d)).toEqual([]);
+  });
+});
+
+describe("TASK-0019 (4/4): kuşatma gücü kompozisyona göre değişir", () => {
+  it("süvari ağırlıklı kuşatan, eşit sayıda piyadeye göre daha yüksek kuşatma gücü üretir", () => {
+    const d = yeni(), o = d.ordular[0];
+    o.asker = 1000; o.kompozisyon = { piyade: 1000, okcu: 0, suvari: 0 };
+    const k = { sehir: 2, devlet: 0, savunan: 1, ordular: [o.id], yontem: "abluka" as const, baslangic: d.gun, gun: 0, erzak: 1000 };
+    const piyadeGuc = kusatmaGucu(d, k).guc;
+
+    o.kompozisyon = { piyade: 0, okcu: 0, suvari: 1000 };
+    const suvariGuc = kusatmaGucu(d, k).guc;
+
+    o.kompozisyon = { piyade: 0, okcu: 1000, suvari: 0 };
+    const okcuGuc = kusatmaGucu(d, k).guc;
+
+    expect(suvariGuc).toBeGreaterThan(piyadeGuc);
+    expect(okcuGuc).toBeLessThan(piyadeGuc);
+    // birimYuzde etkisizse (piyade) eski formülle birebir aynı: asker * moral / MORAL_EN_YUKSEK
+    expect(piyadeGuc).toBe(Math.floor((1000 * o.moral) / DENGE.MORAL_EN_YUKSEK));
   });
 });

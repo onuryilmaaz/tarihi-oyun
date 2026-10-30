@@ -1,5 +1,20 @@
 # CHANGELOG
 
+## 2026-10-30 — TASK-0019 (4/4): kuşatma gücü + arayüz tamamlama — TASK-0019 tamamlandı (Claude)
+
+- **Kuşatma gücü:** `kusatma.ts: kusatmaGucu` artık kuşatan ordunun kompozisyonuna göre saldırı yüzdesi çarpanı
+  kullanır (süvari ağırlıklı kuşatan daha güçlü, okçu ağırlıklı daha zayıf). Parametre etkisizse (piyade) eski
+  formülle birebir aynı; sur saldırısındaki garnizon kaybı zaten bu güçten beslendiği için otomatik etkilendi.
+- **Arayüz tamamlama:** Ordu listesi ve detayında, tamamen piyade olmayan ordular için tür kırılımı gösterilir
+  (örn. "500 asker (500 süvari)"); birleştirme listesinde de aynı kırılım. Tamamen piyade ordularda ekstra bilgi
+  gösterilmez (asker sayısı zaten yeterli). Muharebe raporu kırılımı kapsam dışı bırakıldı — `MuharebeRaporu`'na
+  kompozisyon geçmişi eklemek ayrı bir şema değişikliği gerektirir, bu oturumun kapsamını aşan bir ek risk.
+- 237 test (1 yeni), typecheck ve build geçti. 5173'te agent tarafından doğrulandı: 500 süvari toplandı, ordu
+  listesinde "500 asker (500 süvari)", detayda "500 asker: 500 süvari." göründü. JS hatası yok.
+- **TASK-0019'un 4 fazı da kod olarak tamamlandı.** Piyade/Okçu/Süvari artık asker toplama, maliyet/maaş, muharebe
+  gücü, kayıp dağılımı, hareket hızı ve kuşatma gücünde gerçek fark yaratıyor. AI hâlâ yalnızca piyade topluyor.
+- Kullanıcı testi ve commit/push onayı bekleniyor.
+
 ## 2026-10-30 — TASK-0019 (3/4): hareket hızı kompozisyona göre değişir (Claude)
 
 - Ordu hızı artık kompozisyonun ağırlıklı ortalama hız yüzdesine göre hesaplanır (süvari ağırlıklı ordu temel
