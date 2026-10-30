@@ -1,28 +1,18 @@
 {
  "indeks": 789,
  "durum": "sahipsiz",
- "ad": "Primorskiy Krayı",
- "ulke": "Russia",
+ "ad": "Leribe",
+ "ulke": "Lesotho",
  "d": -1,
  "k": "tahmin",
  "p": [
   [
    [
-    -5512,
-    5518,
-    5519,
-    5520,
-    -5502
-   ]
-  ],
-  [
-   [
-    5521
-   ]
-  ],
-  [
-   [
-    5522
+    -5892,
+    -5879,
+    5892,
+    5893,
+    -5883
    ]
   ]
  ]

@@ -1,16 +1,19 @@
 {
  "indeks": 2196,
  "durum": "sahipsiz",
- "ad": "Saint George",
- "ulke": "Saint Vincent and the Grenadines",
+ "ad": "Makira",
+ "ulke": "Solomon Islands",
  "d": -1,
  "k": "tahmin",
  "p": [
   [
    [
-    13519,
-    -13519,
-    13520
+    14536
+   ]
+  ],
+  [
+   [
+    14537
    ]
   ]
  ]

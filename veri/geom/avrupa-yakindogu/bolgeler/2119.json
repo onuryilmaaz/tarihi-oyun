@@ -1,17 +1,18 @@
 {
  "indeks": 2119,
- "ad": "Landes",
- "ulke": "France",
- "d": 58,
- "k": "tahmin",
+ "ad": "Santa Cruz de Tenerife İli (Kastilya Krallığı)",
+ "ulke": "Spain",
+ "d": 52,
+ "k": "ohm:2849131",
  "p": [
   [
    [
-    12990,
-    12991,
-    12992,
-    12993,
-    -4118
+    14146
+   ]
+  ],
+  [
+   [
+    14147
    ]
   ]
  ]

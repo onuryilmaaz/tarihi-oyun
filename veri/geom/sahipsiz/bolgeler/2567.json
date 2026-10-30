@@ -1,14 +1,19 @@
 {
  "indeks": 2567,
  "durum": "sahipsiz",
- "ad": "Niue",
- "ulke": "Niue",
+ "ad": "Fromager",
+ "ulke": "Ivory Coast",
  "d": -1,
  "k": "tahmin",
  "p": [
   [
    [
-    14868
+    16095,
+    -9989,
+    -9983,
+    -6306,
+    -16088,
+    -16092
    ]
   ]
  ]

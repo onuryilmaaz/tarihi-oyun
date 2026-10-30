@@ -21,6 +21,9 @@ export interface Paket {
   sehirler: Sehir[];
   goller: number[][][];
   nehirler: { r: number; p: number[] }[];
+  /** Deniz bölgelerinin seçim alanları (TASK-0023; senaryo deniz bölgesi sırasıyla) ve açık su sınırları */
+  denizAlanlari?: { id: string; ad: string; p: number[][][] }[];
+  denizSinirlari?: { a: number; b: number; p: number[] }[];
 }
 
 export interface Harita {
@@ -32,6 +35,7 @@ export interface Harita {
   devletBirimleri: number[][];
   devletSehirleri: number[][];
   birimSehirleri: number[][];
+  denizHalkalari: Float32Array[][][]; // deniz bölgesi → poligon → halka
   izgara: Map<number, [number, number][]>;
   hucre: number;
 }
@@ -107,6 +111,7 @@ export async function haritaYukle(url: string): Promise<Harita> {
     paket, arklar, halkalar, yaySahipA, yaySahipB, devletBirimleri,
     devletSehirleri: paket.devletler.map(() => []),
     birimSehirleri: paket.birimler.map(() => []),
+    denizHalkalari: (paket.denizAlanlari ?? []).map((z) => z.p.map((poly) => poly.map((r) => Float32Array.from(r)))),
     izgara, hucre,
   };
   paket.sehirler.forEach((s, si) => {
@@ -129,4 +134,9 @@ export function birimBul(h: Harita, x: number, y: number): number {
     if (!delikte) return bi;
   }
   return -1;
+}
+
+/** Noktanın bulunduğu deniz bölgesi (alan geometrisi karanın altına taştığı için önce birimBul denenmeli). */
+export function denizBul(h: Harita, x: number, y: number): number {
+  return h.denizHalkalari.findIndex((polys) => polys.some((hs) => halkaIcinde(hs[0], x, y) && !hs.slice(1).some((d) => halkaIcinde(d, x, y))));
 }

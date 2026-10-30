@@ -7,7 +7,7 @@ import { LineSegments2 } from "three/addons/lines/LineSegments2.js";
 import { LineSegmentsGeometry } from "three/addons/lines/LineSegmentsGeometry.js";
 import { tarihMetni, type YabanciOrdu } from "@tarihi/sim";
 import type { OrduOzeti } from "../sim-protokol";
-import { birimBul, type Harita } from "./veri";
+import { birimBul, denizBul, type Harita } from "./veri";
 import { TEMALAR } from "./temalar";
 import { katmanlariKur, temaUygula, boyutAyarla, secimiCiz, devletRengi, kagitDokusu, isgalKatmani, mulkiyetKatmanlariniGuncelle, type Secim } from "./harita";
 import { Etiketler, ESIK } from "./etiketler";
@@ -283,6 +283,10 @@ export function haritaGorunumuKur(h: Harita, wikidata: Record<string, WdDevlet>,
         ${kontrolSatiri(birimIsgal.get(secim.id))}
         <dt>Şehirler</dt><dd>${sehirler.length ? sehirler.map((i) => `<button class="bag" data-secim="sehir:${i}">${kacis(p.sehirler[i].ad)}</button>`).join(", ") : "—"}</dd>
       </dl><p class="ipucu-metin">Arazi birimi şimdilik modern il/eyalet sınırıdır (prototip verisi).</p>`;
+    } else if (secim.tur === "deniz") {
+      const z = p.denizAlanlari![secim.id];
+      yol.push(`<span class="yol-sabit">Denizler</span>`, `<span class="yol-sabit">${kacis(z.ad)}</span>`);
+      govde = `<h3>⚓ ${kacis(z.ad)}</h3>`; // kontrol, donanmalar ve limanlar sim özetinden (olaylar.ekBilgi)
     } else {
       const s = p.sehirler[secim.id];
       const bi = birimBul(h, s.x, s.y);
@@ -302,7 +306,7 @@ export function haritaGorunumuKur(h: Harita, wikidata: Record<string, WdDevlet>,
     const hedef = (e.target as HTMLElement).closest<HTMLElement>("[data-secim]");
     if (!hedef) return;
     const [tur, id] = hedef.dataset.secim!.split(":");
-    sec({ tur: tur as "devlet" | "birim" | "sehir", id: Number(id) });
+    sec({ tur: tur as "devlet" | "birim" | "sehir" | "deniz", id: Number(id) });
   });
 
   const sec = (s: Secim) => {
@@ -329,7 +333,7 @@ export function haritaGorunumuKur(h: Harita, wikidata: Record<string, WdDevlet>,
     if (si >= 0) return sec({ tur: "sehir", id: si });
     const [x, y] = ekrandanDunyaya(px, py);
     const bi = birimBul(h, x, y);
-    if (bi < 0) return sec(null);
+    if (bi < 0) { const z = denizBul(h, x, y); return sec(z >= 0 ? { tur: "deniz", id: z } : null); }
     const d = h.paket.birimler[bi].d;
     if (d < 0) return sec({ tur: "birim", id: bi });
     const ayniDevlet = (secim?.tur === "devlet" && secim.id === d)
@@ -388,6 +392,9 @@ export function haritaGorunumuKur(h: Harita, wikidata: Record<string, WdDevlet>,
       if (bi >= 0) {
         const b = h.paket.birimler[bi];
         metin = `${b.d >= 0 ? h.paket.devletler[b.d].ad : "Devlet yok"} — ${b.ad}`;
+      } else {
+        const z = denizBul(h, x, y);
+        if (z >= 0) metin = h.paket.denizAlanlari![z].ad;
       }
     }
     ipucu.hidden = !metin;
@@ -526,8 +533,15 @@ export function haritaGorunumuKur(h: Harita, wikidata: Record<string, WdDevlet>,
     secVeGit(s) {
       sec(s);
       // Şehirde oraya, devlette başkentine (yoksa ilk şehrine) kaydır
+      const denizMerkezi = (z: number) => { // bölgenin en büyük poligonunun dış halka köşe ortalaması
+        const d = h.denizHalkalari[z].map((hs) => hs[0]).reduce((a, b) => (b.length > a.length ? b : a));
+        let x = 0, y = 0;
+        for (let i = 0; i < d.length; i += 2) { x += d[i]; y += d[i + 1]; }
+        return { x: (2 * x) / d.length, y: (2 * y) / d.length };
+      };
       const c = s?.tur === "sehir" ? h.paket.sehirler[s.id]
-        : s?.tur === "devlet" ? h.paket.sehirler.find((x) => x.d === s.id && x.b) ?? h.paket.sehirler.find((x) => x.d === s.id) : undefined;
+        : s?.tur === "devlet" ? h.paket.sehirler.find((x) => x.d === s.id && x.b) ?? h.paket.sehirler.find((x) => x.d === s.id)
+        : s?.tur === "deniz" ? denizMerkezi(s.id) : undefined;
       if (c) {
         g.cx = c.x; g.cy = c.y; g.z = Math.max(g.z, s?.tur === "sehir" ? 40 : 20);
         istek();

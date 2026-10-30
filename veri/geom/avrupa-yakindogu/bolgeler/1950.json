@@ -1,14 +1,16 @@
 {
  "indeks": 1950,
- "ad": "İstanbul (iç)",
- "ulke": "Turkey",
- "d": 1,
- "k": "tahmin-elle",
+ "ad": "Aveiro",
+ "ulke": "Portugal",
+ "d": 54,
+ "k": "tahmin",
  "p": [
   [
    [
-    11453,
-    11454
+    12968,
+    12969,
+    12970,
+    -12967
    ]
   ]
  ]

@@ -1,18 +1,19 @@
 {
  "indeks": 1006,
  "durum": "sahipsiz",
- "ad": "Tombali Bölgesi",
- "ulke": "Guinea Bissau",
+ "ad": "Amazonas Bölgesi",
+ "ulke": "Peru",
  "d": -1,
  "k": "tahmin",
  "p": [
   [
    [
-    -6336,
-    6336,
-    6337,
-    6338,
-    -6331
+    -6938,
+    6952,
+    6953,
+    6954,
+    6955,
+    -6947
    ]
   ]
  ]

@@ -529,6 +529,7 @@ async function baslat() {
       const p = ozet.isgalHazirliklari.find((v) => v.birim === s.id);
       return p ? `<p class="not">Askerî kontrol kuruluyor: ${p.gun}/${DENGE.ISGAL_GUN} gün. Şehir ayrı kuşatılır.</p>` : "";
     }
+    if (s.tur === "deniz") return denizBilgisi(s.id);
     if (s.tur !== "devlet" || s.id === ozet.oyuncu.indeks) return "";
     const dip = diplomasiBolumu(s.id);
     const savas = ozet.savaslar.find((x) => x.karsi === s.id);
@@ -540,6 +541,29 @@ async function baslat() {
     const vasalEngeli = ozet.efendim !== null ? ' disabled title="Vasal bir devlet kendi başına savaş ilan edemez."' : "";
     return `${dip}<div class="satir eylem">${ambargo}<button class="tehlike" data-eylem="savas" data-devlet="${s.id}"${k?.muttefik ? ' disabled title="Müttefikinize savaş ilan edemezsiniz; önce ittifaktan çıkın."' : vasalEngeli}>Savaş ilan et</button></div>
       ${ozet.bizeAmbargo.includes(s.id) ? '<p class="not">Bu devlet size ticaret ambargosu uyguluyor.</p>' : ""}`;
+  };
+  /** Deniz bölgesi paneli (TASK-0023): kontrol, donanmalar, limanlar, komşu denizler */
+  const denizBilgisi = (z: number) => {
+    const b = ozet.denizBolgeleri[z];
+    if (!b) return "";
+    const devletAdi = (d: number) => `${gorunum.devletRenkKutusu(d)}${kacis(h.paket.devletler[d].ad)}`;
+    const kontrol = b.kontrol === null ? "Kimsenin kontrolünde değil" : b.kontrol === ozet.oyuncu.indeks ? "Sizde" : devletAdi(b.kontrol);
+    const benim = ozet.donanmalar.filter((f) => f.bolge === z);
+    const yabanci = ozet.yabanciDonanmalar.filter((f) => f.bolge === z);
+    const donanmalar = [
+      ...benim.map((f) => `<li><button class="bag" data-donanma-sec="${f.id}">${kacis(f.ad)}</button> · ${gemiMetni(f.kadirga, f.kalyon)}</li>`),
+      ...yabanci.map((f) => `<li>${devletAdi(f.devlet)} · ~${f.yaklasikGemi} gemi</li>`),
+    ].join("");
+    const limanlar = ozet.limanlar.map((l, i) => (l === z ? i : -1)).filter((i) => i >= 0);
+    const secili = ozet.donanmalar.find((f) => f.id === seciliDonanma);
+    const yelken = secili && secili.bolge !== z
+      ? `<div class="satir eylem"><button data-eylem="yelken" data-bolge="${z}">⚓ ${kacis(secili.ad)} buraya yelken açsın</button></div>`
+      : '<p class="not">Donanma göndermek için Deniz sekmesinden bir donanmanızı seçin.</p>';
+    return `<dl><dt>Kontrol</dt><dd>${kontrol}</dd>
+      <dt>Limanlar</dt><dd>${limanlar.length ? limanlar.map((i) => `<button class="bag" data-secim="sehir:${i}">${kacis(senaryo.sehirler[i].ad)}</button>`).join(", ") : "—"}</dd>
+      <dt>Komşu denizler</dt><dd>${b.komsu.map((k) => `<button class="bag" data-secim="deniz:${k}">${kacis(ozet.denizBolgeleri[k].ad)}</button>`).join(", ") || "—"}</dd></dl>
+      <h4>Donanmalar</h4>${donanmalar ? `<ul class="not">${donanmalar}</ul>` : '<p class="not">Görünür donanma yok.</p>'}${yelken}
+      <p class="not">Denizdeki bütün donanmalar tek tarafa (devlet ve müttefikleri) aitse en güçlüsünün devleti denizi kontrol eder; karşıt donanmalar karşılaşırsa kontrol kimsede olmaz. Düşman kontrolündeki deniz, kıyısındaki limanları ablukaya alır.</p>`;
   };
   const isaretli = (n: number) => `<span class="${n > 0 ? "arti" : n < 0 ? "eksi" : ""}">${n > 0 ? "+" : ""}${n}</span>`;
   const iliskiAdi = (p: number) => (p >= 50 ? "Dostane" : p >= 15 ? "İyi" : p > -15 ? "Tarafsız" : p > -50 ? "Soğuk" : "Düşmanca");
@@ -635,6 +659,14 @@ async function baslat() {
       await emirGonder({ tur: "ambargo", hedef, acik }, acik ? `${ad}'na ambargo emri verildi (bir sonraki tur).` : `${ad} ambargosunun kaldırılması emri verildi.`);
       return;
     }
+    const yelken = (e.target as HTMLElement).closest<HTMLElement>('[data-eylem="yelken"]');
+    if (yelken && seciliDonanma !== null) {
+      const bolge = Number(yelken.dataset.bolge);
+      await emirGonder({ tur: "donanmaHedef", donanma: seciliDonanma, bolge }, `Donanma ${ozet.denizBolgeleri[bolge].ad} yönüne yelken açacak (bir sonraki tur).`);
+      return;
+    }
+    const donSec = (e.target as HTMLElement).closest<HTMLElement>("[data-donanma-sec]");
+    if (donSec) { donanmaSec(Number(donSec.dataset.donanmaSec)); return; }
     const gemi = (e.target as HTMLElement).closest<HTMLElement>('[data-eylem="gemi"]');
     if (gemi) {
       const sehir = Number(gemi.dataset.sehir), tur = $<HTMLSelectElement>("gemiTuru").value as "kadirga" | "kalyon";

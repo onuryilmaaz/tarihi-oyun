@@ -1,17 +1,18 @@
 {
  "indeks": 30,
  "durum": "sahipsiz",
- "ad": "Mudug",
+ "ad": "Hiran",
  "ulke": "Somalia",
  "d": -1,
  "k": "tahmin",
  "p": [
   [
    [
-    -187,
-    -204,
-    204,
-    205
+    -209,
+    209,
+    210,
+    211,
+    -189
    ]
   ]
  ]

@@ -1,15 +1,18 @@
 {
  "indeks": 2708,
- "ad": "Harare",
- "ulke": "Zimbabwe",
- "d": 84,
+ "ad": "Muaskar Vilayeti",
+ "ulke": "Algeria",
+ "d": 77,
  "k": "tahmin",
  "p": [
   [
    [
-    -8112,
-    -5950,
-    -5956
+    -16273,
+    16281,
+    -16279,
+    -16281,
+    -9903,
+    -9900
    ]
   ]
  ]

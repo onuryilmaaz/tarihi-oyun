@@ -1,18 +1,19 @@
 {
  "indeks": 1302,
  "durum": "sahipsiz",
- "ad": "Gorgol",
- "ulke": "Mauritania",
+ "ad": "Güney Kordofan Eyaleti",
+ "ulke": "Sudan",
  "d": -1,
  "k": "tahmin",
  "p": [
   [
    [
-    -8036,
-    -8034,
-    8044,
-    8045,
-    8046
+    -6040,
+    8519,
+    8520,
+    8521,
+    8522,
+    -8516
    ]
   ]
  ]

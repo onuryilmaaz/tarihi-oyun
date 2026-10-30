@@ -1,18 +1,18 @@
 {
  "indeks": 2132,
- "ad": "Somme",
- "ulke": "France",
- "d": 61,
- "k": "tahmin",
+ "ad": "İyonya Adaları (Venedik Cumhuriyeti)",
+ "ulke": "Greece",
+ "d": 22,
+ "k": "ohm:2800700",
  "p": [
   [
    [
-    13046,
-    13047,
-    -1269,
-    -1295,
-    13048,
-    -13045
+    14227
+   ]
+  ],
+  [
+   [
+    14228
    ]
   ]
  ]

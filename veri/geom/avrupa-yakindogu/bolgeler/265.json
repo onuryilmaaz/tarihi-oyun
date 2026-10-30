@@ -1,17 +1,18 @@
 {
  "indeks": 265,
- "ad": "Küçük Polonya Voyvodalığı",
- "ulke": "Poland",
- "d": 36,
+ "ad": "Batı Makedonya",
+ "ulke": "Greece",
+ "d": 0,
  "k": "tahmin",
  "p": [
   [
    [
-    -1861,
-    1861,
-    1862,
-    1863,
-    -1841
+    2056,
+    2057,
+    2058,
+    2059,
+    2060,
+    -1585
    ]
   ]
  ]

@@ -1,16 +1,20 @@
 {
  "indeks": 1629,
  "durum": "sahipsiz",
- "ad": "Paramaribo",
- "ulke": "Suriname",
+ "ad": "Taichung City",
+ "ulke": "Taiwan",
  "d": -1,
  "k": "tahmin",
  "p": [
   [
    [
-    9754,
-    9755,
-    -9752
+    10198,
+    -10198,
+    -10192,
+    10199,
+    10200,
+    10201,
+    10202
    ]
   ]
  ]

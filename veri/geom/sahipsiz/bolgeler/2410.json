@@ -1,24 +1,18 @@
 {
  "indeks": 2410,
  "durum": "sahipsiz",
- "ad": "Sao Vicente",
- "ulke": "Cape Verde",
+ "ad": "Chimbu",
+ "ulke": "Papua New Guinea",
  "d": -1,
  "k": "tahmin",
  "p": [
   [
    [
-    14135
-   ]
-  ],
-  [
-   [
-    14136
-   ]
-  ],
-  [
-   [
-    14137
+    -9346,
+    15630,
+    -9388,
+    15631,
+    15632
    ]
   ]
  ]

@@ -1,17 +1,19 @@
 {
  "indeks": 2194,
  "durum": "sahipsiz",
- "ad": "Saint John",
- "ulke": "Barbados",
+ "ad": "Rennel and Bellona",
+ "ulke": "Solomon Islands",
  "d": -1,
  "k": "tahmin",
  "p": [
   [
    [
-    13513,
-    -13513,
-    13514,
-    -13488
+    14527
+   ]
+  ],
+  [
+   [
+    14528
    ]
   ]
  ]

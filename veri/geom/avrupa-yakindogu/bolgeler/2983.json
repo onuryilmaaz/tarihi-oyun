@@ -1,13 +1,15 @@
 {
  "indeks": 2983,
- "ad": "Berlin",
- "ulke": "Germany",
- "d": 69,
+ "ad": "Biella ili",
+ "ulke": "Italy",
+ "d": 51,
  "k": "tahmin",
  "p": [
   [
    [
-    -4880
+    -2710,
+    -2348,
+    -17212
    ]
   ]
  ]

@@ -1,15 +1,23 @@
 {
  "indeks": 1643,
  "durum": "sahipsiz",
- "ad": "Luanda Bölgesi",
- "ulke": "Angola",
+ "ad": "Alabama",
+ "ulke": "United States of America",
  "d": -1,
  "k": "tahmin",
  "p": [
   [
    [
-    9806,
-    -9806
+    10274,
+    -10270,
+    10275,
+    10276,
+    10277
+   ]
+  ],
+  [
+   [
+    10280
    ]
   ]
  ]

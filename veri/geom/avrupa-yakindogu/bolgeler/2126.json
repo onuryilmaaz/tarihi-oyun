@@ -1,16 +1,18 @@
 {
  "indeks": 2126,
- "ad": "Côtes-d'Armor",
- "ulke": "France",
- "d": 62,
- "k": "tahmin",
+ "ad": "Güney Ege (Venedik Cumhuriyeti)",
+ "ulke": "Greece",
+ "d": 22,
+ "k": "ohm:2800700",
  "p": [
   [
    [
-    13023,
-    13024,
-    -13018,
-    -13022
+    14195
+   ]
+  ],
+  [
+   [
+    14196
    ]
   ]
  ]

@@ -1,18 +1,20 @@
 {
  "indeks": 2415,
- "ad": "Santa Cruz de Tenerife İli (Kastilya Krallığı)",
- "ulke": "Spain",
- "d": 52,
- "k": "ohm:2849131",
+ "ad": "Bolu",
+ "ulke": "Turkey",
+ "d": 0,
+ "k": "tahmin",
  "p": [
   [
    [
-    14146
-   ]
-  ],
-  [
-   [
-    14147
+    15636,
+    15637,
+    15638,
+    -11837,
+    -11834,
+    -11831,
+    15639,
+    15640
    ]
   ]
  ]

@@ -1,17 +1,19 @@
 {
  "indeks": 2295,
  "durum": "sahipsiz",
- "ad": "Prevaia",
- "ulke": "Dominican Republic",
+ "ad": "Baker Adası",
+ "ulke": "United States Minor Outlying Islands",
  "d": -1,
  "k": "tahmin",
  "p": [
   [
    [
-    13788,
-    -13788,
-    13789,
-    13790
+    15065
+   ]
+  ],
+  [
+   [
+    15066
    ]
   ]
  ]

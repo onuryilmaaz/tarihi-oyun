@@ -1,18 +1,21 @@
 {
  "indeks": 2810,
- "ad": "Appenzell Ausserrhoden",
- "ulke": "Switzerland",
- "d": 73,
+ "ad": "Ulyanovsk Oblastı",
+ "ulke": "Russia",
+ "d": 33,
  "k": "tahmin",
  "p": [
   [
    [
-    -4680,
-    15715,
-    -4684,
-    15716,
-    -4682,
-    15717
+    16503,
+    16504,
+    16505,
+    16506,
+    7608,
+    16507,
+    16508,
+    16509,
+    -16498
    ]
   ]
  ]

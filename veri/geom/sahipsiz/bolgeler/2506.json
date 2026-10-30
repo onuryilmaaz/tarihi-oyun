@@ -1,15 +1,17 @@
 {
  "indeks": 2506,
  "durum": "sahipsiz",
- "ad": "Honiara",
- "ulke": "Solomon Islands",
+ "ad": "Dowa",
+ "ulke": "Malawi",
  "d": -1,
  "k": "tahmin",
  "p": [
   [
    [
-    14552,
-    14553
+    -8208,
+    -8218,
+    -2089,
+    16015
    ]
   ]
  ]

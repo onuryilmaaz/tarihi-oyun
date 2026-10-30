@@ -1,15 +1,17 @@
 {
  "indeks": 2336,
  "durum": "sahipsiz",
- "ad": "City of Hamilton",
- "ulke": "Bermuda",
+ "ad": "Otago Bölgesi",
+ "ulke": "New Zealand",
  "d": -1,
  "k": "tahmin",
  "p": [
   [
    [
-    13935,
-    -13935
+    15257,
+    -15243,
+    -15257,
+    15258
    ]
   ]
  ]

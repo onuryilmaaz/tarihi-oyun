@@ -1,17 +1,20 @@
 {
  "indeks": 888,
  "durum": "sahipsiz",
- "ad": "Berea",
- "ulke": "Lesotho",
+ "ad": "Comoé",
+ "ulke": "Ivory Coast",
  "d": -1,
  "k": "tahmin",
  "p": [
   [
    [
-    -5884,
-    -5894,
-    -5906,
-    5906
+    -6258,
+    6258,
+    6259,
+    6260,
+    6261,
+    6262,
+    -6249
    ]
   ]
  ]

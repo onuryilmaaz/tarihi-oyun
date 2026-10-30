@@ -1,21 +1,24 @@
 {
  "indeks": 935,
  "durum": "sahipsiz",
- "ad": "Ouham Bölgesi",
- "ulke": "Central African Republic",
+ "ad": "Niassa Bölgesi",
+ "ulke": "Mozambique",
  "d": -1,
  "k": "tahmin",
  "p": [
   [
    [
-    -6060,
-    -6058,
-    6064,
-    -5961,
-    -5973,
-    6065,
-    6066,
-    6067
+    6412,
+    6414,
+    251,
+    258,
+    -6424,
+    -6423,
+    -6422,
+    -6421,
+    -6420,
+    -6419,
+    -6418
    ]
   ]
  ]

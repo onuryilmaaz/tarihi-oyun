@@ -1,17 +1,19 @@
 {
  "indeks": 2530,
  "durum": "sahipsiz",
- "ad": "Ewa",
- "ulke": "Nauru",
+ "ad": "San Pedro",
+ "ulke": "Paraguay",
  "d": -1,
  "k": "tahmin",
  "p": [
   [
    [
-    14664,
-    -14664,
-    14665,
-    14666
+    16045,
+    16046,
+    -4546,
+    -4597,
+    -4599,
+    -4602
    ]
   ]
  ]

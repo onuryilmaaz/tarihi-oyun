@@ -1,15 +1,20 @@
 {
  "indeks": 659,
- "ad": "Basel-Stadt",
- "ulke": "Switzerland",
- "d": 73,
+ "ad": "Kaliningrad Oblastı",
+ "ulke": "Russia",
+ "d": 37,
  "k": "tahmin",
  "p": [
   [
    [
-    4657,
-    4658,
-    -4640
+    5372,
+    -2512,
+    -2522,
+    5373,
+    5374,
+    -1013,
+    5375,
+    -1011
    ]
   ]
  ]

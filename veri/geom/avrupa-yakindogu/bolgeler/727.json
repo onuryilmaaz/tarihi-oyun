@@ -1,19 +1,17 @@
 {
  "indeks": 727,
- "ad": "Plevne ili (Osmanlı Devleti)",
- "ulke": "Bulgaria",
- "d": 0,
- "k": "tahmin",
+ "ad": "Lazkiye",
+ "ulke": "Syria",
+ "d": 11,
+ "k": "ohm:2960096",
  "p": [
   [
    [
-    4963,
-    4964,
-    4965,
-    4966,
-    4967,
-    4968,
-    -4957
+    -5648,
+    5648,
+    -646,
+    5649,
+    -5642
    ]
   ]
  ]

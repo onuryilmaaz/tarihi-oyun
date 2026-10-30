@@ -1,21 +1,20 @@
 {
  "indeks": 495,
- "ad": "Chiesanuova (Papalık Devleti)",
- "ulke": "San Marino",
- "d": 44,
- "k": "ohm:2692734",
+ "ad": "Haute-Garonne",
+ "ulke": "France",
+ "d": 57,
+ "k": "tahmin",
  "p": [
   [
    [
-    3686,
-    -3685
-   ]
-  ],
-  [
-   [
-    -3678,
-    3687,
-    -3683
+    -4136,
+    4138,
+    4139,
+    4140,
+    4141,
+    4142,
+    4143,
+    4144
    ]
   ]
  ]

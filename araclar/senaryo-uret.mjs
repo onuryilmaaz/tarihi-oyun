@@ -9,14 +9,20 @@
 import fs from "node:fs";
 import crypto from "node:crypto";
 import { agUret } from "./ag-uret.mjs";
+import { birimleriBirlestir } from "./birim-birlestir.mjs";
+import { denizAlanlariUret } from "./deniz-alan-uret.mjs";
 
 const kok = new URL("../", import.meta.url);
 const kaynak = new URL("prototypes/harita-gorsel-02/public/veri/", kok);
 const hedef = new URL("veri/senaryo-1453/", kok);
 fs.mkdirSync(hedef, { recursive: true });
 
-const haritaMetni = fs.readFileSync(new URL("dunya-1453-v02.json", kaynak), "utf8");
-const harita = JSON.parse(haritaMetni);
+// TASK-0023: sınır kırıntıları aynı devletin komşu birimine katılır (birim-birlestir.mjs)
+const { harita: birlesik, rapor: birlesimRaporu } = birimleriBirlestir(JSON.parse(fs.readFileSync(new URL("dunya-1453-v02.json", kaynak), "utf8")));
+// TASK-0023: deniz bölgelerinin seçilebilir alanları karadan türetilir (deniz-alan-uret.mjs)
+const { alanlar: denizAlanlari, sinirlar: denizSinirlari } = denizAlanlariUret(birlesik, JSON.parse(fs.readFileSync(new URL("deniz.json", hedef), "utf8")));
+const harita = { ...birlesik, denizAlanlari, denizSinirlari };
+const haritaMetni = JSON.stringify(harita);
 const { ag, rapor, dugumBul } = agUret(harita, new URL("veri-ham/etopo2022-0.2deg.csv", kok));
 const surum = crypto.createHash("sha256").update(haritaMetni).update(JSON.stringify(ag)).digest("hex").slice(0, 10);
 const millerLat = (y) => (2.5 * (Math.atan(Math.exp((y * Math.PI / 180) / 1.25)) - Math.PI / 4)) * 180 / Math.PI;
@@ -111,5 +117,6 @@ fs.writeFileSync(new URL("harita.json", hedef), haritaMetni);
 fs.writeFileSync(new URL("senaryo.json", hedef), JSON.stringify(senaryo));
 fs.copyFileSync(new URL("wikidata-1453.json", kaynak), new URL("wikidata.json", hedef));
 const birimsiz = senaryo.sehirler.filter((s) => s.birim < 0).map((s) => s.ad);
+console.log("birim birleştirme:", birlesimRaporu);
 console.log("hareket ağı:", rapor);
 console.log({ surum, devlet: devletler.length, birim: senaryo.birimler.length, sehir: senaryo.sehirler.length, birimsizSehir: birimsiz });

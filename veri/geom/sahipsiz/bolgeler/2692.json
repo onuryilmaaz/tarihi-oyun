@@ -1,14 +1,18 @@
 {
  "indeks": 2692,
  "durum": "sahipsiz",
- "ad": "Three Kings Adaları",
- "ulke": "New Zealand",
+ "ad": "La Pampa eyaleti",
+ "ulke": "Argentina",
  "d": -1,
  "k": "tahmin",
  "p": [
   [
    [
-    15275
+    16251,
+    -8874,
+    -7068,
+    -7013,
+    -16250
    ]
   ]
  ]

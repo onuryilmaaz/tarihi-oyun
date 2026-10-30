@@ -1,18 +1,19 @@
 {
  "indeks": 38,
  "durum": "sahipsiz",
- "ad": "Nhombe Bölgesi",
- "ulke": "United Republic of Tanzania",
+ "ad": "Rumphi",
+ "ulke": "Malawi",
  "d": -1,
  "k": "tahmin",
  "p": [
   [
    [
-    -232,
-    -245,
-    245,
-    246,
-    247
+    -254,
+    254,
+    255,
+    256,
+    257,
+    -234
    ]
   ]
  ]

@@ -1,14 +1,17 @@
 {
  "indeks": 2620,
  "durum": "sahipsiz",
- "ad": "Prens Edward Adası",
- "ulke": "Canada",
+ "ad": "Chimborazo",
+ "ulke": "Ecuador",
  "d": -1,
  "k": "tahmin",
  "p": [
   [
    [
-    15029
+    16169,
+    -16165,
+    -6951,
+    -16163
    ]
   ]
  ]

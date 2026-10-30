@@ -1,15 +1,24 @@
 {
  "indeks": 2323,
  "durum": "sahipsiz",
- "ad": "South Eleuthera",
+ "ad": "Ragged Adassı",
  "ulke": "The Bahamas",
  "d": -1,
  "k": "tahmin",
  "p": [
   [
    [
-    13896,
-    -13893
+    15177
+   ]
+  ],
+  [
+   [
+    15178
+   ]
+  ],
+  [
+   [
+    15179
    ]
   ]
  ]

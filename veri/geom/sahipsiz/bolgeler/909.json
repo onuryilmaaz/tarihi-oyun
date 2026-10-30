@@ -1,15 +1,18 @@
 {
  "indeks": 909,
  "durum": "sahipsiz",
- "ad": "Bangui",
- "ulke": "Central African Republic",
+ "ad": "Tombali Bölgesi",
+ "ulke": "Guinea Bissau",
  "d": -1,
  "k": "tahmin",
  "p": [
   [
    [
-    -365,
-    -5968
+    -6336,
+    6336,
+    6337,
+    6338,
+    -6331
    ]
   ]
  ]

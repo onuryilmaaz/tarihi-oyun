@@ -1,23 +1,16 @@
 {
  "indeks": 2456,
- "ad": "Kumlinge",
- "ulke": "Aland",
- "d": 75,
- "k": "tahmin",
+ "ad": "Hartum Eyaleti (Memlûk Sultanlığı)",
+ "ulke": "Sudan",
+ "d": 11,
+ "k": "ohm:2960096",
  "p": [
   [
    [
-    14318
-   ]
-  ],
-  [
-   [
-    14319
-   ]
-  ],
-  [
-   [
-    14320
+    15724,
+    -15724,
+    -7847,
+    -7818
    ]
   ]
  ]

@@ -1,15 +1,19 @@
 {
  "indeks": 498,
- "ad": "San Marino (Papalık Devleti)",
- "ulke": "San Marino",
- "d": 44,
- "k": "ohm:2888200",
+ "ad": "Ariège",
+ "ulke": "France",
+ "d": 57,
+ "k": "tahmin",
  "p": [
   [
    [
-    3695,
-    -3674,
-    -3691
+    -4144,
+    4169,
+    4170,
+    4171,
+    4172,
+    4173,
+    -4146
    ]
   ]
  ]

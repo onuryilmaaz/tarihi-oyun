@@ -1,23 +1,21 @@
 {
  "indeks": 993,
  "durum": "sahipsiz",
- "ad": "Nimba",
- "ulke": "Liberia",
+ "ad": "Embera-Wounaa Comarca",
+ "ulke": "Panama",
  "d": -1,
  "k": "tahmin",
  "p": [
   [
    [
-    -2627,
-    6290,
-    6291,
-    6292,
-    6293,
-    6294,
-    6295,
-    6296,
-    6297,
-    -2629
+    -6889,
+    6892,
+    -6878
+   ]
+  ],
+  [
+   [
+    6893
    ]
   ]
  ]

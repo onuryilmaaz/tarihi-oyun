@@ -1,16 +1,25 @@
 {
  "indeks": 2238,
  "durum": "sahipsiz",
- "ad": "Saint Thomas Lowland",
- "ulke": "Saint Kitts and Nevis",
+ "ad": "South",
+ "ulke": "New Caledonia",
  "d": -1,
  "k": "tahmin",
  "p": [
   [
    [
-    13628,
-    -13628,
-    -13621
+    14849
+   ]
+  ],
+  [
+   [
+    14850
+   ]
+  ],
+  [
+   [
+    14851,
+    -8966
    ]
   ]
  ]

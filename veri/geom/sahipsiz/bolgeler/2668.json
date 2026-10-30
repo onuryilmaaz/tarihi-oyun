@@ -1,14 +1,18 @@
 {
  "indeks": 2668,
  "durum": "sahipsiz",
- "ad": "?",
- "ulke": "Mexico",
+ "ad": "Merkez Bölgesi",
+ "ulke": "Cameroon",
  "d": -1,
  "k": "tahmin",
  "p": [
   [
    [
-    15199
+    -8182,
+    -6084,
+    -9798,
+    -16228,
+    -6142
    ]
   ]
  ]

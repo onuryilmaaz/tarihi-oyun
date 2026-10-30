@@ -1,15 +1,17 @@
 {
  "indeks": 2279,
  "durum": "sahipsiz",
- "ad": "Kingston",
- "ulke": "Jamaica",
+ "ad": "Santiago de Cuba ili",
+ "ulke": "Cuba",
  "d": -1,
  "k": "tahmin",
  "p": [
   [
    [
-    13742,
-    -13742
+    15012,
+    -15012,
+    -13831,
+    -4398
    ]
   ]
  ]

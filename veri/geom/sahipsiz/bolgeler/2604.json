@@ -1,14 +1,17 @@
 {
  "indeks": 2604,
  "durum": "sahipsiz",
- "ad": "Saipan",
- "ulke": "Northern Mariana Islands",
+ "ad": "San Salvador",
+ "ulke": "El Salvador",
  "d": -1,
  "k": "tahmin",
  "p": [
   [
    [
-    14978
+    -16142,
+    -10487,
+    -10484,
+    -4432
    ]
   ]
  ]

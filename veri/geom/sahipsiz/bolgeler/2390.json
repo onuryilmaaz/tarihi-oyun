@@ -1,14 +1,19 @@
 {
  "indeks": 2390,
  "durum": "sahipsiz",
- "ad": "São Tomé",
- "ulke": "Sao Tome and Principe",
+ "ad": "Lara",
+ "ulke": "Venezuela",
  "d": -1,
  "k": "tahmin",
  "p": [
   [
    [
-    14094
+    -15348,
+    15349,
+    -9702,
+    -7237,
+    -9707,
+    -9711
    ]
   ]
  ]

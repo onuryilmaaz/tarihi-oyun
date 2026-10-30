@@ -1,31 +1,19 @@
 {
  "indeks": 1581,
  "durum": "sahipsiz",
- "ad": "Güney Kalimantan",
- "ulke": "Indonesia",
+ "ad": "Lagunes",
+ "ulke": "Ivory Coast",
  "d": -1,
  "k": "tahmin",
  "p": [
   [
    [
-    9566,
-    -9566,
-    -16
-   ]
-  ],
-  [
-   [
-    9567
-   ]
-  ],
-  [
-   [
-    9568
-   ]
-  ],
-  [
-   [
-    9569
+    9981,
+    -6307,
+    9982,
+    9983,
+    9984,
+    9986
    ]
   ]
  ]

@@ -1,14 +1,15 @@
 {
  "indeks": 2458,
- "ad": "Mariehamn",
- "ulke": "Aland",
- "d": 75,
- "k": "tahmin",
+ "ad": "Kuzey Kordofan Eyaleti (Memlûk Sultanlığı)",
+ "ulke": "Sudan",
+ "d": 11,
+ "k": "ohm:2960096",
  "p": [
   [
    [
-    14323,
-    -14323
+    -15726,
+    -15725,
+    -7817
    ]
   ]
  ]

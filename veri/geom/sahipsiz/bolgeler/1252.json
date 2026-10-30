@@ -1,18 +1,23 @@
 {
  "indeks": 1252,
  "durum": "sahipsiz",
- "ad": "North Eastern",
- "ulke": "Kenya",
+ "ad": "Mpumalanga",
+ "ulke": "South Africa",
  "d": -1,
  "k": "tahmin",
  "p": [
   [
    [
-    -219,
-    7864,
-    7865,
-    -7861,
-    -192
+    -4049,
+    -4060,
+    8185,
+    8186,
+    8187,
+    -5871,
+    -5891,
+    8188,
+    -5916,
+    -8120
    ]
   ]
  ]

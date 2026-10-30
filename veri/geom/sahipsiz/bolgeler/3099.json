@@ -1,20 +1,19 @@
 {
  "indeks": 3099,
  "durum": "sahipsiz",
- "ad": "El Beyaz Vilayeti",
- "ulke": "Algeria",
+ "ad": "Nord",
+ "ulke": "Burkina Faso",
  "d": -1,
  "k": "tahmin",
  "p": [
   [
    [
-    16273,
-    16274,
-    16275,
-    -4023,
-    -7868,
-    -8563,
-    16276
+    18396,
+    18397,
+    18398,
+    18399,
+    -18395,
+    6278
    ]
   ]
  ]

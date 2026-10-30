@@ -1,14 +1,17 @@
 {
  "indeks": 202,
- "ad": "İnguşetya (Çerkes Beylikleri)",
- "ulke": "Russia",
- "d": 15,
- "k": "ohm:2965979",
+ "ad": "Acara Özerk Cumhuriyeti",
+ "ulke": "Georgia",
+ "d": 12,
+ "k": "tahmin",
  "p": [
   [
    [
-    -1552,
-    -1536
+    -1608,
+    1608,
+    1609,
+    -1599,
+    -1597
    ]
   ]
  ]

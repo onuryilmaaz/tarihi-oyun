@@ -1,16 +1,22 @@
 {
  "indeks": 1412,
  "durum": "sahipsiz",
- "ad": "Kashmir",
- "ulke": "Siachen Glacier",
+ "ad": "Inhambane Bölgesi",
+ "ulke": "Mozambique",
  "d": -1,
  "k": "tahmin",
  "p": [
   [
    [
-    -3386,
-    -97,
-    -96
+    9132,
+    -8118,
+    -8114,
+    9133
+   ]
+  ],
+  [
+   [
+    9134
    ]
   ]
  ]

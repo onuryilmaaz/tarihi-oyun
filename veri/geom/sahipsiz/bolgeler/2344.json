@@ -1,14 +1,15 @@
 {
  "indeks": 2344,
  "durum": "sahipsiz",
- "ad": "Heard Adası ve McDonald Adaları",
- "ulke": "Heard Island and McDonald Islands",
+ "ad": "Northland Bölgesi",
+ "ulke": "New Zealand",
  "d": -1,
  "k": "tahmin",
  "p": [
   [
    [
-    13961
+    15283,
+    -15266
    ]
   ]
  ]

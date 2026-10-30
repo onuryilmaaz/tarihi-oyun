@@ -1,17 +1,20 @@
 {
  "indeks": 2276,
  "durum": "sahipsiz",
- "ad": "Clarendon",
- "ulke": "Jamaica",
+ "ad": "Pinar del Río",
+ "ulke": "Cuba",
  "d": -1,
  "k": "tahmin",
  "p": [
   [
    [
-    13731,
-    -13731,
-    -13714,
-    13732
+    15007,
+    -15006
+   ]
+  ],
+  [
+   [
+    15008
    ]
   ]
  ]

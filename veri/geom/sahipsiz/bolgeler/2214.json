@@ -1,18 +1,30 @@
 {
  "indeks": 2214,
  "durum": "sahipsiz",
- "ad": "Saint Andrew",
- "ulke": "Dominica",
+ "ad": "West New Britaion",
+ "ulke": "Papua New Guinea",
  "d": -1,
  "k": "tahmin",
  "p": [
   [
    [
-    13568,
-    -13568,
-    13569,
-    13570,
-    13571
+    14628
+   ]
+  ],
+  [
+   [
+    14629
+   ]
+  ],
+  [
+   [
+    14630,
+    14631
+   ]
+  ],
+  [
+   [
+    14632
    ]
   ]
  ]

@@ -1,54 +1,17 @@
 {
  "indeks": 2345,
  "durum": "sahipsiz",
- "ad": "Kerguelen Adaları",
- "ulke": "French Southern and Antarctic Lands",
+ "ad": "Bay of Plenty Bölgesi",
+ "ulke": "New Zealand",
  "d": -1,
  "k": "tahmin",
  "p": [
   [
    [
-    13962
-   ]
-  ],
-  [
-   [
-    13963
-   ]
-  ],
-  [
-   [
-    13964
-   ]
-  ],
-  [
-   [
-    13965
-   ]
-  ],
-  [
-   [
-    13966
-   ]
-  ],
-  [
-   [
-    13967
-   ]
-  ],
-  [
-   [
-    13968
-   ]
-  ],
-  [
-   [
-    13969
-   ]
-  ],
-  [
-   [
-    13970
+    15284,
+    15285,
+    15286,
+    -15272
    ]
   ]
  ]

@@ -1,14 +1,19 @@
 {
  "indeks": 2550,
  "durum": "sahipsiz",
- "ad": "Kosrae",
- "ulke": "Federated States of Micronesia",
+ "ad": "Amoron'i Mania",
+ "ulke": "Madagascar",
  "d": -1,
  "k": "tahmin",
  "p": [
   [
    [
-    14764
+    -16074,
+    -9039,
+    -9045,
+    16074,
+    -9058,
+    -9065
    ]
   ]
  ]

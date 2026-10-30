@@ -10,6 +10,16 @@ Bağlayıcı kurallar: `AGENTS.md`, `MASTER_SPEC.md`, `DECISIONS.md`.
 
 ## 0. En son — BURADAN BAŞLA
 
+- **TASK-0023 / DEC-0072 uygulandı, COMMIT EDİLMEDİ, kullanıcı testi bekliyor (2026-10-31):** (1) sınır kırıntıları
+  birleştirildi (`araclar/birim-birlestir.mjs`, 3637 → 3146 birim), (2) deniz bölgelerine karadan türetilmiş alan
+  geometrisi (`araclar/deniz-alan-uret.mjs`) + istemcide deniz seçimi/paneli. İkisi de `npm run senaryo` içinde
+  çalışır; ardından `veri/geom` ayrılmış dosyaları `harita-ayristir.mjs` (4 kıta + sahipsiz) ve `deniz-ayristir.mjs`
+  ile yeniden üretildi, `harita-derle.mjs` doğrulaması geçti. **Commit büyük:** ~2500 silinen + ~2000 yeni bölge
+  dosyası (indeksler değişti). Eski kayıtlar artık yüklenmez (senaryo karması değişti; kullanıcı kabul etti).
+  Ayrıntı: `tasks/TASK-0023.md`. 253 test, typecheck, build geçti.
+- **Önemli not:** `senaryo-uret.mjs` artık prototip haritasını birleştirerek yazıyor. Birim indeksleri prototip
+  dosyasındakiyle aynı DEĞİL; `veri/geom` her `npm run senaryo` sonrası yeniden ayrıştırılmalı.
+
 - **TASK-0020 tamamen bitti, 3 alt teslimi de commit+push edildi** (1/3 `10d0e70`, 2/3 `538bef9`, 3/3 `be98b9e`):
   AI'dan gelen diplomatik teklifler + gelen kutusu, elçi gönderme, hükümdar/devlet portresi. Ayrıntılar için
   CHANGELOG.md'nin 2026-10-30 TASK-0020 girişlerine bak; burada tekrarlanmıyor.

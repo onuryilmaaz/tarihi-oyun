@@ -1,19 +1,34 @@
 {
  "indeks": 2213,
  "durum": "sahipsiz",
- "ad": "Saint David",
- "ulke": "Dominica",
+ "ad": "Bougainville",
+ "ulke": "Papua New Guinea",
  "d": -1,
  "k": "tahmin",
  "p": [
   [
    [
-    13563,
-    -13563,
-    13564,
-    13565,
-    13566,
-    13567
+    14623
+   ]
+  ],
+  [
+   [
+    14624
+   ]
+  ],
+  [
+   [
+    14625
+   ]
+  ],
+  [
+   [
+    14626
+   ]
+  ],
+  [
+   [
+    14627
    ]
   ]
  ]

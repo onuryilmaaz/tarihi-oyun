@@ -1,23 +1,19 @@
 {
  "indeks": 297,
  "durum": "sahipsiz",
- "ad": "Northern",
- "ulke": "Sierra Leone",
+ "ad": "Orta Equatoria",
+ "ulke": "S. Sudan",
  "d": -1,
  "k": "tahmin",
  "p": [
   [
    [
-    2129,
-    2130,
-    2131,
-    2132,
-    2133,
-    2134,
-    2135,
-    2136,
-    2137,
-    2138
+    -2209,
+    2217,
+    2218,
+    -184,
+    2219,
+    -2211
    ]
   ]
  ]

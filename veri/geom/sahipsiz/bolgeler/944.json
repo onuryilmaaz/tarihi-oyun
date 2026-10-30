@@ -1,20 +1,18 @@
 {
  "indeks": 944,
  "durum": "sahipsiz",
- "ad": "Haut-Ogooué",
- "ulke": "Gabon",
+ "ad": "Saskatchewan",
+ "ulke": "Canada",
  "d": -1,
  "k": "tahmin",
  "p": [
   [
    [
-    -6103,
-    -378,
-    -384,
-    6103,
-    -414,
-    6104,
-    -6100
+    -6569,
+    -6574,
+    6574,
+    6575,
+    6576
    ]
   ]
  ]

@@ -1,19 +1,20 @@
 {
  "indeks": 2324,
  "durum": "sahipsiz",
- "ad": "Berry Adaları",
- "ulke": "The Bahamas",
+ "ad": "Adalar",
+ "ulke": "Hong Kong S.A.R.",
  "d": -1,
  "k": "tahmin",
  "p": [
   [
    [
-    13897
+    15180
    ]
   ],
   [
    [
-    13898
+    15182,
+    15192
    ]
   ]
  ]

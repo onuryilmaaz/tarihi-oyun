@@ -1,16 +1,19 @@
 {
  "indeks": 2541,
  "durum": "sahipsiz",
- "ad": "Anabar",
- "ulke": "Nauru",
+ "ad": "Granada",
+ "ulke": "Nicaragua",
  "d": -1,
  "k": "tahmin",
  "p": [
   [
    [
-    14697,
-    -14697,
-    -14663
+    -16059,
+    -16060,
+    -6832,
+    -10506,
+    16060,
+    -10501
    ]
   ]
  ]

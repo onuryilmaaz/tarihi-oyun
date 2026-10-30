@@ -1,15 +1,20 @@
 {
  "indeks": 19,
- "ad": "Gazze valiliği",
- "ulke": "Gaza Strip",
+ "ad": "Batı Şeria",
+ "ulke": "West Bank",
  "d": 11,
  "k": "ohm:2960096",
  "p": [
   [
    [
-    -138,
-    148,
-    149
+    -151,
+    157,
+    158,
+    159,
+    -142,
+    160,
+    161,
+    162
    ]
   ]
  ]

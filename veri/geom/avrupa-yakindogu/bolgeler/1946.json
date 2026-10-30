@@ -1,22 +1,21 @@
 {
  "indeks": 1946,
- "ad": "Sivastopol (Cenova Cumhuriyeti)",
- "ulke": "Russia",
- "d": 23,
- "k": "ohm:2849210",
+ "ad": "Lizbon",
+ "ulke": "Portugal",
+ "d": 54,
+ "k": "tahmin",
  "p": [
   [
    [
-    -8608,
-    11442,
-    11443
+    12956,
+    12957,
+    12958,
+    12959
    ]
   ],
   [
    [
-    11444,
-    -8594,
-    11445
+    12960
    ]
   ]
  ]

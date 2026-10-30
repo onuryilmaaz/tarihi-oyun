@@ -1,18 +1,20 @@
 {
  "indeks": 1042,
  "durum": "sahipsiz",
- "ad": "Kuzey Dakota",
- "ulke": "United States of America",
+ "ad": "Tierra del Fuego",
+ "ulke": "Argentina",
  "d": -1,
  "k": "tahmin",
  "p": [
   [
    [
-    -6577,
-    6577,
-    6578,
-    6579,
-    -6570
+    7144,
+    -7227
+   ]
+  ],
+  [
+   [
+    7227
    ]
   ]
  ]

@@ -1,34 +1,17 @@
 {
  "indeks": 2512,
  "durum": "sahipsiz",
- "ad": "Isabel",
- "ulke": "Solomon Islands",
+ "ad": "Valverde",
+ "ulke": "Dominican Republic",
  "d": -1,
  "k": "tahmin",
  "p": [
   [
    [
-    14586
-   ]
-  ],
-  [
-   [
-    14587
-   ]
-  ],
-  [
-   [
-    14588
-   ]
-  ],
-  [
-   [
-    14589
-   ]
-  ],
-  [
-   [
-    14590
+    -13775,
+    16017,
+    16018,
+    -3713
    ]
   ]
  ]

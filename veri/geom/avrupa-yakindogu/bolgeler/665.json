@@ -1,16 +1,18 @@
 {
  "indeks": 665,
- "ad": "Gamprin",
- "ulke": "Liechtenstein",
- "d": 72,
+ "ad": "Kursk Oblastı",
+ "ulke": "Russia",
+ "d": 35,
  "k": "tahmin",
  "p": [
   [
    [
-    -4676,
-    -2598,
-    -2593,
-    -2583
+    -5387,
+    5392,
+    5393,
+    5394,
+    5395,
+    -5389
    ]
   ]
  ]

@@ -1,18 +1,20 @@
 {
  "indeks": 448,
  "durum": "sahipsiz",
- "ad": "Kuzeydoğu Bölgesi",
- "ulke": "Botswana",
+ "ad": "Centre",
+ "ulke": "Haiti",
  "d": -1,
  "k": "tahmin",
  "p": [
   [
    [
-    -3372,
-    -3384
-   ],
-   [
-    3384
+    -3718,
+    3718,
+    3719,
+    3720,
+    3721,
+    3722,
+    -3708
    ]
   ]
  ]

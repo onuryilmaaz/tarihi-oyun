@@ -1,26 +1,17 @@
 {
  "indeks": 2811,
- "ad": "Appenzell Innerrhoden",
- "ulke": "Switzerland",
- "d": 73,
+ "ad": "Penza Oblastı",
+ "ulke": "Russia",
+ "d": 32,
  "k": "tahmin",
  "p": [
   [
    [
-    -4683,
-    -15717
-   ]
-  ],
-  [
-   [
-    -4685,
-    -15716
-   ]
-  ],
-  [
-   [
-    -4681,
-    -15718
+    16510,
+    16511,
+    -16508,
+    7609,
+    -16495
    ]
   ]
  ]

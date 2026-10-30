@@ -1,19 +1,18 @@
 {
  "indeks": 1305,
  "durum": "sahipsiz",
- "ad": "Hodh Ech Chargui Bölgesi",
- "ulke": "Mauritania",
+ "ad": "Kuzey Bahr el Ghazal",
+ "ulke": "S. Sudan",
  "d": -1,
  "k": "tahmin",
  "p": [
   [
    [
-    -4017,
-    -6286,
-    -6344,
-    8051,
-    8052,
-    -7887
+    -8521,
+    -8526,
+    8556,
+    -2201,
+    8557
    ]
   ]
  ]

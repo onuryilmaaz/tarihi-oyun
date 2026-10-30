@@ -1,5 +1,5 @@
 // Harita → three.js katmanları (ADR-0001 yaklaşımı) + tema uygulama + seçim vurgusu.
-// Çizim sırası: kara dolgusu → göller → arazi sınırı → nehir → kıyı → devlet sınırı
+// Çizim sırası: deniz seçimi (karanın altında) → kara dolgusu → göller → arazi sınırı → nehir → kıyı → devlet sınırı
 //               → seçim çerçevesi → şehirler → şehir seçimi
 
 import * as THREE from "three";
@@ -20,6 +20,9 @@ export interface Katmanlar {
   kiyi: LineSegments2;
   devletSiniri: LineSegments2;
   devletSiniriTahmin: LineSegments2; // en az bir yanı tahmine dayanan devlet sınırları
+  denizSiniri: LineSegments2; // deniz bölgeleri arası açık su sınırı (TASK-0023)
+  denizSecimi: THREE.Mesh; // seçili deniz bölgesinin dolgusu; karanın altında, drawRange ile
+  denizUcgen: Int32Array; // deniz bölgesi başına indeks tamponunda [başlangıç, sayı]
   secimCercevesi: LineSegments2;
   baskentler: THREE.Points;
   sehirler: THREE.Points;
@@ -124,6 +127,25 @@ export function katmanlariKur(h: Harita): Katmanlar {
   const devletSiniriTahmin = cizgi(devletTahmin, 6);
   devletSiniriTahmin.computeLineDistances();
 
+  // Deniz bölgeleri (TASK-0023): alanlar kıyıda karanın altına taşar, kara üstüne çizildiği için kıyı karadan gelir
+  const dKonum: number[] = [], dIndeks: number[] = [];
+  const denizUcgen = new Int32Array((paket.denizAlanlari?.length ?? 0) * 2);
+  h.denizHalkalari.forEach((polys, z) => {
+    denizUcgen[2 * z] = dIndeks.length;
+    poligonlariUcgenle(polys, dKonum, dIndeks);
+    denizUcgen[2 * z + 1] = dIndeks.length - denizUcgen[2 * z];
+  });
+  const denizGeo = new THREE.BufferGeometry();
+  denizGeo.setAttribute("position", new THREE.Float32BufferAttribute(dKonum.length ? dKonum : [0, 0, 0], 3));
+  denizGeo.setIndex(dIndeks);
+  const denizSecimi = new THREE.Mesh(denizGeo, new THREE.MeshBasicMaterial({ depthWrite: false }));
+  denizSecimi.renderOrder = -1;
+  denizSecimi.frustumCulled = false;
+  denizSecimi.visible = false;
+  const ds: number[] = [];
+  for (const { p: l } of paket.denizSinirlari ?? []) for (let i = 0; i + 3 < l.length; i += 2) ds.push(l[i], l[i + 1], 0, l[i + 2], l[i + 3], 0);
+  const denizSiniri = cizgi(ds, 3);
+
   const nb: number[] = [], nk: number[] = [];
   for (const n of paket.nehirler) {
     const hedef = n.r <= 3 ? nb : nk;
@@ -143,13 +165,13 @@ export function katmanlariKur(h: Harita): Katmanlar {
   sehirSecimi.visible = false;
 
   const grup = new THREE.Group();
-  grup.add(dolgu, goller, araziSiniri, nehirBuyuk, nehirKucuk, kiyi, devletSiniri, devletSiniriTahmin, secimCercevesi,
+  grup.add(denizSecimi, denizSiniri, dolgu, goller, araziSiniri, nehirBuyuk, nehirKucuk, kiyi, devletSiniri, devletSiniriTahmin, secimCercevesi,
     sehirler, baskentler, sehirSecimi);
 
   return {
     grup, dolgu, goller, araziSiniri, nehirBuyuk, nehirKucuk, kiyi, devletSiniri, devletSiniriTahmin, secimCercevesi,
-    baskentler, sehirler, sehirSecimi,
-    cizgiler: [araziSiniri, nehirBuyuk, nehirKucuk, kiyi, devletSiniri, devletSiniriTahmin, secimCercevesi],
+    denizSiniri, denizSecimi, denizUcgen, baskentler, sehirler, sehirSecimi,
+    cizgiler: [araziSiniri, nehirBuyuk, nehirKucuk, kiyi, devletSiniri, devletSiniriTahmin, secimCercevesi, denizSiniri],
     birimKose,
     birimUcgen,
     temelRenk: new Float32Array(konum.length),
@@ -253,6 +275,9 @@ export function temaUygula(k: Katmanlar, h: Harita, t: Tema, sahne: THREE.Scene)
   cizgiAyarla(k.devletSiniri, t.devletSinir);
   cizgiAyarla(k.devletSiniriTahmin, t.devletSinir);
   cizgiAyarla(k.kiyi, t.kiyi);
+  cizgiAyarla(k.denizSiniri, { renk: t.kiyi.renk, opak: t.kiyi.opak * 0.35, kalinlik: t.kiyi.kalinlik });
+  const dm = k.denizSecimi.material as THREE.MeshBasicMaterial;
+  dm.color.set(t.deniz).offsetHSL(0, 0.15, -0.12); // opak: saydam olsa karadan sonra çizilirdi
   cizgiAyarla(k.nehirBuyuk, t.nehir);
   cizgiAyarla(k.nehirKucuk, { ...t.nehir, kalinlik: t.nehir.kalinlik * 0.75 });
   cizgiAyarla(k.secimCercevesi, { renk: t.secim, opak: 1, kalinlik: 2.6 });
@@ -278,6 +303,7 @@ export type Secim =
   | { tur: "devlet"; id: number }
   | { tur: "birim"; id: number }
   | { tur: "sehir"; id: number }
+  | { tur: "deniz"; id: number } // deniz bölgesi (senaryo deniz.bolgeler indeksi)
   | null;
 
 // Seçimi uygula: dolgu vurgusu + çerçeve. Önceki vurgu temel renge döner.
@@ -298,6 +324,12 @@ export function secimiCiz(k: Katmanlar, h: Harita, t: Tema, s: Secim) {
   // Çerçeve: bir yanı seçili kümede, diğer yanı dışarıda olan yaylar
   const kume = new Set(birimler);
   const pts: number[] = [];
+  if (s?.tur === "deniz") { // denizde yalnızca açık su sınırları; kıyıyı kara çizer
+    for (const l of h.paket.denizSinirlari ?? []) {
+      if (l.a !== s.id && l.b !== s.id) continue;
+      for (let i = 0; i + 3 < l.p.length; i += 2) pts.push(l.p[i], l.p[i + 1], 0, l.p[i + 2], l.p[i + 3], 0);
+    }
+  }
   if (kume.size) {
     for (let a = 0; a < h.arklar.length; a++) {
       const ia = kume.has(h.yaySahipA[a]), ib = h.yaySahipB[a] >= 0 && kume.has(h.yaySahipB[a]);
@@ -307,6 +339,9 @@ export function secimiCiz(k: Katmanlar, h: Harita, t: Tema, s: Secim) {
   k.secimCercevesi.geometry.dispose();
   k.secimCercevesi.geometry = new LineSegmentsGeometry().setPositions(pts.length ? pts : [0, 0, 0, 0, 0, 0]);
   k.secimCercevesi.visible = pts.length > 0;
+
+  k.denizSecimi.visible = s?.tur === "deniz";
+  if (s?.tur === "deniz") k.denizSecimi.geometry.setDrawRange(k.denizUcgen[2 * s.id], k.denizUcgen[2 * s.id + 1]);
 
   if (s?.tur === "sehir") {
     const c = h.paket.sehirler[s.id];

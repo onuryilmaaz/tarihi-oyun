@@ -1,26 +1,33 @@
 {
  "indeks": 1782,
  "durum": "sahipsiz",
- "ad": "New Jersey",
- "ulke": "United States of America",
+ "ad": "Magadan Oblastı",
+ "ulke": "Russia",
  "d": -1,
  "k": "tahmin",
  "p": [
   [
    [
-    -6608,
-    -6618,
-    10390
+    -5510,
+    11296,
+    11297,
+    11298,
+    11299
    ]
   ],
   [
    [
-    10391
+    11300
    ]
   ],
   [
    [
-    10392
+    11301
+   ]
+  ],
+  [
+   [
+    11302
    ]
   ]
  ]

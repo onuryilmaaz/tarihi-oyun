@@ -1,18 +1,24 @@
 {
  "indeks": 2285,
  "durum": "sahipsiz",
- "ad": "Hato Mayor",
- "ulke": "Dominican Republic",
+ "ad": "Atiu",
+ "ulke": "Cook Islands",
  "d": -1,
  "k": "tahmin",
  "p": [
   [
    [
-    13755,
-    -13755,
-    13756,
-    13757,
-    13758
+    15052
+   ]
+  ],
+  [
+   [
+    15053
+   ]
+  ],
+  [
+   [
+    15054
    ]
   ]
  ]

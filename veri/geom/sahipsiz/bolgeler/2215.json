@@ -1,16 +1,20 @@
 {
  "indeks": 2215,
  "durum": "sahipsiz",
- "ad": "Saint John",
- "ulke": "Dominica",
+ "ad": "Doğu Yeni Britanya",
+ "ulke": "Papua New Guinea",
  "d": -1,
  "k": "tahmin",
  "p": [
   [
    [
-    13572,
-    -13572,
-    13573
+    14633,
+    -14632
+   ]
+  ],
+  [
+   [
+    14634
    ]
   ]
  ]

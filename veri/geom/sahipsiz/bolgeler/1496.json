@@ -1,15 +1,18 @@
 {
  "indeks": 1496,
  "durum": "sahipsiz",
- "ad": "Buenos Aires",
- "ulke": "Argentina",
+ "ad": "Bolívar",
+ "ulke": "Colombia",
  "d": -1,
  "k": "tahmin",
  "p": [
   [
    [
-    8962,
-    -8878
+    9690,
+    9694,
+    9695,
+    -9688,
+    9693
    ]
   ]
  ]

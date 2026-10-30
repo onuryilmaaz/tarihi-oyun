@@ -1,16 +1,23 @@
 {
  "indeks": 1567,
  "durum": "sahipsiz",
- "ad": "Santa Elena",
- "ulke": "Ecuador",
+ "ad": "Biombo",
+ "ulke": "Guinea Bissau",
  "d": -1,
  "k": "tahmin",
  "p": [
   [
    [
-    9497,
-    9498,
-    -9275
+    9936,
+    -7990,
+    -7981,
+    -7980,
+    9939
+   ]
+  ],
+  [
+   [
+    9938
    ]
   ]
  ]

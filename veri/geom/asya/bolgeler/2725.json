@@ -1,16 +1,19 @@
 {
  "indeks": 2725,
- "ad": "Kuzeydoğu Vietnam",
- "ulke": "Vietnam",
- "d": 100,
+ "ad": "Parvan Vilayeti",
+ "ulke": "Afghanistan",
+ "d": 90,
  "k": "tahmin",
  "p": [
   [
    [
-    -15317,
-    -6367,
-    -6373,
-    15330
+    -4271,
+    -7526,
+    16311,
+    16312,
+    16313,
+    16314,
+    -5572
    ]
   ]
  ]

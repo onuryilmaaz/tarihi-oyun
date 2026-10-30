@@ -833,6 +833,19 @@ Kaynak belge: `MASTER_SPEC.md` (v1.3). Orijinal keşif çıktısı:
   "İkisi birden, aynı kartta" (2026-10-30).
 - **Durum:** GEÇERLİ
 
+## DEC-0072 — TASK-0023 onayı: sınır kırıntılarının birleştirilmesi ve seçilebilir deniz bölgeleri
+
+- **Tarih:** 2026-10-31
+- **Seçilen karar:** (1) 500 km² altındaki arazi birimleri ve birimlerin ana gövdeden kopuk küçük parçaları, aynı
+  devletin en uzun ortak sınırlı komşu birimine katılır; devlet sınırı değişmez, aynı devletten komşusu olmayan
+  kırıntılar olduğu gibi kalır. (2) Birim sayısı/sırası değiştiği için eski kayıtlar yüklenmez; kayıt dönüştürücü
+  yazılmaz (oyun henüz yayınlanmadı). (3) Deniz bölgelerinin alanı dış veri kullanılmadan eldeki kara verisinden,
+  su üzerinden en kısa yol bölüşümüyle türetilir; denizler haritada seçilebilir olur. (4) İkisi tek kartta
+  (TASK-0023) iki teslim olarak yapılır.
+- **Onay kaydı:** Kullanıcı: "hepsini önerileni yap" (2026-10-31) — agent önerileri: eşik 500 km², komşusuz
+  kırıntı kalsın, eski kayıt bozulmasını kabul, deniz alanı eldeki veriden, tek kart.
+- **Durum:** GEÇERLİ
+
 ## DEC-0071 — TASK-0022 onayı: harita verisini varlık bazlı ayrı dosyalarda tutma (devlet/bölge/şehir/deniz)
 
 - **Tarih:** 2026-10-30

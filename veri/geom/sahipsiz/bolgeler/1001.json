@@ -1,21 +1,18 @@
 {
  "indeks": 1001,
  "durum": "sahipsiz",
- "ad": "Bong",
- "ulke": "Liberia",
+ "ad": "Amazonas Departmantı",
+ "ulke": "Colombia",
  "d": -1,
  "k": "tahmin",
  "p": [
   [
    [
-    -6321,
-    -6296,
-    6321,
-    6322,
-    6323,
-    6324,
-    -2175,
-    -2179
+    -6923,
+    6932,
+    -4525,
+    6933,
+    -6930
    ]
   ]
  ]

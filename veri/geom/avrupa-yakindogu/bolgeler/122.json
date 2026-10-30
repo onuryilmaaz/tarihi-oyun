@@ -1,16 +1,24 @@
 {
  "indeks": 122,
- "ad": "Karlovy Vary ili",
- "ulke": "Czech Republic",
- "d": 66,
+ "ad": "Pärnu ili",
+ "ulke": "Estonia",
+ "d": 38,
  "k": "tahmin",
  "p": [
   [
    [
-    -827,
-    839,
-    840,
-    -829
+    976,
+    977,
+    978,
+    979,
+    980,
+    981,
+    -971
+   ]
+  ],
+  [
+   [
+    982
    ]
   ]
  ]

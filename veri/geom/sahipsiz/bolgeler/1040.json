@@ -1,17 +1,19 @@
 {
  "indeks": 1040,
  "durum": "sahipsiz",
- "ad": "Alberta",
- "ulke": "Canada",
+ "ad": "Santa Cruz",
+ "ulke": "Argentina",
  "d": -1,
  "k": "tahmin",
  "p": [
   [
    [
-    -6568,
-    -6474,
-    6572,
-    6573
+    -7051,
+    7136,
+    7137,
+    7138,
+    7139,
+    -7071
    ]
   ]
  ]

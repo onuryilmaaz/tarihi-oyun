@@ -1,17 +1,23 @@
 {
  "indeks": 2275,
  "durum": "sahipsiz",
- "ad": "Manchester",
- "ulke": "Jamaica",
+ "ad": "Artemisa ili",
+ "ulke": "Cuba",
  "d": -1,
  "k": "tahmin",
  "p": [
   [
    [
-    13729,
-    -13729,
-    -13717,
-    13730
+    15003,
+    -15003,
+    -15000,
+    15004,
+    15005
+   ]
+  ],
+  [
+   [
+    15006
    ]
   ]
  ]

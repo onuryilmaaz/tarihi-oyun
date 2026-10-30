@@ -1,18 +1,19 @@
 {
  "indeks": 1306,
  "durum": "sahipsiz",
- "ad": "Hodh El Garbi",
- "ulke": "Mauritania",
+ "ad": "East Darfur",
+ "ulke": "Sudan",
  "d": -1,
  "k": "tahmin",
  "p": [
   [
    [
-    -6343,
-    -2830,
-    8053,
-    8054,
-    -8052
+    -2200,
+    -2191,
+    -7933,
+    8558,
+    -8522,
+    -8558
    ]
   ]
  ]

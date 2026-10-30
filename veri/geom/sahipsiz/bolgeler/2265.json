@@ -1,15 +1,19 @@
 {
  "indeks": 2265,
  "durum": "sahipsiz",
- "ad": "Island Harbour",
- "ulke": "Anguilla",
+ "ad": "Yap",
+ "ulke": "Federated States of Micronesia",
  "d": -1,
  "k": "tahmin",
  "p": [
   [
    [
-    13701,
-    -13666
+    14973
+   ]
+  ],
+  [
+   [
+    14974
    ]
   ]
  ]

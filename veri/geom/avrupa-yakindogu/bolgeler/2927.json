@@ -1,15 +1,16 @@
 {
  "indeks": 2927,
- "ad": "Ajloun Yönetimi",
- "ulke": "Jordan",
- "d": 11,
- "k": "ohm:2960096",
+ "ad": "Gabrova ili",
+ "ulke": "Bulgaria",
+ "d": 0,
+ "k": "tahmin",
  "p": [
   [
    [
-    -5701,
-    -5688,
-    16076
+    -16719,
+    16726,
+    -4978,
+    -16720
    ]
   ]
  ]

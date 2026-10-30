@@ -1,19 +1,21 @@
 {
  "indeks": 2784,
  "durum": "sahipsiz",
- "ad": "Wyoming",
- "ulke": "United States of America",
+ "ad": "Singida Bölgesi",
+ "ulke": "United Republic of Tanzania",
  "d": -1,
  "k": "tahmin",
  "p": [
   [
    [
-    -6564,
-    -6572,
-    15662,
-    15663,
-    15664,
-    -15660
+    -15704,
+    16449,
+    -243,
+    16450,
+    16451,
+    16452,
+    -8013,
+    -15706
    ]
   ]
  ]

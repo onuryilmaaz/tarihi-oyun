@@ -1,14 +1,18 @@
 {
  "indeks": 2642,
  "durum": "sahipsiz",
- "ad": "?",
+ "ad": "Santander",
  "ulke": "Colombia",
  "d": -1,
  "k": "tahmin",
  "p": [
   [
    [
-    15112
+    -7249,
+    -7265,
+    -9678,
+    -9690,
+    -7243
    ]
   ]
  ]

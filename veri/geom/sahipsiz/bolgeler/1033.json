@@ -1,15 +1,22 @@
 {
  "indeks": 1033,
  "durum": "sahipsiz",
- "ad": "Cebelitarık",
- "ulke": "Gibraltar",
+ "ad": "Araucanía bölgesi",
+ "ulke": "Chile",
  "d": -1,
  "k": "tahmin",
  "p": [
   [
    [
-    6424,
-    6425
+    -7036,
+    7040,
+    7041,
+    7042
+   ]
+  ],
+  [
+   [
+    7043
    ]
   ]
  ]

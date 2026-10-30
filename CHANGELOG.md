@@ -1,5 +1,18 @@
 # CHANGELOG
 
+## 2026-10-31 — TASK-0023: sınır kırıntıları birleştirildi, deniz bölgeleri seçilebilir (Claude)
+
+- **Yeni `araclar/birim-birlestir.mjs`** (`npm run senaryo` içinde): 500 km² altı birimler ve kopuk küçük parçalar
+  aynı devletin en uzun ortak sınırlı komşusuna katılır. 3637 → 3146 birim; sahipli birimlerde 500 km² altı
+  317 → 46. Devlet sınırları değişmedi (devlet başına alan farkı ≤ %0,01). Çakışan kaynak poligonlu 26 birim
+  dokunulmadan kaldı. `veri/geom/` ayrılmış dosyaları yeni haritadan yeniden üretildi (`harita-derle` doğrulaması geçti).
+- **Yeni `araclar/deniz-alan-uret.mjs`**: 29 deniz bölgesine karadan türetilmiş alan geometrisi (`harita.json`:
+  `denizAlanlari`, `denizSinirlari`). Dış veri yok.
+- **İstemci:** denize tıklama/ipucu, seçili denizin vurgusu, açık su bölge sınırları, deniz bilgi paneli (kontrol,
+  limanlar, komşu denizler, donanmalar, "buraya yelken açsın").
+- **Kayıt uyumu:** senaryo sürümü değişti; önceki kayıtlar yüklenmez (DEC-0072).
+- `npm test` (253), `npm run typecheck`, `npm run build` geçti.
+
 ## 2026-10-30 — TASK-0022 (1. faz): harita verisini varlık bazlı ayrı dosyalarda tutma (Claude)
 
 - **Yeni `araclar/harita-ayristir.mjs`** (`npm run harita:ayristir`): `harita.json`/`deniz.json`'daki devlet/
