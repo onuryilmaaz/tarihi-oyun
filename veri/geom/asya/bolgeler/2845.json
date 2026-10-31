@@ -1,16 +1,19 @@
 {
  "indeks": 2845,
- "ad": "Thăng Long güneydoğusu",
- "ulke": "Vietnam",
- "d": 100,
+ "ad": "Phnom Penh kuzeydoğusu 3",
+ "ulke": "Cambodia",
+ "d": 102,
  "k": "tahmin",
  "p": [
   [
    [
-    16845,
-    16846,
-    16847,
-    -16844
+    -16979,
+    -16962,
+    -16970,
+    16982,
+    16983,
+    16984,
+    16985
    ]
   ]
  ]

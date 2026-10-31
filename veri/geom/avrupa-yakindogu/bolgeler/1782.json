@@ -1,19 +1,18 @@
 {
  "indeks": 1782,
- "ad": "Kolojvar güneydoğusu 4",
- "ulke": "Romania",
- "d": 27,
+ "ad": "Saray kuzeydoğusu 2",
+ "ulke": "Russia",
+ "d": 32,
  "k": "tahmin",
  "p": [
   [
    [
-    -9425,
-    -9440,
-    -9499,
-    9565,
-    9566,
-    9567,
-    -9562
+    9895,
+    9896,
+    9897,
+    -9874,
+    9898,
+    9899
    ]
   ]
  ]

@@ -1,16 +1,18 @@
 {
  "indeks": 2963,
- "ad": "Malakka güneydoğusu",
- "ulke": "Malaysia",
- "d": 109,
+ "ad": "Kotte kuzeydoğusu 2",
+ "ulke": "Sri Lanka",
+ "d": 125,
  "k": "tahmin",
  "p": [
   [
    [
-    17490,
-    17491,
-    17492,
-    -17485
+    -17595,
+    -17593,
+    -17591,
+    -17602,
+    17605,
+    17606
    ]
   ]
  ]

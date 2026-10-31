@@ -1,19 +1,17 @@
 {
  "indeks": 1732,
- "ad": "Venedik doğusu",
- "ulke": "Croatia",
- "d": 22,
- "k": "ohm:2800700",
+ "ad": "Kolojvar kuzeybatısı",
+ "ulke": "Romania",
+ "d": 27,
+ "k": "tahmin",
  "p": [
   [
    [
-    8966,
-    8967,
-    8968,
-    8969,
-    8970,
-    8971,
-    8972
+    -9406,
+    -9396,
+    -9425,
+    9425,
+    9426
    ]
   ]
  ]

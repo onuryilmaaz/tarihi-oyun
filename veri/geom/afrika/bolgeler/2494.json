@@ -1,16 +1,19 @@
 {
  "indeks": 2494,
- "ad": "Niani batısı 6",
- "ulke": "Guinea",
- "d": 79,
+ "ad": "Büyük Zimbabve kuzeydoğusu",
+ "ulke": "Zimbabwe",
+ "d": 84,
  "k": "tahmin",
  "p": [
   [
    [
-    -15046,
-    -15060,
-    15064,
-    15065
+    -15140,
+    -15138,
+    15145,
+    2991,
+    2980,
+    15146,
+    15147
    ]
   ]
  ]

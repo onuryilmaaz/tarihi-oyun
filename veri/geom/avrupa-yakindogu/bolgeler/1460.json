@@ -1,17 +1,18 @@
 {
  "indeks": 1460,
- "ad": "Uzunköprü",
- "ulke": "Turkey",
- "d": 0,
- "k": "tahmin",
+ "ad": "Roșiori de Vede",
+ "ulke": "Romania",
+ "d": 28,
+ "k": "ohm:2929115",
+ "s": "Roșiori de Vede",
  "p": [
   [
    [
-    -7355,
-    -7444,
-    7458,
-    7459,
-    -7340
+    -7510,
+    -7595,
+    -7617,
+    7643,
+    7644
    ]
   ]
  ]

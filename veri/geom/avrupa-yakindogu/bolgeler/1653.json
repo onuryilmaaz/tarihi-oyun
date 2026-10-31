@@ -1,20 +1,14 @@
 {
  "indeks": 1653,
- "ad": "Medine doğusu",
- "ulke": "Saudi Arabia",
- "d": 11,
- "k": "tahmin",
+ "ad": "Kandiye güneydoğusu",
+ "ulke": "Greece",
+ "d": 22,
+ "k": "ohm:2800700",
  "p": [
   [
    [
-    -8474,
-    -8436,
-    -8450,
-    8485,
-    5990,
-    5993,
-    5995,
-    8486
+    8622,
+    -8619
    ]
   ]
  ]

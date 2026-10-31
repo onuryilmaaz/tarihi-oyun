@@ -1,25 +1,20 @@
 {
  "indeks": 760,
  "durum": "sahipsiz",
- "ad": "Nunavut",
+ "ad": "Newfoundland ve Labrador",
  "ulke": "Canada",
  "d": -1,
  "k": "tahmin",
  "p": [
   [
    [
-    4802
+    4803
    ]
   ],
   [
    [
-    4803,
-    -1952
-   ]
-  ],
-  [
-   [
-    4805
+    4804,
+    -1954
    ]
   ],
   [
@@ -205,6 +200,11 @@
   [
    [
     4842
+   ]
+  ],
+  [
+   [
+    4843
    ]
   ]
  ]

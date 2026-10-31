@@ -1,17 +1,19 @@
 {
  "indeks": 1456,
- "ad": "Karadeniz Ereğli",
- "ulke": "Turkey",
- "d": 0,
+ "ad": "Bobovac",
+ "ulke": "Bosnia and Herzegovina",
+ "d": 17,
  "k": "tahmin",
+ "s": "Bobovac",
  "p": [
   [
    [
-    -7388,
-    -7372,
-    -7366,
-    7447,
-    7448
+    -7520,
+    -7464,
+    -7487,
+    -7593,
+    7625,
+    7626
    ]
   ]
  ]

@@ -1,18 +1,17 @@
 {
  "indeks": 2662,
- "ad": "Herat kuzeybatısı",
- "ulke": "Turkmenistan",
- "d": 90,
+ "ad": "Karakurum",
+ "ulke": "Mongolia",
+ "d": 94,
  "k": "tahmin",
+ "s": "Karakurum",
  "p": [
   [
    [
-    15758,
-    -8211,
-    15759,
-    15760,
-    15761,
-    15762
+    -15984,
+    -15980,
+    15997,
+    15998
    ]
   ]
  ]

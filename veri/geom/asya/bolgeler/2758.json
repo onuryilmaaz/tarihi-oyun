@@ -1,17 +1,16 @@
 {
  "indeks": 2758,
- "ad": "Kanton kuzeybatısı 4",
- "ulke": "China",
- "d": 97,
+ "ad": "Kyoto kuzeydoğusu 12",
+ "ulke": "Japan",
+ "d": 99,
  "k": "tahmin",
  "p": [
   [
    [
-    16383,
-    -16378,
-    16384,
-    16385,
-    -16241
+    -16584,
+    -16580,
+    16590,
+    16591
    ]
   ]
  ]

@@ -1,20 +1,18 @@
 {
  "indeks": 2658,
- "ad": "Semerkant güneydoğusu 3",
- "ulke": "Afghanistan",
- "d": 90,
+ "ad": "Karakurum güneyi 3",
+ "ulke": "Mongolia",
+ "d": 94,
  "k": "tahmin",
  "p": [
   [
    [
-    15745,
-    2613,
-    688,
-    15746,
-    15747,
-    15748,
-    15749,
-    15750
+    -15935,
+    -15946,
+    -15978,
+    15978,
+    15979,
+    15980
    ]
   ]
  ]

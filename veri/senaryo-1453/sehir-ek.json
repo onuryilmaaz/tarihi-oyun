@@ -1,0 +1,6 @@
+{
+  "aciklama": "TASK-0025: elle eklenen şehirler (Wikidata seçiminden önce, mesafe kuralından bağımsız). devlet: senaryo devlet kimliği.",
+  "sehirler": [
+    { "ad": "Üsküdar", "lon": 29.0153, "lat": 41.0226, "devlet": "osm" }
+  ]
+}

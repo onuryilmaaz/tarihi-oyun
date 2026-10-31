@@ -1,17 +1,20 @@
 {
  "indeks": 1599,
- "ad": "Tebriz kuzeybatısı",
- "ulke": "Iran",
- "d": 10,
- "k": "tahmin",
+ "ad": "Kahire güneydoğusu 2",
+ "ulke": "Egypt",
+ "d": 11,
+ "k": "ohm:2960096",
  "p": [
   [
    [
-    -8235,
-    -8215,
-    -8239,
-    8245,
-    8246
+    8316,
+    8317,
+    8318
+   ]
+  ],
+  [
+   [
+    8319
    ]
   ]
  ]

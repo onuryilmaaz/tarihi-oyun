@@ -1,17 +1,18 @@
 {
  "indeks": 1435,
- "ad": "Gölyaka",
- "ulke": "Turkey",
+ "ad": "Misivri",
+ "ulke": "Bulgaria",
  "d": 0,
  "k": "tahmin",
+ "s": "Misivri",
  "p": [
   [
    [
-    -7298,
-    -7373,
-    7387,
-    7388,
-    -7367
+    -7318,
+    7475,
+    7476,
+    7477,
+    -7473
    ]
   ]
  ]

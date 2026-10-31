@@ -1,16 +1,18 @@
 {
  "indeks": 1289,
- "ad": "Vibo Valentia",
- "ulke": "Italy",
- "d": 45,
- "k": "ohm:2751179",
+ "ad": "Larende",
+ "ulke": "Turkey",
+ "d": 5,
+ "k": "tahmin",
+ "s": "Larende",
  "p": [
   [
    [
-    -6615,
-    6764,
-    6765,
-    6766
+    -6740,
+    -6745,
+    6784,
+    6785,
+    6786
    ]
   ]
  ]

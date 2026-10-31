@@ -64,9 +64,19 @@ function birlestir(harita, esik, haric) {
   }));
 
   // Şehir → birim (iki şehri aynı birime koymamak için)
-  const sehirli = new Set();
+  const sehirli = new Set(B.map((b, i) => (b.s ? i : -1)).filter((i) => i >= 0)); // bölge üretiminden gelen şehir etiketi
   for (const s of harita.sehirler) {
-    const bi = B.findIndex((b) => b.p.some((poly) => icinde(halka(poly[0]), s.x, s.y) && !poly.slice(1).some((r) => icinde(halka(r), s.x, s.y))));
+    let bi = B.findIndex((b) => b.p.some((poly) => icinde(halka(poly[0]), s.x, s.y) && !poly.slice(1).some((r) => icinde(halka(r), s.x, s.y))));
+    if (bi < 0) { // kıyı dışında kalan liman şehri (ör. lagündeki Venedik): en yakın köşesi olan sahipli birim
+      let enD = Infinity;
+      B.forEach((b, i) => {
+        if (b.d < 0) return;
+        for (const poly of b.p) for (const [x, y] of halka(poly[0])) {
+          const dd = (x - s.x) ** 2 + (y - s.y) ** 2;
+          if (dd < enD) { enD = dd; bi = i; }
+        }
+      });
+    }
     if (bi >= 0) sehirli.add(bi);
   }
 
@@ -134,7 +144,8 @@ function birlestir(harita, esik, haric) {
   for (const [k, liste] of [...kp].sort((a, b) => a[0] - b[0])) {
     const uyeler = [...new Set(liste.map((pi) => birimParcalari.findIndex((l) => l.includes(pi))))];
     const degismedi = uyeler.length === 1 && uyeler[0] === k && liste.length === birimParcalari[k].length;
-    const enBuyuk = uyeler.reduce((x, y) => {
+    // Kimlik yalnızca kümeye bütünüyle katılan birimlerden gelir; kopuk parça veren komşu kimlik vermez
+    const enBuyuk = uyeler.filter((u) => kok(u) === k).reduce((x, y) => {
       const ax = birimParcalari[x].reduce((t, pi) => t + parcalar[pi].alan, 0), ay = birimParcalari[y].reduce((t, pi) => t + parcalar[pi].alan, 0);
       return ay > ax ? y : x;
     });
@@ -145,7 +156,10 @@ function birlestir(harita, esik, haric) {
       if (Math.abs(olan - beklenen) > Math.max(1, beklenen * 0.001)) bozuk.push(...uyeler);
     }
     yeniIndeks.set(k, birimler.length);
-    birimler.push({ ...kimlik, d: B[k].d, p: yeniP });
+    // Şehrin toprağı bütünüyle katıldıysa ad ve etiket şehirden gelir (yalnızca kopuk parça veren komşu sayılmaz)
+    const sehirUye = uyeler.find((u) => B[u].s && kok(u) === k);
+    const { s: _s, ...kimlikSehirsiz } = kimlik;
+    birimler.push({ ...kimlikSehirsiz, ...(sehirUye !== undefined ? { ad: B[sehirUye].ad, s: B[sehirUye].s } : {}), d: B[k].d, p: yeniP });
   }
   const eskidenYeniye = B.map((_, i) => yeniIndeks.get(kok(i)));
 

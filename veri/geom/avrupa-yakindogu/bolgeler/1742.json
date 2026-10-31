@@ -1,17 +1,17 @@
 {
  "indeks": 1742,
- "ad": "Venedik kuzeydoğusu",
- "ulke": "Italy",
- "d": 22,
- "k": "ohm:2800700",
+ "ad": "Buda kuzeybatısı",
+ "ulke": "Slovakia",
+ "d": 27,
+ "k": "tahmin",
  "p": [
   [
    [
-    -9155,
-    -9112,
-    -9120,
-    9190,
-    9191
+    -9432,
+    -9440,
+    9477,
+    9478,
+    -9473
    ]
   ]
  ]

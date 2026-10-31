@@ -61,7 +61,7 @@ export function bolgeleriUret(harita, etopo, { log = () => {}, pilot = new Set()
     const sonuc = devletiBol(T, pSehirler.length, pSehirler, yukseklik, nehirler, { sehirKipi: true });
     for (const r of sonuc) {
       const eski = kimlikBul(liste, r.ornek);
-      yeniBirimler.push({ ad: r.ad, ulke: eski.ulke, d: r.sehir.d, k: eski.k, mp: r.mp });
+      yeniBirimler.push({ ad: r.ad, ulke: eski.ulke, d: r.sehir.d, k: eski.k, s: r.sehir.ad, mp: r.mp });
     }
     log(`pilot: ${pilot.size} devlet, ${liste.length} birim → ${sonuc.length} şehir toprağı`);
   }
@@ -72,12 +72,15 @@ export function bolgeleriUret(harita, etopo, { log = () => {}, pilot = new Set()
     const liste = devletBirimleri[d].filter((i) => birimPoly[i].length);
     if (!liste.length) return;
     const k = Math.max(liste.length, sehirler[d].length);
-    if (liste.length <= 1 && k <= 1) { for (const i of liste) yeniBirimler.push({ ...kimlik(harita.birimler[i]), mp: birimPoly[i] }); return; }
+    if (liste.length <= 1 && k <= 1) {
+      for (const i of liste) yeniBirimler.push({ ...kimlik(harita.birimler[i]), s: harita.sehirler[sehirler[d][0]]?.ad, mp: birimPoly[i] });
+      return;
+    }
     const T = polygonClipping.union(...liste.filter((i) => birimPoly[i].length).map((i) => birimPoly[i]));
     const sonuc = devletiBol(T, k, sehirler[d].map((i) => harita.sehirler[i]), yukseklik, nehirler);
     for (const r of sonuc) {
       const eski = kimlikBul(liste, r.ornek);
-      yeniBirimler.push({ ad: r.ad, ulke: eski.ulke, d, k: eski.k, mp: r.mp });
+      yeniBirimler.push({ ad: r.ad, ulke: eski.ulke, d, k: eski.k, s: r.sehir?.ad, mp: r.mp });
     }
     degisen++;
     log(`${dv.ad}: ${liste.length} birim → ${sonuc.length} bölge`);
@@ -97,7 +100,7 @@ export function bolgeleriUret(harita, etopo, { log = () => {}, pilot = new Set()
     const g = topo.objects.b.geometries[i];
     const p = (g.type === "MultiPolygon" ? g.arcs : g.type === "Polygon" ? [g.arcs] : [])
       .map((poly) => poly.map((h) => h.filter((r) => !bos[r < 0 ? ~r : r])).filter((h) => h.length)).filter((poly) => poly.length);
-    return { ad: b.ad, ulke: b.ulke, d: b.d, k: b.k, p };
+    return { ad: b.ad, ulke: b.ulke, d: b.d, k: b.k, ...(b.s ? { s: b.s } : {}), p }; // s: toprağın şehri
   }).filter((b) => b.p.length);
   return { harita: { ...harita, arklar, birimler }, rapor: { devlet: degisen, birim: birimler.length, yay: arklar.length } };
 }
@@ -129,23 +132,29 @@ function devletiBol(T, k, sehirler, yukseklik, nehirler, { sehirKipi = false } =
   // --- Izgara
   let x0 = Infinity, y0 = Infinity, x1 = -Infinity, y1 = -Infinity;
   for (const poly of T) for (const [x, y] of poly[0]) { x0 = Math.min(x0, x); x1 = Math.max(x1, x); y0 = Math.min(y0, y); y1 = Math.max(y1, y); }
-  const r = Math.min(0.15, Math.max(0.006, Math.sqrt(((x1 - x0) * (y1 - y0)) / (sehirKipi ? HEDEF_HUCRE * 4 : HEDEF_HUCRE))));
+  const r = Math.min(0.15, Math.max(0.006, Math.sqrt(((x1 - x0) * (y1 - y0)) / (sehirKipi ? HEDEF_HUCRE * 10 : HEDEF_HUCRE))));
   x0 -= 3 * r; y0 -= 3 * r; x1 += 3 * r; y1 += 3 * r;
   const W = Math.ceil((x1 - x0) / r), H = Math.ceil((y1 - y0) / r), N = W * H;
   const merkez = (c) => [x0 + ((c % W) + 0.5) * r, y0 + (Math.floor(c / W) + 0.5) * r];
-  const ic = new Uint8Array(N);
-  for (let j = 0; j < H; j++) { // tek-çift tarama (birleşim çakışmasız)
-    const yc = y0 + (j + 0.5) * r, xs = [];
-    for (const poly of T) for (const h of poly) for (let t = 0; t + 1 < h.length; t++) {
-      const [ax, ay] = h[t], [bx, by] = h[t + 1];
-      if ((ay > yc) !== (by > yc)) xs.push(ax + ((yc - ay) / (by - ay)) * (bx - ax));
+  // ic: hücrenin düştüğü kara parçası (T poligonu) + 1. Bölüşüm parçalar arasında atlamaz: dar bir boğaz hücreden
+  // ince olsa bile karşı yakadaki şehir bu yakaya toprak alamaz.
+  const ic = new Int32Array(N);
+  T.forEach((poly, pi) => {
+    let py0 = Infinity, py1 = -Infinity;
+    for (const [, y] of poly[0]) { py0 = Math.min(py0, y); py1 = Math.max(py1, y); }
+    for (let j = Math.max(0, Math.floor((py0 - y0) / r)); j < Math.min(H, Math.ceil((py1 - y0) / r) + 1); j++) {
+      const yc = y0 + (j + 0.5) * r, xs = [];
+      for (const h of poly) for (let t = 0; t + 1 < h.length; t++) {
+        const [ax, ay] = h[t], [bx, by] = h[t + 1];
+        if ((ay > yc) !== (by > yc)) xs.push(ax + ((yc - ay) / (by - ay)) * (bx - ax));
+      }
+      xs.sort((a, b) => a - b);
+      for (let t = 0; t + 1 < xs.length; t += 2) {
+        const i0 = Math.max(0, Math.ceil((xs[t] - x0) / r - 0.5)), i1 = Math.min(W - 1, Math.floor((xs[t + 1] - x0) / r - 0.5));
+        for (let i = i0; i <= i1; i++) ic[j * W + i] = pi + 1;
+      }
     }
-    xs.sort((a, b) => a - b);
-    for (let t = 0; t + 1 < xs.length; t += 2) {
-      const i0 = Math.max(0, Math.ceil((xs[t] - x0) / r - 0.5)), i1 = Math.min(W - 1, Math.floor((xs[t + 1] - x0) / r - 0.5));
-      for (let i = i0; i <= i1; i++) ic[j * W + i] = 1;
-    }
-  }
+  });
 
   // --- Maliyet: yükseklik ve nehir hücreleri
   const z = new Float32Array(N), nehir = new Uint8Array(N);
@@ -188,7 +197,7 @@ function devletiBol(T, k, sehirler, yukseklik, nehirler, { sehirKipi = false } =
         const ii = i + di, jj = j + dj;
         if (ii < 0 || jj < 0 || ii >= W || jj >= H) continue;
         const n = jj * W + ii;
-        if (yalnizIc && !ic[n]) continue;
+        if (yalnizIc && ic[n] !== ic[c]) continue; // dışarı ve başka kara parçasına geçilmez
         const dd = d0 + (yalnizIc ? bedel(c, n, di, dj) : Math.hypot(di ? yatay[j] : 0, dj ? dikey[j] : 0));
         if (dd < uzak[n]) { uzak[n] = dd; etiket[n] = etiket[c]; yigin.it(n, dd); }
       }
@@ -198,18 +207,28 @@ function devletiBol(T, k, sehirler, yukseklik, nehirler, { sehirKipi = false } =
   const icHucreler = [];
   for (let c = 0; c < N; c++) if (ic[c]) icHucreler.push(c);
   if (!icHucreler.length) return [{ ad: sehirler[0]?.ad ?? "", mp: T, ornek: [T[0][0][0]] }];
-  const enYakinIc = (x, y) => {
+  // Tohum çok küçük kara parçasına (ör. lagün adacığı) konmaz; bölgesi sadeleştirmede kaybolurdu
+  const parcaHucre = new Map();
+  for (const c of icHucreler) parcaHucre.set(ic[c], (parcaHucre.get(ic[c]) ?? 0) + 1);
+  const buyukParca = [...parcaHucre.values()].some((n) => n >= 10);
+  const enYakinIc = (x, y, dolu = null) => {
     let en = icHucreler[0], enD = Infinity;
-    for (const c of icHucreler) { const [cx, cy] = merkez(c); const dd = (cx - x) ** 2 + (cy - y) ** 2; if (dd < enD) { enD = dd; en = c; } }
+    for (const c of icHucreler) {
+      if (dolu?.has(c) || (buyukParca && parcaHucre.get(ic[c]) < 10)) continue;
+      const [cx, cy] = merkez(c), dd = (cx - x) ** 2 + (cy - y) ** 2;
+      if (dd < enD) { enD = dd; en = c; }
+    }
     return en;
   };
 
   // --- Tohumlar: şehirler sabit; büyük kopuk parçalar (ada) kendi tohumunu alır; kalanı en uzak nokta
   const tohum = [], tohumSehir = [];
   const sabit = new Set();
+  const dolu = new Set();
   for (const s of sehirler) {
-    const c = enYakinIc(s.x, s.y);
+    const c = enYakinIc(s.x, s.y, sehirKipi ? dolu : null); // şehir kipinde yakın iki şehir ayrı hücre alır
     if (tohum.includes(c)) continue;
+    dolu.add(c);
     sabit.add(tohum.length); tohum.push(c); tohumSehir.push(s);
   }
   if (sehirKipi) k = tohum.length; // yalnızca şehirler; şehirsiz adalar en yakın şehre düşer
@@ -227,7 +246,7 @@ function devletiBol(T, k, sehirler, yukseklik, nehirler, { sehirKipi = false } =
       const i = c % W, j = (c - i) / W;
       for (const [di, dj] of komsu) {
         const n = (j + dj) * W + i + di;
-        if (i + di >= 0 && i + di < W && j + dj >= 0 && j + dj < H && ic[n] && !gor.has(n)) { gor.add(n); kuyruk.push(n); }
+        if (i + di >= 0 && i + di < W && j + dj >= 0 && j + dj < H && ic[n] === ic[c] && !gor.has(n)) { gor.add(n); kuyruk.push(n); }
       }
     }
     if (bilesen.length < ortalama * 0.4 && tohum.length) { for (const c of bilesen) { etiket[c] = -2; } continue; } // küçük ada: sonra en yakına
@@ -387,7 +406,8 @@ function devletiBol(T, k, sehirler, yukseklik, nehirler, { sehirKipi = false } =
     const [cx, cy] = b.ornek.reduce((a, p) => [a[0] + p[0] / b.ornek.length, a[1] + p[1] / b.ornek.length], [0, 0]);
     const sehir = sehirler.find((s) => b.mp.some((poly) => icinde(poly[0], s.x, s.y) && !poly.slice(1).some((h) => icinde(h, s.x, s.y))));
     let ad;
-    if (sehirKipi) { b.sehir = tohumSehir[b.e]; b.ad = b.sehir.ad; continue; }
+    // Şehir tohumundan büyüyen bölge o şehrindir (şehrin noktası lagünde/kıyı dışında olsa bile)
+    if (tohumSehir[b.e]) { b.sehir = tohumSehir[b.e]; b.ad = b.sehir.ad; continue; }
     if (sehir) ad = sehir.ad;
     else if (sehirler.length) {
       const en = sehirler.reduce((a, s) => ((s.x - cx) ** 2 + (s.y - cy) ** 2 < (a.x - cx) ** 2 + (a.y - cy) ** 2 ? s : a));

@@ -1,18 +1,14 @@
 {
  "indeks": 1680,
- "ad": "Kudüs güneydoğusu",
- "ulke": "Jordan",
- "d": 11,
- "k": "tahmin",
+ "ad": "Cenova güneyi 2",
+ "ulke": "France",
+ "d": 23,
+ "k": "ohm:2851376",
  "p": [
   [
    [
-    -8557,
-    8577,
-    -2675,
-    8578,
-    8579,
-    8580
+    -9019,
+    9031
    ]
   ]
  ]

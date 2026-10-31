@@ -1,18 +1,19 @@
 {
  "indeks": 1616,
- "ad": "Mekke güneydoğusu",
- "ulke": "Saudi Arabia",
+ "ad": "İskenderiye batısı 4",
+ "ulke": "Libya",
  "d": 11,
- "k": "tahmin",
+ "k": "ohm:2960096",
  "p": [
   [
    [
-    8345,
-    8346,
-    8347,
-    8348,
-    8349,
-    8350
+    -8345,
+    -8333,
+    -8350,
+    8385,
+    8386,
+    8387,
+    8388
    ]
   ]
  ]

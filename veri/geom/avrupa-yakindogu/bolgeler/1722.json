@@ -1,14 +1,20 @@
 {
  "indeks": 1722,
- "ad": "Kandiye güneydoğusu",
- "ulke": "Greece",
- "d": 22,
- "k": "ohm:2800700",
+ "ad": "Kolojvar doğusu 3",
+ "ulke": "Romania",
+ "d": 27,
+ "k": "tahmin",
  "p": [
   [
    [
-    8838,
-    -8835
+    -9379,
+    -9350,
+    -9361,
+    9381,
+    9382,
+    9383,
+    9384,
+    9385
    ]
   ]
  ]

@@ -1,14 +1,19 @@
 {
  "indeks": 1353,
- "ad": "Lecce",
- "ulke": "Italy",
- "d": 45,
- "k": "ohm:2751179",
+ "ad": "Akdağmadeni",
+ "ulke": "Turkey",
+ "d": 0,
+ "k": "tahmin",
+ "s": "Akdağmadeni",
  "p": [
   [
    [
-    7048,
-    7049
+    -6931,
+    -7076,
+    7093,
+    7094,
+    7095,
+    7096
    ]
   ]
  ]

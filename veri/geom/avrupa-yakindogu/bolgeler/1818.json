@@ -1,19 +1,17 @@
 {
  "indeks": 1818,
- "ad": "Buda kuzeydoğusu 5",
- "ulke": "Slovakia",
- "d": 27,
+ "ad": "Kiev kuzeydoğusu",
+ "ulke": "Ukraine",
+ "d": 35,
  "k": "tahmin",
  "p": [
   [
    [
-    -9720,
-    -9684,
-    -9723,
-    9732,
-    9733,
-    9734,
-    9735
+    -10241,
+    -10246,
+    10288,
+    10289,
+    10290
    ]
   ]
  ]

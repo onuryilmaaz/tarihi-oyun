@@ -1,20 +1,19 @@
 {
  "indeks": 1350,
- "ad": "Adilcevaz",
- "ulke": "Turkey",
- "d": 9,
- "k": "tahmin",
+ "ad": "Corigliano Calabro",
+ "ulke": "Italy",
+ "d": 45,
+ "k": "ohm:2751179",
+ "s": "Corigliano Calabro",
  "p": [
   [
    [
-    -6991,
-    -6931,
-    7034,
-    7035,
-    7036,
-    7037,
-    7038,
-    7039
+    7079,
+    -6760,
+    -6829,
+    7080,
+    7081,
+    -7001
    ]
   ]
  ]

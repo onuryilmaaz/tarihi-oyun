@@ -1,19 +1,18 @@
 {
  "indeks": 1571,
- "ad": "İsfahan kuzeydoğusu",
- "ulke": "Iran",
- "d": 10,
- "k": "tahmin",
+ "ad": "Mekke kuzeydoğusu",
+ "ulke": "Saudi Arabia",
+ "d": 11,
+ "k": "ohm:2960096",
  "p": [
   [
    [
-    -8094,
-    -8101,
-    8128,
-    8129,
-    8130,
-    8131,
-    8132
+    -8176,
+    -8204,
+    8218,
+    8219,
+    8220,
+    8221
    ]
   ]
  ]

@@ -1,19 +1,17 @@
 {
  "indeks": 2897,
- "ad": "Phnom Penh güneydoğusu 4",
- "ulke": "Vietnam",
- "d": 102,
+ "ad": "Malakka kuzeybatısı 2",
+ "ulke": "Malaysia",
+ "d": 109,
  "k": "tahmin",
  "p": [
   [
    [
-    -17101,
-    -17107,
-    -17091,
-    17107,
-    -16966,
-    17108,
-    17109
+    -17284,
+    17297,
+    17298,
+    17299,
+    17300
    ]
   ]
  ]

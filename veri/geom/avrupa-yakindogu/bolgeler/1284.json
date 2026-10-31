@@ -1,16 +1,18 @@
 {
  "indeks": 1284,
- "ad": "Silifke",
- "ulke": "Turkey",
- "d": 5,
- "k": "tahmin",
+ "ad": "Vibo Valentia",
+ "ulke": "Italy",
+ "d": 45,
+ "k": "ohm:2751179",
+ "s": "Vibo Valentia",
  "p": [
   [
    [
-    6742,
-    6743,
-    6744,
-    -6739
+    -6616,
+    6757,
+    6758,
+    6759,
+    6760
    ]
   ]
  ]

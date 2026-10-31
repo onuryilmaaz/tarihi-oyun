@@ -1,26 +1,17 @@
 {
  "indeks": 1706,
- "ad": "Şamahı güneydoğusu",
- "ulke": "Azerbaijan",
- "d": 13,
+ "ad": "Belgrad kuzeybatısı",
+ "ulke": "Republic of Serbia",
+ "d": 27,
  "k": "tahmin",
  "p": [
   [
    [
-    -8680,
-    8688,
-    8689,
-    -8686
-   ]
-  ],
-  [
-   [
-    8690
-   ]
-  ],
-  [
-   [
-    8691
+    -9173,
+    -9235,
+    9329,
+    9330,
+    9331
    ]
   ]
  ]

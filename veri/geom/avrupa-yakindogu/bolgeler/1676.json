@@ -1,17 +1,14 @@
 {
  "indeks": 1676,
- "ad": "İskenderiye güneybatısı 7",
- "ulke": "Egypt",
- "d": 11,
- "k": "tahmin",
+ "ad": "Cenova güneyi",
+ "ulke": "France",
+ "d": 23,
+ "k": "ohm:2851376",
  "p": [
   [
    [
-    -8548,
-    -8520,
-    -8547,
-    8564,
-    8565
+    9018,
+    9019
    ]
   ]
  ]

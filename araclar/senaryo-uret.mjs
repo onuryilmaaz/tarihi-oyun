@@ -25,7 +25,8 @@ const { harita: kirintisiz } = birimleriBirlestir(JSON.parse(fs.readFileSync(new
 // kesişimde doğan küçük kopuk parçalar yine aynı devletin komşusuna katılır
 // TASK-0025 pilot: Anadolu + Balkanlar'da şehir listesi Wikidata adaylarıyla genişler, toprak şehirlere bölünür
 const { harita: sehirli, pilot, rapor: sehirRaporu } = sehirleriSec(kirintisiz, JSON.parse(fs.readFileSync(new URL("sehirler-wikidata.json", hedef), "utf8")),
-  JSON.parse(fs.readFileSync(new URL("sehir-haric.json", hedef), "utf8")).adlar);
+  JSON.parse(fs.readFileSync(new URL("sehir-haric.json", hedef), "utf8")).adlar,
+  JSON.parse(fs.readFileSync(new URL("sehir-ek.json", hedef), "utf8")).sehirler);
 const etopo = etopoOku(new URL("veri-ham/etopo2022-0.2deg.csv", kok));
 const { harita: bolgeli, rapor: bolgeRaporu } = bolgeleriUret(sehirli, etopo, { pilot });
 const { harita: birlesik, rapor: birlesimRaporu } = birimleriBirlestir(bolgeli);
@@ -114,7 +115,7 @@ const senaryo = {
   sehirler: harita.sehirler.map((s) => ({
     ad: s.ad,
     devlet: harita.devletler[s.d].id,
-    birim: birimBul(s.x, s.y),
+    birim: (() => { const i = harita.birimler.findIndex((b) => b.s === s.ad); return i >= 0 ? i : birimBul(s.x, s.y); })(),
     baskent: s.b === 1,
     nufus: nufusTahmini(s), // 1453 tahmini (sehir-nufus.json, 9b); yoksa günümüz nüfusundan (TASK-0025) ya da eski test değeri
     ...sehirBilgisi(s, nufusTahmini(s)),

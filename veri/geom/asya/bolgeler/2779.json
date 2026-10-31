@@ -1,22 +1,17 @@
 {
  "indeks": 2779,
- "ad": "Hanseong güneydoğusu 4",
- "ulke": "South Korea",
- "d": 98,
+ "ad": "Thăng Long güneyi 9",
+ "ulke": "Vietnam",
+ "d": 100,
  "k": "tahmin",
  "p": [
   [
    [
-    -16498,
-    -16495,
-    16511,
-    16512,
-    16513
-   ]
-  ],
-  [
-   [
-    16514
+    16681,
+    -16679,
+    16682,
+    16683,
+    16684
    ]
   ]
  ]

@@ -3,7 +3,7 @@
 // pilot devletine düşmeyen aday alınmaz. Öncelik: mevcut şehirler (hep kalır) → antik/1453 öncesi kaydı olanlar →
 // günümüz nüfusu. Şehirler arası en az EN_AZ_KM; aynı adlı ikinci şehir alınmaz (veriler ada göre eşleşir).
 
-const EN_AZ_KM = 45;
+const EN_AZ_KM = 55;
 const D2R = Math.PI / 180;
 const millerY = (lat) => 1.25 * Math.log(Math.tan(Math.PI / 4 + 0.4 * lat * D2R)) / D2R;
 const millerLat = (y) => (2.5 * (Math.atan(Math.exp((y * D2R) / 1.25)) - Math.PI / 4)) / D2R;
@@ -11,7 +11,7 @@ const millerLat = (y) => (2.5 * (Math.atan(Math.exp((y * D2R) / 1.25)) - Math.PI
 // Belediye, semt gibi idari birimler şehir sayılmaz
 const IDARI = /(Belediyesi|Municipality|Sector|Republic|Rayon|District|ilçesi|Oblast)/i;
 
-export function sehirleriSec(harita, aday, haric = []) {
+export function sehirleriSec(harita, aday, haric = [], ek = []) {
   const dislanan = new Set(haric);
   const { bati, guney, dogu, kuzey } = aday.kutu;
   const pilot = new Set();
@@ -51,6 +51,12 @@ export function sehirleriSec(harita, aday, haric = []) {
     return 111.2 * Math.hypot((a.x - b.x) * Math.cos(la), millerLat(a.y) - millerLat(b.y));
   };
   const secilen = harita.sehirler.map((s) => ({ ...s }));
+  // Elle eklenenler (ör. İstanbul'un Anadolu yakası Üsküdar): mesafe kuralından bağımsız
+  for (const e of ek) {
+    const d = harita.devletler.findIndex((v) => v.id === e.devlet);
+    if (d < 0) throw new Error(`sehir-ek: bilinmeyen devlet ${e.devlet}`);
+    secilen.push({ ad: e.ad, x: e.lon, y: Math.round(millerY(e.lat) * 1e4) / 1e4, d, b: 0 });
+  }
   const adlar = new Set(secilen.map((s) => s.ad));
   const puan = (o) => Math.log(o.nufusGunumuz) + (o.pleiades || (o.kurulus !== null && o.kurulus <= 1453) ? 3 : 0);
   let eklenen = 0;

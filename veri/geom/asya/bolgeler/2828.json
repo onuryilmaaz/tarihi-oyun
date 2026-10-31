@@ -1,16 +1,18 @@
 {
  "indeks": 2828,
- "ad": "Kyoto kuzeydoğusu 11",
- "ulke": "Japan",
- "d": 99,
+ "ad": "Phnom Penh güneydoğusu 5",
+ "ulke": "Vietnam",
+ "d": 102,
  "k": "tahmin",
  "p": [
   [
    [
-    -16767,
-    -16763,
-    16773,
-    16774
+    -16913,
+    -16902,
+    16914,
+    -16781,
+    16915,
+    16916
    ]
   ]
  ]

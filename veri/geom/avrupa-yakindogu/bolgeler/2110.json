@@ -1,16 +1,14 @@
 {
  "indeks": 2110,
- "ad": "Lizbon kuzeyi 4",
- "ulke": "Portugal",
- "d": 54,
+ "ad": "Dublin güneyi",
+ "ulke": "United Kingdom",
+ "d": 58,
  "k": "tahmin",
  "p": [
   [
    [
-    -12495,
-    12501,
-    12502,
-    12503
+    12688,
+    12689
    ]
   ]
  ]

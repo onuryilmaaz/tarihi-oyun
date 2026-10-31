@@ -1,14 +1,17 @@
 {
  "indeks": 1745,
- "ad": "Cenova güneyi",
- "ulke": "France",
- "d": 23,
- "k": "ohm:2851376",
+ "ad": "Buda kuzeydoğusu 2",
+ "ulke": "Hungary",
+ "d": 27,
+ "k": "tahmin",
  "p": [
   [
    [
-    9229,
-    9230
+    -9480,
+    -9436,
+    -9455,
+    9506,
+    9507
    ]
   ]
  ]
