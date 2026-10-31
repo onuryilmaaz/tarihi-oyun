@@ -1,16 +1,18 @@
 {
  "indeks": 2887,
- "ad": "Pegu güneydoğusu",
- "ulke": "Myanmar",
- "d": 107,
+ "ad": "Thăng Long kuzeybatısı 6",
+ "ulke": "Vietnam",
+ "d": 100,
  "k": "tahmin",
  "p": [
   [
    [
-    17114,
-    -17164,
-    -17163,
-    -17162
+    -14329,
+    -14306,
+    -14334,
+    14334,
+    -13682,
+    14335
    ]
   ]
  ]

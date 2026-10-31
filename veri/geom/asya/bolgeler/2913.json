@@ -1,16 +1,18 @@
 {
  "indeks": 2913,
- "ad": "Trowulan güneybatısı",
- "ulke": "Indonesia",
- "d": 111,
+ "ad": "Phnom Penh güneyi 5",
+ "ulke": "Vietnam",
+ "d": 102,
  "k": "tahmin",
  "p": [
   [
    [
-    17266,
-    17267,
-    17268,
-    -17264
+    14465,
+    -14442,
+    -14424,
+    14466,
+    14467,
+    -14452
    ]
   ]
  ]

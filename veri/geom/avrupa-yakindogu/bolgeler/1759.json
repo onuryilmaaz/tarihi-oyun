@@ -1,18 +1,17 @@
 {
  "indeks": 1759,
- "ad": "Akkirman kuzeybatısı",
- "ulke": "Moldova",
- "d": 29,
+ "ad": "Lenkeran",
+ "ulke": "Azerbaijan",
+ "d": 13,
  "k": "tahmin",
+ "s": "Lenkeran",
  "p": [
   [
    [
-    -9564,
-    -9549,
-    9568,
-    9569,
-    9570,
-    9571
+    -8433,
+    8602,
+    8603,
+    8604
    ]
   ]
  ]

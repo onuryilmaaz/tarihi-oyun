@@ -1,20 +1,22 @@
 {
  "indeks": 1357,
- "ad": "Ankara",
- "ulke": "Turkey",
- "d": 0,
+ "ad": "Mahd adh Dhahab",
+ "ulke": "Saudi Arabia",
+ "d": 11,
  "k": "tahmin",
- "s": "Ankara",
+ "s": "Mahd adh Dhahab",
  "p": [
   [
    [
-    -7042,
-    -6930,
-    -6983,
-    7098,
-    7099,
-    7100,
-    7101
+    6985,
+    -6979,
+    -6950,
+    -6972,
+    6986,
+    5957,
+    6987,
+    6988,
+    6989
    ]
   ]
  ]

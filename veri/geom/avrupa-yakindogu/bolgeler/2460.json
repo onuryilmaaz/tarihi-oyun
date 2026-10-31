@@ -1,0 +1,22 @@
+{
+ "indeks": 2460,
+ "ad": "Frederikshavn",
+ "ulke": "Denmark",
+ "d": 74,
+ "k": "tahmin",
+ "s": "Frederikshavn",
+ "p": [
+  [
+   [
+    11745,
+    11811
+   ]
+  ],
+  [
+   [
+    11741,
+    -11811
+   ]
+  ]
+ ]
+}

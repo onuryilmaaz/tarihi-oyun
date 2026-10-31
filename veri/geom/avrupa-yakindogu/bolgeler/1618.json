@@ -1,19 +1,16 @@
 {
  "indeks": 1618,
- "ad": "Şam güneydoğusu",
- "ulke": "Jordan",
- "d": 11,
- "k": "tahmin",
+ "ad": "Vibo Valentia",
+ "ulke": "Italy",
+ "d": 45,
+ "k": "ohm:2751179",
+ "s": "Vibo Valentia",
  "p": [
   [
    [
-    8364,
-    8365,
-    2661,
-    -7802,
-    8366,
-    8367,
-    8368
+    7963,
+    7964,
+    7965
    ]
   ]
  ]

@@ -1,14 +1,20 @@
 {
  "indeks": 2110,
- "ad": "Dublin güneyi",
- "ulke": "United Kingdom",
- "d": 58,
+ "ad": "Basel",
+ "ulke": "France",
+ "d": 73,
  "k": "tahmin",
+ "s": "Basel",
  "p": [
   [
    [
-    12641,
-    12642
+    -10294,
+    -10297,
+    -10304,
+    10399,
+    10400,
+    10401,
+    10402
    ]
   ]
  ]

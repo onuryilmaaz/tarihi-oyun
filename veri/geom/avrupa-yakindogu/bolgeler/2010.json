@@ -1,20 +1,19 @@
 {
  "indeks": 2010,
- "ad": "Palermo kuzeybatısı",
- "ulke": "Italy",
- "d": 53,
+ "ad": "Brčko",
+ "ulke": "Republic of Serbia",
+ "d": 17,
  "k": "tahmin",
+ "s": "Brčko",
  "p": [
   [
    [
-    -12055,
-    12061,
-    12062
-   ]
-  ],
-  [
-   [
-    12063
+    9817,
+    -9606,
+    -9484,
+    9818,
+    9819,
+    9820
    ]
   ]
  ]

@@ -1,16 +1,15 @@
 {
  "indeks": 1975,
- "ad": "Toledo kuzeybatısı",
- "ulke": "Spain",
- "d": 52,
- "k": "ohm:2849131",
+ "ad": "Mangup",
+ "ulke": "Russia",
+ "d": 31,
+ "k": "ohm:2849210",
+ "s": "Mangup",
  "p": [
   [
    [
-    -11831,
-    -11826,
-    11874,
-    11875
+    9449,
+    9450
    ]
   ]
  ]

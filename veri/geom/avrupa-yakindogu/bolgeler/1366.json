@@ -1,18 +1,21 @@
 {
  "indeks": 1366,
- "ad": "Beypazarı",
- "ulke": "Turkey",
- "d": 0,
+ "ad": "Al Hinakiyah",
+ "ulke": "Saudi Arabia",
+ "d": 11,
  "k": "tahmin",
- "s": "Beypazarı",
+ "s": "Al Hinakiyah",
  "p": [
   [
    [
-    -7095,
-    -7043,
-    -7102,
-    7135,
-    7136
+    -7009,
+    -6989,
+    7024,
+    5959,
+    5962,
+    5964,
+    7025,
+    7026
    ]
   ]
  ]

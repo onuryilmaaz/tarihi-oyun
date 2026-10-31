@@ -1,18 +1,18 @@
 {
  "indeks": 1537,
- "ad": "Mekke güneybatısı 2",
- "ulke": "Sudan",
+ "ad": "Al-Qaryatayn",
+ "ulke": "Syria",
  "d": 11,
  "k": "ohm:2960096",
+ "s": "Al-Qaryatayn",
  "p": [
   [
    [
-    8039,
-    8040,
-    8041,
-    8042,
-    8043,
-    -8037
+    -7636,
+    -7438,
+    7669,
+    7670,
+    7671
    ]
   ]
  ]

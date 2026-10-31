@@ -9,7 +9,6 @@ import { DENGE } from "./denge";
 import { savasta } from "./savas";
 import { bolgeKontrolu } from "./deniz";
 import { sehirGelirYuzde } from "./istikrar";
-import { ticaretAnlasmasiVar } from "./diplomasi";
 import { gelismislikYuzde, kaynakLimanYuzde } from "./sehir";
 
 export interface Ambargo { devlet: number; hedef: number } // devlet, hedefe ambargo koydu
@@ -51,7 +50,8 @@ export function sehirTicareti(d: DunyaDurumu, sehir: number): TicaretDurumu {
   const kaynak = kaynakLimanYuzde(s), gel = gelismislikYuzde(s);
   if (kaynak !== 100) { yuzde = Math.floor((yuzde * kaynak) / 100); nedenler.push(`Ticaret şehri: +%${kaynak - 100}.`); }
   if (gel !== 100) { yuzde = Math.floor((yuzde * gel) / 100); nedenler.push(`Gelişmişlik ${s.gelismislik}/10: %${gel}.`); }
-  const anlasmalar = d.devletler.filter((_, i) => i !== s.devlet && ticaretAnlasmasiVar(d, s.devlet, i)).length;
+  // Anlaşma listesi kısa: devletleri tek tek taramak yerine doğrudan sayılır (aynı sonuç, 1300 şehirde belirgin hızlı)
+  const anlasmalar = d.ticaretAnlasmalari.filter((t) => t.a !== t.b && (t.a === s.devlet || t.b === s.devlet)).length;
   if (anlasmalar) {
     const ek = Math.min(DENGE.TICARET_ANLASMA_EN_COK_YUZDE, anlasmalar * DENGE.TICARET_ANLASMA_YUZDE);
     yuzde += ek;

@@ -1,21 +1,17 @@
 {
  "indeks": 2150,
- "ad": "Brugge güneydoğusu 2",
- "ulke": "Belgium",
- "d": 61,
+ "ad": "Camborne",
+ "ulke": "United Kingdom",
+ "d": 58,
  "k": "tahmin",
+ "s": "Camborne",
  "p": [
   [
    [
-    12855,
-    12856,
-    12872,
-    12873,
-    -12867,
-    12869,
-    12870,
-    -12631,
-    12871
+    10643,
+    10644,
+    10645,
+    10829
    ]
   ]
  ]

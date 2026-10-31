@@ -1,18 +1,17 @@
 {
  "indeks": 2311,
- "ad": "Stockholm kuzeyi 9",
- "ulke": "Sweden",
- "d": 75,
+ "ad": "Gorzów Wielkopolski",
+ "ulke": "Poland",
+ "d": 69,
  "k": "tahmin",
+ "s": "Gorzów Wielkopolski",
  "p": [
   [
    [
-    -14362,
-    -14340,
-    -14360,
-    14371,
-    14372,
-    14373
+    -11240,
+    -11226,
+    11275,
+    11276
    ]
   ]
  ]

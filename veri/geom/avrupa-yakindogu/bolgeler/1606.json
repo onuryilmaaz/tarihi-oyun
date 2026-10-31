@@ -1,18 +1,19 @@
 {
  "indeks": 1606,
- "ad": "İskenderiye batısı 2",
- "ulke": "Libya",
- "d": 11,
+ "ad": "El-Şemal Nahiyesi",
+ "ulke": "Iraq",
+ "d": 10,
  "k": "tahmin",
+ "s": "El-Şemal Nahiyesi",
  "p": [
   [
    [
-    -8227,
-    -8309,
-    8319,
-    8320,
-    8321,
-    8322
+    7925,
+    -7807,
+    -7674,
+    -7917,
+    7926,
+    7927
    ]
   ]
  ]

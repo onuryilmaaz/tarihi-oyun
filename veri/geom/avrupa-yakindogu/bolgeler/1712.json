@@ -1,19 +1,17 @@
 {
  "indeks": 1712,
- "ad": "Kolojvar güneydoğusu 4",
- "ulke": "Romania",
- "d": 27,
- "k": "tahmin",
+ "ad": "Santa Pola",
+ "ulke": "Spain",
+ "d": 53,
+ "k": "ohm:2751179",
+ "s": "Santa Pola",
  "p": [
   [
    [
-    -9179,
-    -9196,
-    -9269,
-    9315,
-    9316,
-    9317,
-    -9312
+    -8133,
+    8404,
+    8405,
+    8406
    ]
   ]
  ]

@@ -1,17 +1,18 @@
 {
  "indeks": 1564,
- "ad": "İskenderiye güneybatısı",
- "ulke": "Libya",
+ "ad": "Trablusşam",
+ "ulke": "Lebanon",
  "d": 11,
- "k": "tahmin",
+ "k": "ohm:2960096",
+ "s": "Trablusşam",
  "p": [
   [
    [
-    2682,
-    8172,
-    8173,
-    8174,
-    8175
+    -7668,
+    -7719,
+    7767,
+    7768,
+    7769
    ]
   ]
  ]

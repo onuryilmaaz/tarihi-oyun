@@ -1,18 +1,17 @@
 {
  "indeks": 1619,
- "ad": "İskenderiye",
- "ulke": "Egypt",
- "d": 11,
- "k": "ohm:2960096",
- "s": "İskenderiye",
+ "ad": "Mahmutlar",
+ "ulke": "Turkey",
+ "d": 0,
+ "k": "tahmin",
+ "s": "Mahmutlar",
  "p": [
   [
    [
-    -8311,
-    -8331,
-    -8348,
-    8369,
-    -8340
+    7966,
+    7967,
+    7968,
+    7969
    ]
   ]
  ]

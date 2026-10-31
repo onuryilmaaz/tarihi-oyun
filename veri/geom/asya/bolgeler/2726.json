@@ -1,14 +1,19 @@
 {
  "indeks": 2726,
- "ad": "Kyoto güneybatısı 3",
- "ulke": "Japan",
- "d": 99,
+ "ad": "Kaşgar güneydoğusu 3",
+ "ulke": "China",
+ "d": 92,
  "k": "tahmin",
  "p": [
   [
    [
-    16359,
-    16360
+    13437,
+    13438,
+    13439,
+    13440,
+    13441,
+    13442,
+    -13435
    ]
   ]
  ]

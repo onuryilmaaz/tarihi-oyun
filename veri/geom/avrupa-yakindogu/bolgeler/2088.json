@@ -1,18 +1,18 @@
 {
  "indeks": 2088,
- "ad": "Paris güneyi",
- "ulke": "France",
- "d": 57,
+ "ad": "İstolni Belgrad",
+ "ulke": "Hungary",
+ "d": 27,
  "k": "tahmin",
+ "s": "İstolni Belgrad",
  "p": [
   [
    [
-    -12512,
-    -12498,
-    -12532,
-    12532,
-    12533,
-    12534
+    -10249,
+    -10104,
+    10304,
+    10305,
+    10306
    ]
   ]
  ]

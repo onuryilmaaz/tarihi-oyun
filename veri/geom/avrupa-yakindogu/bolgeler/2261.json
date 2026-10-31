@@ -1,14 +1,19 @@
 {
  "indeks": 2261,
- "ad": "Bergen batısı 6",
- "ulke": "Iceland",
- "d": 74,
+ "ad": "Londra",
+ "ulke": "United Kingdom",
+ "d": 58,
  "k": "tahmin",
+ "s": "Londra",
  "p": [
   [
    [
-    13971,
-    -14025
+    -10940,
+    -10976,
+    11093,
+    11094,
+    11095,
+    -11071
    ]
   ]
  ]

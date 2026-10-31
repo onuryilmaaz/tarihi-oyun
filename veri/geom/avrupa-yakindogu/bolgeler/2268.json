@@ -1,24 +1,18 @@
 {
  "indeks": 2268,
- "ad": "Bergen kuzeydoğusu 12",
- "ulke": "Norway",
- "d": 74,
+ "ad": "Krotoszyn",
+ "ulke": "Poland",
+ "d": 36,
  "k": "tahmin",
+ "s": "Krotoszyn",
  "p": [
   [
    [
-    14105,
-    14106
-   ]
-  ],
-  [
-   [
-    14107
-   ]
-  ],
-  [
-   [
-    14108
+    -11050,
+    -11063,
+    11115,
+    11116,
+    11117
    ]
   ]
  ]

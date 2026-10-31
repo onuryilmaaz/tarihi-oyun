@@ -1,18 +1,17 @@
 {
  "indeks": 2853,
- "ad": "Phnom Penh kuzeydoğusu 6",
- "ulke": "Cambodia",
- "d": 102,
+ "ad": "Kyoto kuzeydoğusu 20",
+ "ulke": "Japan",
+ "d": 99,
  "k": "tahmin",
  "p": [
   [
    [
-    -16903,
-    16926,
-    -16750,
-    16927,
-    16928,
-    -16919
+    -14168,
+    -14152,
+    -14176,
+    14176,
+    14177
    ]
   ]
  ]

@@ -1,18 +1,17 @@
 {
  "indeks": 1569,
- "ad": "Mekke doğusu 3",
- "ulke": "Saudi Arabia",
- "d": 11,
+ "ad": "Cevanrud",
+ "ulke": "Iran",
+ "d": 10,
  "k": "tahmin",
+ "s": "Cevanrud",
  "p": [
   [
    [
-    -8177,
-    -8145,
-    8187,
-    5982,
-    8188,
-    8189
+    -7732,
+    -7738,
+    7784,
+    7785
    ]
   ]
  ]

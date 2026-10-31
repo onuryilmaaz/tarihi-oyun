@@ -1,16 +1,19 @@
 {
  "indeks": 2807,
- "ad": "Vijaya güneyi 3",
- "ulke": "Vietnam",
- "d": 101,
+ "ad": "Hanseong kuzeydoğusu 3",
+ "ulke": "North Korea",
+ "d": 98,
  "k": "tahmin",
  "p": [
   [
    [
-    -16722,
-    -16713,
-    -16724,
-    16730
+    -13949,
+    -13937,
+    13951,
+    13952,
+    13953,
+    -13609,
+    13954
    ]
   ]
  ]

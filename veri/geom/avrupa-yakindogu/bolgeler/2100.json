@@ -1,18 +1,17 @@
 {
  "indeks": 2100,
- "ad": "Paris batısı 2",
- "ulke": "France",
- "d": 57,
+ "ad": "Bruck an der Mur",
+ "ulke": "Austria",
+ "d": 65,
  "k": "tahmin",
+ "s": "Bruck an der Mur",
  "p": [
   [
    [
-    -12590,
-    -12574,
-    -12596,
-    12599,
-    12600,
-    12601
+    -10287,
+    -10326,
+    10345,
+    10346
    ]
   ]
  ]

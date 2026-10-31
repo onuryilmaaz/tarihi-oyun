@@ -1,20 +1,18 @@
 {
  "indeks": 2940,
- "ad": "Vijayanagara",
- "ulke": "India",
- "d": 118,
+ "ad": "Phnom Penh kuzeydoğusu 6",
+ "ulke": "Cambodia",
+ "d": 102,
  "k": "tahmin",
- "s": "Vijayanagara",
  "p": [
   [
    [
-    17436,
-    -17430,
-    -17435,
-    17437,
-    -17418,
-    17438,
-    -17412
+    -14550,
+    14573,
+    -14397,
+    14574,
+    14575,
+    -14566
    ]
   ]
  ]

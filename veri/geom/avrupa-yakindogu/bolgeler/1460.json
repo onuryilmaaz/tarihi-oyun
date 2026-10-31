@@ -1,18 +1,19 @@
 {
  "indeks": 1460,
- "ad": "Roșiori de Vede",
- "ulke": "Romania",
- "d": 28,
- "k": "ohm:2929115",
- "s": "Roșiori de Vede",
+ "ad": "Huveyze",
+ "ulke": "Iran",
+ "d": 10,
+ "k": "tahmin",
+ "s": "Huveyze",
  "p": [
   [
    [
-    -7490,
-    -7574,
-    -7596,
-    7622,
-    7623
+    -7351,
+    -7425,
+    7439,
+    7440,
+    7441,
+    7442
    ]
   ]
  ]

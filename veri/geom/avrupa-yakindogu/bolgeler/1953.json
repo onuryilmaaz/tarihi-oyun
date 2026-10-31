@@ -1,39 +1,17 @@
 {
  "indeks": 1953,
- "ad": "Sevilla batısı",
- "ulke": "Spain",
- "d": 52,
- "k": "ohm:2849131",
+ "ad": "Makhachkala agglomeration",
+ "ulke": "Russia",
+ "d": 14,
+ "k": "tahmin",
+ "s": "Makhachkala agglomeration",
  "p": [
   [
    [
-    11604
-   ]
-  ],
-  [
-   [
-    11605
-   ]
-  ],
-  [
-   [
-    11606
-   ]
-  ],
-  [
-   [
-    11607
-   ]
-  ],
-  [
-   [
-    11608,
-    11609,
-    11610,
-    11611,
-    11612,
-    11613,
-    11614
+    -9150,
+    -9210,
+    9353,
+    9354
    ]
   ]
  ]

@@ -1,20 +1,18 @@
 {
  "indeks": 2297,
- "ad": "Stockholm kuzeybatısı 5",
- "ulke": "Sweden",
- "d": 75,
- "k": "tahmin",
+ "ad": "Priyutovsky possoviet",
+ "ulke": "Russia",
+ "d": 34,
+ "k": "ohm:2849493",
+ "s": "Priyutovsky possoviet",
  "p": [
   [
    [
-    14309,
-    -14287,
-    -14300,
-    14310,
-    14311,
-    -13945,
-    14312,
-    -13927
+    -10993,
+    -10019,
+    11231,
+    11232,
+    11233
    ]
   ]
  ]

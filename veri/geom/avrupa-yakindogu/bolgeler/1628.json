@@ -1,18 +1,17 @@
 {
  "indeks": 1628,
- "ad": "Trablusşam",
- "ulke": "Lebanon",
- "d": 11,
- "k": "ohm:2960096",
- "s": "Trablusşam",
+ "ad": "Silifke",
+ "ulke": "Turkey",
+ "d": 5,
+ "k": "tahmin",
+ "s": "Silifke",
  "p": [
   [
    [
-    -8390,
-    -8395,
-    8395,
-    8396,
-    8397
+    7993,
+    7994,
+    7995,
+    -7992
    ]
   ]
  ]

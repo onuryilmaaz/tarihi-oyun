@@ -1,22 +1,17 @@
 {
  "indeks": 1418,
- "ad": "Tshinvali",
- "ulke": "Georgia",
- "d": 12,
+ "ad": "Mersa Matruh",
+ "ulke": "Libya",
+ "d": 11,
  "k": "tahmin",
- "s": "Tshinvali",
+ "s": "Mersa Matruh",
  "p": [
   [
    [
-    -7172,
-    -6961,
-    7321,
-    7322,
-    7323,
-    7324,
-    7325,
-    7326,
-    7327
+    -7124,
+    7261,
+    7262,
+    -7206
    ]
   ]
  ]

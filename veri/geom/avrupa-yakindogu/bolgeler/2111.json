@@ -1,18 +1,18 @@
 {
  "indeks": 2111,
- "ad": "Londra güneybatısı",
- "ulke": "United Kingdom",
- "d": 58,
+ "ad": "Karolvar",
+ "ulke": "Romania",
+ "d": 27,
  "k": "tahmin",
+ "s": "Karolvar",
  "p": [
   [
    [
-    12641,
-    -12648,
-    -12647,
-    -12646,
-    -12645,
-    -12644
+    -10392,
+    -10275,
+    -10316,
+    10403,
+    10404
    ]
   ]
  ]

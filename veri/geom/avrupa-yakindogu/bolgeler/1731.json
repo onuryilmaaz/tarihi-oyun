@@ -1,19 +1,22 @@
 {
  "indeks": 1731,
- "ad": "Kolojvar kuzeyi",
- "ulke": "Romania",
- "d": 27,
- "k": "tahmin",
+ "ad": "Palma de Mallorca",
+ "ulke": "Spain",
+ "d": 53,
+ "k": "ohm:2751179",
+ "s": "Palma de Mallorca",
  "p": [
   [
    [
-    -9362,
-    -9344,
-    -9348,
-    -9389,
-    9389,
-    9390,
-    9391
+    8480,
+    8481,
+    8482,
+    8634
+   ]
+  ],
+  [
+   [
+    8483
    ]
   ]
  ]

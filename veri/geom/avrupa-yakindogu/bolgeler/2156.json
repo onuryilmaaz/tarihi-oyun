@@ -1,19 +1,20 @@
 {
  "indeks": 2156,
- "ad": "Brugge doğusu 3",
- "ulke": "Netherlands",
- "d": 61,
+ "ad": "Nové Mesto nad Váhom",
+ "ulke": "Slovakia",
+ "d": 27,
  "k": "tahmin",
+ "s": "Nové Mesto nad Váhom",
  "p": [
   [
    [
-    12901,
-    12902,
-    12903,
-    12904,
-    12905,
-    12906,
-    12907
+    -10518,
+    -10571,
+    -10576,
+    10678,
+    10679,
+    10680,
+    10681
    ]
   ]
  ]

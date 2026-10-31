@@ -1,20 +1,20 @@
 {
  "indeks": 2134,
- "ad": "Dijon güneybatısı",
- "ulke": "France",
- "d": 61,
+ "ad": "Kamianobridski Raion",
+ "ulke": "Ukraine",
+ "d": 32,
  "k": "tahmin",
+ "s": "Kamianobridski Raion",
  "p": [
   [
    [
-    12794,
-    -12515,
-    12795,
-    -12493,
-    12796,
-    12797,
-    12798,
-    -12792
+    -10460,
+    -9477,
+    -10465,
+    10551,
+    10552,
+    10553,
+    10554
    ]
   ]
  ]

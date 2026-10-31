@@ -1,18 +1,19 @@
 {
  "indeks": 2013,
- "ad": "Barselona",
- "ulke": "Spain",
- "d": 53,
- "k": "ohm:2751179",
- "s": "Barselona",
+ "ad": "Doboya",
+ "ulke": "Bosnia and Herzegovina",
+ "d": 17,
+ "k": "tahmin",
+ "s": "Doboya",
  "p": [
   [
    [
-    -12058,
-    12077,
-    12078,
-    12079,
-    12080
+    -9604,
+    -9607,
+    -9818,
+    9850,
+    9851,
+    -9815
    ]
   ]
  ]

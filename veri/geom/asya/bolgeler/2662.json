@@ -1,17 +1,20 @@
 {
  "indeks": 2662,
- "ad": "Karakurum",
- "ulke": "Mongolia",
- "d": 94,
+ "ad": "Herat güneyi 6",
+ "ulke": "Afghanistan",
+ "d": 90,
  "k": "tahmin",
- "s": "Karakurum",
  "p": [
   [
    [
-    -15913,
-    -15909,
-    15926,
-    15927
+    13094,
+    13095,
+    2631,
+    13096,
+    -13078,
+    13097,
+    13098,
+    13099
    ]
   ]
  ]

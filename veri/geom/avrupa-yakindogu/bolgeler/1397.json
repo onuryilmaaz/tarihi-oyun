@@ -1,15 +1,18 @@
 {
  "indeks": 1397,
- "ad": "Üsküdar",
- "ulke": "Turkey",
- "d": 0,
+ "ad": "Bender Kengan",
+ "ulke": "Iran",
+ "d": 10,
  "k": "tahmin",
- "s": "Üsküdar",
+ "s": "Bender Kengan",
  "p": [
   [
    [
-    -7216,
-    7246
+    7165,
+    -7131,
+    7166,
+    7167,
+    7168
    ]
   ]
  ]

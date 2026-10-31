@@ -1,18 +1,18 @@
 {
  "indeks": 1703,
- "ad": "Belgrad kuzeydoğusu",
- "ulke": "Republic of Serbia",
- "d": 27,
- "k": "tahmin",
+ "ad": "Adıyaman",
+ "ulke": "Turkey",
+ "d": 11,
+ "k": "ohm:2960096",
+ "s": "Adıyaman",
  "p": [
   [
    [
-    -9200,
-    -9206,
-    -9210,
-    9269,
-    9270,
-    9271
+    8123,
+    -8316,
+    -8315,
+    -8314,
+    -8313
    ]
   ]
  ]

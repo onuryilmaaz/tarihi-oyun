@@ -1,18 +1,19 @@
 {
  "indeks": 2009,
- "ad": "Valensiya kuzeydoğusu",
- "ulke": "Spain",
- "d": 53,
- "k": "ohm:2751179",
+ "ad": "Saneskimoşet",
+ "ulke": "Bosnia and Herzegovina",
+ "d": 17,
+ "k": "tahmin",
+ "s": "Saneskimoşet",
  "p": [
   [
    [
-    -12052,
-    12056,
-    12057,
-    12058,
-    12059,
-    12060
+    -9388,
+    -9605,
+    9814,
+    9815,
+    9816,
+    -9810
    ]
   ]
  ]

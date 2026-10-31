@@ -1,18 +1,19 @@
 {
  "indeks": 2670,
- "ad": "Karakurum doğusu 4",
- "ulke": "China",
- "d": 94,
+ "ad": "Semerkant güneydoğusu 2",
+ "ulke": "Afghanistan",
+ "d": 90,
  "k": "tahmin",
  "p": [
   [
    [
-    -15922,
-    -15949,
-    15951,
-    15952,
-    1153,
-    15953
+    -13110,
+    13128,
+    2620,
+    2604,
+    13129,
+    13130,
+    13131
    ]
   ]
  ]

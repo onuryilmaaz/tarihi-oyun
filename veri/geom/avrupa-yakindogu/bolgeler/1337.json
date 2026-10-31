@@ -1,18 +1,16 @@
 {
  "indeks": 1337,
- "ad": "Emirdağ",
- "ulke": "Turkey",
- "d": 0,
- "k": "tahmin",
- "s": "Emirdağ",
+ "ad": "AlBauga",
+ "ulke": "Sudan",
+ "d": 11,
+ "k": "ohm:2960096",
+ "s": "AlBauga",
  "p": [
   [
    [
-    -6946,
-    -6868,
-    -6932,
-    7001,
-    7002
+    -6708,
+    -6876,
+    -6905
    ]
   ]
  ]

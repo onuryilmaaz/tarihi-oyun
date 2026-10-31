@@ -1,22 +1,18 @@
 {
  "indeks": 2302,
- "ad": "Stockholm kuzeydoğusu 7",
- "ulke": "Finland",
- "d": 75,
+ "ad": "Syrskiy Rudnik",
+ "ulke": "Russia",
+ "d": 32,
  "k": "tahmin",
+ "s": "Syrskiy Rudnik",
  "p": [
   [
    [
-    -14304,
-    -14322,
-    14330,
-    14331,
-    14332
-   ]
-  ],
-  [
-   [
-    14333
+    -11105,
+    -11192,
+    11245,
+    11246,
+    -11212
    ]
   ]
  ]

@@ -6,8 +6,8 @@
 import { olayEkle, type DunyaDurumu } from "./durum";
 import { DENGE } from "./denge";
 import { BOS_BAGLAM, emirDogrula, emirUygula, sehirToplamaYuzde, type Baglam, type Emir } from "./emirler";
-import { butceOzeti } from "./ekonomi";
-import { toplamaMaliyeti } from "./ordu";
+import { prototipGelirleri } from "./ekonomi";
+import { devletMaasi, toplamaMaliyeti, toplamAskerSayisi } from "./ordu";
 import { aralik } from "./rastgele";
 import { diplomasiOnHesap, iliski, komsuMu, type DiplomasiOnHesap } from "./diplomasi";
 import { arastirmaEngeli, pazarGeliriSeviyeBasina, TEKNOLOJILER, yapiEnYuksek, type Alan } from "./teknoloji";
@@ -29,8 +29,10 @@ export function tehditNedeni(d: DunyaDurumu, on: DiplomasiOnHesap, devlet: numbe
 }
 
 /** Bir AI devletinin aylık kararı: yedeği koru, kalanı tehdide göre asker, araştırma ve yatırıma ayır. */
-export function devletKarari(d: DunyaDurumu, b: Baglam, on: DiplomasiOnHesap, devlet: number): void {
-  const butce = butceOzeti(d, devlet);
+export function devletKarari(d: DunyaDurumu, b: Baglam, on: DiplomasiOnHesap, devlet: number, gelirler = prototipGelirleri(d)): void {
+  // Bütçeden yalnızca maaş, net ve asker sayısı gerekir; gelirler günde bir kez hesaplanır (1300 şehirde belirgin hızlı)
+  const aylikMaas = devletMaasi(d, devlet);
+  const butce = { aylikMaas, aylikNet: gelirler[devlet] - aylikMaas, askerSayisi: toplamAskerSayisi(d, devlet) };
   const yedek = Math.max(DENGE.YZ_YEDEK_EN_AZ, DENGE.YZ_YEDEK_AY * butce.aylikMaas);
   const para = () => d.devletler[devlet].hazine - yedek;
   const dene = (e: Emir) => {
@@ -121,8 +123,8 @@ export function yzKararlari(d: DunyaDurumu, b: Baglam = BOS_BAGLAM): void {
     i !== d.ayarlar.oyuncu && (d.gun + i) % DENGE.YZ_KARAR_ARALIGI === 0
       && (d.birimler.some((x) => x.sahip === i) || d.sehirler.some((s) => s.devlet === i)) ? [i] : []);
   if (!sirada.length) return;
-  const on = diplomasiOnHesap(d, b.ag);
-  for (const i of sirada) devletKarari(d, b, on, i);
+  const on = diplomasiOnHesap(d, b.ag), gelirler = prototipGelirleri(d);
+  for (const i of sirada) devletKarari(d, b, on, i, gelirler);
 }
 
 /** Yıllık: oyuncuya dünyadaki AI faaliyetinin toplu özeti (tek tek devlet bilgisi sızdırılmaz). */

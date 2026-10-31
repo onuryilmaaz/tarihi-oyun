@@ -1,20 +1,17 @@
 {
  "indeks": 2233,
- "ad": "Bern güneyi 3",
- "ulke": "Switzerland",
- "d": 73,
+ "ad": "Bideford",
+ "ulke": "United Kingdom",
+ "d": 58,
  "k": "tahmin",
+ "s": "Bideford",
  "p": [
   [
    [
-    13722,
-    -13703,
-    -13710,
-    13723,
-    13724,
-    -11601,
-    13725,
-    -11589
+    -10645,
+    10998,
+    -10834,
+    10999
    ]
   ]
  ]

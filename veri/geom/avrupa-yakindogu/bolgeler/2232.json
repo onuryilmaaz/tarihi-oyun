@@ -1,20 +1,27 @@
 {
  "indeks": 2232,
- "ad": "Bern doğusu",
- "ulke": "Switzerland",
- "d": 73,
- "k": "tahmin",
+ "ad": "Upravlenchesky township",
+ "ulke": "Kazakhstan",
+ "d": 32,
+ "k": "ohm:2849493",
+ "s": "Upravlenchesky township",
  "p": [
   [
    [
-    13717,
-    -11281,
-    13718,
-    -11291,
-    13719,
-    13720,
-    13721,
-    -13715
+    10991,
+    -10828,
+    -9893,
+    -10020,
+    10992,
+    10993,
+    10994,
+    10995
+   ],
+   [
+    10996
+   ],
+   [
+    10997
    ]
   ]
  ]

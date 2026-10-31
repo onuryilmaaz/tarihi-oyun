@@ -1,18 +1,19 @@
 {
  "indeks": 2953,
- "ad": "Kotte güneydoğusu 5",
- "ulke": "Sri Lanka",
- "d": 125,
+ "ad": "Luang Prabang",
+ "ulke": "Laos",
+ "d": 103,
  "k": "tahmin",
+ "s": "Luang Prabang",
  "p": [
   [
    [
-    -17473,
-    -17468,
-    -17472,
-    17476,
-    17477,
-    17478
+    -14638,
+    -14645,
+    14651,
+    14652,
+    14653,
+    -14648
    ]
   ]
  ]

@@ -1,16 +1,18 @@
 {
  "indeks": 1514,
- "ad": "İsfahan kuzeydoğusu 3",
+ "ad": "Poldohter",
  "ulke": "Iran",
  "d": 10,
  "k": "tahmin",
+ "s": "Poldohter",
  "p": [
   [
    [
-    -7902,
-    -7938,
-    7940,
-    7941
+    -7540,
+    -7516,
+    7593,
+    7594,
+    7595
    ]
   ]
  ]

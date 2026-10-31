@@ -9,15 +9,16 @@ const millerY = (lat) => 1.25 * Math.log(Math.tan(Math.PI / 4 + 0.4 * lat * D2R)
 const millerLat = (y) => (2.5 * (Math.atan(Math.exp((y * D2R) / 1.25)) - Math.PI / 4)) / D2R;
 
 // Belediye, semt gibi idari birimler şehir sayılmaz
-const IDARI = /(Belediyesi|Municipality|Sector|Republic|Rayon|District|ilçesi|Oblast)/i;
+const IDARI = /(Belediyesi|Municipality|Sector|Republic|Rayon|District|ilçesi|Oblast|Arrondissement|Kreis|Gemeinde|Comune|Municipio|Powiat|Gmina|Kommune|Borough|Bezirk|Quartier|Stadtteil|Okrug|Governorate|Province|County|Muhafaza|Region|Metropol)/i;
 
 export function sehirleriSec(harita, aday, haric = [], ek = []) {
   const dislanan = new Set(haric);
-  const { bati, guney, dogu, kuzey } = aday.kutu;
+  // Pilot devletler: başkenti aday kutularından birinin içinde olanlar (TASK-0030: birden çok kutu)
+  const kutular = aday.kutular ?? [aday.kutu];
   const pilot = new Set();
   harita.sehirler.forEach((s) => {
     const lat = millerLat(s.y);
-    if (s.b === 1 && s.x >= bati && s.x <= dogu && lat >= guney && lat <= kuzey) pilot.add(s.d);
+    if (s.b === 1 && kutular.some((k) => s.x >= k.bati && s.x <= k.dogu && lat >= k.guney && lat <= k.kuzey)) pilot.add(s.d);
   });
 
   // Birim bulma (ızgara ön süzgeçli nokta-poligon)
@@ -60,8 +61,10 @@ export function sehirleriSec(harita, aday, haric = [], ek = []) {
   const adlar = new Set(secilen.map((s) => s.ad));
   const puan = (o) => Math.log(o.nufusGunumuz) + (o.pleiades || (o.kurulus !== null && o.kurulus <= 1453) ? 3 : 0);
   let eklenen = 0;
-  for (const o of [...aday.adaylar].sort((a, b) => puan(b) - puan(a) || a.qid.localeCompare(b.qid, "en"))) {
-    if (adlar.has(o.ad) || dislanan.has(o.ad) || IDARI.test(o.ad) || IDARI.test(o.en ?? "")) continue;
+  for (let o of [...aday.adaylar].sort((a, b) => puan(b) - puan(a) || a.qid.localeCompare(b.qid, "en"))) {
+    if (IDARI.test(o.ad) || IDARI.test(o.en ?? "")) continue;
+    o = { ...o, ad: o.ad.split(",")[0].trim() }; // "Boston, Lincolnshire" → "Boston" (ayırt edici ek)
+    if (adlar.has(o.ad) || dislanan.has(o.ad)) continue;
     const c = { x: o.lon, y: millerY(o.lat) };
     if (secilen.some((s) => km(s, c) < EN_AZ_KM)) continue;
     const d = devletBul(c.x, c.y);

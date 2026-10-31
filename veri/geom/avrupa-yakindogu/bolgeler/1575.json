@@ -1,19 +1,18 @@
 {
  "indeks": 1575,
- "ad": "Mekke kuzeydoğusu 2",
- "ulke": "Saudi Arabia",
+ "ad": "Deyrizor",
+ "ulke": "Syria",
  "d": 11,
- "k": "tahmin",
+ "k": "ohm:2960096",
+ "s": "Deyrizor",
  "p": [
   [
    [
-    -8194,
-    -8178,
-    -8190,
-    8206,
-    5984,
-    8207,
-    8208
+    -7772,
+    -7675,
+    7806,
+    7807,
+    7808
    ]
   ]
  ]

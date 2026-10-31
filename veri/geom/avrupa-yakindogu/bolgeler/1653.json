@@ -1,14 +1,20 @@
 {
  "indeks": 1653,
- "ad": "Kandiye güneydoğusu",
- "ulke": "Greece",
- "d": 22,
- "k": "ohm:2800700",
+ "ad": "Zencan",
+ "ulke": "Iran",
+ "d": 10,
+ "k": "tahmin",
+ "s": "Zencan",
  "p": [
   [
    [
-    8595,
-    -8592
+    -7999,
+    -7959,
+    -7931,
+    -7963,
+    8092,
+    8093,
+    8094
    ]
   ]
  ]

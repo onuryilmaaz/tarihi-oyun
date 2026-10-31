@@ -1,16 +1,18 @@
 {
  "indeks": 1875,
- "ad": "Riga kuzeydoğusu 4",
- "ulke": "Estonia",
- "d": 38,
+ "ad": "Ardahan",
+ "ulke": "Turkey",
+ "d": 12,
  "k": "tahmin",
+ "s": "Ardahan",
  "p": [
   [
    [
-    -10653,
-    -10651,
-    -10660,
-    10660
+    -8901,
+    -8878,
+    9024,
+    9025,
+    -8978
    ]
   ]
  ]

@@ -1,16 +1,19 @@
 {
  "indeks": 1992,
- "ad": "Valladolid kuzeybatısı 3",
- "ulke": "Spain",
- "d": 52,
- "k": "ohm:2849131",
+ "ad": "Karasubazar",
+ "ulke": "Russia",
+ "d": 30,
+ "k": "ohm:2849500",
+ "s": "Karasubazar",
  "p": [
   [
    [
-    -11917,
-    -11922,
-    -11933,
-    11938
+    9518,
+    -9626,
+    -9625,
+    -9624,
+    9523,
+    -9623
    ]
   ]
  ]

@@ -1,19 +1,19 @@
 {
  "indeks": 1456,
- "ad": "Bobovac",
- "ulke": "Bosnia and Herzegovina",
- "d": 17,
+ "ad": "Ahvaz",
+ "ulke": "Iran",
+ "d": 10,
  "k": "tahmin",
- "s": "Bobovac",
+ "s": "Ahvaz",
  "p": [
   [
    [
-    -7500,
-    -7444,
-    -7467,
-    -7572,
-    7604,
-    7605
+    -7235,
+    -7404,
+    7422,
+    7423,
+    7424,
+    -7350
    ]
   ]
  ]

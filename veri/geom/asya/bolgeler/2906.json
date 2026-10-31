@@ -1,19 +1,20 @@
 {
  "indeks": 2906,
- "ad": "Brunei güneyi",
- "ulke": "Malaysia",
- "d": 110,
+ "ad": "Phnom Penh güneydoğusu",
+ "ulke": "Vietnam",
+ "d": 102,
  "k": "tahmin",
  "p": [
   [
    [
-    -17233,
-    17235,
-    837,
-    19,
-    17236,
-    17237,
-    17238
+    14424,
+    14429
+   ]
+  ],
+  [
+   [
+    14427,
+    14428
    ]
   ]
  ]

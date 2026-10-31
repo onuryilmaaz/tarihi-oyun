@@ -1,15 +1,20 @@
 {
  "indeks": 2938,
- "ad": "Vijayanagara güneyi",
- "ulke": "India",
- "d": 118,
+ "ad": "Phnom Penh kuzeydoğusu 5",
+ "ulke": "Cambodia",
+ "d": 102,
  "k": "tahmin",
  "p": [
   [
    [
-    17427,
-    17428,
-    17429
+    14564,
+    -14542,
+    -14551,
+    14565,
+    14566,
+    14567,
+    14568,
+    14569
    ]
   ]
  ]

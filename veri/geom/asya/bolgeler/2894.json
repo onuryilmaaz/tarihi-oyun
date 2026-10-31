@@ -1,17 +1,16 @@
 {
  "indeks": 2894,
- "ad": "Malakka güneydoğusu",
- "ulke": "Malaysia",
- "d": 109,
+ "ad": "Vijaya güneyi 3",
+ "ulke": "Vietnam",
+ "d": 101,
  "k": "tahmin",
  "p": [
   [
    [
-    17195,
-    17196,
-    17197,
-    17198,
-    -17194
+    -14369,
+    -14360,
+    -14371,
+    14377
    ]
   ]
  ]

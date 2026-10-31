@@ -1,21 +1,22 @@
 {
  "indeks": 2282,
- "ad": "Stockholm batısı 2",
- "ulke": "Sweden",
- "d": 75,
+ "ad": "Urban settlement Uchaly",
+ "ulke": "Russia",
+ "d": 34,
  "k": "tahmin",
+ "s": "Urban settlement Uchaly",
  "p": [
   [
    [
-    14240,
-    -14225,
-    -14234,
-    14241,
-    14242,
-    14243,
-    -13804,
-    14244,
-    -13822
+    -10016,
+    11175,
+    11176,
+    11177,
+    11178,
+    11179,
+    11180,
+    11181,
+    11182
    ]
   ]
  ]

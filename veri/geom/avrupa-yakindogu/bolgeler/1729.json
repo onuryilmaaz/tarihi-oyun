@@ -1,20 +1,18 @@
 {
  "indeks": 1729,
- "ad": "Pojon güneyi",
- "ulke": "Hungary",
- "d": 27,
+ "ad": "Montemor-o-Novo",
+ "ulke": "Portugal",
+ "d": 54,
  "k": "tahmin",
+ "s": "Montemor-o-Novo",
  "p": [
   [
    [
-    9378,
-    -9365,
-    -9341,
-    -9357,
-    9379,
-    9380,
-    9381,
-    9382
+    -8401,
+    -8100,
+    8474,
+    8475,
+    -7844
    ]
   ]
  ]

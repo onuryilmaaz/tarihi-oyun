@@ -1,17 +1,17 @@
 {
  "indeks": 2897,
- "ad": "Malakka kuzeybatısı 2",
- "ulke": "Malaysia",
- "d": 109,
+ "ad": "Vijaya",
+ "ulke": "Vietnam",
+ "d": 101,
  "k": "tahmin",
+ "s": "Vijaya",
  "p": [
   [
    [
-    -17191,
-    17204,
-    17205,
-    17206,
-    17207
+    -14386,
+    -14373,
+    14389,
+    14390
    ]
   ]
  ]

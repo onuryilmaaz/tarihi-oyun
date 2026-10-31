@@ -1,19 +1,16 @@
 {
  "indeks": 1579,
- "ad": "İskenderiye güneybatısı 2",
- "ulke": "Libya",
- "d": 11,
- "k": "tahmin",
+ "ad": "Pozzallo",
+ "ulke": "Italy",
+ "d": 53,
+ "k": "ohm:2751179",
+ "s": "Pozzallo",
  "p": [
   [
    [
-    -8174,
-    8223,
-    8224,
-    8225,
-    8226,
-    8227,
-    8228
+    7820,
+    7821,
+    7822
    ]
   ]
  ]

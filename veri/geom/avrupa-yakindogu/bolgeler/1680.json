@@ -1,14 +1,17 @@
 {
  "indeks": 1680,
- "ad": "Cenova güneyi 2",
- "ulke": "France",
- "d": 23,
- "k": "ohm:2851376",
+ "ad": "Ereğli",
+ "ulke": "Turkey",
+ "d": 5,
+ "k": "tahmin",
+ "s": "Ereğli",
  "p": [
   [
    [
-    -8990,
-    9002
+    -8166,
+    -8082,
+    8226,
+    8227
    ]
   ]
  ]

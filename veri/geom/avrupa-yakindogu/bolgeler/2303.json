@@ -1,18 +1,20 @@
 {
  "indeks": 2303,
- "ad": "Stockholm kuzeyi 4",
- "ulke": "Sweden",
- "d": 75,
+ "ad": "Shrewsbury",
+ "ulke": "United Kingdom",
+ "d": 58,
  "k": "tahmin",
+ "s": "Shrewsbury",
  "p": [
   [
    [
-    -14328,
-    -14296,
-    -14317,
-    14334,
-    14335,
-    14336
+    -11068,
+    -11109,
+    -11152,
+    11247,
+    11248,
+    11249,
+    11250
    ]
   ]
  ]

@@ -1,22 +1,18 @@
 {
  "indeks": 1343,
- "ad": "Edremit",
- "ulke": "Turkey",
- "d": 0,
+ "ad": "Baljurashi",
+ "ulke": "Saudi Arabia",
+ "d": 11,
  "k": "tahmin",
- "s": "Edremit",
+ "s": "Baljurashi",
  "p": [
   [
    [
-    7037
-   ]
-  ],
-  [
-   [
-    -7028,
-    7038,
-    7039,
-    7040
+    -6903,
+    -6898,
+    -6929,
+    6931,
+    -6923
    ]
   ]
  ]

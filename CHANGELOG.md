@@ -1,5 +1,10 @@
 # CHANGELOG
 
+## 2026-10-31 — TASK-0030: şehir merkezli harita Avrupa ve Yakındoğu'ya yayıldı (Claude)
+
+- 80 devlet, 1.324 şehir, 282 yeni liman; Wikidata adayları karelerle çekiliyor. Sim başarımı: AI ekonomi kararında
+  gelirler günde bir kez hesaplanıyor, liman ticaretinde anlaşma sayımı hızlandı (3 yıl 7,7 → 3,4 sn).
+
 ## 2026-10-31 — TASK-0029: sancak sistemi; garnizon; toplananlar orduya katılır; harita bağlam menüsü (Claude)
 
 - Osmanlı sancak/eyalet sistemi (şema 29), "Sancak sınırları" katmanı, Sancaklar paneli, sancakbeyi yönetimi.

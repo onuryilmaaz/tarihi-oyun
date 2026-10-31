@@ -1,17 +1,25 @@
 {
  "indeks": 1732,
- "ad": "Kolojvar kuzeybatısı",
- "ulke": "Romania",
- "d": 27,
+ "ad": "Iglesias",
+ "ulke": "Italy",
+ "d": 53,
  "k": "tahmin",
+ "s": "Iglesias",
  "p": [
   [
    [
-    -9373,
-    -9363,
-    -9392,
-    9392,
-    9393
+    8484
+   ]
+  ],
+  [
+   [
+    8485
+   ]
+  ],
+  [
+   [
+    8486,
+    8487
    ]
   ]
  ]

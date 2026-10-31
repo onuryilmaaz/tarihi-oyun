@@ -1,19 +1,17 @@
 {
  "indeks": 1879,
- "ad": "Moskova doğusu 3",
- "ulke": "Russia",
- "d": 39,
+ "ad": "Karadeniz Ereğli",
+ "ulke": "Turkey",
+ "d": 0,
  "k": "tahmin",
+ "s": "Karadeniz Ereğli",
  "p": [
   [
    [
-    -9912,
-    -10055,
-    10687,
-    10688,
-    10689,
-    10690,
-    10691
+    -8943,
+    -8949,
+    9037,
+    9038
    ]
   ]
  ]

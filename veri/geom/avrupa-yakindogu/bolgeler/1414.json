@@ -1,19 +1,17 @@
 {
  "indeks": 1414,
- "ad": "Kırklareli",
- "ulke": "Turkey",
- "d": 0,
- "k": "tahmin",
- "s": "Kırklareli",
+ "ad": "Beni Mazar",
+ "ulke": "Egypt",
+ "d": 11,
+ "k": "ohm:2960096",
+ "s": "Beni Mazar",
  "p": [
   [
    [
-    -7285,
-    -7221,
-    -7246,
-    7296,
-    7297,
-    7298
+    -7194,
+    -7213,
+    7248,
+    -7121
    ]
   ]
  ]

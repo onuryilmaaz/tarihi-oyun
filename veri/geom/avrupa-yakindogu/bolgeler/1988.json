@@ -1,17 +1,18 @@
 {
  "indeks": 1988,
- "ad": "Valladolid kuzeydoğusu 2",
- "ulke": "Spain",
- "d": 52,
- "k": "ohm:2849131",
+ "ad": "Bugojno",
+ "ulke": "Bosnia and Herzegovina",
+ "d": 17,
+ "k": "tahmin",
+ "s": "Bugojno",
  "p": [
   [
    [
-    -11919,
-    -11906,
-    -11928,
-    11928,
-    11929
+    -9387,
+    -9304,
+    9602,
+    9603,
+    9604
    ]
   ]
  ]

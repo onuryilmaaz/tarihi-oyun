@@ -1,20 +1,17 @@
 {
  "indeks": 2305,
- "ad": "Stockholm kuzeyi 6",
- "ulke": "Sweden",
- "d": 75,
+ "ad": "Norwich",
+ "ulke": "United Kingdom",
+ "d": 58,
  "k": "tahmin",
+ "s": "Norwich",
  "p": [
   [
    [
-    -14329,
-    -14337,
-    14348,
-    14349,
-    -14013,
-    14350,
-    -13949,
-    14351
+    -11196,
+    -11129,
+    11253,
+    11254
    ]
   ]
  ]

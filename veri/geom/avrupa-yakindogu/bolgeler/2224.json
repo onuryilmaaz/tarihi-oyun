@@ -1,20 +1,24 @@
 {
  "indeks": 2224,
- "ad": "Nürnberg kuzeybatısı",
- "ulke": "Germany",
- "d": 72,
+ "ad": "Christchurch",
+ "ulke": "United Kingdom",
+ "d": 58,
  "k": "tahmin",
+ "s": "Christchurch",
  "p": [
   [
    [
-    -13652,
-    13654,
-    -13465,
-    13655,
-    -13480,
-    13656,
-    13657,
-    13658
+    10935,
+    10970
+   ]
+  ],
+  [
+   [
+    10967,
+    -10942,
+    10968,
+    10969,
+    -10933
    ]
   ]
  ]

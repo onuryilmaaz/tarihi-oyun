@@ -1,19 +1,17 @@
 {
  "indeks": 1335,
- "ad": "Demirci",
- "ulke": "Turkey",
- "d": 0,
+ "ad": "Al Qunfudhah",
+ "ulke": "Saudi Arabia",
+ "d": 11,
  "k": "tahmin",
- "s": "Demirci",
+ "s": "Al Qunfudhah",
  "p": [
   [
    [
-    -6910,
-    -6937,
-    6992,
-    6993,
-    6994,
-    -6990
+    6901,
+    -6899,
+    6902,
+    6903
    ]
   ]
  ]

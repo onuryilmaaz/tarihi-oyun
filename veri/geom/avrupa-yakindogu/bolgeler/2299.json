@@ -1,18 +1,19 @@
 {
  "indeks": 2299,
- "ad": "Stockholm kuzeydoğusu 5",
- "ulke": "Finland",
- "d": 75,
+ "ad": "Frankfurt",
+ "ulke": "Germany",
+ "d": 69,
  "k": "tahmin",
+ "s": "Frankfurt",
  "p": [
   [
    [
-    -14291,
-    -14276,
-    14319,
-    14320,
-    14321,
-    -14303
+    -11143,
+    -11112,
+    -11227,
+    11239,
+    11240,
+    -11222
    ]
   ]
  ]
