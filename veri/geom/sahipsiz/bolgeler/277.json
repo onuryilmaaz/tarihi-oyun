@@ -1,23 +1,19 @@
 {
  "indeks": 277,
  "durum": "sahipsiz",
- "ad": "Northern",
- "ulke": "Sierra Leone",
+ "ad": "Mayo-Kebbi Ouest Bölgesi",
+ "ulke": "Chad",
  "d": -1,
  "k": "tahmin",
  "p": [
   [
    [
-    2129,
-    2130,
-    2131,
-    2132,
-    2133,
-    2134,
-    2135,
-    2136,
-    2137,
-    2138
+    -1542,
+    1543,
+    1544,
+    -1473,
+    1545,
+    -1530
    ]
   ]
  ]

@@ -1,19 +1,19 @@
 {
  "indeks": 24,
  "durum": "sahipsiz",
- "ad": "Güney Ulusları ve Halkları Bölgesi",
- "ulke": "Ethiopia",
+ "ad": "Rumphi",
+ "ulke": "Malawi",
  "d": -1,
  "k": "tahmin",
  "p": [
   [
    [
-    175,
-    176,
-    177,
-    178,
-    179,
-    180
+    -150,
+    150,
+    151,
+    152,
+    153,
+    -128
    ]
   ]
  ]

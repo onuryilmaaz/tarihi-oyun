@@ -1,17 +1,19 @@
 {
  "indeks": 551,
  "durum": "sahipsiz",
- "ad": "Tarija Departmanı",
- "ulke": "Bolivia",
+ "ad": "Auckland Adaları",
+ "ulke": "New Zealand",
  "d": -1,
  "k": "tahmin",
  "p": [
   [
    [
-    -69,
-    -57,
-    4531,
-    4532
+    3402
+   ]
+  ],
+  [
+   [
+    3403
    ]
   ]
  ]

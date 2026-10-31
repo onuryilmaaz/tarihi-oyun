@@ -1,18 +1,19 @@
 {
  "indeks": 306,
  "durum": "sahipsiz",
- "ad": "Katavi Bölgesi",
- "ulke": "United Republic of Tanzania",
+ "ad": "Savanes",
+ "ulke": "Ivory Coast",
  "d": -1,
  "k": "tahmin",
  "p": [
   [
    [
-    -2260,
-    -2258,
-    2272,
-    -241,
-    2273
+    1691,
+    -1669,
+    1692,
+    1693,
+    -560,
+    1694
    ]
   ]
  ]

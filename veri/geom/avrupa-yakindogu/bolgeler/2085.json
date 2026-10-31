@@ -1,19 +1,16 @@
 {
  "indeks": 2085,
- "ad": "Mazenderan Eyaleti",
- "ulke": "Iran",
- "d": 10,
- "k": "tahmin",
+ "ad": "Barselona kuzeydoğusu",
+ "ulke": "Spain",
+ "d": 53,
+ "k": "ohm:2751179",
  "p": [
   [
    [
-    13956,
-    -7488,
-    13957,
-    13958,
-    13959,
-    13960,
-    -5461
+    -12325,
+    12333,
+    12334,
+    12335
    ]
   ]
  ]

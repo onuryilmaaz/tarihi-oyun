@@ -1,17 +1,18 @@
 {
  "indeks": 1322,
- "ad": "Kırım Özerk Cumhuriyeti (Teodoro Prensliği)",
- "ulke": "Russia",
- "d": 31,
- "k": "ohm:2849209",
+ "ad": "Siirt",
+ "ulke": "Turkey",
+ "d": 9,
+ "k": "tahmin",
  "p": [
   [
    [
-    8606,
-    11442,
-    -11447,
-    11444,
-    8594
+    -6816,
+    -6689,
+    6893,
+    6894,
+    6895,
+    6896
    ]
   ]
  ]

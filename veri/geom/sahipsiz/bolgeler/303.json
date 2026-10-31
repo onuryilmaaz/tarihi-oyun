@@ -1,25 +1,20 @@
 {
  "indeks": 303,
  "durum": "sahipsiz",
- "ad": "Güney Kivu",
- "ulke": "Democratic Republic of the Congo",
+ "ad": "Comoé",
+ "ulke": "Ivory Coast",
  "d": -1,
  "k": "tahmin",
  "p": [
   [
    [
-    2238,
-    2239,
-    2240,
-    2241,
-    2242,
-    2243,
-    2244,
-    2245,
-    2246,
-    2247,
-    2248,
-    2249
+    -1676,
+    1677,
+    1678,
+    1679,
+    1680,
+    1681,
+    -1666
    ]
   ]
  ]

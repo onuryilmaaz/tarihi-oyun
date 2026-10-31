@@ -1,18 +1,19 @@
 {
  "indeks": 1030,
  "durum": "sahipsiz",
- "ad": "O'Higgins bölgesi",
- "ulke": "Chile",
+ "ad": "Wyoming",
+ "ulke": "United States of America",
  "d": -1,
  "k": "tahmin",
  "p": [
   [
    [
-    -7016,
-    -7031,
-    7031,
-    -7020,
-    -7018
+    -1881,
+    -1890,
+    5910,
+    5911,
+    5912,
+    -5907
    ]
   ]
  ]

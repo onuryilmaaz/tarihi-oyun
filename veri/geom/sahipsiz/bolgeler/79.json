@@ -1,21 +1,23 @@
 {
  "indeks": 79,
  "durum": "sahipsiz",
- "ad": "Kuzey Kap",
- "ulke": "South Africa",
+ "ad": "Doğu Bölgesi",
+ "ulke": "Democratic Republic of the Congo",
  "d": -1,
  "k": "tahmin",
  "p": [
   [
    [
-    619,
-    620,
-    621,
-    622,
-    623,
-    624,
-    625,
-    -619
+    -501,
+    502,
+    503,
+    504,
+    505,
+    506,
+    507,
+    -239,
+    508,
+    -497
    ]
   ]
  ]

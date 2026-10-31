@@ -1,18 +1,20 @@
 {
  "indeks": 290,
  "durum": "sahipsiz",
- "ad": "Orta Darfur",
- "ulke": "Sudan",
+ "ad": "Katsina Eyaleti",
+ "ulke": "Nigeria",
  "d": -1,
  "k": "tahmin",
  "p": [
   [
    [
-    -2180,
-    2185,
-    2186,
-    2187,
-    2188
+    1609,
+    1610,
+    1611,
+    1612,
+    1613,
+    -1608,
+    -1605
    ]
   ]
  ]

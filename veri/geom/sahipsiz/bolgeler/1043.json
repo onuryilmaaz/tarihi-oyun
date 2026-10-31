@@ -1,27 +1,17 @@
 {
  "indeks": 1043,
  "durum": "sahipsiz",
- "ad": "Zulia",
- "ulke": "Venezuela",
+ "ad": "Dodoma",
+ "ulke": "United Republic of Tanzania",
  "d": -1,
  "k": "tahmin",
  "p": [
   [
    [
-    7228,
-    7229,
-    7230,
-    7231,
-    7232,
-    7233
-   ]
-  ],
-  [
-   [
-    7234,
-    7235,
-    7236,
-    7237
+    -5948,
+    5955,
+    5956,
+    5957
    ]
   ]
  ]

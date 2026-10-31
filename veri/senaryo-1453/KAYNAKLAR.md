@@ -9,6 +9,7 @@ tarihî kaynakla doğrulanmamıştır** (DEC-0016, DEC-0021). Yazılım lisansla
 | 1453 siyasi sınırları (kısmen) | OpenHistoricalMap (49 kayıt) | CC0 (kayıt bazında: `prototypes/harita-gorsel-02/scripts/ohm-kayitlari.json`) | `harita.json` birim atamaları |
 | 1453 siyasi sınırları (kalan) | Agent tahmini | — (kaynaksız, düşük güven; oyunda kesikli gösterilebilir) | `harita.json` birim atamaları |
 | Devlet, başkent, tarihler | Wikidata | CC0 | `wikidata.json` |
+| Şehir adayları (konum, günümüz nüfusu, kuruluş, Pleiades kaydı) — TASK-0025 | Wikidata | CC0 | `sehirler-wikidata.json` |
 | Yükseklik (arazi zorluğu, arazi verimi) | NOAA NCEI ETOPO 2022 (15″), ERDDAP üzerinden 0,2° seyreltilmiş | Ücretsiz kullanım ve yeniden dağıtım | `ag.dugumler[].z`, `birimler[].verim` (türetilmiş) |
 | Hareket ağı, boğaz geçitleri | Natural Earth topolojisinden türetildi; boğazlar elle tanımlandı | — | `senaryo.json` → `ag` |
 | Başlangıç ilişkileri ve ittifakları | Agent'ın tarihî tahmini (DEC-0039) | — [TASLAK] | `iliskiler.json` |

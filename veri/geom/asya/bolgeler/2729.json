@@ -1,16 +1,17 @@
 {
  "indeks": 2729,
- "ad": "Kapisa Vilayeti",
- "ulke": "Afghanistan",
- "d": 90,
+ "ad": "Karakurum güneydoğusu 6",
+ "ulke": "China",
+ "d": 94,
  "k": "tahmin",
  "p": [
   [
    [
-    -16320,
-    16322,
-    -16313,
-    -16321
+    -16150,
+    -16134,
+    -16149,
+    16155,
+    16156
    ]
   ]
  ]

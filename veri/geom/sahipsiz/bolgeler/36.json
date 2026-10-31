@@ -1,18 +1,19 @@
 {
  "indeks": 36,
  "durum": "sahipsiz",
- "ad": "Nhombe Bölgesi",
- "ulke": "United Republic of Tanzania",
+ "ad": "Plateaux",
+ "ulke": "Republic of the Congo",
  "d": -1,
  "k": "tahmin",
  "p": [
   [
    [
-    -232,
-    -245,
-    245,
-    246,
-    247
+    -243,
+    249,
+    250,
+    251,
+    252,
+    -246
    ]
   ]
  ]

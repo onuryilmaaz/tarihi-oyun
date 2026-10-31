@@ -1,24 +1,16 @@
 {
  "indeks": 100,
  "durum": "sahipsiz",
- "ad": "Rio Grande do Sul",
- "ulke": "Brazil",
+ "ad": "Lagos Eyaleti",
+ "ulke": "Nigeria",
  "d": -1,
  "k": "tahmin",
  "p": [
   [
    [
-    761,
-    762,
-    763,
-    764,
-    765,
-    766,
-    767,
-    768,
-    769,
-    770,
-    771
+    628,
+    -615,
+    629
    ]
   ]
  ]

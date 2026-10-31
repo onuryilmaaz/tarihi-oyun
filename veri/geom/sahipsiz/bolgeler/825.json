@@ -1,20 +1,16 @@
 {
  "indeks": 825,
  "durum": "sahipsiz",
- "ad": "El Kadarif Eyaleti",
- "ulke": "Sudan",
+ "ad": "Saint Thomas",
+ "ulke": "Jamaica",
  "d": -1,
  "k": "tahmin",
  "p": [
   [
    [
-    -6006,
-    6006,
-    6007,
-    6008,
-    6009,
-    6010,
-    6011
+    5322,
+    -5321,
+    5323
    ]
   ]
  ]

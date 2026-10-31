@@ -64,7 +64,7 @@ const kesisir = ([ax, ay], [bx, by], [cx, cy], [dx, dy]) => {
   return d1 * d2 < 0 && d3 * d4 < 0;
 };
 
-function etopoOku(dosya) {
+export function etopoOku(dosya) {
   // csv0: enlem, boylam, z — enlem artan, boylam artan; 0.2° adım
   const satirlar = fs.readFileSync(dosya, "utf8").split("\n");
   const lat0 = Number(satirlar[0].split(",")[0]), lon0 = Number(satirlar[0].split(",")[1]);

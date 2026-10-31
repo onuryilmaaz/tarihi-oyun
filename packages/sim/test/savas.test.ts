@@ -55,6 +55,7 @@ describe("savaş ilanı ve erişim", () => {
     // Aynı turda verilen yürüyüş emri, bekleyen savaş ilanıyla birlikte geçerlidir
     expect(emirVer(d, { tur: "orduHedef", ordu: anadolu.id, ...sehirHedefi("Konya") }, B).gecerli).toBe(true);
     expect(emirVer(d, { tur: "savasIlan", devlet: osm, hedef: kar }, B).gecerli).toBe(false); // çift ilan
+    turSuresiAyarla(d, "hafta"); // ordu bir haftada varamaz; rota dolu kalmalı
     turuIlerlet(d, B);
     expect(d.savaslar.filter((s) => s.saldiran === osm || s.savunan === osm)).toHaveLength(1); // AI'lar kendi aralarında da savaşabilir (6c)
     expect(d.gunluk.some((o) => o.tur === "savas-ilani")).toBe(true);
@@ -93,7 +94,9 @@ describe("muharebe (AT-008)", () => {
     expect(cekilen.every((o) => o.rota.length > 0)).toBe(true);
     for (let i = 0; i < 20 && d.ordular.some((o) => o.cekiliyor); i++) turuIlerlet(d, B);
     // Çekilen AI ordusunun olayı oyuncu günlüğüne yazılmaz (6b); çekilmenin bittiği durumdan okunur
-    expect(d.ordular.filter((o) => o.devlet === kaybeden.devlet).every((o) => !o.cekiliyor && o.rota.length === 0)).toBe(true);
+    // Yalnızca çekilen ordular denetlenir: AI bu arada yeni toplanan bir orduyu yürütebilir
+    const ids = new Set(cekilen.map((o) => o.id));
+    expect(d.ordular.filter((o) => ids.has(o.id)).every((o) => !o.cekiliyor && o.rota.length === 0)).toBe(true);
   });
 
   it("savunan zorlu arazide daha az kayıp verir; kayıplar sayıyla orantılıdır", () => {

@@ -1,18 +1,19 @@
 {
  "indeks": 1236,
  "durum": "sahipsiz",
- "ad": "Ghanzi Bölgesi",
- "ulke": "Botswana",
+ "ad": "Eastern",
+ "ulke": "Uganda",
  "d": -1,
  "k": "tahmin",
  "p": [
   [
    [
-    -8144,
-    -3359,
-    -3377,
-    8145,
-    -5938
+    -6462,
+    2842,
+    2845,
+    3142,
+    123,
+    6464
    ]
   ]
  ]

@@ -1,19 +1,17 @@
 {
  "indeks": 1174,
  "durum": "sahipsiz",
- "ad": "Batı Darfur Eyaleti",
- "ulke": "Sudan",
+ "ad": "Plateau Eyaleti",
+ "ulke": "Nigeria",
  "d": -1,
  "k": "tahmin",
  "p": [
   [
    [
-    -7934,
-    -2187,
-    -6053,
-    7934,
-    7935,
-    -7788
+    -1567,
+    6282,
+    6283,
+    -6277
    ]
   ]
  ]

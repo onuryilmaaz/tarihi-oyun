@@ -1,18 +1,16 @@
 {
  "indeks": 10,
  "durum": "sahipsiz",
- "ad": "Tacna Bölge",
- "ulke": "Peru",
+ "ad": "Jujuy eyaleti",
+ "ulke": "Argentina",
  "d": -1,
  "k": "tahmin",
  "p": [
   [
    [
-    -41,
-    64,
-    65,
-    66,
-    -42
+    -52,
+    -49,
+    -61
    ]
   ]
  ]

@@ -1,16 +1,18 @@
 {
  "indeks": 78,
  "durum": "sahipsiz",
- "ad": "Karas",
- "ulke": "Namibia",
+ "ad": "Batı Equatoria",
+ "ulke": "S. Sudan",
  "d": -1,
  "k": "tahmin",
  "p": [
   [
    [
-    616,
-    617,
-    618
+    -493,
+    498,
+    499,
+    500,
+    -496
    ]
   ]
  ]

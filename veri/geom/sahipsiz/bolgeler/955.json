@@ -1,18 +1,35 @@
 {
  "indeks": 955,
  "durum": "sahipsiz",
- "ad": "New Hampshire",
- "ulke": "United States of America",
+ "ad": "Western",
+ "ulke": "Fiji",
  "d": -1,
  "k": "tahmin",
  "p": [
   [
    [
-    -6630,
-    6660,
-    6661,
-    6662,
-    -6659
+    5717
+   ]
+  ],
+  [
+   [
+    5718,
+    5719
+   ]
+  ],
+  [
+   [
+    5721
+   ]
+  ],
+  [
+   [
+    5722
+   ]
+  ],
+  [
+   [
+    5723
    ]
   ]
  ]

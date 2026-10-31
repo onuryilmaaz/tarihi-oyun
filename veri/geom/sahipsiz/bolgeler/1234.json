@@ -1,20 +1,21 @@
 {
  "indeks": 1234,
  "durum": "sahipsiz",
- "ad": "Otjozondjupa",
- "ulke": "Namibia",
+ "ad": "Hauts-Bassins",
+ "ulke": "Burkina Faso",
  "d": -1,
  "k": "tahmin",
  "p": [
   [
    [
-    -3361,
-    8139,
-    8140,
-    8141,
-    -8084,
-    8142,
-    -8096
+    -6426,
+    -6430,
+    -6449,
+    6454,
+    6455,
+    6456,
+    6457,
+    6458
    ]
   ]
  ]

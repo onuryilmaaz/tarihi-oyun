@@ -1,13 +1,21 @@
 {
  "indeks": 2121,
- "ad": "Las Palmas (Kastilya Krallığı)",
- "ulke": "Spain",
- "d": 52,
+ "ad": "Lyon güneybatısı 4",
+ "ulke": "France",
+ "d": 57,
  "k": "tahmin",
  "p": [
   [
    [
-    14151
+    -12566,
+    12567,
+    -12366,
+    12568,
+    -12383,
+    12569,
+    12570,
+    12571,
+    12572
    ]
   ]
  ]

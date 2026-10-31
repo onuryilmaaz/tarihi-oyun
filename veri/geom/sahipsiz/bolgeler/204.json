@@ -1,15 +1,18 @@
 {
  "indeks": 204,
  "durum": "sahipsiz",
- "ad": "Ceuta",
- "ulke": "Spain",
+ "ad": "Gandaki Zon",
+ "ulke": "Nepal",
  "d": -1,
  "k": "tahmin",
  "p": [
   [
    [
-    1611,
-    1612
+    1206,
+    1207,
+    1208,
+    1209,
+    -1202
    ]
   ]
  ]

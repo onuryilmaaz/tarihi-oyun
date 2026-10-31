@@ -517,7 +517,15 @@ async function baslat() {
           <input id="gemiAdet" type="number" min="1" max="${DENGE.GEMI_INSA_EN_COK}" value="5" aria-label="Adet" />
           <button data-eylem="gemi" data-sehir="${s.id}"${st.ayaklanma || k ? ' disabled title="Ayaklanma veya kuşatma sırasında tersane bekler"' : ""}>Gemi yap</button></div>
         <p class="not">Kadırga: güç ${DENGE.GEMI.kadirga.guc}, ${DENGE.GEMI.kadirga.kapasite} asker taşır, bölgeyi ${DENGE.GEMI.kadirga.hizGun} günde geçer. Kalyon: güç ${DENGE.GEMI.kalyon.guc}, ${DENGE.GEMI.kalyon.kapasite} asker, ${DENGE.GEMI.kalyon.hizGun} gün. Aylık bakım ${DENGE.GEMI.kadirga.bakim} / ${DENGE.GEMI.kalyon.bakim}.</p>`;
-      return `${istikrar}${nufus}${iskan}${ticaret}${tersane}<h4>Şehir savunması (prototip değerleri)</h4><dl><dt>Sur seviyesi</dt><dd>${c.sur}</dd>
+      const ss = senaryo.sehirler[s.id];
+      const SEHIR_TURU = { kasaba: "Kasaba", sehir: "Şehir", buyuksehir: "Büyük şehir" } as const;
+      const GELIR = { tarim: "Tarım", hayvancilik: "Hayvancılık", ticaret: "Ticaret (liman)", zanaat: "Zanaat ve ticaret" } as const;
+      const kimlik = !ss.tur ? "" : `<dl><dt>Tür</dt><dd>${SEHIR_TURU[ss.tur]}</dd>
+        <dt>Gelişmişlik</dt><dd>${ss.gelismislik}/10</dd>
+        <dt>Gelir kaynağı</dt><dd>${GELIR[ss.gelirKaynagi!]}</dd>
+        ${ss.qid ? `<dt>Kaynak</dt><dd><a href="https://www.wikidata.org/wiki/${ss.qid}" target="_blank" rel="noopener">Wikidata ${ss.qid}</a></dd>` : ""}</dl>
+        <p class="not">Tür, gelişmişlik ve gelir kaynağı tahminidir; henüz ekonomiye bağlı değildir (pilot).</p>`;
+      return `${kimlik}${istikrar}${nufus}${iskan}${ticaret}${tersane}<h4>Şehir savunması (prototip değerleri)</h4><dl><dt>Sur seviyesi</dt><dd>${c.sur}</dd>
         <dt>Garnizon</dt><dd>${c.garnizonTahmin ? "Yaklaşık " : ""}${c.garnizon.toLocaleString("tr-TR")}</dd></dl>
         <p class="not">${k ? `${k.gun} etkin gündür kuşatma altında.` : c.kontrol === ozet.oyuncu.indeks
           ? c.devlet === ozet.oyuncu.indeks ? "Şehir size ait ve askerî kontrolünüzde." : "Şehir askerî kontrolünüzde; yasal sahiplik barış antlaşmasıyla değişir."

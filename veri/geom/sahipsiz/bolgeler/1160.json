@@ -1,21 +1,19 @@
 {
  "indeks": 1160,
  "durum": "sahipsiz",
- "ad": "Adrar Bölgesi",
- "ulke": "Mauritania",
+ "ad": "Santiago del Estero eyaleti",
+ "ulke": "Argentina",
  "d": -1,
  "k": "tahmin",
  "p": [
   [
    [
-    -338,
-    -7813,
-    -4018,
-    7886,
-    7887,
-    7888,
-    7889,
-    -7880
+    -1088,
+    -6229,
+    6232,
+    -2283,
+    -6231,
+    -66
    ]
   ]
  ]

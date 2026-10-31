@@ -1,17 +1,21 @@
 {
  "indeks": 392,
  "durum": "sahipsiz",
- "ad": "Plateau Departmanı",
- "ulke": "Benin",
+ "ad": "Mendoza eyaleti",
+ "ulke": "Argentina",
  "d": -1,
  "k": "tahmin",
  "p": [
   [
    [
-    -2896,
-    2896,
-    2897,
-    2898
+    2302,
+    -2297,
+    2303,
+    2304,
+    2305,
+    2306,
+    2307,
+    2308
    ]
   ]
  ]

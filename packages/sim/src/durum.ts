@@ -79,6 +79,8 @@ export interface Kusatma {
   erzak: number; // binde; yalnızca mevcut kuşatma süresince takip edilir
 }
 export interface IsgalHazirligi { birim: number; devlet: number; gun: number }
+export type SehirTuru = "kasaba" | "sehir" | "buyuksehir";
+export type GelirKaynagi = "tarim" | "hayvancilik" | "ticaret" | "zanaat";
 export interface BarisTalebi { savas: number; birimler: number[]; sehirler: number[]; tazminat: number; vasalYap?: boolean } // TASK-0018
 export interface BarisKaydi extends BarisTalebi { gun: number; devlet: number; karsi: number }
 /** AI'dan oyuncuya barış teklifi (TASK-0009/6c); alan: talep edilen yerleri alacak taraf */
@@ -254,7 +256,11 @@ export interface SenaryoVerisi {
   varsayilanOyuncu: string;
   devletler: { id: string; ad: string }[];
   birimler: { devlet: string | null; verim?: number }[];
-  sehirler: { ad: string; devlet: string; birim: number; baskent: boolean; nufus: number; dugum?: number; x?: number; y?: number }[];
+  sehirler: {
+    ad: string; devlet: string; birim: number; baskent: boolean; nufus: number; dugum?: number; x?: number; y?: number;
+    // TASK-0025 şehir bilgileri [TASLAK]; pilotta yalnızca arayüzde gösterilir
+    tur?: SehirTuru; gelismislik?: number; gelirKaynagi?: GelirKaynagi; qid?: string;
+  }[];
   ordular?: { ad: string; devlet: string; asker: number; dugum: number; x: number; y: number }[];
   // Başlangıç ilişkileri ve ittifakları (6a; tarihî tahmin, [TASLAK])
   iliskiler?: { a: string; b: string; deger: number; not?: string }[];

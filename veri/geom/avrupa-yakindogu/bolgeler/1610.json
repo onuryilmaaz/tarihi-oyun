@@ -1,15 +1,22 @@
 {
  "indeks": 1610,
- "ad": "Mekke Bölgesi (Memlûk Sultanlığı)",
- "ulke": "Saudi Arabia",
+ "ad": "Mekke güneybatısı 6",
+ "ulke": "Eritrea",
  "d": 11,
  "k": "ohm:2960096",
  "p": [
   [
    [
-    10120,
-    -10120,
-    -10116
+    8302,
+    3149,
+    8303,
+    8304,
+    8305,
+    8306,
+    8307,
+    8308,
+    8309,
+    -8296
    ]
   ]
  ]

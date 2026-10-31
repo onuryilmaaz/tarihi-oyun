@@ -10,6 +10,15 @@ Bağlayıcı kurallar: `AGENTS.md`, `MASTER_SPEC.md`, `DECISIONS.md`.
 
 ## 0. En son — BURADAN BAŞLA
 
+- **TASK-0025 / DEC-0074 — şehir merkezli harita PİLOTU uygulandı, COMMIT EDİLMEDİ (TASK-0024 A ile birlikte
+  yerelde), kullanıcı testi bekliyor (2026-10-31).** Sonraki adımlar kullanıcı onayına bağlı: dünyaya yayma,
+  "şehir ve toprağı birlikte fethedilir" kuralının sime işlenmesi, gelişmişlik/gelir kaynağının ekonomiye
+  bağlanması, denge (şehir sayısı arttığı için gelir yükseldi). Ayrıntı: `tasks/TASK-0025.md`.
+
+- **TASK-0024 / DEC-0073 — A uygulandı, COMMIT EDİLMEDİ, kullanıcı testi bekliyor (2026-10-31):** devletlerin içi
+  araziye göre yeniden bölündü (`araclar/bolge-uret.mjs`). Sıradaki: C (elle düzeltme aracı) — kapsamı kullanıcıya
+  sorulacak. TASK-0023 commit+push edildi (`b99f549`). Ayrıntı: `tasks/TASK-0024.md`.
+
 - **TASK-0023 / DEC-0072 uygulandı, COMMIT EDİLMEDİ, kullanıcı testi bekliyor (2026-10-31):** (1) sınır kırıntıları
   birleştirildi (`araclar/birim-birlestir.mjs`, 3637 → 3146 birim), (2) deniz bölgelerine karadan türetilmiş alan
   geometrisi (`araclar/deniz-alan-uret.mjs`) + istemcide deniz seçimi/paneli. İkisi de `npm run senaryo` içinde

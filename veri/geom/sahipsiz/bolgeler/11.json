@@ -1,22 +1,19 @@
 {
  "indeks": 11,
  "durum": "sahipsiz",
- "ad": "Salta eyaleti",
- "ulke": "Argentina",
+ "ad": "Güney Ulusları ve Halkları Bölgesi",
+ "ulke": "Ethiopia",
  "d": -1,
  "k": "tahmin",
  "p": [
   [
    [
-    67,
-    68,
     69,
     70,
     71,
     72,
     73,
-    74,
-    -61
+    74
    ]
   ]
  ]

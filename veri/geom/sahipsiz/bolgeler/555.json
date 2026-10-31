@@ -1,20 +1,18 @@
 {
  "indeks": 555,
  "durum": "sahipsiz",
- "ad": "Central Departmant",
- "ulke": "Paraguay",
+ "ad": "Ceará",
+ "ulke": "Brazil",
  "d": -1,
  "k": "tahmin",
  "p": [
   [
    [
-    4547,
-    4548,
-    4539,
-    4540,
-    -4553,
-    -4552,
-    -4551
+    3430,
+    3431,
+    3432,
+    3433,
+    -3426
    ]
   ]
  ]

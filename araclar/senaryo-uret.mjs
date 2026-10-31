@@ -8,7 +8,9 @@
 
 import fs from "node:fs";
 import crypto from "node:crypto";
-import { agUret } from "./ag-uret.mjs";
+import { agUret, etopoOku } from "./ag-uret.mjs";
+import { bolgeleriUret } from "./bolge-uret.mjs";
+import { sehirleriSec } from "./sehir-sec.mjs";
 import { birimleriBirlestir } from "./birim-birlestir.mjs";
 import { denizAlanlariUret } from "./deniz-alan-uret.mjs";
 
@@ -18,7 +20,15 @@ const hedef = new URL("veri/senaryo-1453/", kok);
 fs.mkdirSync(hedef, { recursive: true });
 
 // TASK-0023: sınır kırıntıları aynı devletin komşu birimine katılır (birim-birlestir.mjs)
-const { harita: birlesik, rapor: birlesimRaporu } = birimleriBirlestir(JSON.parse(fs.readFileSync(new URL("dunya-1453-v02.json", kaynak), "utf8")));
+const { harita: kirintisiz } = birimleriBirlestir(JSON.parse(fs.readFileSync(new URL("dunya-1453-v02.json", kaynak), "utf8")));
+// TASK-0024: devletlerin içi modern iller yerine araziye göre yeniden bölünür (bolge-uret.mjs); ardından
+// kesişimde doğan küçük kopuk parçalar yine aynı devletin komşusuna katılır
+// TASK-0025 pilot: Anadolu + Balkanlar'da şehir listesi Wikidata adaylarıyla genişler, toprak şehirlere bölünür
+const { harita: sehirli, pilot, rapor: sehirRaporu } = sehirleriSec(kirintisiz, JSON.parse(fs.readFileSync(new URL("sehirler-wikidata.json", hedef), "utf8")),
+  JSON.parse(fs.readFileSync(new URL("sehir-haric.json", hedef), "utf8")).adlar);
+const etopo = etopoOku(new URL("veri-ham/etopo2022-0.2deg.csv", kok));
+const { harita: bolgeli, rapor: bolgeRaporu } = bolgeleriUret(sehirli, etopo, { pilot });
+const { harita: birlesik, rapor: birlesimRaporu } = birimleriBirlestir(bolgeli);
 // TASK-0023: deniz bölgelerinin seçilebilir alanları karadan türetilir (deniz-alan-uret.mjs)
 const { alanlar: denizAlanlari, sinirlar: denizSinirlari } = denizAlanlariUret(birlesik, JSON.parse(fs.readFileSync(new URL("deniz.json", hedef), "utf8")));
 const harita = { ...birlesik, denizAlanlari, denizSinirlari };
@@ -66,6 +76,22 @@ const birimBul = (x, y) => {
 };
 
 const devletler = harita.devletler.map((d) => ({ id: d.id, ad: d.ad }));
+// TASK-0025 şehir bilgileri [TASLAK]: nüfus (tahmin tablosu yoksa günümüz nüfusundan), gelişmişlik, tür, gelir kaynağı
+const limanAdlari = new Set(Object.values(JSON.parse(fs.readFileSync(new URL("deniz.json", hedef), "utf8")).limanlar).flat());
+const yukseklikBul = (lon, lat) => {
+  const i = Math.round((lon - etopo.lon0) / etopo.adim), j = Math.round((lat - etopo.lat0) / etopo.adim);
+  return i >= 0 && j >= 0 && i < etopo.nx && j < etopo.ny ? etopo.z[j * etopo.nx + i] : 0;
+};
+const sehirBilgisi = (s, nufus) => {
+  const gelismislik = Math.max(1, Math.min(10, 1 + Math.round((9 * Math.log(nufus / 1500)) / Math.log(100)) + (s.b === 1 ? 1 : 0)));
+  const tur = nufus < 8000 ? "kasaba" : nufus < 40000 ? "sehir" : "buyuksehir";
+  const gelirKaynagi = limanAdlari.has(s.ad) ? "ticaret" : nufus >= 20000 ? "zanaat"
+    : yukseklikBul(s.x, millerLat(s.y)) > 1000 ? "hayvancilik" : "tarim";
+  return { tur, gelismislik, gelirKaynagi };
+};
+const nufusTahmini = (s) => sehirNufuslari[s.ad] ?? (s.nufusGunumuz
+  ? Math.max(1500, Math.min(25000, Math.round((12 * Math.sqrt(s.nufusGunumuz)) / 100) * 100))
+  : s.b === 1 ? 40000 : 10000);
 const sehirNufuslari = JSON.parse(fs.readFileSync(new URL("sehir-nufus.json", hedef), "utf8")).sehirler;
 const zorlukToplam = new Map();
 for (const n of ag.dugumler) { const a = zorlukToplam.get(n.b) ?? [0, 0]; a[0] += n.z; a[1]++; zorlukToplam.set(n.b, a); }
@@ -90,7 +116,9 @@ const senaryo = {
     devlet: harita.devletler[s.d].id,
     birim: birimBul(s.x, s.y),
     baskent: s.b === 1,
-    nufus: sehirNufuslari[s.ad] ?? (s.b === 1 ? 40000 : 10000), // 1453 tahmini (sehir-nufus.json, 9b); yoksa eski test değeri
+    nufus: nufusTahmini(s), // 1453 tahmini (sehir-nufus.json, 9b); yoksa günümüz nüfusundan (TASK-0025) ya da eski test değeri
+    ...sehirBilgisi(s, nufusTahmini(s)),
+    ...(s.qid ? { qid: s.qid } : {}),
     dugum: dugumBul(s.x, millerLat(s.y)), // hareket ağındaki düğüm (ordu konuşlanması, geri çekilme hedefi)
     x: Math.round(s.x * 10000),
     y: Math.round(s.y * 10000),
@@ -117,6 +145,8 @@ fs.writeFileSync(new URL("harita.json", hedef), haritaMetni);
 fs.writeFileSync(new URL("senaryo.json", hedef), JSON.stringify(senaryo));
 fs.copyFileSync(new URL("wikidata-1453.json", kaynak), new URL("wikidata.json", hedef));
 const birimsiz = senaryo.sehirler.filter((s) => s.birim < 0).map((s) => s.ad);
+console.log("şehir seçimi:", sehirRaporu);
+console.log("bölge üretimi:", bolgeRaporu);
 console.log("birim birleştirme:", birlesimRaporu);
 console.log("hareket ağı:", rapor);
 console.log({ surum, devlet: devletler.length, birim: senaryo.birimler.length, sehir: senaryo.sehirler.length, birimsizSehir: birimsiz });

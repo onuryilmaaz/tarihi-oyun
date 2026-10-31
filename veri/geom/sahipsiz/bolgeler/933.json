@@ -1,17 +1,24 @@
 {
  "indeks": 933,
  "durum": "sahipsiz",
- "ad": "Cabo Delgado Bölgesi",
- "ulke": "Mozambique",
+ "ad": "Bougainville",
+ "ulke": "Papua New Guinea",
  "d": -1,
  "k": "tahmin",
  "p": [
   [
    [
-    6410,
-    6411,
-    6412,
-    6413
+    5644
+   ]
+  ],
+  [
+   [
+    5645
+   ]
+  ],
+  [
+   [
+    5646
    ]
   ]
  ]

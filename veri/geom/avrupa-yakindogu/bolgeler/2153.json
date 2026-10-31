@@ -1,18 +1,18 @@
 {
  "indeks": 2153,
- "ad": "Isle of Man",
- "ulke": "Isle of Man",
- "d": 58,
+ "ad": "Paris güneybatısı 3",
+ "ulke": "France",
+ "d": 57,
  "k": "tahmin",
  "p": [
   [
    [
-    14300
-   ]
-  ],
-  [
-   [
-    14301
+    -12702,
+    -12714,
+    -12737,
+    12749,
+    12750,
+    -12739
    ]
   ]
  ]

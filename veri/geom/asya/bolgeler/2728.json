@@ -1,17 +1,18 @@
 {
  "indeks": 2728,
- "ad": "Lovgar Vilayeti",
- "ulke": "Afghanistan",
- "d": 90,
+ "ad": "Karakurum güneyi 3",
+ "ulke": "Mongolia",
+ "d": 94,
  "k": "tahmin",
  "p": [
   [
    [
-    -7528,
-    -7535,
-    -16311,
-    16321,
-    -16317
+    -16109,
+    -16120,
+    -16152,
+    16152,
+    16153,
+    16154
    ]
   ]
  ]

@@ -1,21 +1,19 @@
 {
  "indeks": 1258,
  "durum": "sahipsiz",
- "ad": "Merkez Bölgesi",
- "ulke": "Zambia",
+ "ad": "Plateau-Central",
+ "ulke": "Burkina Faso",
  "d": -1,
  "k": "tahmin",
  "p": [
   [
    [
-    -2075,
-    -2086,
-    -5945,
-    -5959,
-    -8059,
-    -8073,
-    -8192,
-    -2264
+    6609,
+    -6472,
+    -6469,
+    6610,
+    -6443,
+    -6477
    ]
   ]
  ]

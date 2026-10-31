@@ -1,5 +1,21 @@
 # CHANGELOG
 
+## 2026-10-31 — TASK-0025 pilot: şehir merkezli harita (Anadolu + Balkanlar) (Claude)
+
+- Wikidata (CC0) şehir adayları (`araclar/sehir-wikidata.mjs`, `sehirler-wikidata.json`), seçim ve seyreltme
+  (`araclar/sehir-sec.mjs`, en az 45 km; `sehir-haric.json` elle dışlama). 24 pilot devlete 236 yeni şehir.
+- Pilot devletlerin toprağı şehir topraklarına bölündü (`bolge-uret.mjs` şehir kipi): her şehrin kendi toprağı var,
+  sınır şehrin ortasından geçmez, devlet sınırı şehir topraklarını izler.
+- Şehre tür, gelişmişlik, gelir kaynağı (tahmini, henüz ekonomiye bağlı değil) ve Wikidata bağlantısı.
+
+## 2026-10-31 — TASK-0024 (A): araziye göre üretilen oyun bölgeleri (Claude)
+
+- **Yeni `araclar/bolge-uret.mjs`** (`npm run senaryo` içinde): devlet sınırları ve kıyılar korunarak her devletin
+  içi şehirlerden başlayan, engebe ve büyük nehirlere duyarlı bölüşümle yeniden bölündü; bölge sayısı devlet başına
+  aynı. Adlar: şehirli bölge şehrin adı, diğerleri "<en yakın şehir> <yön>" (geçici). Ortak yaylar topojson-server
+  ile yeniden kuruldu. Yeni devDependency: polygon-clipping (MIT), topojson-server (ISC).
+- `ag-uret.mjs`: `etopoOku` dışa açıldı. `veri/geom` yeniden ayrıştırıldı. Senaryo sürümü değişti.
+
 ## 2026-10-31 — TASK-0023: sınır kırıntıları birleştirildi, deniz bölgeleri seçilebilir (Claude)
 
 - **Yeni `araclar/birim-birlestir.mjs`** (`npm run senaryo` içinde): 500 km² altı birimler ve kopuk küçük parçalar

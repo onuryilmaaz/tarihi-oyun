@@ -1,27 +1,18 @@
 {
  "indeks": 570,
  "durum": "sahipsiz",
- "ad": "Santa Catarina",
- "ulke": "Brazil",
+ "ad": "Río Negro Departmanı",
+ "ulke": "Uruguay",
  "d": -1,
  "k": "tahmin",
  "p": [
   [
    [
-    -4605,
-    4606,
-    -765,
-    -4561
-   ]
-  ],
-  [
-   [
-    4607
-   ]
-  ],
-  [
-   [
-    4608
+    3498,
+    -11,
+    3499,
+    3500,
+    -3496
    ]
   ]
  ]

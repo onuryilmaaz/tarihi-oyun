@@ -1,23 +1,18 @@
 {
  "indeks": 296,
  "durum": "sahipsiz",
- "ad": "Doğu Bölgesi",
- "ulke": "Democratic Republic of the Congo",
+ "ad": "Kara",
+ "ulke": "Togo",
  "d": -1,
  "k": "tahmin",
  "p": [
   [
    [
-    -2210,
-    2210,
-    2211,
-    2212,
-    2213,
-    2214,
-    2215,
-    -371,
-    2216,
-    -2206
+    -1627,
+    -1621,
+    1643,
+    1644,
+    -1636
    ]
   ]
  ]

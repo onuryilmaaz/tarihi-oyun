@@ -1,17 +1,20 @@
 {
  "indeks": 2723,
- "ad": "Uruzgan Vilayeti",
- "ulke": "Afghanistan",
- "d": 90,
+ "ad": "Karakurum güneydoğusu",
+ "ulke": "China",
+ "d": 94,
  "k": "tahmin",
  "p": [
   [
    [
-    16305,
-    -7546,
-    -7549,
-    -7552,
-    16306
+    16120,
+    16121,
+    16122,
+    16123,
+    16124,
+    16125,
+    16126,
+    -16118
    ]
   ]
  ]

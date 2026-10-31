@@ -1,21 +1,18 @@
 {
  "indeks": 483,
  "durum": "sahipsiz",
- "ad": "Güney Eyaleti",
- "ulke": "Rwanda",
+ "ad": "Batı Kasai",
+ "ulke": "Democratic Republic of the Congo",
  "d": -1,
  "k": "tahmin",
  "p": [
   [
    [
-    -4074,
-    4074,
-    4075,
-    4076,
-    4077,
-    4078,
-    4079,
-    -4068
+    -255,
+    -241,
+    2998,
+    -546,
+    2999
    ]
   ]
  ]

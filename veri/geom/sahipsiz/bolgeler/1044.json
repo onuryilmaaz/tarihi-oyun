@@ -1,17 +1,19 @@
 {
  "indeks": 1044,
  "durum": "sahipsiz",
- "ad": "La Guajira",
- "ulke": "Colombia",
+ "ad": "Manyara Bölgesi",
+ "ulke": "United Republic of Tanzania",
  "d": -1,
  "k": "tahmin",
  "p": [
   [
    [
-    -7234,
-    7238,
-    7239,
-    7240
+    -5949,
+    -5958,
+    5959,
+    -2849,
+    -2854,
+    -2859
    ]
   ]
  ]

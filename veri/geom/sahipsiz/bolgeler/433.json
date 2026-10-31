@@ -1,20 +1,18 @@
 {
  "indeks": 433,
  "durum": "sahipsiz",
- "ad": "Chuka",
- "ulke": "Bhutan",
+ "ad": "Tibesti Bölgesi",
+ "ulke": "Chad",
  "d": -1,
  "k": "tahmin",
  "p": [
   [
    [
-    -3468,
-    -3466,
-    -3464,
-    3482,
-    3483,
-    3484,
-    3485
+    -2702,
+    2713,
+    2714,
+    2715,
+    -2705
    ]
   ]
  ]

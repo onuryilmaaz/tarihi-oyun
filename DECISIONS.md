@@ -833,6 +833,29 @@ Kaynak belge: `MASTER_SPEC.md` (v1.3). Orijinal keşif çıktısı:
   "İkisi birden, aynı kartta" (2026-10-30).
 - **Durum:** GEÇERLİ
 
+## DEC-0074 — TASK-0025 onayı: şehir merkezli harita (MASTER_SPEC KARAR değişikliği)
+
+- **Tarih:** 2026-10-31
+- **Seçilen karar:** (1) Şehir ve toprağı tek birimdir, birlikte fethedilir; "şehir ve çevresi ayrı fethedilir"
+  [KARAR]'ı bununla değişir (sime işlenmesi pilot onayından sonra). (2) Şehir listesi Wikidata'dan (CC0)
+  genişletilir; 1453 nüfusları tahminidir [TASLAK]. (3) Devlet sınırı, sahip olduğu şehirlerin topraklarının
+  toplamıdır; OHM yalnızca şehrin 1453 sahibini belirlemekte kullanılır. (4) Şehre gelişmişlik, tür ve gelir
+  kaynağı eklenir. (5) Önce Anadolu + Balkanlar pilotu. (6) TASK-0024 A commit edilmeden altyapı olarak kullanılır.
+- **Onay kaydı:** Kullanıcı: "1-a 2-uygundur 3-uygundur 4-mantıklı gelir kaynağı falan. başka şeyler de
+  ekleyebilirsin. 5-tamam 6-tamam" (2026-10-31).
+- **Durum:** GEÇERLİ
+
+## DEC-0073 — TASK-0024 onayı: araziye göre üretilen oyun bölgeleri + elle düzeltme aracı
+
+- **Tarih:** 2026-10-31
+- **Seçilen karar:** Modern il biçimli arazi birimleri yerine, devlet sınırları korunarak her devletin toprağı araziye
+  göre (engebe, büyük nehirler) yeniden bölünür (A); bölge sayısı devlet başına bugünkü kadar kalır. Ardından
+  geliştirici modunda elle düzeltme aracı yapılır (C). Tarihî OHM idari verisi (B) ve ücretli atlas verisi (D)
+  bu aşamada kullanılmaz. Üretim betiklerinde polygon-clipping (MIT) ve topojson-server (ISC) kullanılır.
+- **Onay kaydı:** Kullanıcı: "1- c 2- önerini yap 3- pusla" (2026-10-31) — sorun hem iç sınırlar hem devlet sınırı;
+  agent önerisi A + C.
+- **Durum:** GEÇERLİ
+
 ## DEC-0072 — TASK-0023 onayı: sınır kırıntılarının birleştirilmesi ve seçilebilir deniz bölgeleri
 
 - **Tarih:** 2026-10-31

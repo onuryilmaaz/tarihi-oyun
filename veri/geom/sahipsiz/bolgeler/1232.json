@@ -1,18 +1,21 @@
 {
  "indeks": 1232,
  "durum": "sahipsiz",
- "ad": "Lunda Sul Bölgesi",
- "ulke": "Angola",
+ "ad": "Nord",
+ "ulke": "Burkina Faso",
  "d": -1,
  "k": "tahmin",
  "p": [
   [
    [
-    -2268,
-    -8070,
-    8134,
-    -8131,
-    -8129
+    6440,
+    6441,
+    6442,
+    6443,
+    -6432,
+    6444,
+    6445,
+    6446
    ]
   ]
  ]

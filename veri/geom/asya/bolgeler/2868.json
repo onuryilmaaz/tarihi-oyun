@@ -1,13 +1,18 @@
 {
  "indeks": 2868,
- "ad": "Ulan Batur",
- "ulke": "Mongolia",
- "d": 94,
+ "ad": "Thăng Long kuzeybatısı 5",
+ "ulke": "Vietnam",
+ "d": 100,
  "k": "tahmin",
  "p": [
   [
    [
-    -16633
+    -16947,
+    -16934,
+    16955,
+    16956,
+    -16278,
+    16957
    ]
   ]
  ]

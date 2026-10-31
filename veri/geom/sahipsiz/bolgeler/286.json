@@ -1,23 +1,18 @@
 {
  "indeks": 286,
  "durum": "sahipsiz",
- "ad": "Southern",
- "ulke": "Sierra Leone",
+ "ad": "Sokoto Eyaleti",
+ "ulke": "Nigeria",
  "d": -1,
  "k": "tahmin",
  "p": [
   [
    [
-    -2167,
-    2170,
-    2171,
-    -2132,
-    -2166
-   ]
-  ],
-  [
-   [
-    2172
+    1588,
+    1589,
+    -583,
+    1590,
+    1591
    ]
   ]
  ]

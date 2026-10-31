@@ -1,20 +1,18 @@
 {
  "indeks": 450,
  "durum": "sahipsiz",
- "ad": "Independencia",
- "ulke": "Dominican Republic",
+ "ad": "Aşağı Cubba",
+ "ulke": "Somalia",
  "d": -1,
  "k": "tahmin",
  "p": [
   [
    [
-    -3720,
-    -3726,
-    3726,
-    3727,
-    3728,
-    3729,
-    3730
+    -2770,
+    -111,
+    2830,
+    2831,
+    2832
    ]
   ]
  ]

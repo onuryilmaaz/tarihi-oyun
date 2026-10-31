@@ -1,18 +1,19 @@
 {
  "indeks": 31,
  "durum": "sahipsiz",
- "ad": "Bakul",
- "ulke": "Somalia",
+ "ad": "Alajuela",
+ "ulke": "Costa Rica",
  "d": -1,
  "k": "tahmin",
  "p": [
   [
    [
-    -212,
+    211,
     212,
     213,
     214,
-    -190
+    215,
+    216
    ]
   ]
  ]

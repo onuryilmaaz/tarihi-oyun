@@ -1,18 +1,20 @@
 {
  "indeks": 2118,
- "ad": "Santa Cruz de Tenerife İli (Kastilya Krallığı)",
- "ulke": "Spain",
- "d": 52,
+ "ad": "Lyon güneybatısı",
+ "ulke": "France",
+ "d": 57,
  "k": "tahmin",
  "p": [
   [
    [
-    14144
-   ]
-  ],
-  [
-   [
-    14145
+    12541,
+    12552,
+    12553,
+    12554,
+    12555,
+    12556,
+    12557,
+    -12172
    ]
   ]
  ]

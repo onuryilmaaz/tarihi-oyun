@@ -1,17 +1,20 @@
 {
  "indeks": 224,
  "durum": "sahipsiz",
- "ad": "Upper Demerara- Berbice",
- "ulke": "Guyana",
+ "ad": "Mohale's Hoek",
+ "ulke": "Lesotho",
  "d": -1,
  "k": "tahmin",
  "p": [
   [
    [
-    -1695,
-    -293,
-    1695,
-    -1689
+    1296,
+    1294,
+    -1288,
+    -1286,
+    1298,
+    -1281,
+    -1269
    ]
   ]
  ]

@@ -1,14 +1,18 @@
 {
  "indeks": 1802,
- "ad": "İstanbul (iç)",
- "ulke": "Turkey",
- "d": 1,
- "k": "tahmin-elle",
+ "ad": "Kolojvar kuzeybatısı",
+ "ulke": "Romania",
+ "d": 27,
+ "k": "tahmin",
  "p": [
   [
    [
-    11453,
-    11454
+    -9623,
+    -9613,
+    -9641,
+    9641,
+    9642,
+    9643
    ]
   ]
  ]

@@ -1,18 +1,19 @@
 {
  "indeks": 101,
  "durum": "sahipsiz",
- "ad": "Artigas Departmanı",
- "ulke": "Uruguay",
+ "ad": "Ouémé Departmanı",
+ "ulke": "Benin",
  "d": -1,
  "k": "tahmin",
  "p": [
   [
    [
-    -772,
-    772,
-    -5,
-    773,
-    774
+    -629,
+    631,
+    632,
+    633,
+    -619,
+    -616
    ]
   ]
  ]

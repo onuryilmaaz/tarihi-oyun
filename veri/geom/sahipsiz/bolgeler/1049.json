@@ -1,17 +1,23 @@
 {
  "indeks": 1049,
  "durum": "sahipsiz",
- "ad": "Arauca",
- "ulke": "Colombia",
+ "ad": "Kuzey Kordofan Eyaleti (devlet yok)",
+ "ulke": "Sudan",
  "d": -1,
  "k": "tahmin",
  "p": [
   [
    [
-    -7256,
-    7257,
-    7258,
-    7259
+    3339,
+    3330,
+    3323,
+    -5967,
+    5969,
+    5970,
+    5971,
+    5972,
+    -2741,
+    2807
    ]
   ]
  ]

@@ -1,17 +1,29 @@
 {
  "indeks": 943,
  "durum": "sahipsiz",
- "ad": "Alberta",
- "ulke": "Canada",
+ "ad": "Güney Georgia ve Güney Sandwich Adaları",
+ "ulke": "South Georgia and the Islands",
  "d": -1,
  "k": "tahmin",
  "p": [
   [
    [
-    -6568,
-    -6474,
-    6572,
-    6573
+    5680
+   ]
+  ],
+  [
+   [
+    5681
+   ]
+  ],
+  [
+   [
+    5682
+   ]
+  ],
+  [
+   [
+    5683
    ]
   ]
  ]

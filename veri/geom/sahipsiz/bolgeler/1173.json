@@ -1,21 +1,20 @@
 {
  "indeks": 1173,
  "durum": "sahipsiz",
- "ad": "Kuzey Darfur Eyaleti",
- "ulke": "Sudan",
+ "ad": "Bauchi Eyaleti",
+ "ulke": "Nigeria",
  "d": -1,
  "k": "tahmin",
  "p": [
   [
    [
-    7824,
-    7931,
-    7932,
-    -2190,
-    -2188,
-    7933,
-    -7787,
-    -7786
+    6276,
+    6277,
+    6278,
+    -1617,
+    6279,
+    6280,
+    -1568
    ]
   ]
  ]

@@ -1,15 +1,19 @@
 {
  "indeks": 412,
  "durum": "sahipsiz",
- "ad": "Kuzeydoğu Bölgesi",
- "ulke": "Botswana",
+ "ad": "Norte de Santander",
+ "ulke": "Colombia",
  "d": -1,
  "k": "tahmin",
  "p": [
   [
    [
-    3371,
-    3383
+    2547,
+    2548,
+    2549,
+    2550,
+    -2543,
+    -2531
    ]
   ]
  ]

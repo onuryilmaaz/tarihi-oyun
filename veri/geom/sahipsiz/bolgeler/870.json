@@ -1,19 +1,44 @@
 {
  "indeks": 870,
  "durum": "sahipsiz",
- "ad": "Maradi",
- "ulke": "Niger",
+ "ad": "Kerguelen Adaları",
+ "ulke": "French Southern and Antarctic Lands",
  "d": -1,
  "k": "tahmin",
  "p": [
   [
    [
-    -6171,
-    -6180,
-    6187,
-    6188,
-    6189,
-    6190
+    5475
+   ]
+  ],
+  [
+   [
+    5476
+   ]
+  ],
+  [
+   [
+    5477
+   ]
+  ],
+  [
+   [
+    5478
+   ]
+  ],
+  [
+   [
+    5479
+   ]
+  ],
+  [
+   [
+    5480
+   ]
+  ],
+  [
+   [
+    5481
    ]
   ]
  ]

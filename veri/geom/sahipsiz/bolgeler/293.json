@@ -1,20 +1,19 @@
 {
  "indeks": 293,
  "durum": "sahipsiz",
- "ad": "Batı Bahr el Ghazal",
- "ulke": "S. Sudan",
+ "ad": "Savanes",
+ "ulke": "Togo",
  "d": -1,
  "k": "tahmin",
  "p": [
   [
    [
-    -2194,
-    -2192,
-    2199,
-    2200,
-    2201,
-    2202,
-    2203
+    1624,
+    1625,
+    -1622,
+    1626,
+    1627,
+    1628
    ]
   ]
  ]

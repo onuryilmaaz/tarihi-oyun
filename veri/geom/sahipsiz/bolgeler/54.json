@@ -1,19 +1,20 @@
 {
  "indeks": 54,
  "durum": "sahipsiz",
- "ad": "Alajuela",
- "ulke": "Costa Rica",
+ "ad": "Roraima",
+ "ulke": "Brazil",
  "d": -1,
  "k": "tahmin",
  "p": [
   [
    [
-    345,
-    346,
-    347,
-    348,
-    349,
-    350
+    352,
+    353,
+    354,
+    355,
+    356,
+    357,
+    -351
    ]
   ]
  ]

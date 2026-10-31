@@ -1,17 +1,20 @@
 {
  "indeks": 269,
  "durum": "sahipsiz",
- "ad": "Chitipa",
- "ulke": "Malawi",
+ "ad": "Haut-Ogooué",
+ "ulke": "Gabon",
  "d": -1,
  "k": "tahmin",
  "p": [
   [
    [
-    -237,
-    -235,
-    -258,
-    2071
+    -1508,
+    -247,
+    -253,
+    1509,
+    -285,
+    1510,
+    -1504
    ]
   ]
  ]

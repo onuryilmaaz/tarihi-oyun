@@ -1,23 +1,19 @@
 {
  "indeks": 853,
  "durum": "sahipsiz",
- "ad": "Far North Bölgesi",
- "ulke": "Cameroon",
+ "ad": "Exuma",
+ "ulke": "The Bahamas",
  "d": -1,
  "k": "tahmin",
  "p": [
   [
    [
-    -6118,
-    6118,
-    6119,
-    6120,
-    6121,
-    6122,
-    6123,
-    6124,
-    -3749,
-    -3748
+    5450
+   ]
+  ],
+  [
+   [
+    5451
    ]
   ]
  ]

@@ -1,25 +1,19 @@
 {
  "indeks": 478,
  "durum": "sahipsiz",
- "ad": "Maputo Bölgesi",
- "ulke": "Mozambique",
+ "ad": "Kavango",
+ "ulke": "Namibia",
  "d": -1,
  "k": "tahmin",
  "p": [
   [
    [
-    4047,
-    4048,
-    4049,
-    4050,
-    9131,
-    4052,
-    4053
-   ]
-  ],
-  [
-   [
-    4054
+    -2928,
+    2963,
+    -667,
+    2964,
+    2965,
+    -2961
    ]
   ]
  ]

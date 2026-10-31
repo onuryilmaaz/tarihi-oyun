@@ -1,24 +1,20 @@
 {
  "indeks": 935,
  "durum": "sahipsiz",
- "ad": "Niassa Bölgesi",
- "ulke": "Mozambique",
+ "ad": "Doğu Yeni Britanya",
+ "ulke": "Papua New Guinea",
  "d": -1,
  "k": "tahmin",
  "p": [
   [
    [
-    6412,
-    6414,
-    251,
-    258,
-    -6424,
-    -6423,
-    -6422,
-    -6421,
-    -6420,
-    -6419,
-    -6418
+    5653,
+    -5651
+   ]
+  ],
+  [
+   [
+    5655
    ]
   ]
  ]

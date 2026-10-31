@@ -1,18 +1,20 @@
 {
  "indeks": 7,
  "durum": "sahipsiz",
- "ad": "Tarapacá bölgesi",
+ "ad": "Antofagasta bölgesi",
  "ulke": "Chile",
  "d": -1,
  "k": "tahmin",
  "p": [
   [
    [
-    -51,
+    -50,
     51,
     52,
     53,
-    -39
+    54,
+    55,
+    -44
    ]
   ]
  ]

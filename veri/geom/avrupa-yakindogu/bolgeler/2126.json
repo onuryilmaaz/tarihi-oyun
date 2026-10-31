@@ -1,18 +1,18 @@
 {
  "indeks": 2126,
- "ad": "Güney Ege (Venedik Cumhuriyeti)",
- "ulke": "Greece",
- "d": 22,
- "k": "ohm:2800700",
+ "ad": "Lyon güneybatısı 9",
+ "ulke": "France",
+ "d": 57,
+ "k": "tahmin",
  "p": [
   [
    [
-    14195
-   ]
-  ],
-  [
-   [
-    14196
+    -12601,
+    12602,
+    12603,
+    12604,
+    12605,
+    12606
    ]
   ]
  ]

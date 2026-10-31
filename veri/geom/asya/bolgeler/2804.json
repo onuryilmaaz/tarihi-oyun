@@ -1,19 +1,15 @@
 {
  "indeks": 2804,
- "ad": "Sverdlovsk Oblastı",
- "ulke": "Russia",
- "d": 93,
+ "ad": "Kyoto güneybatısı 7",
+ "ulke": "Japan",
+ "d": 99,
  "k": "tahmin",
  "p": [
   [
    [
-    16484,
-    16485,
-    16486,
-    -7560,
-    -7568,
-    -7585,
-    -16481
+    16663,
+    -16669,
+    -16668
    ]
   ]
  ]

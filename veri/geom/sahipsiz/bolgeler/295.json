@@ -1,18 +1,22 @@
 {
  "indeks": 295,
  "durum": "sahipsiz",
- "ad": "Batı Equatoria",
- "ulke": "S. Sudan",
+ "ad": "Kuzey Bölgesi",
+ "ulke": "Ghana",
  "d": -1,
  "k": "tahmin",
  "p": [
   [
    [
-    -2203,
-    2207,
-    2208,
-    2209,
-    -2205
+    -1628,
+    1635,
+    1636,
+    1637,
+    1638,
+    1639,
+    1640,
+    1641,
+    -1631
    ]
   ]
  ]

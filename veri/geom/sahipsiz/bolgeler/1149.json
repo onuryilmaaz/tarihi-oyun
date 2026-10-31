@@ -1,24 +1,21 @@
 {
  "indeks": 1149,
  "durum": "sahipsiz",
- "ad": "Kuzey Eyaleti (devlet yok)",
- "ulke": "Sudan",
+ "ad": "Cochabamba Departmanı",
+ "ulke": "Bolivia",
  "d": -1,
  "k": "tahmin",
  "p": [
   [
    [
-    7824,
-    7825,
-    -7824,
-    7826,
-    7778,
-    7827,
-    7780,
-    7828,
-    7782,
-    7829,
-    7784
+    6212,
+    6213,
+    6214,
+    -2277,
+    -1098,
+    -2265,
+    -46,
+    -39
    ]
   ]
  ]

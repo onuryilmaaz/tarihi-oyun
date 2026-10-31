@@ -1,17 +1,18 @@
 {
  "indeks": 2730,
- "ad": "Vardak Vilayeti",
- "ulke": "Afghanistan",
- "d": 90,
+ "ad": "Karakurum güneybatısı 2",
+ "ulke": "Mongolia",
+ "d": 94,
  "k": "tahmin",
  "p": [
   [
    [
-    -16318,
-    -16322,
-    -16310,
-    16323,
-    16324
+    -16099,
+    -16110,
+    -16155,
+    16157,
+    16158,
+    16159
    ]
   ]
  ]

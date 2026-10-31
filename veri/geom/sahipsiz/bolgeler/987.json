@@ -1,33 +1,14 @@
 {
  "indeks": 987,
  "durum": "sahipsiz",
- "ad": "Bocas del Toro",
- "ulke": "Panama",
+ "ad": "Penghu",
+ "ulke": "Taiwan",
  "d": -1,
  "k": "tahmin",
  "p": [
   [
    [
-    6849,
-    6850,
-    6851,
-    6852,
-    6853
-   ]
-  ],
-  [
-   [
-    6854
-   ]
-  ],
-  [
-   [
-    6855
-   ]
-  ],
-  [
-   [
-    6856
+    5796
    ]
   ]
  ]

@@ -1,18 +1,19 @@
 {
  "indeks": 1874,
- "ad": "Attika (Venedik Cumhuriyeti)",
- "ulke": "Greece",
- "d": 22,
- "k": "ohm:2800700",
+ "ad": "Kiev güneydoğusu 3",
+ "ulke": "Ukraine",
+ "d": 35,
+ "k": "tahmin",
  "p": [
   [
    [
-    12037
-   ]
-  ],
-  [
-   [
-    12038
+    -10329,
+    10331,
+    -7967,
+    -10058,
+    10332,
+    10333,
+    10334
    ]
   ]
  ]

@@ -1,17 +1,19 @@
 {
  "indeks": 1032,
  "durum": "sahipsiz",
- "ad": "Ñuble",
- "ulke": "Chile",
+ "ad": "Colorado",
+ "ulke": "United States of America",
  "d": -1,
  "k": "tahmin",
  "p": [
   [
    [
-    -7038,
-    7038,
-    7039,
-    -7029
+    -5913,
+    5914,
+    5915,
+    5916,
+    -2049,
+    -5908
    ]
   ]
  ]

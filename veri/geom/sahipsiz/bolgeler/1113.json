@@ -1,21 +1,18 @@
 {
  "indeks": 1113,
  "durum": "sahipsiz",
- "ad": "Kuzey Sınır Bölgesi",
- "ulke": "Saudi Arabia",
+ "ad": "Bolivar",
+ "ulke": "Ecuador",
  "d": -1,
  "k": "tahmin",
  "p": [
   [
    [
-    7674,
-    -3767,
-    -3351,
-    7675,
-    7676,
-    7677,
-    7650,
-    7678
+    -6130,
+    -6135,
+    -3789,
+    6136,
+    6137
    ]
   ]
  ]

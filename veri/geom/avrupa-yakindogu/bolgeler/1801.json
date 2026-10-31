@@ -1,16 +1,18 @@
 {
  "indeks": 1801,
- "ad": "Varna ili",
- "ulke": "Bulgaria",
- "d": 0,
+ "ad": "Kolojvar kuzeyi",
+ "ulke": "Romania",
+ "d": 27,
  "k": "tahmin",
  "p": [
   [
    [
-    11451,
-    -3394,
-    11452,
-    -4954
+    -9612,
+    -9594,
+    -9598,
+    -9639,
+    9639,
+    9640
    ]
   ]
  ]

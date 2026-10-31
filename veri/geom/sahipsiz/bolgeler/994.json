@@ -1,21 +1,14 @@
 {
  "indeks": 994,
  "durum": "sahipsiz",
- "ad": "Darien",
- "ulke": "Panama",
+ "ad": "Güney",
+ "ulke": "Hong Kong S.A.R.",
  "d": -1,
  "k": "tahmin",
  "p": [
   [
    [
-    -6888,
-    6894,
-    6895,
-    -6879,
-    -6893
-   ],
-   [
-    -6894
+    5803
    ]
   ]
  ]

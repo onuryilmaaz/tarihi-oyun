@@ -1,19 +1,25 @@
 {
  "indeks": 946,
  "durum": "sahipsiz",
- "ad": "Manitoba",
- "ulke": "Canada",
+ "ad": "South",
+ "ulke": "New Caledonia",
  "d": -1,
  "k": "tahmin",
  "p": [
   [
    [
-    -6578,
-    -6576,
-    6580,
-    6581,
-    6582,
-    6583
+    5699
+   ]
+  ],
+  [
+   [
+    5700
+   ]
+  ],
+  [
+   [
+    5701,
+    -3505
    ]
   ]
  ]

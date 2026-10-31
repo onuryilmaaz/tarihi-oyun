@@ -1,18 +1,16 @@
 {
  "indeks": 2732,
- "ad": "Parvan Vilayeti",
- "ulke": "Afghanistan",
- "d": 90,
+ "ad": "Karakurum",
+ "ulke": "Mongolia",
+ "d": 94,
  "k": "tahmin",
  "p": [
   [
    [
-    -16325,
-    -16331,
-    16331,
-    -16314,
-    -16323,
-    -16319
+    -16158,
+    -16154,
+    16171,
+    16172
    ]
   ]
  ]

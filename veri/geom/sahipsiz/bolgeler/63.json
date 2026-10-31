@@ -1,16 +1,20 @@
 {
  "indeks": 63,
  "durum": "sahipsiz",
- "ad": "Kinşasa",
- "ulke": "Democratic Republic of the Congo",
+ "ad": "Doğu Bölgesi",
+ "ulke": "Zambia",
  "d": -1,
  "k": "tahmin",
  "p": [
   [
    [
-    -397,
-    -390,
-    398
+    -411,
+    412,
+    413,
+    414,
+    415,
+    416,
+    -404
    ]
   ]
  ]

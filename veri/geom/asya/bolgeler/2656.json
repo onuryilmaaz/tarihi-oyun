@@ -1,16 +1,17 @@
 {
  "indeks": 2656,
- "ad": "Çinghay",
- "ulke": "China",
- "d": 96,
+ "ad": "Herat güneydoğusu 4",
+ "ulke": "Afghanistan",
+ "d": 90,
  "k": "tahmin",
  "p": [
   [
    [
-    -813,
-    -16206,
-    -113,
-    -111
+    -15716,
+    -15734,
+    15738,
+    15739,
+    -15735
    ]
   ]
  ]

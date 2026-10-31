@@ -1,17 +1,19 @@
 {
  "indeks": 459,
  "durum": "sahipsiz",
- "ad": "Ahuachpan Departmanı",
- "ulke": "El Salvador",
+ "ad": "Centro Sur",
+ "ulke": "Equatorial Guinea",
  "d": -1,
  "k": "tahmin",
  "p": [
   [
    [
-    3770,
-    3771,
-    3772,
-    3773
+    -1482,
+    -2866,
+    2867,
+    -1495,
+    2868,
+    -2861
    ]
   ]
  ]

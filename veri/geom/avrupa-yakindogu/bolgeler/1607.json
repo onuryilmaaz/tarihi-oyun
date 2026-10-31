@@ -1,18 +1,20 @@
 {
  "indeks": 1607,
- "ad": "Medine Bölgesi (Memlûk Sultanlığı)",
- "ulke": "Saudi Arabia",
+ "ad": "Mekke güneybatısı 3",
+ "ulke": "Sudan",
  "d": 11,
- "k": "tahmin",
+ "k": "ohm:2960096",
  "p": [
   [
    [
-    10109,
-    10110,
-    10111,
-    10112,
-    10113,
-    -10108
+    8283,
+    -5970,
+    -5968,
+    -2762,
+    8284,
+    8285,
+    8286,
+    -8281
    ]
   ]
  ]

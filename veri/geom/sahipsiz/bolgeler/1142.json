@@ -1,17 +1,18 @@
 {
  "indeks": 1142,
  "durum": "sahipsiz",
- "ad": "Tibesti Bölgesi",
- "ulke": "Chad",
+ "ad": "Batı Bölgesi",
+ "ulke": "Cameroon",
  "d": -1,
  "k": "tahmin",
  "p": [
   [
    [
-    -7795,
-    -6185,
-    7804,
-    -7797
+    -1559,
+    6200,
+    -4214,
+    1576,
+    -1570
    ]
   ]
  ]

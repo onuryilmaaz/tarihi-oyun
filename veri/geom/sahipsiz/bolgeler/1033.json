@@ -1,22 +1,19 @@
 {
  "indeks": 1033,
  "durum": "sahipsiz",
- "ad": "Araucanía bölgesi",
- "ulke": "Chile",
+ "ad": "Güney Dakota",
+ "ulke": "United States of America",
  "d": -1,
  "k": "tahmin",
  "p": [
   [
    [
-    -7036,
-    7040,
-    7041,
-    7042
-   ]
-  ],
-  [
-   [
-    7043
+    -1901,
+    -1911,
+    5918,
+    5919,
+    -5911,
+    -1889
    ]
   ]
  ]

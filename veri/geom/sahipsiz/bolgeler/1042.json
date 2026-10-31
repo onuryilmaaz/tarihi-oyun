@@ -1,20 +1,25 @@
 {
  "indeks": 1042,
  "durum": "sahipsiz",
- "ad": "Tierra del Fuego",
- "ulke": "Argentina",
+ "ad": "Morogora Bölgesi",
+ "ulke": "United Republic of Tanzania",
  "d": -1,
  "k": "tahmin",
  "p": [
   [
    [
-    7144,
-    -7227
-   ]
-  ],
-  [
-   [
-    7227
+    -3695,
+    -145,
+    -142,
+    5946,
+    5947,
+    5948,
+    -2858,
+    5949,
+    5950,
+    5951,
+    5952,
+    5953
    ]
   ]
  ]

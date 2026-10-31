@@ -1,18 +1,17 @@
 {
  "indeks": 1001,
  "durum": "sahipsiz",
- "ad": "Amazonas Departmantı",
- "ulke": "Colombia",
+ "ad": "Tasman Dstrict",
+ "ulke": "New Zealand",
  "d": -1,
  "k": "tahmin",
  "p": [
   [
    [
-    -6923,
-    6932,
-    -4525,
-    6933,
-    -6930
+    5823,
+    -5822,
+    5824,
+    5825
    ]
   ]
  ]

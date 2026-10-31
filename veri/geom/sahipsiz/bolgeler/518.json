@@ -1,19 +1,17 @@
 {
  "indeks": 518,
  "durum": "sahipsiz",
- "ad": "Kuzey Eyaleti",
- "ulke": "Rwanda",
+ "ad": "Mwanza",
+ "ulke": "Malawi",
  "d": -1,
  "k": "tahmin",
  "p": [
   [
    [
-    -4070,
-    4388,
-    -4079,
-    -4088,
-    4389,
-    4390
+    -2973,
+    3111,
+    3112,
+    -3109
    ]
   ]
  ]
