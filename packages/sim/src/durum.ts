@@ -19,6 +19,7 @@ import type { VergiOrani } from "./vergi";
 import { BIRIM_TURLERI, kompozisyonHizi, kompozisyonToplami, tekTurKompozisyon, type BirimTuru, type Kompozisyon } from "./birim";
 import type { Elci } from "./elci";
 import { sehirToprakEsitle } from "./sehir";
+import { baslangicSancaklari } from "./sancaklar";
 
 export type TurSuresi = "hafta" | "ay" | "ceyrek" | "yil";
 export const TUR_SURESI_ADLARI: Record<TurSuresi, string> = {
@@ -70,6 +71,11 @@ export interface SehirDurumu {
   gelismislik: number; // 1–10; gelir çarpanı, yatırımla artar, kuşatma ve ayaklanmayla düşer (TASK-0028)
   gelirKaynagi: GelirKaynagi | null; // şehrin ana işi; null = etkisiz (TASK-0028)
   bagli: number; // birleşmeyle bağlandığı merkez şehir; −1 = bağımsız (TASK-0026)
+}
+export interface Eyalet { id: string; ad: string; devlet: number }
+export interface Sancak {
+  ad: string; devlet: number; eyalet: string; merkez: number; bey: string; sehirler: number[];
+  yonetim: boolean; // sancakbeyi şehirleri yerel yönetici gibi yönetir
 }
 export interface SehirBirlesmesi { merkez: number; katilan: number; devlet: number; kalanGun: number } // TASK-0026
 
@@ -225,6 +231,8 @@ export interface DunyaDurumu {
   diplomatikTeklifSoguma: number[]; // devlet başına son teklif günü; gelen kutusunu boğmaması için soğuma süresi (TASK-0020 1/3)
   elciler: Elci[]; // yoldaki elçiler (TASK-0020 2/3)
   sehirBirlesmeleri: SehirBirlesmesi[]; // süren şehir birleşmeleri (TASK-0026)
+  eyaletler: Eyalet[]; // TASK-0029
+  sancaklar: Sancak[]; // TASK-0029: şehir → sancak → eyalet (şimdilik yalnızca Osmanlı)
   sonrakiElciId: number;
   ateskesler: Ateskes[];
   verasetSecimi: VerasetSecimi | null; // oyuncunun halef seçimi (7a)
@@ -278,6 +286,12 @@ export interface SenaryoVerisi {
     veraset: { acik: string[]; secimli: string[] };
     adHavuzu: Partial<Record<AdHavuzu, string[]>>;
   };
+  // TASK-0029: sancak/eyalet başlangıç taslağı (şehir adlarıyla)
+  sancaklar?: {
+    devlet: string;
+    eyaletler: { id: string; ad: string; merkez: string }[];
+    sancaklar: { ad: string; eyalet: string; merkez: string; bey: string; sehirler: string[] }[];
+  };
   // 1453 nüfus grupları (7b; tahmini, [TASLAK]): karışım [din, kültür, binde]
   // Deniz bölgeleri, limanlar, boğazlar, başlangıç donanmaları (8a; tahmini, [TASLAK])
   deniz?: {
@@ -299,7 +313,7 @@ export interface SenaryoVerisi {
 // 5: kuşatma, gerçek işgal ve barış (TASK-0007/4c); şema 3–4 için eklemeli dönüşüm var.
 // Şema geçmişi: 6 şehir yatırımları (5b), 7 teknoloji (5c), 8 diplomasi (6a), 9 AI ekonomi (6b), 10 AI savaş/barış (6c),
 // 11 hükümdar ve veraset (7a), 12 nüfus grupları ve iskân (7b), 13 istikrar (7c), 14 yerel yönetim (7d)
-export const SEMA_SURUMU = 28; // geliştirme sürümü; eski kayıtlar taşınmaz (DEC-0075). 28: gelişmişlik/gelir kaynağı (TASK-0028)
+export const SEMA_SURUMU = 29; // geliştirme sürümü; eski kayıtlar taşınmaz (DEC-0075). 29: sancak/eyalet (TASK-0029)
 // 19 vergi oranı ve hazine geçmişi (TASK-0017), 18 arazi verimi (9b), 15 donanma ve deniz (8a), 16 ticaret ve ambargo (8b), 17 casusluk (8c)
 
 export function baslangicDurumu(s: SenaryoVerisi, secenek: { tohum: number; oyuncu?: string }): DunyaDurumu {
@@ -321,8 +335,10 @@ export function baslangicDurumu(s: SenaryoVerisi, secenek: { tohum: number; oyun
     const devlet = bul(c.devlet);
     return { ad: c.ad, devlet, kontrol: devlet, isgalBaslangic: null, birim: c.birim, dugum: c.dugum ?? -1, nufus: c.nufus,
       insanGucu: Math.floor(c.nufus * DENGE.INSAN_GUCU_YUZDE / 100), baskent: c.baskent,
-      sur: c.baskent ? DENGE.BASKENT_SUR : DENGE.SEHIR_SUR,
-      garnizon: c.baskent ? DENGE.BASKENT_GARNIZON : DENGE.SEHIR_GARNIZON, yapilar: { tarla: 0, pazar: 0 },
+      // Garnizon ve sur nüfusa göre (TASK-0029): küçük kasaba kolay, büyük şehir zor düşer [TASLAK]
+      sur: c.baskent ? DENGE.BASKENT_SUR : c.nufus >= DENGE.BUYUK_SEHIR_NUFUS ? DENGE.BUYUK_SEHIR_SUR : DENGE.SEHIR_SUR,
+      garnizon: Math.max(c.baskent ? DENGE.BASKENT_GARNIZON : DENGE.SEHIR_GARNIZON_EN_AZ,
+        Math.round((c.nufus * DENGE.GARNIZON_NUFUS_YUZDE) / 10000) * 100), yapilar: { tarla: 0, pazar: 0 },
       istikrar: bosIstikrar(), yonetici: false, gruplar: baslangicGruplari(s, c.ad, c.devlet, c.nufus), eskiAd: null, bagli: -1,
       gelismislik: c.gelismislik ?? DENGE.GELISMISLIK_VARSAYILAN, gelirKaynagi: c.gelirKaynagi ?? null };
   });
@@ -387,6 +403,7 @@ export function baslangicDurumu(s: SenaryoVerisi, secenek: { tohum: number; oyun
     diplomatikTeklifSoguma: s.devletler.map(() => -DENGE.YZ_DIPLOMASI_SOGUMA_GUN),
     elciler: [],
     sehirBirlesmeleri: [],
+    ...baslangicSancaklari(s, sehirler, bul),
     sonrakiElciId: 1,
     ateskesler: [],
     verasetSecimi: null,
@@ -558,6 +575,15 @@ export function degismezler(d: DunyaDurumu): string[] {
   for (const e of d.elciler) {
     if (!d.devletler[e.hedef] || e.hedef === d.ayarlar.oyuncu || !tam(e.id) || e.id >= d.sonrakiElciId
       || !tam(e.kalanGun) || e.kalanGun <= 0 || e.kalanGun > DENGE.ELCI_GUN) h.push(`elçi ${e.id} geçersiz`);
+  }
+  if (!Array.isArray(d.sancaklar) || !Array.isArray(d.eyaletler)) h.push("sancaklar yok");
+  else {
+    const goruldu = new Set<number>();
+    for (const s of d.sancaklar) {
+      if (!d.devletler[s.devlet] || !d.eyaletler.some((e) => e.id === s.eyalet) || !d.sehirler[s.merkez] || !s.sehirler.includes(s.merkez)
+        || typeof s.yonetim !== "boolean" || s.sehirler.some((i) => !d.sehirler[i] || goruldu.has(i))) h.push(`sancak ${s.ad} geçersiz`);
+      for (const i of s.sehirler) goruldu.add(i);
+    }
   }
   if (!Array.isArray(d.sehirBirlesmeleri)) h.push("şehir birleşmeleri yok");
   else for (const b of d.sehirBirlesmeleri) {

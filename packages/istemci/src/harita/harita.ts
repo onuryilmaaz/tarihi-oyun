@@ -21,6 +21,7 @@ export interface Katmanlar {
   devletSiniri: LineSegments2;
   devletSiniriTahmin: LineSegments2; // en az bir yanı tahmine dayanan devlet sınırları
   denizSiniri: LineSegments2; // deniz bölgeleri arası açık su sınırı (TASK-0023)
+  sancakSiniri: LineSegments2; // aynı devlet içinde sancak sınırı (TASK-0029)
   denizSecimi: THREE.Mesh; // seçili deniz bölgesinin dolgusu; karanın altında, drawRange ile
   denizUcgen: Int32Array; // deniz bölgesi başına indeks tamponunda [başlangıç, sayı]
   secimCercevesi: LineSegments2;
@@ -154,6 +155,7 @@ export function katmanlariKur(h: Harita): Katmanlar {
   const nehirBuyuk = cizgi(nb, 4);
   const nehirKucuk = cizgi(nk, 4);
 
+  const sancakSiniri = cizgi([], 5);
   const secimCercevesi = cizgi([], 7);
   secimCercevesi.visible = false;
 
@@ -165,13 +167,13 @@ export function katmanlariKur(h: Harita): Katmanlar {
   sehirSecimi.visible = false;
 
   const grup = new THREE.Group();
-  grup.add(denizSecimi, denizSiniri, dolgu, goller, araziSiniri, nehirBuyuk, nehirKucuk, kiyi, devletSiniri, devletSiniriTahmin, secimCercevesi,
+  grup.add(sancakSiniri, denizSecimi, denizSiniri, dolgu, goller, araziSiniri, nehirBuyuk, nehirKucuk, kiyi, devletSiniri, devletSiniriTahmin, secimCercevesi,
     sehirler, baskentler, sehirSecimi);
 
   return {
     grup, dolgu, goller, araziSiniri, nehirBuyuk, nehirKucuk, kiyi, devletSiniri, devletSiniriTahmin, secimCercevesi,
-    denizSiniri, denizSecimi, denizUcgen, baskentler, sehirler, sehirSecimi,
-    cizgiler: [araziSiniri, nehirBuyuk, nehirKucuk, kiyi, devletSiniri, devletSiniriTahmin, secimCercevesi, denizSiniri],
+    denizSiniri, denizSecimi, denizUcgen, sancakSiniri, baskentler, sehirler, sehirSecimi,
+    cizgiler: [araziSiniri, nehirBuyuk, nehirKucuk, kiyi, devletSiniri, devletSiniriTahmin, secimCercevesi, denizSiniri, sancakSiniri],
     birimKose,
     birimUcgen,
     temelRenk: new Float32Array(konum.length),
@@ -276,6 +278,7 @@ export function temaUygula(k: Katmanlar, h: Harita, t: Tema, sahne: THREE.Scene)
   cizgiAyarla(k.devletSiniri, t.devletSinir);
   cizgiAyarla(k.devletSiniriTahmin, t.devletSinir);
   cizgiAyarla(k.kiyi, t.kiyi);
+  cizgiAyarla(k.sancakSiniri, { renk: t.devletSinir.renk, opak: t.devletSinir.opak * 0.55, kalinlik: t.devletSinir.kalinlik * 0.75 });
   cizgiAyarla(k.denizSiniri, { renk: t.kiyi.renk, opak: t.kiyi.opak * 0.35, kalinlik: t.kiyi.kalinlik });
   const dm = k.denizSecimi.material as THREE.MeshBasicMaterial;
   dm.color.set(t.deniz).offsetHSL(0, 0.15, -0.12); // opak: saydam olsa karadan sonra çizilirdi
@@ -435,4 +438,18 @@ export function isgalKatmani(k: Katmanlar, h: Harita, t: Tema, liste: [number, n
   m.renderOrder = 2;
   m.frustumCulled = false;
   return m;
+}
+
+/** Sancak sınırları (TASK-0029): aynı devletin iki toprağı farklı sancaktaysa aradaki yay; birleşmiş şehirler hariç. */
+export function sancakSinirlariniCiz(k: Katmanlar, h: Harita, birimSancak: Int32Array): void {
+  const pts: number[] = [];
+  for (let i = 0; i < h.arklar.length; i++) {
+    const a = h.yaySahipA[i], b = h.yaySahipB[i];
+    if (a < 0 || b < 0 || h.birimGrubu[a] === h.birimGrubu[b]) continue;
+    const sa = birimSancak[a], sb = birimSancak[b];
+    if (sa === sb || (sa < 0 && sb < 0) || h.paket.birimler[a].d !== h.paket.birimler[b].d) continue;
+    yayParcalari(h.arklar[i], pts);
+  }
+  k.sancakSiniri.geometry.dispose();
+  k.sancakSiniri.geometry = new LineSegmentsGeometry().setPositions(pts.length ? pts : [0, 0, 0, 0, 0, 0]);
 }

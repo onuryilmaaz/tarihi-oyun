@@ -833,6 +833,15 @@ Kaynak belge: `MASTER_SPEC.md` (v1.3). Orijinal keşif çıktısı:
   "İkisi birden, aynı kartta" (2026-10-30).
 - **Durum:** GEÇERLİ
 
+## DEC-0079 — TASK-0029: sancak sistemi, nüfusa göre garnizon, toplananların orduya katılması, bağlam menüsü
+
+- **Tarih:** 2026-10-31
+- **Seçilen karar:** Osmanlı için şehir → sancak → eyalet (Rumeli, Anadolu, Rum); sancakbeyi yerel yönetici gibi
+  çalışır; şehir el değiştirince sancaklar kendiliğinden güncellenir. Garnizon nüfusun %5'i (en az 300, başkent 2.000),
+  büyük şehirde sur 2. Toplanan asker şehirde bekleyen orduya katılır. Haritada sağ tık bağlam menüsü. [TASLAK]
+- **Onay kaydı:** Kullanıcı: "1- evet 2- evet 3- evet" + istekler (2026-10-31).
+- **Durum:** GEÇERLİ
+
 ## DEC-0078 — TASK-0028: kıyı limanları, gelişmişlik ve gelir kaynağı ekonomide
 
 - **Tarih:** 2026-10-31

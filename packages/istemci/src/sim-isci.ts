@@ -10,7 +10,8 @@ import {
   diplomasiOnHesap, etkiDegeri, hediyePuanBedeli, iliski, iliskiBilesenleri, ittifakDegerlendir, komsuMu, muttefik, muttefikleri, savasta,
   ticaretAnlasmasiVar, ticaretDegerlendir, saldirmazlikVar, saldirmazlikDegerlendir, efendisi,
   asayisAskeri, gerekenAsayis,
-  hukumdarYasi, VERASET_ADLARI, yerelYonetimAyarla, sehirAdiDegistir, birlesmeAdaylari, sehirliBirimler, bolgeKontrolu, gorunurDonanmalar, kapasite, sehirMenzilinde, sehirTicareti, type Hukumdar,
+  hukumdarYasi, VERASET_ADLARI, yerelYonetimAyarla, sehirAdiDegistir, birlesmeAdaylari, sehirliBirimler,
+  sancakOzetleri, sancakYonetimiAyarla, sehirSancaklari, bolgeKontrolu, gorunurDonanmalar, kapasite, sehirMenzilinde, sehirTicareti, type Hukumdar,
   ALAN_ADLARI, TEKNOLOJILER, teknolojiBul, biliyor, toplamaBedelYuzde, toplamaSuresi, etkiCarpani,
 } from "@tarihi/sim";
 import type { Istek, Ozet, Yanit } from "./sim-protokol";
@@ -223,6 +224,10 @@ function ozet(durum: DunyaDurumu): Ozet {
       gelismislik: s.gelismislik, gelirKaynagi: s.gelirKaynagi })),
     birlesmeAdaylari: Object.fromEntries(durum.sehirler.flatMap((s, i) =>
       s.devlet === durum.ayarlar.oyuncu && s.bagli < 0 ? [[i, birlesmeAdaylari(durum, baglam, i)]] : [])),
+    sancaklar: sancakOzetleri(durum, durum.ayarlar.oyuncu),
+    sehirSancak: sehirSancaklari(durum),
+    sancakAdlari: durum.sancaklar.map((s) => ({ ad: s.ad, eyalet: s.eyalet, devlet: s.devlet })),
+    eyaletler: durum.eyaletler.map((e) => ({ id: e.id, ad: e.ad })),
     sehirBirlesmeleri: durum.sehirBirlesmeleri.filter((x) => x.devlet === durum.ayarlar.oyuncu)
       .map((x) => ({ merkez: x.merkez, katilan: x.katilan, kalanGun: x.kalanGun })),
     birimSahipleri: durum.birimler.map((b) => b.sahip),
@@ -274,6 +279,10 @@ function isle(i: Istek): Yanit {
       return { id: i.id, tamam: true, ozet: ozet(d) };
     case "yonetim": {
       const dogrulama = yerelYonetimAyarla(d, i);
+      return { id: i.id, tamam: true, ozet: ozet(d), dogrulama };
+    }
+    case "sancakYonetim": {
+      const dogrulama = sancakYonetimiAyarla(d, i.sancak, i.acik);
       return { id: i.id, tamam: true, ozet: ozet(d), dogrulama };
     }
     case "sehirAdi": {

@@ -88,11 +88,12 @@ async function baslat() {
     sehir: $<HTMLInputElement>("kSehir").checked,
     etiket: $<HTMLInputElement>("kEtiket").checked,
     guven: $<HTMLInputElement>("kGuven").checked,
+    sancak: $<HTMLInputElement>("kSancak").checked,
   });
   const gorunum = haritaGorunumuKur(h,
     { kap: $("tuvalKap"), etiketKap: $("etiketler"), orduKap: $("ordular"), kagit: $("kagit"), bilgi: $("bilgi"), ipucu: $("ipucu") },
     katmanAyarlari);
-  for (const id of ["kArazi", "kNehir", "kSehir", "kEtiket", "kGuven"]) $(id).addEventListener("change", gorunum.istek);
+  for (const id of ["kArazi", "kNehir", "kSehir", "kEtiket", "kGuven", "kSancak"]) $(id).addEventListener("change", gorunum.istek);
   for (const b of document.querySelectorAll<HTMLButtonElement>("[data-git]")) {
     b.onclick = () => gorunum.git(b.dataset.git as keyof typeof KONUMLAR);
   }
@@ -261,6 +262,30 @@ async function baslat() {
     $("savasRozet").hidden = n === 0;
     $("savasRozet").textContent = String(n);
   };
+  let sonSancakAnahtari = "";
+  /** Sol panel, Devlet sekmesi: eyalet eyalet sancaklar (TASK-0029) */
+  const sancaklariGoster = () => {
+    $("sancakBolumu").hidden = !ozet.sancaklar.length;
+    const para = (x: number) => x.toLocaleString("tr-TR");
+    $("sancakListesi").innerHTML = ozet.eyaletler.map((ey) => {
+      const liste = ozet.sancaklar.filter((s) => s.eyalet === ey.id);
+      if (!liste.length) return "";
+      return `<h3>${kacis(ey.ad)} eyaleti</h3>${liste.map((s) => `<div class="sancak-satir">
+        <div><button class="bag" data-secim-sehir="${s.merkez}">${kacis(s.ad)}</button>
+          <small>${kacis(s.bey)} · ${s.sehirler.length} şehir · ~${para(s.aylikGelir)}/ay · ${para(s.insanGucu)} insan gücü</small></div>
+        <button data-sancak-yonetim="${s.sancak}" data-acik="${s.yonetim ? 0 : 1}" title="${s.yonetim ? "Sancakbeyi bu sancağın şehirlerinde yerel yönetici gibi bağış ve yatırım yapıyor (yerel yönetim bütçesiyle)." : "Sancağın şehirlerini sancakbeyine bırak"}">${s.yonetim ? "Bey yönetiyor" : "Bey yönetsin"}</button>
+      </div>`).join("")}`;
+    }).join("");
+  };
+  $("sancakListesi").addEventListener("click", async (e) => {
+    const sec = (e.target as HTMLElement).closest<HTMLElement>("[data-secim-sehir]");
+    if (sec) { gorunum.secVeGit({ tur: "sehir", id: Number(sec.dataset.secimSehir) }); return; }
+    const y = (e.target as HTMLElement).closest<HTMLElement>("[data-sancak-yonetim]");
+    if (!y) return;
+    const r = await sim.gonder({ tip: "sancakYonetim", sancak: Number(y.dataset.sancakYonetim), acik: y.dataset.acik === "1" });
+    ozet = r.ozet; arayuzuGuncelle(); gorunum.istek();
+    if (r.dogrulama && !r.dogrulama.gecerli) bildir(r.dogrulama.neden, "uyari");
+  });
   const arayuzuGuncelle = () => {
     if (seciliOrdu !== null && !ozet.ordular.some((o) => o.id === seciliOrdu)) seciliOrdu = null;
     $("oyuncu").innerHTML = `${gorunum.devletRenkKutusu(ozet.oyuncu.indeks)}<span>${kacis(ozet.oyuncu.ad)}</span>`;
@@ -281,6 +306,15 @@ async function baslat() {
     $("ozetHash").textContent = ozet.hash;
     ozet.sehirDurumlari.forEach((c, i) => { senaryo.sehirler[i].ad = c.ad; }); // TASK-0026: oyuncu adı değiştirebilir
     gorunum.mulkiyetGoster(ozet.birimSahipleri, ozet.sehirDurumlari);
+    // TASK-0029: sancak sınırları (birim → sancak); yalnızca değişince yeniden çizilir
+    const sancakAnahtar = ozet.sehirSancak.join(",") + "|" + ozet.sehirDurumlari.map((c) => c.birim).join(",");
+    if (sancakAnahtar !== sonSancakAnahtari) {
+      sonSancakAnahtari = sancakAnahtar;
+      const bs = new Int32Array(h.paket.birimler.length).fill(-1);
+      ozet.sehirSancak.forEach((sn, i) => { const b = ozet.sehirDurumlari[i].birim; if (sn >= 0 && b >= 0) bs[b] = sn; });
+      gorunum.sancakGoster(bs);
+    }
+    sancaklariGoster();
     gorunum.oyuncuyuAyarla(ozet.oyuncu.indeks);
     const plan = new Map<number, [number, number][]>();
     for (const [id, r] of planli) if (r.noktalar) plan.set(id, r.noktalar);
@@ -526,7 +560,9 @@ async function baslat() {
         zanaat: `Pazar geliri +%${DENGE.KAYNAK_ZANAAT_PAZAR - 100}, asker toplama −%${100 - DENGE.KAYNAK_ZANAAT_TOPLAMA}`,
         hayvancilik: `Süvari toplama −%${100 - DENGE.KAYNAK_HAYVANCILIK_SUVARI}`,
       } as const;
+      const sn = ozet.sehirSancak[s.id], sancak = sn >= 0 ? ozet.sancakAdlari[sn] : null;
       const kimlik = `<dl>${ss.tur ? `<dt>Tür</dt><dd>${SEHIR_TURU[ss.tur]}</dd>` : ""}
+        ${sancak ? `<dt>Sancak</dt><dd>${kacis(sancak.ad)} · ${kacis(ozet.eyaletler.find((e) => e.id === sancak.eyalet)?.ad ?? "")} eyaleti</dd>` : ""}
         <dt>Gelişmişlik</dt><dd>${cd.gelismislik}/10 · gelir %${DENGE.GELISMISLIK_TABAN + DENGE.GELISMISLIK_ADIM * cd.gelismislik}</dd>
         ${cd.gelirKaynagi ? `<dt>Gelir kaynağı</dt><dd>${GELIR[cd.gelirKaynagi]}<small class="not"> · ${KAYNAK_ETKI[cd.gelirKaynagi]}</small></dd>` : ""}
 </dl><p class="not">Gelişmişlik her iki yatırım seviyesinde artar; kuşatmayla düşmek ve ayaklanma onu geriletir.</p>`;
@@ -889,6 +925,67 @@ async function baslat() {
     if (b) orduSec(Number(b.dataset.ordu));
   });
   gorunum.olaylar.orduSec = (id) => orduSec(id);
+
+  // --- Harita bağlam menüsü (ordu seçili değilken sağ tık): sık işlemler panele gitmeden ---
+  const baglamMenu = document.createElement("div");
+  baglamMenu.id = "baglamMenu"; baglamMenu.className = "panel"; baglamMenu.hidden = true; baglamMenu.setAttribute("role", "menu");
+  document.body.append(baglamMenu);
+  const baglamKapat = () => { baglamMenu.hidden = true; };
+  window.addEventListener("pointerdown", (e) => { if (!baglamMenu.contains(e.target as Node)) baglamKapat(); }, true);
+  window.addEventListener("keydown", (e) => { if (e.key === "Escape" && !baglamMenu.hidden) { e.stopPropagation(); baglamKapat(); } }, true);
+  window.addEventListener("wheel", baglamKapat, { passive: true });
+  /** Devlet paneli açıkken savaş ilanı düğmesine basar (oyunun onay penceresi açılır). */
+  const savasDugmesineBas = () => { $("bilgi").querySelector<HTMLButtonElement>('[data-eylem="savas"]')?.click(); };
+  gorunum.olaylar.baglamMenusu = (px, py, sehir, birim) => {
+    const oyuncu = ozet.oyuncu.indeks, maddeler: [string, () => unknown][] = [];
+    let baslik = "";
+    const enYakinOrdu = (x: number, y: number) => ozet.ordular
+      .filter((o) => !o.muharebede && !o.cekiliyor && o.kusatma === null)
+      .sort((a, b) => Math.hypot(a.x - x, a.y - y) - Math.hypot(b.x - x, b.y - y))[0];
+    if (sehir >= 0) {
+      const c = ozet.sehirDurumlari[sehir], sc = senaryo.sehirler[sehir];
+      baslik = `${c.ad} · ${h.paket.devletler[c.devlet].ad}`;
+      maddeler.push(["Şehri aç", () => gorunum.secVeGit({ tur: "sehir", id: sehir })]);
+      if (c.devlet === oyuncu && c.kontrol === oyuncu) {
+        maddeler.push(["Asker topla…", () => {
+          sekmeAc("ordu");
+          const sec = $<HTMLSelectElement>("toplamaSehir");
+          if ([...sec.options].some((o) => o.value === String(sehir))) { sec.value = String(sehir); sec.dispatchEvent(new Event("change")); }
+          $<HTMLInputElement>("toplamaAsker").focus();
+        }]);
+        if (ozet.istikrar[sehir]?.bagisUygun) maddeler.push([`Bağış / imar yardımı (${DENGE.IST_BAGIS_BEDEL})`, () => emirGonder({ tur: "bagis", sehir }, `${c.ad}: bağış emri verildi.`)]);
+      } else if (c.kontrol !== oyuncu && c.kontrol >= 0) {
+        const savasta = ozet.savaslar.some((x) => x.karsi === c.kontrol) || bekleyenSavas.has(c.kontrol);
+        if (savasta && sc.x !== undefined && sc.y !== undefined) {
+          const o = enYakinOrdu(sc.x, sc.y);
+          if (o) maddeler.push([`${o.ad} ile kuşatmaya git`, async () => {
+            seciliOrdu = o.id; arayuzuGuncelle();
+            await gorunum.olaylar.hedef?.(sc.x! / 1e4, sc.y! / 1e4, sc.birim);
+          }]);
+        } else if (!savasta && !ozet.diplomasi[c.kontrol]?.muttefik) {
+          maddeler.push(["Savaş ilan et…", () => { gorunum.secVeGit({ tur: "devlet", id: c.kontrol }); savasDugmesineBas(); }]);
+        }
+      }
+    } else if (birim >= 0) {
+      const b = h.paket.birimler[birim];
+      baslik = b.d >= 0 ? h.paket.devletler[b.d].ad : b.ad;
+      maddeler.push(["Toprağı göster", () => gorunum.secVeGit({ tur: "birim", id: birim })]);
+      if (b.d >= 0) maddeler.push(["Devleti göster", () => gorunum.secVeGit({ tur: "devlet", id: b.d })]);
+    }
+    if (!maddeler.length) return baglamKapat();
+    baglamMenu.innerHTML = `<b>${kacis(baslik)}</b>${maddeler.map(([ad], i) => `<button role="menuitem" data-baglam="${i}">${kacis(ad)}</button>`).join("")}`;
+    baglamMenu.hidden = false;
+    const r = baglamMenu.getBoundingClientRect();
+    baglamMenu.style.left = `${Math.min(px, innerWidth - r.width - 8)}px`;
+    baglamMenu.style.top = `${Math.min(py, innerHeight - r.height - 8)}px`;
+    baglamMenu.onclick = (e) => {
+      const b = (e.target as HTMLElement).closest<HTMLElement>("[data-baglam]");
+      if (!b) return;
+      baglamKapat();
+      void maddeler[Number(b.dataset.baglam)][1]();
+    };
+  };
+
   gorunum.olaylar.hedef = async (x, y, birim) => {
     if (seciliOrdu === null || mesgul) return;
     if (birim < 0) return bildir("Hedef karada olmalı.", "uyari");

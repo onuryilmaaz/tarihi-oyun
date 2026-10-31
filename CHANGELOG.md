@@ -1,5 +1,11 @@
 # CHANGELOG
 
+## 2026-10-31 — TASK-0029: sancak sistemi; garnizon; toplananlar orduya katılır; harita bağlam menüsü (Claude)
+
+- Osmanlı sancak/eyalet sistemi (şema 29), "Sancak sınırları" katmanı, Sancaklar paneli, sancakbeyi yönetimi.
+- Garnizon ve sur nüfusa göre. Toplama bitince şehirde bekleyen orduya katılım.
+- Ordu seçili değilken sağ tık bağlam menüsü (asker topla, bağış, savaş ilanı, en yakın orduyla kuşatma).
+
 ## 2026-10-31 — TASK-0028: kıyı limanları; gelişmişlik ve gelir kaynağı ekonomide (Claude)
 
 - 54 kıyı şehri liman oldu (toplam 124). Gelişmişlik gelir çarpanı, gelir kaynağı etkileri, gelişmişlik değişimi

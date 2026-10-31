@@ -9,7 +9,7 @@ import { tarihMetni, type YabanciOrdu } from "@tarihi/sim";
 import type { OrduOzeti } from "../sim-protokol";
 import { birimBul, denizBul, type Harita } from "./veri";
 import { TEMALAR } from "./temalar";
-import { katmanlariKur, temaUygula, boyutAyarla, secimiCiz, devletRengi, kagitDokusu, isgalKatmani, mulkiyetKatmanlariniGuncelle, type Secim } from "./harita";
+import { katmanlariKur, temaUygula, boyutAyarla, secimiCiz, devletRengi, kagitDokusu, isgalKatmani, mulkiyetKatmanlariniGuncelle, sancakSinirlariniCiz, type Secim } from "./harita";
 import { Etiketler, ESIK } from "./etiketler";
 
 const sinirla = (x: number, a: number, b: number) => Math.min(b, Math.max(a, x));
@@ -23,7 +23,7 @@ export const KONUMLAR: Record<string, [number, number, number]> = { // boylam, e
   konstantiniyye: [28.97, 41.01, 260],
 };
 
-export interface Katmanlar { arazi: boolean; nehir: boolean; sehir: boolean; etiket: boolean; guven: boolean }
+export interface Katmanlar { arazi: boolean; nehir: boolean; sehir: boolean; etiket: boolean; guven: boolean; sancak: boolean }
 
 export interface HaritaGorunumu {
   git(ad: keyof typeof KONUMLAR): void;
@@ -40,6 +40,8 @@ export interface HaritaGorunumu {
   ordulariGoster(ordular: OrduOzeti[], yabanci: YabanciOrdu[], secili: number | null, planli: Map<number, [number, number][]>): void;
   /** [birim, kontrol eden, gün], [şehir, kontrol eden, gün] */
   isgalGoster(birimler: [number, number, number][], sehirler: [number, number, number][]): void;
+  /** TASK-0029: birim → sancak indeksi (−1 sancaksız); sancak sınırı katmanını yeniden çizer */
+  sancakGoster(birimSancak: Int32Array): void;
   mulkiyetGoster(birimler: number[], sehirler: { devlet: number; baskent: boolean; ad: string; bagli: number; birim: number }[]): void;
   orduyaOdaklan(o: OrduOzeti): void;
   /** Donanma ve deniz bölgesi işaretleri (8a): x,y Miller × 10⁴; tıklanınca olaylar.donanmaSec */
@@ -51,6 +53,8 @@ export interface HaritaGorunumu {
     orduSec?: (id: number) => void;
     donanmaSec?: (id: number) => void;
     hedef?: (x: number, y: number, birim: number) => void; // Miller derece
+    /** Ordu seçili değilken sağ tık: şehir/toprak için bağlam menüsü (ekran koordinatı) */
+    baglamMenusu?: (px: number, py: number, sehir: number, birim: number) => void;
     /** Bilgi panelinin altına eklenecek HTML (ör. savaş ilanı düğmesi) */
     ekBilgi?: (s: NonNullable<Secim>) => string;
   };
@@ -185,6 +189,9 @@ export function haritaGorunumuKur(h: Harita,
     const arazi = yumusak(g.z, 9, 20) * (katman.arazi ? 1 : 0);
     lm(k.araziSiniri).opacity = tema.araziSinir.opak * arazi;
     k.araziSiniri.visible = arazi > 0;
+    const sancak = yumusak(g.z, 4, 8) * (katman.sancak ? 1 : 0); // TASK-0029
+    lm(k.sancakSiniri).opacity = tema.devletSinir.opak * 0.55 * sancak;
+    k.sancakSiniri.visible = sancak > 0;
     const nb = yumusak(g.z, 3.5, 6) * (katman.nehir ? 1 : 0);
     lm(k.nehirBuyuk).opacity = tema.nehir.opak * nb;
     k.nehirBuyuk.visible = nb > 0;
@@ -385,10 +392,16 @@ export function haritaGorunumuKur(h: Harita,
   });
   tuval.addEventListener("pointerleave", () => { ipucu.hidden = true; });
   // Seçili orduya hedef: sağ tık (MASTER_SPEC §8.3 serbest hedef)
+  /** Ordu seçili değilken bir işarete (ordu) sağ tık: altındaki şehir/toprak için bağlam menüsü */
+  const isaretBaglami = (e: MouseEvent) => {
+    const [x, y] = ekrandanDunyaya(e.clientX, e.clientY);
+    olaylar.baglamMenusu?.(e.clientX, e.clientY, sehirBul(e.clientX, e.clientY), birimBul(h, x, y));
+  };
   tuval.addEventListener("contextmenu", (e) => {
     e.preventDefault();
-    if (seciliOrdu === null || !olaylar.hedef) return;
     const [x, y] = ekrandanDunyaya(e.clientX, e.clientY);
+    if (seciliOrdu === null) { olaylar.baglamMenusu?.(e.clientX, e.clientY, sehirBul(e.clientX, e.clientY), birimBul(h, x, y)); return; }
+    if (!olaylar.hedef) return;
     olaylar.hedef(x, y, birimBul(h, x, y));
   });
   tuval.addEventListener("wheel", (e) => {
@@ -466,6 +479,11 @@ export function haritaGorunumuKur(h: Harita,
     istek,
     devletRenkKutusu,
     devletRengiHex: (d: number) => `#${devletRengi(tema, h.paket.devletler[d].ton, d).getHexString(THREE.SRGBColorSpace)}`,
+    sancakGoster(birimSancak) {
+      sancakSinirlariniCiz(k, h, birimSancak);
+      boyutAyarla(k, W, H, oran);
+      istek();
+    },
     mulkiyetGoster(birimler, sehirler) {
       let degisti = false;
       birimler.forEach((d, i) => { if (h.paket.birimler[i].d !== d) { h.paket.birimler[i].d = d; degisti = true; } });
@@ -572,7 +590,8 @@ export function haritaGorunumuKur(h: Harita,
           el.addEventListener("click", (e) => { e.stopPropagation(); sec({ tur: "devlet", id: o.devlet }); });
           el.addEventListener("contextmenu", (e) => {
             e.preventDefault(); e.stopPropagation();
-            if (seciliOrdu === null || !olaylar.hedef) return;
+            if (seciliOrdu === null) return isaretBaglami(e);
+            if (!olaylar.hedef) return;
             const guncel = orduListesi.find((a) => a.id === o.id);
             if (!guncel) return;
             const x = guncel.x / 1e4, y = guncel.y / 1e4;
@@ -596,7 +615,8 @@ export function haritaGorunumuKur(h: Harita,
           el.addEventListener("contextmenu", (e) => {
             e.preventDefault();
             e.stopPropagation();
-            if (seciliOrdu === null || !olaylar.hedef) return;
+            if (seciliOrdu === null) return isaretBaglami(e);
+            if (!olaylar.hedef) return;
             const guncel = orduListesi.find((a) => a.id === o.id);
             if (!guncel) return;
             const x = guncel.x / 1e4, y = guncel.y / 1e4;

@@ -10,8 +10,8 @@ Bağlayıcı kurallar: `AGENTS.md`, `MASTER_SPEC.md`, `DECISIONS.md`.
 
 ## 0. En son — BURADAN BAŞLA
 
-- **TASK-0028 (kıyı limanları + gelişmişlik/gelir kaynağı ekonomide, DEC-0078) uygulandı, COMMIT EDİLMEDİ, kullanıcı
-  testi bekliyor (2026-10-31).** Son commit `3ba141d`. Sıradaki (DEC-0076): (4) Osmanlı sancak sistemi, (5) dünyaya
+- **TASK-0028 commit edildi (`6b65c4f`). TASK-0029 (sancak, garnizon, toplananların katılması, bağlam menüsü;
+  DEC-0079) uygulandı, COMMIT EDİLMEDİ, kullanıcı testi bekliyor (2026-10-31).** Sıradaki (DEC-0076): (4) Osmanlı sancak sistemi, (5) dünyaya
   yayma. Bekleyen öneri: küçük şehirlerin garnizon/surunun nüfusa göre ayarlanması (kullanıcıya soruldu).
 
 - **TASK-0027 (şehir ve toprağı birlikte fethedilir, DEC-0077) + varışta otomatik kuşatma commit edildi (2026-10-31).** Sıradaki (DEC-0076): (3) gelişmişlik/gelir kaynağı ekonomiye,

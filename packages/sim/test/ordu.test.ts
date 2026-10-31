@@ -39,9 +39,16 @@ describe("asker toplama (4b)", () => {
     expect(d.ordular).toHaveLength(1);
     gunIlerlet(d, B);
     expect(d.askerToplamalar).toHaveLength(0);
-    expect(d.ordular).toHaveLength(2);
-    expect(d.ordular[1]).toMatchObject({ asker: 500, dugum: 0, x: 1234, y: 567 });
+    // Şehirde bekleyen ordu varsa yeni askerler ona katılır (TASK-0029)
+    expect(d.ordular).toHaveLength(1);
+    expect(d.ordular[0].asker).toBe(ilk.ordular[0].asker + 500);
     expect(degismezler(d)).toEqual([]);
+    // Bekleyen ordu yoksa yeni ordu şehirde kurulur
+    const e = yeni(); e.ordular = [];
+    emirVer(e, topla, B); emirleriUygula(e, B);
+    for (let i = 0; i < DENGE.TOPLAMA_GUN; i++) gunIlerlet(e, B);
+    expect(e.ordular).toHaveLength(1);
+    expect(e.ordular[0]).toMatchObject({ asker: 500, dugum: 0, x: 1234, y: 567 });
   });
 
   it("AT-010: toplama ve harcama aynı hazineyi paylaşır, kuyruk kaynakları iki kez kullanamaz", () => {

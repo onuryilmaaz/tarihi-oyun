@@ -177,6 +177,14 @@
     .sehir-listesi summary { cursor: pointer; color: var(--vurgu); font-size: 13px; }
     .sehir-izgara { display: grid; grid-template-columns: 1fr 1fr; gap: 2px 12px; max-height: 240px; overflow-y: auto; margin-top: 6px; padding-right: 4px; }
     .sehir-izgara .bag { text-align: left; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .sancak-satir { display: flex; justify-content: space-between; align-items: center; gap: 8px; padding: 5px 0; border-bottom: 1px solid rgba(255,255,255,.06); }
+    .sancak-satir small { display: block; color: var(--soluk); font-size: 11.5px; }
+    .sancak-satir > button { flex: none; font-size: 12px; padding: 4px 8px; }
+    #sancakListesi h3 { font-size: 12px; margin: 10px 0 2px; color: var(--vurgu); }
+    #baglamMenu { position: fixed; z-index: 30; min-width: 210px; padding: 6px; display: grid; gap: 2px; }
+    #baglamMenu b { padding: 4px 8px 6px; font-size: 12px; color: var(--soluk); font-weight: 600; }
+    #baglamMenu button { text-align: left; background: transparent; border: 1px solid transparent; padding: 6px 8px; }
+    #baglamMenu button:hover, #baglamMenu button:focus-visible { border-color: rgba(226, 179, 86, .45); background: rgba(226, 179, 86, .08); }
     #diplomasiLejant { position: fixed; left: calc(var(--yan-genislik) + 24px); bottom: 132px; z-index: 5; padding: 10px 12px; font-size: 12px; display: grid; gap: 4px; }
     #diplomasiLejant span { display: inline-block; width: 12px; height: 12px; border-radius: 3px; margin-right: 6px; vertical-align: -2px; }
     .iliski-bilesen { list-style: none; margin: 4px 0 8px; padding: 0; font-size: 12px; display: grid; gap: 2px; }
@@ -468,6 +476,11 @@
           <button id="yonetimKaydet" style="margin-top:6px">Ayarı uygula</button>
           <p id="yonetimBilgi" class="not"></p>
         </div>
+        <div id="sancakBolumu" hidden>
+          <h2>Sancaklar</h2>
+          <p class="not">Şehirler sancaklara, sancaklar eyaletlere bağlıdır. "Bey yönetsin" denen sancakta bağış ve yatırımı sancakbeyi, yukarıdaki yerel yönetim bütçesiyle yapar.</p>
+          <div id="sancakListesi"></div>
+        </div>
       </section>
       <section data-sekme="ordu" hidden>
         <h2>Ordular</h2>
@@ -525,6 +538,7 @@
         <label><input type="checkbox" id="kEtiket" checked /> Devlet adları</label>
         <label><input type="checkbox" id="kSehir" checked /> Şehirler</label>
         <label><input type="checkbox" id="kArazi" checked /> Arazi birimi sınırları</label>
+        <label><input type="checkbox" id="kSancak" checked /> Sancak sınırları</label>
         <label><input type="checkbox" id="kNehir" checked /> Nehirler</label>
         <label><input type="checkbox" id="kGuven" /> Kaynak güveni (tahmin sınırları kesikli)</label>
         <h2>Git</h2>

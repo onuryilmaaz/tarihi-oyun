@@ -1,4 +1,4 @@
-import type { Istikrar, BarisDevirOzeti, GelirKaynagi } from "@tarihi/sim";
+import type { Istikrar, BarisDevirOzeti, GelirKaynagi, SancakOzeti } from "@tarihi/sim";
 // Ana iş parçacığı ↔ simülasyon Worker'ı mesaj protokolü.
 
 import type { Alan, Degerlendirme, IliskiBileseni, TeknolojiId, YapiTuru, BarisKaydi, BarisTalebi, ButceOzeti, Dogrulama, Emir, KusatmaYontemi, MuharebeRaporu, OlayKaydi, RotaKirilimi, SenaryoVerisi, Tutum, TurSonucu, TurSuresi, YabanciOrdu, BirimTuru, Kompozisyon } from "@tarihi/sim";
@@ -10,6 +10,7 @@ export type Istek = { id: number } & (
   // Yerel yönetim ayarı (7d): tur süresi gibi anında uygulanır, harcama yapmaz
   | { tip: "yonetim"; sehir?: number; acik?: boolean; butce?: number; altSinir?: number }
   | { tip: "sehirAdi"; sehir: number; ad: string } // TASK-0026
+  | { tip: "sancakYonetim"; sancak: number; acik: boolean } // TASK-0029
   | { tip: "emir"; emir: Emir }
   | { tip: "turuIlerlet" }
   | { tip: "kaydet" }
@@ -111,6 +112,11 @@ export interface Ozet {
   /** Oyuncunun kendi şehirleri için birleştirilebilecek komşu şehirler ve süren birleşmeler (TASK-0026) */
   birlesmeAdaylari: Record<number, number[]>;
   sehirBirlesmeleri: { merkez: number; katilan: number; kalanGun: number }[];
+  /** TASK-0029: sancaklar (oyuncunun), bütün şehirler için sancak indeksi ve sancak/eyalet adları */
+  sancaklar: SancakOzeti[];
+  sehirSancak: number[];
+  sancakAdlari: { ad: string; eyalet: string; devlet: number }[];
+  eyaletler: { id: string; ad: string }[];
   birimSahipleri: number[];
   isgalHazirliklari: { birim: number; gun: number }[];
   barislar: BarisKaydi[];

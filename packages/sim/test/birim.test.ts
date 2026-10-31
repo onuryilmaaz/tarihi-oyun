@@ -40,12 +40,13 @@ describe("TASK-0019 (1/4): birim çeşitliliği — veri modeli ve asker toplama
   });
 
   it("süvari toplama emri kompozisyonu doğru kurar; maaş piyadeden yüksektir", () => {
-    const d = yeni(), oncekiMaas = devletMaasi(d, 0);
+    const d = yeni(); d.ordular = []; // şehirde bekleyen ordu yok: yeni ordu kurulur
+    const oncekiMaas = devletMaasi(d, 0);
     expect(emirVer(d, { tur: "askerTopla", sehir: 0, asker: 1000, birim: "suvari" }, B).gecerli).toBe(true);
     emirleriUygula(d, B);
     turSuresiAyarla(d, "hafta");
     for (let i = 0; i < 5; i++) turuIlerlet(d, B);
-    const yeniOrdu = d.ordular.find((o) => o.id !== 1);
+    const yeniOrdu = d.ordular[0];
     expect(yeniOrdu?.kompozisyon).toEqual({ piyade: 0, okcu: 0, suvari: 1000 });
     expect(devletMaasi(d, 0)).toBeGreaterThan(oncekiMaas);
     expect(degismezler(d)).toEqual([]);
@@ -128,14 +129,18 @@ describe("TASK-0019 (2/4): muharebe gücü ve kayıp dağılımı", () => {
 
 describe("TASK-0019 (3/4): hareket hızı kompozisyona göre değişir", () => {
   it("süvari toplanan ordu temel hızdan hızlı, okçu/piyade temel hızda kurulur", () => {
-    const d = yeni(); d.devletler[0].hazine = 1000;
-    expect(emirVer(d, { tur: "askerTopla", sehir: 0, asker: 1000, birim: "suvari" }, B).gecerli).toBe(true);
-    expect(emirVer(d, { tur: "askerTopla", sehir: 0, asker: 500, birim: "okcu" }, B).gecerli).toBe(true);
-    emirleriUygula(d, B);
-    turSuresiAyarla(d, "hafta");
-    for (let i = 0; i < 5; i++) turuIlerlet(d, B);
+    // Aynı şehirde toplanan ikinci birlik ilkine katılacağı için iki ayrı dünyada denenir
+    const kur = (birim: "suvari" | "okcu", asker: number) => {
+      const d = yeni(); d.devletler[0].hazine = 1000; d.ordular = [];
+      expect(emirVer(d, { tur: "askerTopla", sehir: 0, asker, birim }, B).gecerli).toBe(true);
+      emirleriUygula(d, B);
+      turSuresiAyarla(d, "hafta");
+      for (let i = 0; i < 5; i++) turuIlerlet(d, B);
+      return d;
+    };
+    const d = kur("suvari", 1000), e = kur("okcu", 500);
     const suvariOrdusu = d.ordular.find((o) => o.kompozisyon.suvari > 0)!;
-    const okcuOrdusu = d.ordular.find((o) => o.kompozisyon.okcu > 0)!;
+    const okcuOrdusu = e.ordular.find((o) => o.kompozisyon.okcu > 0)!;
     expect(suvariOrdusu.hiz).toBe(Math.round((HAREKET.TEMEL_HIZ * DENGE.BIRIM.suvari.hizYuzde) / 100));
     expect(suvariOrdusu.hiz).toBeGreaterThan(HAREKET.TEMEL_HIZ);
     expect(okcuOrdusu.hiz).toBe(HAREKET.TEMEL_HIZ);

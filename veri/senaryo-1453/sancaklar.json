@@ -1,0 +1,43 @@
+{
+  "aciklama": "TASK-0029: Osmanlı sancak/eyalet başlangıç taslağı — agent tahmini [TASLAK]. Merkezler 1453'e yakın tarihî sancak merkezlerinin oyundaki en yakın şehirleridir; her Osmanlı şehri kendi kıtasındaki (Rumeli: Avrupa, Anadolu/Rum: Asya) en yakın merkeze bağlanır. Sancakbeyi adları kurgusaldır.",
+  "devlet": "osm",
+  "eyaletler": [
+    { "id": "rumeli", "ad": "Rumeli", "merkez": "Sofya", "kita": "avrupa" },
+    { "id": "anadolu", "ad": "Anadolu", "merkez": "Kütahya", "kita": "asya" },
+    { "id": "rum", "ad": "Rum", "merkez": "Amasya", "kita": "asya" }
+  ],
+  "sancaklar": [
+    { "ad": "Paşa", "merkez": "Sofya", "eyalet": "rumeli", "bey": "Dayı Karaca Bey" },
+    { "ad": "Edirne", "merkez": "Edirne", "eyalet": "rumeli", "bey": "Saruca Bey" },
+    { "ad": "Gelibolu", "merkez": "Gelibolu", "eyalet": "rumeli", "bey": "Baltaoğlu Süleyman Bey" },
+    { "ad": "Vize", "merkez": "Kırklareli", "eyalet": "rumeli", "bey": "Hamza Bey" },
+    { "ad": "Çirmen", "merkez": "Eski Zağra", "eyalet": "rumeli", "bey": "Umur Bey" },
+    { "ad": "Silistre", "merkez": "Silistre", "eyalet": "rumeli", "bey": "Yakub Bey" },
+    { "ad": "Niğbolu", "merkez": "Plevne", "eyalet": "rumeli", "bey": "Mihaloğlu Ali Bey" },
+    { "ad": "Vidin", "merkez": "Vidin", "eyalet": "rumeli", "bey": "Hızır Bey" },
+    { "ad": "Köstendil", "merkez": "Köstendil", "eyalet": "rumeli", "bey": "İsa Bey" },
+    { "ad": "Üsküp", "merkez": "Üsküp", "eyalet": "rumeli", "bey": "İshak Bey" },
+    { "ad": "Selanik", "merkez": "Selanik", "eyalet": "rumeli", "bey": "Evrenosoğlu Ahmed Bey" },
+    { "ad": "Tırhala", "merkez": "Tırhala", "eyalet": "rumeli", "bey": "Turahanoğlu Ömer Bey" },
+    { "ad": "Yanya", "merkez": "Yanya", "eyalet": "rumeli", "bey": "Yusuf Bey" },
+    { "ad": "Avlonya", "merkez": "Berat", "eyalet": "rumeli", "bey": "Balaban Bey" },
+    { "ad": "Ohri", "merkez": "Manastır", "eyalet": "rumeli", "bey": "Davud Bey" },
+    { "ad": "Hüdavendigâr", "merkez": "Bursa", "eyalet": "anadolu", "bey": "Mahmud Bey" },
+    { "ad": "Kocaeli", "merkez": "Adapazarı", "eyalet": "anadolu", "bey": "Kasım Bey" },
+    { "ad": "Karesi", "merkez": "Balıkesir", "eyalet": "anadolu", "bey": "Firuz Bey" },
+    { "ad": "Saruhan", "merkez": "Akhisar", "eyalet": "anadolu", "bey": "İlyas Bey" },
+    { "ad": "Aydın", "merkez": "Aydın", "eyalet": "anadolu", "bey": "Halil Bey" },
+    { "ad": "Menteşe", "merkez": "Milas", "eyalet": "anadolu", "bey": "Murad Bey" },
+    { "ad": "Teke", "merkez": "Antalya", "eyalet": "anadolu", "bey": "Sinan Bey" },
+    { "ad": "Hamid", "merkez": "Burdur", "eyalet": "anadolu", "bey": "Gazi Bey" },
+    { "ad": "Kütahya", "merkez": "Kütahya", "eyalet": "anadolu", "bey": "Şehabeddin Bey" },
+    { "ad": "Karahisar", "merkez": "Afyonkarahisar", "eyalet": "anadolu", "bey": "Mustafa Bey" },
+    { "ad": "Bolu", "merkez": "Bolu", "eyalet": "anadolu", "bey": "Hasan Bey" },
+    { "ad": "Ankara", "merkez": "Ankara", "eyalet": "anadolu", "bey": "Kemal Bey" },
+    { "ad": "Amasya", "merkez": "Amasya", "eyalet": "rum", "bey": "Hacı Bey" },
+    { "ad": "Canik", "merkez": "Samsun", "eyalet": "rum", "bey": "Ali Bey" },
+    { "ad": "Çorum", "merkez": "Çorum", "eyalet": "rum", "bey": "Ahmed Bey" },
+    { "ad": "Bozok", "merkez": "Yozgat", "eyalet": "rum", "bey": "Süleyman Bey" },
+    { "ad": "Sivas", "merkez": "Sivas", "eyalet": "rum", "bey": "Yörgüç Bey" }
+  ]
+}

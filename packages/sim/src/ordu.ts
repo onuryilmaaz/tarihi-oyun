@@ -5,7 +5,7 @@ import { DENGE } from "./denge";
 import { HAREKET, type HareketAgi } from "./hareket";
 import { savasta } from "./savas";
 import type { Baglam } from "./emirler";
-import { BIRIM_TURLERI, kompozisyonCikar, kompozisyonHizi, kompozisyonOransalAl, toplamaMaliyetiYuzde, aylikMaasYuzde, tekTurKompozisyon, type BirimTuru, type Kompozisyon } from "./birim";
+import { BIRIM_TURLERI, kompozisyonCikar, kompozisyonHizi, kompozisyonTopla, kompozisyonOransalAl, toplamaMaliyetiYuzde, aylikMaasYuzde, tekTurKompozisyon, type BirimTuru, type Kompozisyon } from "./birim";
 
 // yuzde: teknoloji indirimi (Asker Kayıt Defterleri, 5c); varsayılan indirimsiz. birim: TASK-0019, varsayılan piyade
 // (piyadenin maliyetYuzde'si 100 olduğu için eski çağrılar aynı sonucu verir).
@@ -52,6 +52,17 @@ export function toplamalariIlerlet(d: DunyaDurumu, b: Baglam): void {
     if (t.kalanGun > 0) return true;
     const konum = b.sehirKonumlari?.[t.sehir] ?? n;
     const kompozisyon = tekTurKompozisyon(t.birim, t.asker);
+    // Şehirde bekleyen kendi ordusu varsa yeni askerler ona katılır (yürüyüş, muharebe, geri çekilme ve kuşatma dışında)
+    const bekleyen = d.ordular.find((o) => o.devlet === t.devlet && o.dugum === s.dugum && !o.rota.length && o.muharebe === null
+      && !o.cekiliyor && !d.kusatmalar.some((k) => k.ordular.includes(o.id)));
+    if (bekleyen) {
+      bekleyen.moral = Math.floor((bekleyen.moral * bekleyen.asker + DENGE.MORAL_EN_YUKSEK * t.asker) / (bekleyen.asker + t.asker));
+      bekleyen.kompozisyon = kompozisyonTopla(bekleyen.kompozisyon, kompozisyon);
+      bekleyen.asker += t.asker;
+      bekleyen.hiz = kompozisyonHizi(bekleyen.kompozisyon, HAREKET.TEMEL_HIZ);
+      olayEkle(d, { tur: "asker-toplandi", devlet: t.devlet, metin: `${s.ad}: ${t.asker} asker hazır; ${bekleyen.ad} ordusuna katıldı (${bekleyen.asker} asker).` });
+      return false;
+    }
     d.ordular.push({ id: d.sonrakiOrduId++, ad: `${s.ad} Ordusu`, devlet: t.devlet, asker: t.asker,
       kompozisyon,
       dugum: s.dugum, x: konum.x, y: konum.y, hiz: kompozisyonHizi(kompozisyon, HAREKET.TEMEL_HIZ), rota: [], ilerleme: 0, hedef: null, // TASK-0019 (3/4)

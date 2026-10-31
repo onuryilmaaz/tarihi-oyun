@@ -28,6 +28,7 @@ import { elciIlerlet } from "./elci";
 import { hukumdarlariIlerlet } from "./hanedan";
 import { iskanlariIlerlet, nufusArtisi, savasGocu } from "./nufus";
 import { bagliSehirleriEsitle, sehirBirlesmeleriIlerlet, sehirToprakEsitle } from "./sehir";
+import { sancakBakimi } from "./sancaklar";
 
 export type Siklik = "gunluk" | "aylik" | "yillik";
 
@@ -69,6 +70,7 @@ export const SISTEMLER: Sistem[] = [
   // TASK-0026: bağlı şehir merkezinin sahipliğini izler; süren birleşmeler
   { id: "bagli-sehir", siklik: "gunluk", calistir: bagliSehirleriEsitle },
   { id: "sehir-toprak", siklik: "gunluk", calistir: sehirToprakEsitle }, // TASK-0027: toprak şehrini izler
+  { id: "sancak", siklik: "gunluk", calistir: sancakBakimi }, // TASK-0029: sahiplik değişimi sancaklara yansır
   { id: "sehir-birlesmesi", siklik: "gunluk", calistir: sehirBirlesmeleriIlerlet },
   { id: "sehir-insaati", siklik: "gunluk", calistir: insaatlariIlerlet },
   // 8a: gemi inşası, donanma hareketi/çıkarma, deniz muharebesi
