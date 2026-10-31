@@ -1,20 +1,19 @@
 {
  "indeks": 2237,
- "ad": "Częstochowa",
- "ulke": "Poland",
+ "ad": "Liberec",
+ "ulke": "Czech Republic",
  "d": 66,
  "k": "tahmin",
- "s": "Częstochowa",
+ "s": "Liberec",
  "p": [
   [
    [
-    -10949,
-    -10924,
-    -10858,
-    11013,
-    11014,
-    11015,
-    11016
+    -10965,
+    -11010,
+    11111,
+    11112,
+    11113,
+    -11081
    ]
   ]
  ]

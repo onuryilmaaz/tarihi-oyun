@@ -1,17 +1,19 @@
 {
  "indeks": 2984,
- "ad": "Malakka kuzeybatısı 2",
- "ulke": "Malaysia",
- "d": 109,
+ "ad": "Kandehar",
+ "ulke": "Afghanistan",
+ "d": 90,
  "k": "tahmin",
+ "s": "Kandehar",
  "p": [
   [
    [
-    -14838,
-    14851,
-    14852,
-    14853,
-    14854
+    -14268,
+    14286,
+    2702,
+    14287,
+    14288,
+    14289
    ]
   ]
  ]

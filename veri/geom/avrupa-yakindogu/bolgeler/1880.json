@@ -1,18 +1,17 @@
 {
  "indeks": 1880,
- "ad": "Vezirköprü",
+ "ad": "Karadeniz Ereğli",
  "ulke": "Turkey",
  "d": 0,
  "k": "tahmin",
- "s": "Vezirköprü",
+ "s": "Karadeniz Ereğli",
  "p": [
   [
    [
-    -8950,
-    -8922,
-    -9018,
-    9039,
-    9040
+    -9039,
+    -9045,
+    9133,
+    9134
    ]
   ]
  ]

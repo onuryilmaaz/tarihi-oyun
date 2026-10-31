@@ -1,18 +1,17 @@
 {
  "indeks": 2478,
- "ad": "Skien",
- "ulke": "Norway",
- "d": 74,
+ "ad": "Dobryanskoye Urban Settlement",
+ "ulke": "Russia",
+ "d": 39,
  "k": "tahmin",
- "s": "Skien",
+ "s": "Dobryanskoye Urban Settlement",
  "p": [
   [
    [
-    11807,
+    -11893,
     -11878,
-    -11877,
-    -11876,
-    -11875
+    11978,
+    -11941
    ]
   ]
  ]

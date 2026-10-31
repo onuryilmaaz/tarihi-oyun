@@ -1,18 +1,18 @@
 {
  "indeks": 1902,
- "ad": "Zakatala",
- "ulke": "Azerbaijan",
- "d": 13,
+ "ad": "Tiflis",
+ "ulke": "Georgia",
+ "d": 12,
  "k": "tahmin",
- "s": "Zakatala",
+ "s": "Tiflis",
  "p": [
   [
    [
-    -8986,
-    -8933,
-    -9059,
-    9110,
-    9111
+    -9079,
+    -9084,
+    9204,
+    9205,
+    -9201
    ]
   ]
  ]

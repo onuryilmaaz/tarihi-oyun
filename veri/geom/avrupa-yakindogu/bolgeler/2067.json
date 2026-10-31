@@ -1,18 +1,19 @@
 {
  "indeks": 2067,
- "ad": "Kiskunhalas",
- "ulke": "Hungary",
+ "ad": "Varsedin",
+ "ulke": "Croatia",
  "d": 27,
  "k": "tahmin",
- "s": "Kiskunhalas",
+ "s": "Varsedin",
  "p": [
   [
    [
-    -10066,
-    -10169,
-    10177,
-    10178,
-    -10102
+    -10132,
+    -10071,
+    -10165,
+    10275,
+    10276,
+    10277
    ]
   ]
  ]

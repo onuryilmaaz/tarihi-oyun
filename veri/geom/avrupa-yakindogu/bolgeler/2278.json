@@ -1,21 +1,18 @@
 {
  "indeks": 2278,
- "ad": "Arnhem",
- "ulke": "Netherlands",
- "d": 61,
+ "ad": "Cheltenham",
+ "ulke": "United Kingdom",
+ "d": 58,
  "k": "tahmin",
- "s": "Arnhem",
+ "s": "Cheltenham",
  "p": [
   [
    [
-    -11078,
-    11152,
-    11153,
-    11154,
-    -11136,
-    11155,
-    11156,
-    -11133
+    -11209,
+    -11174,
+    11250,
+    11251,
+    11252
    ]
   ]
  ]

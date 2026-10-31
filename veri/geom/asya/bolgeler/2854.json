@@ -1,15 +1,18 @@
 {
  "indeks": 2854,
- "ad": "Kyoto kuzeydoğusu 21",
- "ulke": "Japan",
- "d": 99,
+ "ad": "Jiayi Town",
+ "ulke": "China",
+ "d": 97,
  "k": "tahmin",
+ "s": "Jiayi Town",
  "p": [
   [
    [
-    -14158,
-    14178,
-    -14173
+    -13732,
+    -13752,
+    13833,
+    13834,
+    -13828
    ]
   ]
  ]

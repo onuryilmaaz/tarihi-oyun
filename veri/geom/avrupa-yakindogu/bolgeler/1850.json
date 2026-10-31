@@ -1,21 +1,17 @@
 {
  "indeks": 1850,
- "ad": "Adapazarı",
- "ulke": "Turkey",
+ "ad": "Manastır",
+ "ulke": "Greece",
  "d": 0,
  "k": "tahmin",
- "s": "Adapazarı",
+ "s": "Manastır",
  "p": [
   [
    [
-    -8874,
-    8939,
-    -8868,
-    8940,
-    8941,
-    8942,
-    8943,
-    8944
+    -9003,
+    -8988,
+    9033,
+    9034
    ]
   ]
  ]

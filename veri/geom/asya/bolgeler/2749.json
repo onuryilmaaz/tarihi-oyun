@@ -1,17 +1,16 @@
 {
  "indeks": 2749,
- "ad": "Karakurum",
- "ulke": "Mongolia",
- "d": 94,
+ "ad": "Basuo",
+ "ulke": "China",
+ "d": 97,
  "k": "tahmin",
- "s": "Karakurum",
+ "s": "Basuo",
  "p": [
   [
    [
-    -13560,
-    -13556,
-    13573,
-    13574
+    -13239,
+    13359,
+    13360
    ]
   ]
  ]

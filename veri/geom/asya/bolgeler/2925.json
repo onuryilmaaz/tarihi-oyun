@@ -1,18 +1,22 @@
 {
  "indeks": 2925,
- "ad": "Phnom Penh kuzeybatısı",
- "ulke": "Cambodia",
- "d": 102,
+ "ad": "Panchagarh Sadar Upazila",
+ "ulke": "Bangladesh",
+ "d": 114,
  "k": "tahmin",
+ "s": "Panchagarh Sadar Upazila",
  "p": [
   [
    [
-    -14504,
-    -14481,
-    -14485,
-    -14512,
-    14516,
-    14517
+    -13982,
+    -13959,
+    -14044,
+    14086,
+    14087,
+    715,
+    1240,
+    1236,
+    -14049
    ]
   ]
  ]

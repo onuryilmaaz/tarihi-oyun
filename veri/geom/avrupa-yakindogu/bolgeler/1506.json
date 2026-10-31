@@ -1,19 +1,18 @@
 {
  "indeks": 1506,
- "ad": "Az Zubaydiyah",
- "ulke": "Iraq",
- "d": 10,
- "k": "tahmin",
- "s": "Az Zubaydiyah",
+ "ad": "Süveyda",
+ "ulke": "Syria",
+ "d": 11,
+ "k": "ohm:2960096",
+ "s": "Süveyda",
  "p": [
   [
    [
-    -7548,
-    -7502,
-    -7539,
-    7570,
-    7571,
-    7572
+    -7660,
+    7662,
+    -7421,
+    -7527,
+    7663
    ]
   ]
  ]

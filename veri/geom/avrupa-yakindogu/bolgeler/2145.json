@@ -1,18 +1,20 @@
 {
  "indeks": 2145,
- "ad": "Rimavská Sobota",
- "ulke": "Slovakia",
- "d": 27,
+ "ad": "Reims",
+ "ulke": "France",
+ "d": 57,
  "k": "tahmin",
- "s": "Rimavská Sobota",
+ "s": "Reims",
  "p": [
   [
    [
-    10622,
-    -10481,
-    10623,
-    10624,
-    -10573
+    -10717,
+    -10392,
+    -10664,
+    10719,
+    10720,
+    10721,
+    10722
    ]
   ]
  ]

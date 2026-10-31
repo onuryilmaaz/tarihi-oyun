@@ -1,16 +1,19 @@
 {
  "indeks": 3046,
- "ad": "Kotte doğusu 5",
- "ulke": "Sri Lanka",
- "d": 125,
+ "ad": "Gaochuan Town",
+ "ulke": "China",
+ "d": 97,
  "k": "tahmin",
+ "s": "Gaochuan Town",
  "p": [
   [
    [
-    -15136,
-    -15140,
-    15140,
-    15141
+    -14417,
+    -14507,
+    14513,
+    14514,
+    14515,
+    14516
    ]
   ]
  ]

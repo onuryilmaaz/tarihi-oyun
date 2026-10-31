@@ -1,20 +1,19 @@
 {
  "indeks": 2255,
- "ad": "Eindhoven",
- "ulke": "Netherlands",
- "d": 61,
+ "ad": "Reading",
+ "ulke": "United Kingdom",
+ "d": 58,
  "k": "tahmin",
- "s": "Eindhoven",
+ "s": "Reading",
  "p": [
   [
    [
-    -11027,
-    -10915,
-    11074,
-    11075,
-    11076,
-    11077,
-    11078
+    -11070,
+    -11042,
+    11171,
+    11172,
+    11173,
+    11174
    ]
   ]
  ]

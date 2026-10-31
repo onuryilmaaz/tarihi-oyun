@@ -1,17 +1,19 @@
 {
  "indeks": 2985,
- "ad": "Malakka kuzeyi",
- "ulke": "Malaysia",
- "d": 109,
+ "ad": "Doğu Ahmedpur",
+ "ulke": "Pakistan",
+ "d": 122,
  "k": "tahmin",
+ "s": "Doğu Ahmedpur",
  "p": [
   [
    [
-    -14836,
-    -14851,
-    14855,
-    14856,
-    14857
+    -14243,
+    -14170,
+    -14210,
+    14290,
+    14291,
+    14292
    ]
   ]
  ]

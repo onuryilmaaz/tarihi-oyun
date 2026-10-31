@@ -1,20 +1,16 @@
 {
  "indeks": 1701,
- "ad": "Denizli",
- "ulke": "Turkey",
- "d": 0,
- "k": "tahmin",
- "s": "Denizli",
+ "ad": "Crotone",
+ "ulke": "Italy",
+ "d": 45,
+ "k": "ohm:2751179",
+ "s": "Crotone",
  "p": [
   [
    [
-    -8222,
     -8060,
-    -8121,
-    -8289,
-    8306,
-    8307,
-    8308
+    8402,
+    8403
    ]
   ]
  ]

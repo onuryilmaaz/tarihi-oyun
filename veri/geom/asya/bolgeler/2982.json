@@ -1,24 +1,19 @@
 {
  "indeks": 2982,
- "ad": "Malakka güneydoğusu 2",
- "ulke": "Malaysia",
- "d": 109,
+ "ad": "Wenshui Town",
+ "ulke": "China",
+ "d": 97,
  "k": "tahmin",
+ "s": "Wenshui Town",
  "p": [
   [
    [
-    14846,
-    -14844
-   ]
-  ],
-  [
-   [
-    14847
-   ]
-  ],
-  [
-   [
-    14848
+    -14237,
+    -14189,
+    -14217,
+    14277,
+    14278,
+    14279
    ]
   ]
  ]

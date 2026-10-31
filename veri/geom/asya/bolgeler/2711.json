@@ -1,18 +1,17 @@
 {
  "indeks": 2711,
- "ad": "Semerkant kuzeydoğusu",
- "ulke": "Uzbekistan",
- "d": 90,
+ "ad": "Yasothon",
+ "ulke": "Thailand",
+ "d": 105,
  "k": "tahmin",
+ "s": "Yasothon",
  "p": [
   [
    [
-    -13310,
-    13342,
-    13343,
-    13344,
-    13345,
-    13346
+    -13143,
+    -13152,
+    13207,
+    13208
    ]
   ]
  ]

@@ -1,19 +1,17 @@
 {
  "indeks": 2395,
- "ad": "Pastavy",
- "ulke": "Belarus",
- "d": 35,
+ "ad": "Newcastle upon Tyne",
+ "ulke": "United Kingdom",
+ "d": 58,
  "k": "tahmin",
- "s": "Pastavy",
+ "s": "Newcastle upon Tyne",
  "p": [
   [
    [
-    -11522,
-    -11474,
-    -11557,
-    11573,
-    11574,
-    11575
+    -11645,
+    -11587,
+    11675,
+    11676
    ]
   ]
  ]

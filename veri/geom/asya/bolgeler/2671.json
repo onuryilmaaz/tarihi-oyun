@@ -1,19 +1,18 @@
 {
  "indeks": 2671,
- "ad": "Herat güneybatısı 8",
- "ulke": "Iran",
- "d": 90,
+ "ad": "Visakhapatnam",
+ "ulke": "India",
+ "d": 118,
  "k": "tahmin",
+ "s": "Visakhapatnam",
  "p": [
   [
    [
-    13132,
-    -13114,
-    -13128,
-    13133,
-    13134,
-    13135,
-    -7313
+    -13047,
+    13062,
+    13063,
+    13064,
+    13065
    ]
   ]
  ]

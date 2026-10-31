@@ -1,24 +1,17 @@
 {
  "indeks": 2224,
- "ad": "Christchurch",
- "ulke": "United Kingdom",
- "d": 58,
+ "ad": "Pryluky",
+ "ulke": "Ukraine",
+ "d": 35,
  "k": "tahmin",
- "s": "Christchurch",
+ "s": "Pryluky",
  "p": [
   [
    [
-    10935,
-    10970
-   ]
-  ],
-  [
-   [
-    10967,
-    -10942,
-    10968,
-    10969,
-    -10933
+    -11065,
+    -10897,
+    11066,
+    11067
    ]
   ]
  ]

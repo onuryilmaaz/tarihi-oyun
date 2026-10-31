@@ -1,17 +1,18 @@
 {
  "indeks": 1940,
- "ad": "Gagra",
- "ulke": "Georgia",
- "d": 12,
+ "ad": "Misivri",
+ "ulke": "Bulgaria",
+ "d": 0,
  "k": "tahmin",
- "s": "Gagra",
+ "s": "Misivri",
  "p": [
   [
    [
-    9277,
-    -9261,
-    9278,
-    9279
+    -9212,
+    9369,
+    9370,
+    9371,
+    9372
    ]
   ]
  ]

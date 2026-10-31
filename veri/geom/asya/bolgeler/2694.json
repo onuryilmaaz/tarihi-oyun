@@ -1,18 +1,19 @@
 {
  "indeks": 2694,
- "ad": "Semerkant doğusu 2",
- "ulke": "Tajikistan",
- "d": 90,
+ "ad": "Ubon Ratchathani",
+ "ulke": "Thailand",
+ "d": 105,
  "k": "tahmin",
+ "s": "Ubon Ratchathani",
  "p": [
   [
    [
-    -13213,
-    -13211,
-    -13185,
-    13223,
-    13224,
-    13225
+    13141,
+    -13152,
+    -13151,
+    -13150,
+    13106,
+    13068
    ]
   ]
  ]

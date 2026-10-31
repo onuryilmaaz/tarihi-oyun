@@ -1,21 +1,18 @@
 {
  "indeks": 1870,
- "ad": "Konstantiniyye",
+ "ad": "Çorlu",
  "ulke": "Turkey",
- "d": 1,
+ "d": 0,
  "k": "tahmin",
- "s": "Konstantiniyye",
+ "s": "Çorlu",
  "p": [
   [
    [
-    9010,
-    -9008
-   ]
-  ],
-  [
-   [
-    9011,
-    9012
+    -9066,
+    9102,
+    9103,
+    9104,
+    9105
    ]
   ]
  ]

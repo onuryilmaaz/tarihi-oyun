@@ -1,17 +1,19 @@
 {
  "indeks": 2808,
- "ad": "Hanseong kuzeydoğusu 4",
- "ulke": "North Korea",
- "d": 98,
+ "ad": "Lashio",
+ "ulke": "Myanmar",
+ "d": 106,
  "k": "tahmin",
+ "s": "Lashio",
  "p": [
   [
    [
-    -13953,
-    13955,
-    1171,
-    -13611,
-    13956
+    -13628,
+    -13462,
+    -13624,
+    13639,
+    13640,
+    13641
    ]
   ]
  ]

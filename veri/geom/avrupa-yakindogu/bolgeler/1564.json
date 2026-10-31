@@ -1,18 +1,16 @@
 {
  "indeks": 1564,
- "ad": "Trablusşam",
- "ulke": "Lebanon",
- "d": 11,
- "k": "ohm:2960096",
- "s": "Trablusşam",
+ "ad": "Lefkoşa",
+ "ulke": "Northern Cyprus",
+ "d": 25,
+ "k": "ohm:2800988",
+ "s": "Lefkoşa",
  "p": [
   [
    [
-    -7668,
-    -7719,
-    7767,
-    7768,
-    7769
+    -7709,
+    7859,
+    7860
    ]
   ]
  ]

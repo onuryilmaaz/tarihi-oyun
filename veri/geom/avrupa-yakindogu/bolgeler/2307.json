@@ -1,22 +1,17 @@
 {
  "indeks": 2307,
- "ad": "Salzwedel",
- "ulke": "Germany",
- "d": 68,
+ "ad": "Norwich",
+ "ulke": "United Kingdom",
+ "d": 58,
  "k": "tahmin",
- "s": "Salzwedel",
+ "s": "Norwich",
  "p": [
   [
    [
-    11258,
-    -11185,
-    -11220,
-    11259,
-    11260,
-    11261,
-    11262,
-    11263,
-    11264
+    -11299,
+    -11230,
+    11363,
+    11364
    ]
   ]
  ]

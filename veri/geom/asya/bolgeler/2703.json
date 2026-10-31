@@ -1,18 +1,19 @@
 {
  "indeks": 2703,
- "ad": "Buhara batısı",
- "ulke": "Turkmenistan",
- "d": 90,
+ "ad": "Nakhon Sawan",
+ "ulke": "Thailand",
+ "d": 105,
  "k": "tahmin",
+ "s": "Nakhon Sawan",
  "p": [
   [
    [
-    -13244,
-    -13201,
-    -13250,
-    13268,
-    13269,
-    13270
+    -13089,
+    -13136,
+    13180,
+    13181,
+    13182,
+    13183
    ]
   ]
  ]

@@ -1,16 +1,18 @@
 {
  "indeks": 2909,
- "ad": "Phnom Penh güneyi 3",
- "ulke": "Vietnam",
- "d": 102,
+ "ad": "Ganzhou",
+ "ulke": "China",
+ "d": 97,
  "k": "tahmin",
+ "s": "Ganzhou",
  "p": [
   [
    [
-    -14419,
-    -14421,
-    14441,
-    14442
+    -13972,
+    -13886,
+    -13993,
+    14021,
+    14022
    ]
   ]
  ]

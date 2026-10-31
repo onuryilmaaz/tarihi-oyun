@@ -1,20 +1,20 @@
 {
  "indeks": 2134,
- "ad": "Kamianobridski Raion",
+ "ad": "Zvenıhorodka",
  "ulke": "Ukraine",
- "d": 32,
+ "d": 35,
  "k": "tahmin",
- "s": "Kamianobridski Raion",
+ "s": "Zvenıhorodka",
  "p": [
   [
    [
-    -10460,
-    -9477,
-    -10465,
-    10551,
-    10552,
-    10553,
-    10554
+    10648,
+    -10512,
+    -10210,
+    -10454,
+    10649,
+    10650,
+    10651
    ]
   ]
  ]

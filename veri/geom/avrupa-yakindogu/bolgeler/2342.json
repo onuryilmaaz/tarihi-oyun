@@ -1,20 +1,20 @@
 {
  "indeks": 2342,
- "ad": "Kingston upon Hull",
- "ulke": "United Kingdom",
- "d": 58,
+ "ad": "Kimovsk",
+ "ulke": "Russia",
+ "d": 39,
  "k": "tahmin",
- "s": "Kingston upon Hull",
+ "s": "Kimovsk",
  "p": [
   [
    [
-    11295,
-    11375,
-    11376,
-    -11372,
-    -11291,
-    -11295,
-    11374
+    -11316,
+    -11357,
+    -11466,
+    11478,
+    11479,
+    11480,
+    -11397
    ]
   ]
  ]

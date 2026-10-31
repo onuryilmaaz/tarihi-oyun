@@ -1,18 +1,19 @@
 {
  "indeks": 1509,
- "ad": "Trablus",
- "ulke": "Libya",
- "d": 78,
+ "ad": "Saniat Berguig",
+ "ulke": "Morocco",
+ "d": 76,
  "k": "tahmin",
- "s": "Trablus",
+ "s": "Saniat Berguig",
  "p": [
   [
    [
-    -7482,
-    -7153,
-    -7547,
-    7578,
-    -7563
+    -7587,
+    -7602,
+    -7605,
+    7669,
+    7670,
+    7671
    ]
   ]
  ]

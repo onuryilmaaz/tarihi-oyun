@@ -1,18 +1,21 @@
 {
  "indeks": 2405,
- "ad": "Alabuga",
+ "ad": "Urban settlement Birsk",
  "ulke": "Russia",
- "d": 33,
+ "d": 34,
  "k": "tahmin",
- "s": "Alabuga",
+ "s": "Urban settlement Birsk",
  "p": [
   [
    [
-    -11435,
-    -11441,
-    11620,
-    11621,
-    11622
+    -11549,
+    -11503,
+    -11510,
+    11720,
+    11721,
+    11722,
+    11723,
+    11724
    ]
   ]
  ]

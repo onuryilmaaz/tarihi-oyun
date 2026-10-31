@@ -1,15 +1,19 @@
 {
  "indeks": 2825,
- "ad": "Kyoto güneybatısı 8",
- "ulke": "Japan",
- "d": 99,
+ "ad": "Adityapur",
+ "ulke": "India",
+ "d": 113,
  "k": "tahmin",
+ "s": "Adityapur",
  "p": [
   [
    [
-    14073,
-    -14082,
-    14022
+    -13647,
+    -13381,
+    -13637,
+    13724,
+    13725,
+    13726
    ]
   ]
  ]

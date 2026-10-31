@@ -1,19 +1,18 @@
 {
  "indeks": 2292,
- "ad": "Northampton",
- "ulke": "United Kingdom",
- "d": 58,
+ "ad": "Yelets",
+ "ulke": "Russia",
+ "d": 32,
  "k": "tahmin",
- "s": "Northampton",
+ "s": "Yelets",
  "p": [
   [
    [
-    -11150,
-    -11072,
-    -11198,
-    11214,
-    11215,
-    11216
+    -11193,
+    -11207,
+    11314,
+    11315,
+    11316
    ]
   ]
  ]

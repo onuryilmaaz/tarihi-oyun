@@ -1,17 +1,19 @@
 {
  "indeks": 2080,
- "ad": "Yverdon-les-Bains",
- "ulke": "Switzerland",
- "d": 51,
+ "ad": "Kişinev",
+ "ulke": "Moldova",
+ "d": 29,
  "k": "tahmin",
- "s": "Yverdon-les-Bains",
+ "s": "Kişinev",
  "p": [
   [
    [
-    -10119,
-    -10084,
-    10263,
-    10264
+    -10360,
+    -10180,
+    -10080,
+    10361,
+    10362,
+    10363
    ]
   ]
  ]

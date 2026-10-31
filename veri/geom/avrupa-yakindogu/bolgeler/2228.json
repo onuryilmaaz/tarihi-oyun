@@ -1,19 +1,16 @@
 {
  "indeks": 2228,
- "ad": "Ústí nad Labem",
- "ulke": "Czech Republic",
- "d": 66,
+ "ad": "Calais",
+ "ulke": "France",
+ "d": 61,
  "k": "tahmin",
- "s": "Ústí nad Labem",
+ "s": "Calais",
  "p": [
   [
    [
-    -10897,
-    -10774,
-    -10865,
-    10979,
-    10980,
-    10981
+    -10937,
+    11078,
+    11079
    ]
   ]
  ]

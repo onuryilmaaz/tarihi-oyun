@@ -1,17 +1,19 @@
 {
  "indeks": 1588,
- "ad": "Vehran",
- "ulke": "Algeria",
- "d": 77,
+ "ad": "Melilla",
+ "ulke": "Morocco",
+ "d": 76,
  "k": "tahmin",
- "s": "Vehran",
+ "s": "Melilla",
  "p": [
   [
    [
-    -7634,
-    -7666,
-    7856,
-    7857
+    -7899,
+    -7773,
+    -7272,
+    7948,
+    709,
+    7949
    ]
   ]
  ]

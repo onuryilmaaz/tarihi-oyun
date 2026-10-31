@@ -1,19 +1,16 @@
 {
  "indeks": 1469,
- "ad": "Qalat Sukkar",
- "ulke": "Iraq",
- "d": 10,
- "k": "tahmin",
- "s": "Qalat Sukkar",
+ "ad": "Derne",
+ "ulke": "Libya",
+ "d": 11,
+ "k": "ohm:2960096",
+ "s": "Derne",
  "p": [
   [
    [
-    -7092,
-    -7352,
-    -7443,
-    7467,
-    7468,
-    7469
+    -7559,
+    -7295,
+    7560
    ]
   ]
  ]

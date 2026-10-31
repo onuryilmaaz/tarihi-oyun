@@ -10,8 +10,8 @@ Bağlayıcı kurallar: `AGENTS.md`, `MASTER_SPEC.md`, `DECISIONS.md`.
 
 ## 0. En son — BURADAN BAŞLA
 
-- **TASK-0029 commit edildi (`ce27d95`). TASK-0030 (Avrupa + Yakındoğu'ya yayma, başarım iyileştirmesi) uygulandı,
-  COMMIT EDİLMEDİ, kullanıcı testi bekliyor (2026-10-31).** Sıradaki: kalan kıtalar. Sıradaki (DEC-0076): (4) Osmanlı sancak sistemi, (5) dünyaya
+- **TASK-0030 commit edildi (`86b0753`). TASK-0031 (bütün dünyaya yayma) uygulandı, COMMIT EDİLMEDİ, kullanıcı testi
+  bekliyor (2026-10-31).** DEC-0076 planının 5 adımı da tamamlandı; sıradaki iş kullanıcıya sorulacak. Sıradaki (DEC-0076): (4) Osmanlı sancak sistemi, (5) dünyaya
   yayma. Bekleyen öneri: küçük şehirlerin garnizon/surunun nüfusa göre ayarlanması (kullanıcıya soruldu).
 
 - **TASK-0027 (şehir ve toprağı birlikte fethedilir, DEC-0077) + varışta otomatik kuşatma commit edildi (2026-10-31).** Sıradaki (DEC-0076): (3) gelişmişlik/gelir kaynağı ekonomiye,

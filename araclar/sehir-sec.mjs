@@ -14,11 +14,13 @@ const IDARI = /(Belediyesi|Municipality|Sector|Republic|Rayon|District|ilçesi|O
 export function sehirleriSec(harita, aday, haric = [], ek = []) {
   const dislanan = new Set(haric);
   // Pilot devletler: başkenti aday kutularından birinin içinde olanlar (TASK-0030: birden çok kutu)
-  const kutular = aday.kutular ?? [aday.kutu];
-  const pilot = new Set();
+  // TASK-0031: kutunun grubu (aynı gruptaki devletler birlikte bölünür) ve şehirler arası en küçük mesafesi
+  const kutular = (aday.kutular ?? [aday.kutu]).map((k) => ({ grup: 0, enAzKm: EN_AZ_KM, ...k }));
+  const kutuBul = (lon, lat) => kutular.find((k) => lon >= k.bati && lon <= k.dogu && lat >= k.guney && lat <= k.kuzey);
+  const pilot = new Map(); // devlet → grup
   harita.sehirler.forEach((s) => {
-    const lat = millerLat(s.y);
-    if (s.b === 1 && kutular.some((k) => s.x >= k.bati && s.x <= k.dogu && lat >= k.guney && lat <= k.kuzey)) pilot.add(s.d);
+    const k = s.b === 1 ? kutuBul(s.x, millerLat(s.y)) : null;
+    if (k && !pilot.has(s.d)) pilot.set(s.d, k.grup);
   });
 
   // Birim bulma (ızgara ön süzgeçli nokta-poligon)
@@ -66,7 +68,8 @@ export function sehirleriSec(harita, aday, haric = [], ek = []) {
     o = { ...o, ad: o.ad.split(",")[0].trim() }; // "Boston, Lincolnshire" → "Boston" (ayırt edici ek)
     if (adlar.has(o.ad) || dislanan.has(o.ad)) continue;
     const c = { x: o.lon, y: millerY(o.lat) };
-    if (secilen.some((s) => km(s, c) < EN_AZ_KM)) continue;
+    const enAz = kutuBul(o.lon, o.lat)?.enAzKm ?? EN_AZ_KM;
+    if (secilen.some((s) => km(s, c) < enAz)) continue;
     const d = devletBul(c.x, c.y);
     if (!pilot.has(d)) continue;
     secilen.push({ ad: o.ad, x: c.x, y: Math.round(c.y * 1e4) / 1e4, d, b: 0, qid: o.qid, nufusGunumuz: o.nufusGunumuz });

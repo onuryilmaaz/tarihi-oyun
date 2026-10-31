@@ -1,18 +1,19 @@
 {
  "indeks": 2277,
- "ad": "Cheltenham",
- "ulke": "United Kingdom",
- "d": 58,
+ "ad": "Zhytkavichy",
+ "ulke": "Belarus",
+ "d": 35,
  "k": "tahmin",
- "s": "Cheltenham",
+ "s": "Zhytkavichy",
  "p": [
   [
    [
-    -11108,
-    -11073,
-    11149,
-    11150,
-    11151
+    -11031,
+    -11127,
+    -11228,
+    11248,
+    11249,
+    -11220
    ]
   ]
  ]

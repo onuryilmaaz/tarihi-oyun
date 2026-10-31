@@ -1,21 +1,22 @@
 {
  "indeks": 2916,
- "ad": "Phnom Penh güneydoğusu 6",
- "ulke": "Vietnam",
- "d": 102,
+ "ad": "Rangpur Sadar Upazila",
+ "ulke": "Bangladesh",
+ "d": 114,
  "k": "tahmin",
+ "s": "Rangpur Sadar Upazila",
  "p": [
   [
    [
-    -14453,
-    -14468,
-    -14472,
-    -14475,
-    14475,
-    -14337,
-    14476,
-    14477,
-    14478
+    -13958,
+    -13971,
+    -13946,
+    14039,
+    1796,
+    14040,
+    14041,
+    14042,
+    14043
    ]
   ]
  ]

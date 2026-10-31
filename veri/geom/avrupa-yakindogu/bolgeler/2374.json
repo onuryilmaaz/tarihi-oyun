@@ -1,20 +1,17 @@
 {
  "indeks": 2374,
- "ad": "Kaliningrad",
- "ulke": "Russia",
+ "ad": "Danzig",
+ "ulke": "Poland",
  "d": 37,
  "k": "tahmin",
- "s": "Kaliningrad",
+ "s": "Danzig",
  "p": [
   [
    [
-    -11448,
-    -11410,
-    -11384,
-    11493,
-    11494,
-    11495,
-    11496
+    -11598,
+    -11489,
+    -11560,
+    11599
    ]
   ]
  ]

@@ -1,17 +1,18 @@
 {
  "indeks": 2100,
- "ad": "Bruck an der Mur",
- "ulke": "Austria",
- "d": 65,
+ "ad": "Vendôme",
+ "ulke": "France",
+ "d": 57,
  "k": "tahmin",
- "s": "Bruck an der Mur",
+ "s": "Vendôme",
  "p": [
   [
    [
-    -10287,
-    -10326,
-    10345,
-    10346
+    -10422,
+    -10218,
+    -10428,
+    10444,
+    10445
    ]
   ]
  ]

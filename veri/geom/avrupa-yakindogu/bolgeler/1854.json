@@ -1,18 +1,19 @@
 {
  "indeks": 1854,
- "ad": "Salamanca City",
- "ulke": "Spain",
- "d": 52,
- "k": "ohm:2849131",
- "s": "Salamanca City",
+ "ad": "Şamahı",
+ "ulke": "Azerbaijan",
+ "d": 13,
+ "k": "tahmin",
+ "s": "Şamahı",
  "p": [
   [
    [
-    -8804,
-    -8937,
-    8955,
-    8956,
-    8957
+    -8867,
+    -8752,
+    -8766,
+    9048,
+    9049,
+    9050
    ]
   ]
  ]

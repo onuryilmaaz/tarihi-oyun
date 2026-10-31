@@ -1,19 +1,17 @@
 {
  "indeks": 2582,
- "ad": "Timbuktu güneydoğusu",
- "ulke": "Mali",
+ "ad": "Timbi-Madina",
+ "ulke": "Guinea",
  "d": 79,
  "k": "tahmin",
+ "s": "Timbi-Madina",
  "p": [
   [
    [
-    -12748,
-    12779,
-    -6398,
-    -6668,
-    12780,
-    12781,
-    12782
+    -12668,
+    -12653,
+    12681,
+    -12671
    ]
   ]
  ]

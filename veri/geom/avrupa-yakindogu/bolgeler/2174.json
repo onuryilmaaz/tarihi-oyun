@@ -1,19 +1,21 @@
 {
  "indeks": 2174,
- "ad": "Jihlava",
- "ulke": "Czech Republic",
- "d": 66,
- "k": "ohm:2830504",
- "s": "Jihlava",
+ "ad": "Aschaffenburg",
+ "ulke": "Germany",
+ "d": 67,
+ "k": "tahmin",
+ "s": "Aschaffenburg",
  "p": [
   [
    [
-    -10670,
-    -10677,
-    -10734,
-    10767,
-    10768,
-    10769
+    10860,
+    10861,
+    10862,
+    10863,
+    10864,
+    10865,
+    10866,
+    10867
    ]
   ]
  ]

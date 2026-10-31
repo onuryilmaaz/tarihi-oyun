@@ -1,18 +1,20 @@
 {
  "indeks": 1598,
- "ad": "Bordj Bou Arreridj",
- "ulke": "Algeria",
- "d": 78,
+ "ad": "Azla",
+ "ulke": "Morocco",
+ "d": 76,
  "k": "tahmin",
- "s": "Bordj Bou Arreridj",
+ "s": "Azla",
  "p": [
   [
    [
-    -7741,
-    -7708,
-    7898,
-    7899,
-    7900
+    -7946,
+    -7897,
+    -7855,
+    7989,
+    348,
+    7990,
+    7991
    ]
   ]
  ]

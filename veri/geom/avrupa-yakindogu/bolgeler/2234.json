@@ -1,22 +1,17 @@
 {
  "indeks": 2234,
- "ad": "Bad Salzungen",
- "ulke": "Germany",
- "d": 68,
+ "ad": "Bideford",
+ "ulke": "United Kingdom",
+ "d": 58,
  "k": "tahmin",
- "s": "Bad Salzungen",
+ "s": "Bideford",
  "p": [
   [
    [
-    11000,
-    -10808,
-    -10896,
-    11001,
-    11002,
-    11003,
-    11004,
-    11005,
-    11006
+    -10746,
+    11099,
+    -10935,
+    11100
    ]
   ]
  ]

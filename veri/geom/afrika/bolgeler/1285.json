@@ -1,18 +1,22 @@
 {
  "indeks": 1285,
- "ad": "El-Mukelle",
- "ulke": "Yemen",
- "d": 88,
+ "ad": "Dogondoutchi",
+ "ulke": "Niger",
+ "d": 80,
  "k": "tahmin",
- "s": "El-Mukelle",
+ "s": "Dogondoutchi",
  "p": [
   [
    [
-    -6609,
-    6732,
-    6733,
-    6734,
-    6735
+    -6677,
+    6813,
+    592,
+    1627,
+    1630,
+    6814,
+    6815,
+    6816,
+    6817
    ]
   ]
  ]

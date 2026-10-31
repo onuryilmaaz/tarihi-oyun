@@ -1,17 +1,18 @@
 {
  "indeks": 2681,
- "ad": "Semerkant güneyi",
- "ulke": "Afghanistan",
- "d": 90,
+ "ad": "Madanapalle",
+ "ulke": "India",
+ "d": 118,
  "k": "tahmin",
+ "s": "Madanapalle",
  "p": [
   [
    [
-    -13160,
-    -13158,
-    13169,
-    13170,
-    13171
+    -13061,
+    13101,
+    13102,
+    13103,
+    -13099
    ]
   ]
  ]

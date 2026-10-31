@@ -1,18 +1,17 @@
 {
  "indeks": 2708,
- "ad": "Buhara kuzeydoğusu",
- "ulke": "Uzbekistan",
- "d": 90,
+ "ad": "Wancheng Town",
+ "ulke": "China",
+ "d": 97,
  "k": "tahmin",
+ "s": "Wancheng Town",
  "p": [
   [
    [
-    -13248,
-    -13236,
-    13331,
-    13332,
-    13333,
-    13334
+    13195,
+    13196,
+    -13191,
+    13197
    ]
   ]
  ]

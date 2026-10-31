@@ -1,18 +1,20 @@
 {
  "indeks": 1883,
- "ad": "Kastamonu",
- "ulke": "Turkey",
- "d": 6,
+ "ad": "Kavadar",
+ "ulke": "Macedonia",
+ "d": 0,
  "k": "tahmin",
- "s": "Kastamonu",
+ "s": "Kavadar",
  "p": [
   [
    [
-    -8975,
-    -8918,
-    9047,
-    9048,
-    9049
+    -9034,
+    -8987,
+    -8838,
+    9139,
+    9140,
+    9141,
+    9142
    ]
   ]
  ]

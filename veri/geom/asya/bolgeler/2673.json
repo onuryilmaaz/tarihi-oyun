@@ -1,20 +1,17 @@
 {
  "indeks": 2673,
- "ad": "Herat",
- "ulke": "Afghanistan",
- "d": 90,
+ "ad": "Kampong Thom",
+ "ulke": "Cambodia",
+ "d": 102,
  "k": "tahmin",
- "s": "Herat",
+ "s": "Kampong Thom",
  "p": [
   [
    [
-    -13126,
-    -13099,
-    -13125,
-    13139,
-    13140,
-    13141,
-    13142
+    -13011,
+    -13044,
+    13071,
+    -13067
    ]
   ]
  ]

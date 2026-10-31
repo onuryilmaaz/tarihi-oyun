@@ -1,19 +1,17 @@
 {
  "indeks": 2688,
- "ad": "Herat kuzeyi",
- "ulke": "Turkmenistan",
- "d": 90,
+ "ad": "Srikakulam",
+ "ulke": "India",
+ "d": 118,
  "k": "tahmin",
+ "s": "Srikakulam",
  "p": [
   [
    [
-    -13188,
-    -13162,
-    -13142,
-    -13176,
-    13199,
-    13200,
-    13201
+    -13064,
+    13128,
+    13129,
+    13130
    ]
   ]
  ]

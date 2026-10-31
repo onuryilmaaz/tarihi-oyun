@@ -1,17 +1,18 @@
 {
  "indeks": 2400,
- "ad": "Ukmergė",
- "ulke": "Lithuania",
+ "ad": "Vitebsk",
+ "ulke": "Belarus",
  "d": 35,
  "k": "tahmin",
- "s": "Ukmergė",
+ "s": "Vitebsk",
  "p": [
   [
    [
-    -11553,
-    -11524,
-    11604,
-    11605
+    -11665,
+    -11609,
+    -11613,
+    11707,
+    11708
    ]
   ]
  ]

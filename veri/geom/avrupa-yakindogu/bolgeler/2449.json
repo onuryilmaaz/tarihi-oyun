@@ -1,18 +1,16 @@
 {
  "indeks": 2449,
- "ad": "Rostov",
- "ulke": "Russia",
- "d": 39,
+ "ad": "Aberdeen",
+ "ulke": "United Kingdom",
+ "d": 59,
  "k": "tahmin",
- "s": "Rostov",
+ "s": "Aberdeen",
  "p": [
   [
    [
-    -11732,
-    -11696,
-    -11764,
-    11776,
-    11777
+    -11808,
+    11878,
+    11879
    ]
   ]
  ]

@@ -1,17 +1,17 @@
 {
  "indeks": 1879,
- "ad": "Karadeniz Ereğli",
- "ulke": "Turkey",
- "d": 0,
- "k": "tahmin",
- "s": "Karadeniz Ereğli",
+ "ad": "Girona",
+ "ulke": "Spain",
+ "d": 53,
+ "k": "ohm:2751179",
+ "s": "Girona",
  "p": [
   [
    [
-    -8943,
-    -8949,
-    9037,
-    9038
+    -9057,
+    9130,
+    9131,
+    9132
    ]
   ]
  ]

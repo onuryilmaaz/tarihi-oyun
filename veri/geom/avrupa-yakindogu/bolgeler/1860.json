@@ -1,19 +1,19 @@
 {
  "indeks": 1860,
- "ad": "Vanadzor",
- "ulke": "Armenia",
- "d": 10,
+ "ad": "Yusufeli",
+ "ulke": "Turkey",
+ "d": 12,
  "k": "tahmin",
- "s": "Vanadzor",
+ "s": "Yusufeli",
  "p": [
   [
    [
-    -8876,
-    -8849,
-    8980,
-    8981,
-    8982,
-    8983
+    -9026,
+    -8896,
+    -8998,
+    9073,
+    9074,
+    9075
    ]
   ]
  ]

@@ -1,21 +1,17 @@
 {
  "indeks": 2173,
- "ad": "Aschaffenburg",
- "ulke": "Germany",
- "d": 67,
+ "ad": "Berestyn",
+ "ulke": "Ukraine",
+ "d": 32,
  "k": "tahmin",
- "s": "Aschaffenburg",
+ "s": "Berestyn",
  "p": [
   [
    [
-    10759,
-    10760,
-    10761,
-    10762,
-    10763,
-    10764,
-    10765,
-    10766
+    -10730,
+    -10563,
+    10859,
+    -10856
    ]
   ]
  ]

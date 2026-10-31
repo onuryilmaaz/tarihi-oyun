@@ -1,21 +1,19 @@
 {
  "indeks": 2403,
- "ad": "Urban settlement Birsk",
+ "ad": "Mojaysk",
  "ulke": "Russia",
- "d": 34,
+ "d": 39,
  "k": "tahmin",
- "s": "Urban settlement Birsk",
+ "s": "Mojaysk",
  "p": [
   [
    [
-    -11439,
-    -11393,
-    -11400,
-    11612,
-    11613,
-    11614,
-    11615,
-    11616
+    -11637,
+    -11592,
+    -11670,
+    11714,
+    11715,
+    11716
    ]
   ]
  ]

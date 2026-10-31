@@ -1,22 +1,19 @@
 {
  "indeks": 2349,
- "ad": "Gryfice",
- "ulke": "Poland",
- "d": 71,
+ "ad": "Chishminsky possoviet",
+ "ulke": "Russia",
+ "d": 34,
  "k": "tahmin",
- "s": "Gryfice",
+ "s": "Chishminsky possoviet",
  "p": [
   [
    [
-    11341,
-    11400,
-    -11339,
-    11401,
-    11402,
-    11403,
-    11404,
-    11405,
-    11343
+    -11343,
+    -11441,
+    11500,
+    11501,
+    11502,
+    11503
    ]
   ]
  ]

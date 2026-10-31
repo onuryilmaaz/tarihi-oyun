@@ -54,16 +54,22 @@ export function bolgeleriUret(harita, etopo, { log = () => {}, pilot = new Set()
 
   // TASK-0025 pilot (şehir kipi): pilot devletlerin toprağı birlikte, yalnızca şehir tohumlarıyla bölünür;
   // her toprak şehrinin devletine geçer (devlet sınırı şehir topraklarını izler)
-  if (pilot.size) {
-    const liste = harita.birimler.map((b, i) => i).filter((i) => pilot.has(harita.birimler[i].d) && birimPoly[i].length);
-    const pSehirler = harita.sehirler.filter((s) => pilot.has(s.d));
+  // TASK-0031: pilot bir Map (devlet → grup) olabilir; her grup ayrı bölünür (dünyayı tek seferde birleştirmek çok ağır)
+  const gruplar = new Map();
+  for (const [d, g] of pilot instanceof Map ? pilot : [...pilot].map((x) => [x, 0])) {
+    (gruplar.get(g) ?? gruplar.set(g, new Set()).get(g)).add(d);
+  }
+  for (const [g, uyeler] of gruplar) {
+    const liste = harita.birimler.map((b, i) => i).filter((i) => uyeler.has(harita.birimler[i].d) && birimPoly[i].length);
+    const pSehirler = harita.sehirler.filter((s) => uyeler.has(s.d));
+    if (!liste.length || !pSehirler.length) continue;
     const T = polygonClipping.union(...liste.map((i) => birimPoly[i]));
     const sonuc = devletiBol(T, pSehirler.length, pSehirler, yukseklik, nehirler, { sehirKipi: true });
     for (const r of sonuc) {
       const eski = kimlikBul(liste, r.ornek);
       yeniBirimler.push({ ad: r.ad, ulke: eski.ulke, d: r.sehir.d, k: eski.k, s: r.sehir.ad, mp: r.mp });
     }
-    log(`pilot: ${pilot.size} devlet, ${liste.length} birim → ${sonuc.length} şehir toprağı`);
+    log(`grup ${g}: ${uyeler.size} devlet, ${liste.length} birim → ${sonuc.length} şehir toprağı`);
   }
 
   let degisen = 0;

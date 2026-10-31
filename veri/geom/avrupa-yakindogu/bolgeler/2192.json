@@ -1,17 +1,18 @@
 {
  "indeks": 2192,
- "ad": "Exeter",
- "ulke": "United Kingdom",
- "d": 58,
- "k": "tahmin",
- "s": "Exeter",
+ "ad": "Engels",
+ "ulke": "Kazakhstan",
+ "d": 34,
+ "k": "ohm:2849493",
+ "s": "Engels",
  "p": [
   [
    [
-    10830,
-    10831,
-    10832,
-    10833
+    -10737,
+    -10300,
+    -9993,
+    10928,
+    10929
    ]
   ]
  ]

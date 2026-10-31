@@ -1,21 +1,18 @@
 {
  "indeks": 1866,
- "ad": "Mirandela",
- "ulke": "Portugal",
- "d": 54,
+ "ad": "Giresun",
+ "ulke": "Turkey",
+ "d": 4,
  "k": "tahmin",
- "s": "Mirandela",
+ "s": "Giresun",
  "p": [
   [
    [
-    -8990,
-    -8851,
-    -8805,
-    -8958,
-    8998,
-    8999,
-    9000,
-    9001
+    -9023,
+    -8940,
+    -8996,
+    9092,
+    9093
    ]
   ]
  ]

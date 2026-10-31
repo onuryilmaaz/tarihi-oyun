@@ -1,18 +1,20 @@
 {
  "indeks": 2120,
- "ad": "Likhovskoy",
- "ulke": "Russia",
+ "ad": "Greater Donetsk",
+ "ulke": "Ukraine",
  "d": 32,
- "k": "tahmin",
- "s": "Likhovskoy",
+ "k": "ohm:2849500",
+ "s": "Greater Donetsk",
  "p": [
   [
    [
-    -9476,
-    -10192,
-    -10201,
-    10463,
-    10464
+    -10286,
+    -10299,
+    -9574,
+    10560,
+    10561,
+    10562,
+    10563
    ]
   ]
  ]

@@ -1,19 +1,17 @@
 {
  "indeks": 2101,
- "ad": "Yaş",
- "ulke": "Romania",
- "d": 29,
+ "ad": "Bruck an der Mur",
+ "ulke": "Austria",
+ "d": 65,
  "k": "tahmin",
- "s": "Yaş",
+ "s": "Bruck an der Mur",
  "p": [
   [
    [
-    -10195,
-    -10260,
-    -10263,
-    10347,
-    10348,
-    -10317
+    -10388,
+    -10427,
+    10446,
+    10447
    ]
   ]
  ]

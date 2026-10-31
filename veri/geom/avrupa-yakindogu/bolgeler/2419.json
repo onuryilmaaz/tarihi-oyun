@@ -1,19 +1,19 @@
 {
  "indeks": 2419,
- "ad": "Kristianstad",
- "ulke": "Sweden",
- "d": 75,
+ "ad": "Daugavpils",
+ "ulke": "Belarus",
+ "d": 38,
  "k": "tahmin",
- "s": "Kristianstad",
+ "s": "Daugavpils",
  "p": [
   [
    [
-    -11594,
-    11664,
-    11665,
-    11666,
-    11667,
-    -11662
+    -11718,
+    -11685,
+    -11728,
+    11766,
+    11767,
+    11768
    ]
   ]
  ]

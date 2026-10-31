@@ -1,5 +1,10 @@
 # CHANGELOG
 
+## 2026-10-31 — TASK-0031: şehir merkezli harita bütün dünyaya yayıldı (Claude)
+
+- Asya, Afrika'nın güneyi ve Amerika (şehirler arası en az 90 km); 128 devlet, 2.152 şehir, 414 yeni liman.
+  Bölüşüm dört grupta (Avrupa+Yakındoğu, Asya, Afrika, Amerika) ayrı yapılır.
+
 ## 2026-10-31 — TASK-0030: şehir merkezli harita Avrupa ve Yakındoğu'ya yayıldı (Claude)
 
 - 80 devlet, 1.324 şehir, 282 yeni liman; Wikidata adayları karelerle çekiliyor. Sim başarımı: AI ekonomi kararında

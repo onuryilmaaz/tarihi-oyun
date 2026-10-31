@@ -1,19 +1,18 @@
 {
  "indeks": 2446,
- "ad": "Chusovskoye Urban Settlement",
+ "ad": "Torjok",
  "ulke": "Russia",
- "d": 39,
+ "d": 42,
  "k": "tahmin",
- "s": "Chusovskoye Urban Settlement",
+ "s": "Torjok",
  "p": [
   [
    [
-    11764,
-    11765,
-    11766,
-    11767,
-    11768,
-    11769
+    -11798,
+    -11836,
+    11867,
+    11868,
+    -11830
    ]
   ]
  ]

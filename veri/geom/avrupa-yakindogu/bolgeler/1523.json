@@ -1,19 +1,16 @@
 {
  "indeks": 1523,
- "ad": "Hürremabad",
- "ulke": "Iran",
- "d": 10,
- "k": "tahmin",
- "s": "Hürremabad",
+ "ad": "Limasol",
+ "ulke": "Cyprus",
+ "d": 25,
+ "k": "ohm:2800988",
+ "s": "Limasol",
  "p": [
   [
    [
-    -7594,
-    -7515,
-    -7580,
-    7616,
-    7617,
-    7618
+    7707,
+    7708,
+    7709
    ]
   ]
  ]

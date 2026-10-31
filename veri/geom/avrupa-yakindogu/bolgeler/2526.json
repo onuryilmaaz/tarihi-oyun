@@ -1,18 +1,16 @@
 {
  "indeks": 2526,
- "ad": "Rovaniemi",
- "ulke": "Finland",
+ "ad": "Piteå",
+ "ulke": "Sweden",
  "d": 75,
  "k": "tahmin",
- "s": "Rovaniemi",
+ "s": "Piteå",
  "p": [
   [
    [
-    -12259,
-    12287,
-    -12231,
-    12288,
-    12289
+    12351,
+    -12357,
+    -12356
    ]
   ]
  ]

@@ -1,16 +1,24 @@
 {
  "indeks": 2802,
- "ad": "Hanseong kuzeydoğusu 2",
- "ulke": "North Korea",
- "d": 98,
+ "ad": "Kengtung",
+ "ulke": "Myanmar",
+ "d": 106,
  "k": "tahmin",
+ "s": "Kengtung",
  "p": [
   [
    [
-    13934,
-    13935,
-    13936,
-    13937
+    -13461,
+    -13495,
+    13621,
+    13622,
+    13623
+   ]
+  ],
+  [
+   [
+    -13494,
+    13624
    ]
   ]
  ]

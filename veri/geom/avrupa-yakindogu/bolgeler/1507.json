@@ -1,18 +1,19 @@
 {
  "indeks": 1507,
- "ad": "İsfahan",
- "ulke": "Iran",
+ "ad": "Az Zubaydiyah",
+ "ulke": "Iraq",
  "d": 10,
  "k": "tahmin",
- "s": "İsfahan",
+ "s": "Az Zubaydiyah",
  "p": [
   [
    [
-    -7518,
-    -7485,
-    -7543,
-    7573,
-    7574
+    -7642,
+    -7596,
+    -7633,
+    7664,
+    7665,
+    7666
    ]
   ]
  ]

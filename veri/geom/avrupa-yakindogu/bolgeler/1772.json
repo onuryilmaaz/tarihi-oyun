@@ -1,18 +1,19 @@
 {
  "indeks": 1772,
- "ad": "Bilesuvar",
- "ulke": "Azerbaijan",
- "d": 13,
+ "ad": "Germi",
+ "ulke": "Iran",
+ "d": 10,
  "k": "tahmin",
- "s": "Bilesuvar",
+ "s": "Germi",
  "p": [
   [
    [
-    -8647,
-    -8604,
-    8649,
-    8650,
-    8651
+    -8641,
+    -8530,
+    -8701,
+    8742,
+    8743,
+    8744
    ]
   ]
  ]

@@ -1,17 +1,19 @@
 {
  "indeks": 1766,
- "ad": "Alcázar de San Juan",
- "ulke": "Spain",
- "d": 52,
- "k": "ohm:2849131",
- "s": "Alcázar de San Juan",
+ "ad": "Siyahçeşme",
+ "ulke": "Iran",
+ "d": 10,
+ "k": "tahmin",
+ "s": "Siyahçeşme",
  "p": [
   [
    [
-    -8593,
-    -8575,
-    8631,
-    8632
+    -8635,
+    -8639,
+    8724,
+    8725,
+    8726,
+    -8721
    ]
   ]
  ]

@@ -1,17 +1,18 @@
 {
  "indeks": 2143,
- "ad": "Paris",
- "ulke": "France",
- "d": 57,
+ "ad": "Ladyzhyn",
+ "ulke": "Ukraine",
+ "d": 35,
  "k": "tahmin",
- "s": "Paris",
+ "s": "Ladyzhyn",
  "p": [
   [
    [
-    -10328,
-    10615,
-    10616,
-    10617
+    -10513,
+    -10649,
+    10713,
+    10714,
+    10715
    ]
   ]
  ]

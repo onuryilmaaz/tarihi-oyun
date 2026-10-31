@@ -1,19 +1,21 @@
 {
  "indeks": 1871,
- "ad": "Üsküdar",
+ "ad": "Konstantiniyye",
  "ulke": "Turkey",
- "d": 0,
+ "d": 1,
  "k": "tahmin",
- "s": "Üsküdar",
+ "s": "Konstantiniyye",
  "p": [
   [
    [
-    8872,
-    8873,
-    -8945,
-    9014,
-    -9012,
-    9013
+    9106,
+    -9104
+   ]
+  ],
+  [
+   [
+    9107,
+    9108
    ]
   ]
  ]

@@ -1,17 +1,20 @@
 {
  "indeks": 2372,
- "ad": "Danzig",
- "ulke": "Poland",
- "d": 37,
+ "ad": "Tsivilskoye urban settlement",
+ "ulke": "Russia",
+ "d": 33,
  "k": "tahmin",
- "s": "Danzig",
+ "s": "Tsivilskoye urban settlement",
  "p": [
   [
    [
-    -11488,
-    -11379,
-    -11450,
-    11489
+    -11273,
+    -11097,
+    -11548,
+    11593,
+    11594,
+    11595,
+    11596
    ]
   ]
  ]

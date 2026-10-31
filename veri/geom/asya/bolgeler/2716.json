@@ -1,20 +1,18 @@
 {
  "indeks": 2716,
- "ad": "Sığnak kuzeydoğusu",
- "ulke": "Kazakhstan",
- "d": 91,
+ "ad": "Phetchabun",
+ "ulke": "Thailand",
+ "d": 105,
  "k": "tahmin",
+ "s": "Phetchabun",
  "p": [
   [
    [
-    -13374,
-    13376,
-    13377,
-    13378,
-    13379,
-    13380,
-    13381,
-    13382
+    -13182,
+    -13186,
+    13225,
+    13226,
+    13227
    ]
   ]
  ]

@@ -1,17 +1,19 @@
 {
  "indeks": 2253,
- "ad": "Swansea",
- "ulke": "United Kingdom",
- "d": 58,
+ "ad": "Kovel",
+ "ulke": "Ukraine",
+ "d": 35,
  "k": "tahmin",
- "s": "Swansea",
+ "s": "Kovel",
  "p": [
   [
    [
-    11066,
-    11067,
-    11068,
-    11069
+    -11122,
+    -11028,
+    -11091,
+    11164,
+    11165,
+    11166
    ]
   ]
  ]

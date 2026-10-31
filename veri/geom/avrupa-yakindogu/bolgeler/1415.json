@@ -1,20 +1,17 @@
 {
  "indeks": 1415,
- "ad": "Firuzabad",
- "ulke": "Iran",
- "d": 10,
- "k": "tahmin",
- "s": "Firuzabad",
+ "ad": "Beni Mazar",
+ "ulke": "Egypt",
+ "d": 11,
+ "k": "ohm:2960096",
+ "s": "Beni Mazar",
  "p": [
   [
    [
-    -7187,
-    -7168,
-    -7219,
-    7249,
-    7250,
-    7251,
-    7252
+    -7281,
+    -7300,
+    7336,
+    -7208
    ]
   ]
  ]

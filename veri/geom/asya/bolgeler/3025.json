@@ -1,15 +1,21 @@
 {
  "indeks": 3025,
- "ad": "Vijayanagara güneyi",
- "ulke": "India",
- "d": 118,
+ "ad": "Taunsa Sharif",
+ "ulke": "Pakistan",
+ "d": 122,
  "k": "tahmin",
+ "s": "Taunsa Sharif",
  "p": [
   [
    [
-    15074,
-    15075,
-    15076
+    14431,
+    -14369,
+    -14415,
+    14432,
+    14433,
+    2661,
+    2669,
+    2677
    ]
   ]
  ]

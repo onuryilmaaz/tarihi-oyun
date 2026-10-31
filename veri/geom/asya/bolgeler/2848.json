@@ -1,14 +1,18 @@
 {
  "indeks": 2848,
- "ad": "Kyoto kuzeydoğusu 15",
- "ulke": "Japan",
- "d": 99,
+ "ad": "Lianzhu Town",
+ "ulke": "China",
+ "d": 97,
  "k": "tahmin",
+ "s": "Lianzhu Town",
  "p": [
   [
    [
-    14160,
-    14161
+    -13728,
+    -13720,
+    13812,
+    13813,
+    13814
    ]
   ]
  ]

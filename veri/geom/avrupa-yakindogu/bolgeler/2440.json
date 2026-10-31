@@ -1,26 +1,18 @@
 {
  "indeks": 2440,
- "ad": "Aalborg",
- "ulke": "Denmark",
- "d": 74,
+ "ad": "Pereslavl-Zalesski",
+ "ulke": "Russia",
+ "d": 39,
  "k": "tahmin",
- "s": "Aalborg",
+ "s": "Pereslavl-Zalesski",
  "p": [
   [
    [
-    11513,
-    11739,
-    -11507,
-    -11681,
-    11740,
-    11741,
-    11742
-   ]
-  ],
-  [
-   [
-    11515,
-    11743
+    -11813,
+    -11805,
+    11839,
+    11840,
+    -11837
    ]
   ]
  ]

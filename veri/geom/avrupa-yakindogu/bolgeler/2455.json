@@ -1,19 +1,25 @@
 {
  "indeks": 2455,
- "ad": "Northeast Göteborg",
+ "ad": "Oskarshamn",
  "ulke": "Sweden",
  "d": 75,
  "k": "tahmin",
- "s": "Northeast Göteborg",
+ "s": "Oskarshamn",
  "p": [
   [
    [
-    11720,
-    -11801,
-    -11800,
-    -11799,
-    -11798,
-    11748
+    11736,
+    11899
+   ]
+  ],
+  [
+   [
+    11777,
+    -11899,
+    -11898,
+    -11897,
+    -11896,
+    11732
    ]
   ]
  ]

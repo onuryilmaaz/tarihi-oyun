@@ -1,17 +1,19 @@
 {
  "indeks": 2933,
- "ad": "Phnom Penh kuzeybatısı 5",
- "ulke": "Cambodia",
- "d": 102,
+ "ad": "Hengyang",
+ "ulke": "China",
+ "d": 97,
  "k": "tahmin",
+ "s": "Hengyang",
  "p": [
   [
    [
-    -14530,
-    -14525,
-    -14536,
-    14544,
-    14545
+    -13965,
+    -14034,
+    14116,
+    14117,
+    14118,
+    14119
    ]
   ]
  ]

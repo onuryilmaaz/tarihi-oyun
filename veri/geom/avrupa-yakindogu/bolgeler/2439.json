@@ -1,20 +1,19 @@
 {
  "indeks": 2439,
- "ad": "Osinskoye urban settlement",
+ "ad": "Kimrı",
  "ulke": "Russia",
- "d": 39,
+ "d": 42,
  "k": "tahmin",
- "s": "Osinskoye urban settlement",
+ "s": "Kimrı",
  "p": [
   [
    [
-    -11657,
-    -11616,
-    11733,
-    11734,
-    11735,
-    11736,
-    11737
+    -11802,
+    -11814,
+    11836,
+    11837,
+    11838,
+    -11834
    ]
   ]
  ]

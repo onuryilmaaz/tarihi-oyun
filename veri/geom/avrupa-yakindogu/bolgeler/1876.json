@@ -1,17 +1,18 @@
 {
  "indeks": 1876,
- "ad": "Siyezen",
- "ulke": "Azerbaijan",
- "d": 13,
+ "ad": "Ardahan",
+ "ulke": "Turkey",
+ "d": 12,
  "k": "tahmin",
- "s": "Siyezen",
+ "s": "Ardahan",
  "p": [
   [
    [
-    -8953,
-    -8669,
-    9026,
-    9027
+    -8997,
+    -8974,
+    9120,
+    9121,
+    -9074
    ]
   ]
  ]

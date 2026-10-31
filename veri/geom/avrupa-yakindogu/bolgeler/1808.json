@@ -1,19 +1,19 @@
 {
  "indeks": 1808,
- "ad": "Eskişehir",
- "ulke": "Turkey",
- "d": 0,
- "k": "tahmin",
- "s": "Eskişehir",
+ "ad": "Castelló de la Plana",
+ "ulke": "Spain",
+ "d": 53,
+ "k": "ohm:2751179",
+ "s": "Castelló de la Plana",
  "p": [
   [
    [
-    8778,
-    -8658,
-    -8694,
-    8779,
-    8780,
-    8781
+    -8803,
+    8870,
+    8871,
+    8872,
+    8873,
+    -8815
    ]
   ]
  ]

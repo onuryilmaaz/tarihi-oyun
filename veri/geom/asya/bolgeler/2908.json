@@ -1,20 +1,18 @@
 {
  "indeks": 2908,
- "ad": "Phnom Penh güneydoğusu 2",
- "ulke": "Vietnam",
- "d": 102,
+ "ad": "Qujing",
+ "ulke": "China",
+ "d": 97,
  "k": "tahmin",
+ "s": "Qujing",
  "p": [
   [
    [
-    14437,
-    14438,
-    14439
-   ]
-  ],
-  [
-   [
-    14440
+    -13961,
+    -13938,
+    -13987,
+    14019,
+    14020
    ]
   ]
  ]

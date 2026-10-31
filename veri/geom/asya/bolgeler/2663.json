@@ -1,21 +1,18 @@
 {
  "indeks": 2663,
- "ad": "Herat güneybatısı 3",
- "ulke": "Iran",
- "d": 90,
+ "ad": "Chaophraya Surasak",
+ "ulke": "Thailand",
+ "d": 105,
  "k": "tahmin",
+ "s": "Chaophraya Surasak",
  "p": [
   [
    [
-    -13087,
-    -13084,
-    -13073,
-    13100,
-    2629,
-    13101,
-    -13095,
-    13102,
-    13103
+    13032,
+    -13020,
+    13033,
+    13034,
+    13035
    ]
   ]
  ]

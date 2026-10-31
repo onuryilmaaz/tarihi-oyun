@@ -1,17 +1,27 @@
 {
  "indeks": 2233,
- "ad": "Bideford",
- "ulke": "United Kingdom",
- "d": 58,
- "k": "tahmin",
- "s": "Bideford",
+ "ad": "Upravlenchesky township",
+ "ulke": "Kazakhstan",
+ "d": 32,
+ "k": "ohm:2849493",
+ "s": "Upravlenchesky township",
  "p": [
   [
    [
-    -10645,
-    10998,
-    -10834,
-    10999
+    11092,
+    -10929,
+    -9992,
+    -10121,
+    11093,
+    11094,
+    11095,
+    11096
+   ],
+   [
+    11097
+   ],
+   [
+    11098
    ]
   ]
  ]

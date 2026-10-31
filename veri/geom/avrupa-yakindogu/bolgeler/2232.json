@@ -1,27 +1,18 @@
 {
  "indeks": 2232,
- "ad": "Upravlenchesky township",
- "ulke": "Kazakhstan",
- "d": 32,
- "k": "ohm:2849493",
- "s": "Upravlenchesky township",
+ "ad": "Rivne",
+ "ulke": "Ukraine",
+ "d": 35,
+ "k": "tahmin",
+ "s": "Rivne",
  "p": [
   [
    [
-    10991,
-    -10828,
-    -9893,
-    -10020,
-    10992,
-    10993,
-    10994,
-    10995
-   ],
-   [
-    10996
-   ],
-   [
-    10997
+    -10971,
+    -10982,
+    -11032,
+    11091,
+    -11089
    ]
   ]
  ]

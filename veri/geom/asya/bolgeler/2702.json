@@ -1,19 +1,18 @@
 {
  "indeks": 2702,
- "ad": "Semerkant güneydoğusu 11",
- "ulke": "Tajikistan",
- "d": 90,
+ "ad": "Berhampur",
+ "ulke": "India",
+ "d": 120,
  "k": "tahmin",
+ "s": "Berhampur",
  "p": [
   [
    [
-    -13205,
-    -13220,
-    13264,
-    13265,
-    13266,
-    13267,
-    -13231
+    13129,
+    -13178,
+    -13177,
+    -13176,
+    -13175
    ]
   ]
  ]

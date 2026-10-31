@@ -1,20 +1,15 @@
 {
  "indeks": 2381,
- "ad": "Vyazma",
- "ulke": "Russia",
- "d": 35,
+ "ad": "Nakskov",
+ "ulke": "Denmark",
+ "d": 74,
  "k": "tahmin",
- "s": "Vyazma",
+ "s": "Nakskov",
  "p": [
   [
    [
-    11525,
-    -11388,
-    -11417,
-    -11483,
-    11526,
-    11527,
-    11528
+    11629,
+    11630
    ]
   ]
  ]

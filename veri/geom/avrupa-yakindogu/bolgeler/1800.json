@@ -1,18 +1,17 @@
 {
  "indeks": 1800,
- "ad": "Balıkesir",
- "ulke": "Turkey",
+ "ad": "Yanya",
+ "ulke": "Greece",
  "d": 0,
  "k": "tahmin",
- "s": "Balıkesir",
+ "s": "Yanya",
  "p": [
   [
    [
-    -8643,
-    -8620,
-    8756,
-    8757,
-    -8687
+    -8588,
+    8850,
+    -8833,
+    8851
    ]
   ]
  ]

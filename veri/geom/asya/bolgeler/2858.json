@@ -1,19 +1,18 @@
 {
  "indeks": 2858,
- "ad": "Thăng Long güneyi 3",
- "ulke": "Vietnam",
- "d": 100,
+ "ad": "Pabna Sadar Upazila",
+ "ulke": "Bangladesh",
+ "d": 114,
  "k": "tahmin",
+ "s": "Pabna Sadar Upazila",
  "p": [
   [
    [
-    14196,
-    14197,
-    14198,
-    14199,
-    14200,
-    14201,
-    14202
+    -13832,
+    -13780,
+    -13787,
+    13848,
+    13849
    ]
   ]
  ]

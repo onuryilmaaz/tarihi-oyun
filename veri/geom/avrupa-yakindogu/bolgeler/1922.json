@@ -1,17 +1,18 @@
 {
  "indeks": 1922,
- "ad": "İnebolu",
- "ulke": "Turkey",
- "d": 6,
+ "ad": "Köstendil",
+ "ulke": "Bulgaria",
+ "d": 0,
  "k": "tahmin",
- "s": "İnebolu",
+ "s": "Köstendil",
  "p": [
   [
    [
-    -9049,
-    -9054,
-    9197,
-    -9118
+    -9141,
+    -9197,
+    9290,
+    9291,
+    9292
    ]
   ]
  ]

@@ -1,17 +1,19 @@
 {
  "indeks": 2690,
- "ad": "Semerkant doğusu",
- "ulke": "Tajikistan",
- "d": 90,
+ "ad": "Ayutthaya",
+ "ulke": "Thailand",
+ "d": 105,
  "k": "tahmin",
+ "s": "Ayutthaya",
  "p": [
   [
    [
-    -13154,
-    13206,
-    13207,
-    13208,
-    13209
+    -13095,
+    -13035,
+    -13125,
+    13134,
+    13135,
+    -13088
    ]
   ]
  ]

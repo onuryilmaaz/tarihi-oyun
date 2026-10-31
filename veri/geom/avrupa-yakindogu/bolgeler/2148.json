@@ -1,18 +1,18 @@
 {
  "indeks": 2148,
- "ad": "Heidelberg",
- "ulke": "Germany",
- "d": 70,
+ "ad": "Pidhorodnie",
+ "ulke": "Ukraine",
+ "d": 30,
  "k": "tahmin",
- "s": "Heidelberg",
+ "s": "Pidhorodnie",
  "p": [
   [
    [
-    10630,
-    10631,
-    10632,
-    10633,
-    10634
+    -10451,
+    -10287,
+    -10564,
+    10729,
+    10730
    ]
   ]
  ]

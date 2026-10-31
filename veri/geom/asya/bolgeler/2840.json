@@ -1,16 +1,19 @@
 {
  "indeks": 2840,
- "ad": "Kyoto kuzeydoğusu 7",
- "ulke": "Japan",
- "d": 99,
+ "ad": "Jashore Sadar Upazila",
+ "ulke": "Bangladesh",
+ "d": 114,
  "k": "tahmin",
+ "s": "Jashore Sadar Upazila",
  "p": [
   [
    [
-    14135,
-    14136,
-    14137,
-    14138
+    -13535,
+    -13396,
+    -13513,
+    13778,
+    13779,
+    13780
    ]
   ]
  ]

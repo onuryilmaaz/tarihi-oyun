@@ -1,18 +1,20 @@
 {
  "indeks": 2286,
- "ad": "Cambridge",
- "ulke": "United Kingdom",
- "d": 58,
+ "ad": "Morşansk",
+ "ulke": "Russia",
+ "d": 32,
  "k": "tahmin",
- "s": "Cambridge",
+ "s": "Morşansk",
  "p": [
   [
    [
-    -11096,
-    -11130,
-    11195,
-    11196,
-    11197
+    11294,
+    -11205,
+    -10739,
+    -11276,
+    11295,
+    11296,
+    11297
    ]
   ]
  ]

@@ -1,20 +1,18 @@
 {
  "indeks": 2370,
- "ad": "Tsivilskoye urban settlement",
- "ulke": "Russia",
- "d": 33,
+ "ad": "Alytus",
+ "ulke": "Lithuania",
+ "d": 35,
  "k": "tahmin",
- "s": "Tsivilskoye urban settlement",
+ "s": "Alytus",
  "p": [
   [
    [
-    -11172,
-    -10996,
-    -11438,
-    11483,
-    11484,
-    11485,
-    11486
+    -11474,
+    -11478,
+    -11524,
+    11588,
+    11589
    ]
   ]
  ]

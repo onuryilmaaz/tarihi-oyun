@@ -1,18 +1,16 @@
 {
  "indeks": 2444,
- "ad": "Torjok",
- "ulke": "Russia",
- "d": 42,
+ "ad": "Ventspils",
+ "ulke": "Latvia",
+ "d": 38,
  "k": "tahmin",
- "s": "Torjok",
+ "s": "Ventspils",
  "p": [
   [
    [
-    -11690,
-    -11728,
-    11759,
-    11760,
-    -11722
+    11794,
+    -11858,
+    11824
    ]
   ]
  ]

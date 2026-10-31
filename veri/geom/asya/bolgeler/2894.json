@@ -1,16 +1,18 @@
 {
  "indeks": 2894,
- "ad": "Vijaya güneyi 3",
- "ulke": "Vietnam",
- "d": 101,
+ "ad": "Bogura Sadar Upazila",
+ "ulke": "Bangladesh",
+ "d": 114,
  "k": "tahmin",
+ "s": "Bogura Sadar Upazila",
  "p": [
   [
    [
-    -14369,
-    -14360,
-    -14371,
-    14377
+    -13849,
+    -13786,
+    -13943,
+    13970,
+    -13957
    ]
   ]
  ]

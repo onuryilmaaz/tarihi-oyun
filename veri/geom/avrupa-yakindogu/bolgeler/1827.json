@@ -1,17 +1,19 @@
 {
  "indeks": 1827,
- "ad": "Erivan",
- "ulke": "Armenia",
- "d": 10,
+ "ad": "Bayburt",
+ "ulke": "Turkey",
+ "d": 9,
  "k": "tahmin",
- "s": "Erivan",
+ "s": "Bayburt",
  "p": [
   [
    [
-    -8749,
-    -8790,
-    8848,
-    8849
+    -8808,
+    -8797,
+    -8898,
+    8941,
+    8942,
+    8943
    ]
   ]
  ]

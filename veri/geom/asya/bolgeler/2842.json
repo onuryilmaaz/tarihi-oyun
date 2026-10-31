@@ -1,18 +1,19 @@
 {
  "indeks": 2842,
- "ad": "Kyoto kuzeydoğusu 9",
- "ulke": "Japan",
- "d": 99,
+ "ad": "Dighinala Upazila",
+ "ulke": "Bangladesh",
+ "d": 114,
  "k": "tahmin",
+ "s": "Dighinala Upazila",
  "p": [
   [
    [
-    -14133,
-    -14129,
-    14143,
-    -14136,
-    14144,
-    14145
+    -13690,
+    13792,
+    1265,
+    1783,
+    13793,
+    -13703
    ]
   ]
  ]

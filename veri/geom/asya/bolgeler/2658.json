@@ -1,19 +1,19 @@
 {
  "indeks": 2658,
- "ad": "Herat güneydoğusu",
- "ulke": "Afghanistan",
- "d": 90,
+ "ad": "Coimbatore",
+ "ulke": "India",
+ "d": 118,
  "k": "tahmin",
+ "s": "Coimbatore",
  "p": [
   [
    [
-    13078,
-    2637,
-    2614,
-    13079,
-    13080,
-    13081,
-    13082
+    -12967,
+    -12970,
+    -12973,
+    13006,
+    13007,
+    -12989
    ]
   ]
  ]

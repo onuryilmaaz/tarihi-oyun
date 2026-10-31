@@ -1,20 +1,21 @@
 {
  "indeks": 2399,
- "ad": "Kusa urban settlement",
- "ulke": "Russia",
- "d": 34,
+ "ad": "Ystad",
+ "ulke": "Sweden",
+ "d": 75,
  "k": "tahmin",
- "s": "Kusa urban settlement",
+ "s": "Ystad",
  "p": [
   [
    [
-    -11396,
-    -11182,
-    11599,
-    11600,
-    11601,
-    11602,
-    11603
+    11703,
+    11704,
+    11705
+   ]
+  ],
+  [
+   [
+    11706
    ]
   ]
  ]

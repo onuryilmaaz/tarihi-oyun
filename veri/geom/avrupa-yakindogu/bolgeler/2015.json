@@ -1,20 +1,19 @@
 {
  "indeks": 2015,
- "ad": "Clermont-Ferrand",
- "ulke": "France",
- "d": 57,
- "k": "tahmin",
- "s": "Clermont-Ferrand",
+ "ad": "Tırgovişte",
+ "ulke": "Romania",
+ "d": 28,
+ "k": "ohm:2929115",
+ "s": "Tırgovişte",
  "p": [
   [
    [
-    -9400,
-    -9372,
-    -9320,
-    9855,
-    9856,
-    9857,
-    9858
+    -9824,
+    -9822,
+    -9602,
+    9951,
+    9952,
+    9953
    ]
   ]
  ]

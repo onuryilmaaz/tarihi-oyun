@@ -3,11 +3,13 @@
 // Seçim (seyreltme, devlet ataması) senaryo-uret.mjs içinde yapılır; bu dosya yalnızca ham aday listesidir.
 // TASK-0030: büyük alan 10°×10° karelerle sorgulanır; sonuç mevcut dosyayla birleştirilir (qid'e göre), kutular
 // listesi de büyür (senaryo-uret pilot devletleri bu kutulardan seçer).
-// Çalıştırma: node araclar/sehir-wikidata.mjs batı güney doğu kuzey   (örn. -12 12 60 72)
+// Çalıştırma: node araclar/sehir-wikidata.mjs batı güney doğu kuzey [grup] [enAzKm]   (örn. -12 12 60 72 0 55)
+//   grup: aynı gruptaki devletlerin toprağı birlikte bölünür; enAzKm: kutudaki şehirler arası en küçük mesafe
 
 import fs from "node:fs";
 
 const [bati, guney, dogu, kuzey] = process.argv.slice(2, 6).map(Number);
+const grup = Number(process.argv[6] ?? 0), enAzKm = Number(process.argv[7] ?? 55);
 if ([bati, guney, dogu, kuzey].some(Number.isNaN)) throw new Error("Kullanım: node araclar/sehir-wikidata.mjs batı güney doğu kuzey");
 const ADIM = 10;
 const UA = "tarihi-oyun-prototype/0.1 (https://github.com/onuryilmaaz/tarihi-oyun)";
@@ -64,7 +66,7 @@ const liste = [...adaylar.values()]
   .filter((o) => o.ad && !/^Q\d+$/.test(o.ad) && !(o.kurulus !== null && o.kurulus > 1453))
   .sort((a, b) => a.qid.localeCompare(b.qid, "en"));
 
-const kutular = [...(onceki?.kutular ?? (onceki?.kutu ? [onceki.kutu] : [])), { bati, guney, dogu, kuzey }];
+const kutular = [...(onceki?.kutular ?? (onceki?.kutu ? [onceki.kutu] : [])), { bati, guney, dogu, kuzey, grup, enAzKm }];
 fs.writeFileSync(hedef, JSON.stringify({
   kaynak: "Wikidata (CC0) — https://www.wikidata.org/wiki/Wikidata:Licensing",
   sorgu: new Date().toISOString().slice(0, 10),

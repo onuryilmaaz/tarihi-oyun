@@ -1,21 +1,18 @@
 {
  "indeks": 1366,
- "ad": "Al Hinakiyah",
- "ulke": "Saudi Arabia",
+ "ad": "El-Quseir",
+ "ulke": "Egypt",
  "d": 11,
- "k": "tahmin",
- "s": "Al Hinakiyah",
+ "k": "ohm:2960096",
+ "s": "El-Quseir",
  "p": [
   [
    [
-    -7009,
-    -6989,
-    7024,
-    5959,
-    5962,
-    5964,
-    7025,
-    7026
+    7107,
+    -7064,
+    7108,
+    7109,
+    7110
    ]
   ]
  ]

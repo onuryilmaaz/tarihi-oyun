@@ -1,17 +1,23 @@
 {
  "indeks": 2691,
- "ad": "Semerkant güneydoğusu 8",
- "ulke": "Tajikistan",
- "d": 90,
+ "ad": "Machilipatnam",
+ "ulke": "India",
+ "d": 118,
  "k": "tahmin",
+ "s": "Machilipatnam",
  "p": [
   [
    [
-    -13197,
-    -13194,
-    -13180,
-    13210,
-    13211
+    13136,
+    13137,
+    -13045,
+    13138,
+    13139
+   ]
+  ],
+  [
+   [
+    13140
    ]
   ]
  ]

@@ -1,18 +1,15 @@
 {
  "indeks": 1924,
- "ad": "Poti",
- "ulke": "Georgia",
- "d": 12,
+ "ad": "Sinop",
+ "ulke": "Turkey",
+ "d": 6,
  "k": "tahmin",
- "s": "Poti",
+ "s": "Sinop",
  "p": [
   [
    [
-    9199,
-    -9095,
-    9200,
-    9201,
-    9202
+    -9148,
+    9294
    ]
   ]
  ]

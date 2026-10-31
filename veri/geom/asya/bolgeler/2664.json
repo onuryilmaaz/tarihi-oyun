@@ -1,16 +1,18 @@
 {
  "indeks": 2664,
- "ad": "Herat güneybatısı 4",
- "ulke": "Iran",
- "d": 90,
+ "ad": "Uzhavarkarai",
+ "ulke": "India",
+ "d": 118,
  "k": "tahmin",
+ "s": "Uzhavarkarai",
  "p": [
   [
    [
-    -13057,
-    -13089,
-    13104,
-    13105
+    13013,
+    -13039,
+    -13038,
+    -13037,
+    12985
    ]
   ]
  ]

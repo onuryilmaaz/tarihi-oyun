@@ -1,18 +1,18 @@
 {
  "indeks": 1855,
- "ad": "Barselona",
+ "ad": "Salamanca City",
  "ulke": "Spain",
- "d": 53,
- "k": "ohm:2751179",
- "s": "Barselona",
+ "d": 52,
+ "k": "ohm:2849131",
+ "s": "Salamanca City",
  "p": [
   [
    [
-    8958,
-    8959,
-    8960,
-    8961,
-    8962
+    -8900,
+    -9033,
+    9051,
+    9052,
+    9053
    ]
   ]
  ]

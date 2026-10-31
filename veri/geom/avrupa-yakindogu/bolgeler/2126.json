@@ -1,18 +1,17 @@
 {
  "indeks": 2126,
- "ad": "Miskolc",
- "ulke": "Hungary",
- "d": 27,
+ "ad": "Viyana",
+ "ulke": "Austria",
+ "d": 65,
  "k": "tahmin",
- "s": "Miskolc",
+ "s": "Viyana",
  "p": [
   [
    [
-    -10447,
-    -10340,
-    -10394,
-    10479,
-    10480
+    -10577,
+    -10426,
+    10578,
+    10579
    ]
   ]
  ]

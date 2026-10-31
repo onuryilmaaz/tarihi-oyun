@@ -1,20 +1,18 @@
 {
  "indeks": 2303,
- "ad": "Shrewsbury",
- "ulke": "United Kingdom",
- "d": 58,
+ "ad": "Plock",
+ "ulke": "Poland",
+ "d": 36,
  "k": "tahmin",
- "s": "Shrewsbury",
+ "s": "Plock",
  "p": [
   [
    [
-    -11068,
-    -11109,
-    -11152,
-    11247,
-    11248,
-    11249,
-    11250
+    -11302,
+    -11215,
+    -11308,
+    11353,
+    11354
    ]
   ]
  ]

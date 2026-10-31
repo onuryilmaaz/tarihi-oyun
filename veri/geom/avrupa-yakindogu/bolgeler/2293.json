@@ -1,18 +1,24 @@
 {
  "indeks": 2293,
- "ad": "Brandenburg an der Havel",
- "ulke": "Germany",
- "d": 69,
+ "ad": "Urban settlement Uchaly",
+ "ulke": "Russia",
+ "d": 34,
  "k": "tahmin",
- "s": "Brandenburg an der Havel",
+ "s": "Urban settlement Uchaly",
  "p": [
   [
    [
-    11183,
-    -11220,
-    -11219,
-    -11218,
-    11159
+    11284,
+    11285,
+    11320,
+    11321,
+    -11277,
+    11322,
+    11323,
+    -10117,
+    11317,
+    11318,
+    11319
    ]
   ]
  ]

@@ -92,11 +92,11 @@ describe("muharebe (AT-008)", () => {
     const cekilen = d.ordular.filter((o) => o.devlet === kaybeden.devlet && o.cekiliyor);
     expect(cekilen.length).toBeGreaterThan(0);
     expect(cekilen.every((o) => o.rota.length > 0)).toBe(true);
-    for (let i = 0; i < 20 && d.ordular.some((o) => o.cekiliyor); i++) turuIlerlet(d, B);
-    // Çekilen AI ordusunun olayı oyuncu günlüğüne yazılmaz (6b); çekilmenin bittiği durumdan okunur
-    // Yalnızca çekilen ordular denetlenir: AI bu arada yeni toplanan bir orduyu yürütebilir
+    // Yalnızca çekilen ordular izlenir: dünyanın başka yerindeki savaşlarda da ordular çekilebilir ve çekilmesini
+    // bitiren AI ordusu yeniden yola çıkabilir (6b/6c); çekilmenin bittiği durumdan okunur
     const ids = new Set(cekilen.map((o) => o.id));
-    expect(d.ordular.filter((o) => ids.has(o.id)).every((o) => !o.cekiliyor && o.rota.length === 0)).toBe(true);
+    for (let i = 0; i < 20 && d.ordular.some((o) => ids.has(o.id) && o.cekiliyor); i++) turuIlerlet(d, B);
+    expect(d.ordular.filter((o) => ids.has(o.id)).every((o) => !o.cekiliyor)).toBe(true);
   });
 
   it("savunan zorlu arazide daha az kayıp verir; kayıplar sayıyla orantılıdır", () => {

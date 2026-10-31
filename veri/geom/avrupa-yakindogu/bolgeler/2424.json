@@ -1,19 +1,18 @@
 {
  "indeks": 2424,
- "ad": "Mažeikiai",
- "ulke": "Lithuania",
- "d": 35,
+ "ad": "Volokolamsk settlement",
+ "ulke": "Russia",
+ "d": 39,
  "k": "tahmin",
- "s": "Mažeikiai",
+ "s": "Volokolamsk settlement",
  "p": [
   [
    [
-    -11630,
-    -11549,
-    -11634,
-    11685,
-    11686,
-    11687
+    -11638,
+    -11717,
+    11784,
+    11785,
+    11786
    ]
   ]
  ]

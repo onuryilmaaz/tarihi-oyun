@@ -1,17 +1,18 @@
 {
  "indeks": 2363,
- "ad": "Koszalin",
- "ulke": "Poland",
- "d": 71,
+ "ad": "Barrow-in-Furness",
+ "ulke": "United Kingdom",
+ "d": 58,
  "k": "tahmin",
- "s": "Koszalin",
+ "s": "Barrow-in-Furness",
  "p": [
   [
    [
-    -11404,
-    -11409,
-    11459,
-    11460
+    -11457,
+    -11484,
+    11560,
+    11561,
+    11562
    ]
   ]
  ]

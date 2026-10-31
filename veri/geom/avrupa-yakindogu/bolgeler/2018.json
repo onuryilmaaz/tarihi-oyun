@@ -1,19 +1,19 @@
 {
  "indeks": 2018,
- "ad": "Tirgozi",
- "ulke": "Romania",
- "d": 28,
- "k": "ohm:2929115",
- "s": "Tirgozi",
+ "ad": "Alessandria",
+ "ulke": "Italy",
+ "d": 46,
+ "k": "tahmin",
+ "s": "Alessandria",
  "p": [
   [
    [
-    -9610,
-    -9730,
-    9868,
-    9869,
-    9870,
-    9871
+    9517,
+    9831,
+    -9966,
+    -9965,
+    -9964,
+    9784
    ]
   ]
  ]

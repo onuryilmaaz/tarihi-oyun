@@ -1,16 +1,18 @@
 {
  "indeks": 1618,
- "ad": "Vibo Valentia",
- "ulke": "Italy",
- "d": 45,
- "k": "ohm:2751179",
- "s": "Vibo Valentia",
+ "ad": "Abher",
+ "ulke": "Iran",
+ "d": 10,
+ "k": "tahmin",
+ "s": "Abher",
  "p": [
   [
    [
-    7963,
-    7964,
-    7965
+    -8026,
+    -8015,
+    8056,
+    8057,
+    8058
    ]
   ]
  ]

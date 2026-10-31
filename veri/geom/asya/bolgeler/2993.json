@@ -1,19 +1,18 @@
 {
  "indeks": 2993,
- "ad": "Brunei güneyi",
- "ulke": "Malaysia",
- "d": 110,
+ "ad": "Zhangjiajie",
+ "ulke": "China",
+ "d": 97,
  "k": "tahmin",
+ "s": "Zhangjiajie",
  "p": [
   [
    [
-    -14880,
-    14882,
-    828,
-    19,
-    14883,
-    14884,
-    14885
+    -14309,
+    -14261,
+    -14184,
+    -14316,
+    14316
    ]
   ]
  ]

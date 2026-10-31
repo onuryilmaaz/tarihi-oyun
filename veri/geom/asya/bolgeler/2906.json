@@ -1,20 +1,20 @@
 {
  "indeks": 2906,
- "ad": "Phnom Penh güneydoğusu",
- "ulke": "Vietnam",
- "d": 102,
+ "ad": "Gevaliyar",
+ "ulke": "India",
+ "d": 116,
  "k": "tahmin",
+ "s": "Gevaliyar",
  "p": [
   [
    [
-    14424,
-    14429
-   ]
-  ],
-  [
-   [
-    14427,
-    14428
+    -13954,
+    -13742,
+    -13922,
+    14012,
+    14013,
+    14014,
+    14015
    ]
   ]
  ]
