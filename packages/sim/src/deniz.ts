@@ -10,6 +10,7 @@ import type { Baglam } from "./emirler";
 import { savasta, sayiMetni } from "./savas";
 import { muttefik } from "./diplomasi";
 import { aralik } from "./rastgele";
+import { varincaKusat } from "./kusatma";
 
 export type GemiTuru = keyof typeof DENGE.GEMI;
 export const GEMI_TURLERI: GemiTuru[] = ["kadirga", "kalyon"];
@@ -149,6 +150,7 @@ function indir(d: DunyaDurumu, b: Baglam, f: Donanma): void {
   d.ordular.push(o);
   f.yuk = null; f.cikarmaHedef = null;
   olayEkle(d, { tur: "cikarma", devlet: o.devlet, metin: `${o.ad} (${sayiMetni(o.asker)} asker) ${s.ad} kıyısına çıktı.` });
+  varincaKusat(d, b, o); // TASK-0027: düşman limanına çıkan ordu kuşatmaya başlar
 }
 
 export function donanmaHareketi(d: DunyaDurumu, b: Baglam): void {

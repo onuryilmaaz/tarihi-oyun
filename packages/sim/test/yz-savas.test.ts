@@ -38,10 +38,10 @@ describe("AI savaş ve barış (6c)", () => {
     expect(d.muharebeler).toHaveLength(1);
     d.birimler[4].kontrol = Bd; d.birimler[4].isgalBaslangic = d.gun;
     d.sehirler[2].kontrol = Bd; d.sehirler[2].isgalBaslangic = d.gun;
-    d.birimler[5].kontrol = A; // ayrı A–C savaşının işgali
+    d.sehirler[3].kontrol = A; d.birimler[5].kontrol = A; // ayrı A–C savaşının işgali (C2 toprağıyla)
     d.birimler[2].kontrol = d.birimler[3].kontrol = A;
     d.sehirler[1].kontrol = A;
-    const t = { savas: d.savaslar[1].id, birimler: [2, 3], sehirler: [1], tazminat: 0 };
+    const t = { savas: d.savaslar[1].id, birimler: [3], sehirler: [1], tazminat: 0 }; // B1'in toprağı (2) şehriyle gider
     expect(barisDogrula(d, t).gecerli).toBe(true);
     barisiUygula(d, B, t);
     expect(savasta(d, Bd, C)).toBe(false);

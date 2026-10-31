@@ -9,7 +9,7 @@ import { askerAyarla, dunyaOzeti } from "./yardimci";
 const S: SenaryoVerisi = {
   id: "kusatma-test", surum: "1", baslangic: { yil: 1453, ay: 4, gun: 1 }, varsayilanOyuncu: "a",
   devletler: [{ id: "a", ad: "A" }, { id: "b", ad: "B" }, { id: "c", ad: "C" }],
-  birimler: ["a", "b", "b", "c", "a"].map((devlet) => ({ devlet })),
+  birimler: ["a", "b", "b", "c", "a", "b"].map((devlet) => ({ devlet })), // 5: B'nin şehirsiz toprağı (TASK-0027)
   sehirler: [
     { ad: "A1", devlet: "a", birim: 0, dugum: 0, x: 0, y: 0, baskent: true, nufus: 40000 },
     { ad: "B1", devlet: "b", birim: 1, dugum: 1, x: 10000, y: 0, baskent: true, nufus: 40000 },
@@ -17,8 +17,9 @@ const S: SenaryoVerisi = {
     { ad: "C1", devlet: "c", birim: 3, dugum: 3, x: 30000, y: 0, baskent: true, nufus: 40000 },
   ],
   ordular: [{ ad: "A Ordusu", devlet: "a", asker: 20000, dugum: 0, x: 0, y: 0 }],
-  ag: { dugumler: [0, 1, 2, 3, 4].map((b) => ({ b, x: b * 10000, y: 0, kx: 10000, ky: 10000, z: 100 })),
-    kenarlar: [0, 1, 2, 3].map((a) => ({ a, b: a + 1, mx: a * 10000 + 5000, my: 0, da: 5000, db: 5000, n: 0, g: 0 })) },
+  ag: { dugumler: [...[0, 1, 2, 3, 4].map((b) => ({ b, x: b * 10000, y: 0, kx: 10000, ky: 10000, z: 100 })), { b: 5, x: 20000, y: 10000, kx: 10000, ky: 10000, z: 100 }],
+    kenarlar: [...[0, 1, 2, 3].map((a) => ({ a, b: a + 1, mx: a * 10000 + 5000, my: 0, da: 5000, db: 5000, n: 0, g: 0 })),
+      { a: 2, b: 5, mx: 20000, my: 5000, da: 5000, db: 5000, n: 0, g: 0 }] },
 };
 const B = { ag: agHazirla(S.ag!), sehirKonumlari: S.sehirler.map((s) => ({ x: s.x!, y: s.y! })) };
 function yeni() {
@@ -37,43 +38,54 @@ const talep = (t: Partial<BarisTalebi> = {}): BarisTalebi => ({ savas: 1, biriml
 
 it("barış önizlemesi tüm arazi seçilse bile geride kalan şehirleri bildirir (UX-01)", () => {
   const d = yeni(), once = durumOzeti(d);
-  expect(barisDevirOzeti(d, 1, talep({ birimler: [1, 2] })))
-    .toEqual({ alinanArazi: 2, alinanSehir: 0, kalanArazi: 0, kalanSehir: 2, tamIlhak: false });
-  expect(barisDevirOzeti(d, 1, talep({ birimler: [1, 2], sehirler: [1, 2] })).tamIlhak).toBe(true);
+  expect(barisDevirOzeti(d, 1, talep({ birimler: [5] })))
+    .toEqual({ alinanArazi: 1, alinanSehir: 0, kalanArazi: 2, kalanSehir: 2, tamIlhak: false });
+  expect(barisDevirOzeti(d, 1, talep({ sehirler: [1] }))) // şehir toprağıyla gider (TASK-0027)
+    .toEqual({ alinanArazi: 1, alinanSehir: 1, kalanArazi: 2, kalanSehir: 1, tamIlhak: false });
+  expect(barisDevirOzeti(d, 1, talep({ birimler: [5], sehirler: [1, 2] })).tamIlhak).toBe(true);
   expect(durumOzeti(d)).toBe(once);
 });
 
 describe("gerçek işgal ve kuşatma", () => {
-  it("AT-009: yalnızca şehre yürümek şehri düşürmez; çevre arazi süre sonunda ayrı işgal edilir", () => {
+  it("AT-009 (DEC-0074): şehre varan oyuncu ordusu kendiliğinden kuşatır; toprak şehirle düşer, şehirsiz toprak ayrıca işgal edilir", () => {
     const d = yeni();
     emirVer(d, { tur: "orduHedef", ordu: 1, x: 10000, y: 0, dugum: 1 }, B);
-    emirleriUygula(d, B); gunIlerlet(d, B);
-    expect(d.birimler[1].kontrol).toBe(1);
-    for (let i = 0; i < DENGE.ISGAL_GUN - 1; i++) gunIlerlet(d, B);
+    emirleriUygula(d, B);
+    gunIlerlet(d, B);
+    expect(d.kusatmalar).toMatchObject([{ sehir: 1, devlet: 0, yontem: "abluka" }]); // varışta kendiliğinden (TASK-0027)
+    expect(d.birimler[1]).toMatchObject({ kontrol: 1, sahip: 1 }); // şehir düşmeden toprak alınmaz
+    expect(d.isgalHazirliklari).toHaveLength(0);
+    for (let i = 0; i < 100 && d.sehirler[1].kontrol === 1; i++) gunIlerlet(d, B);
+    expect(d.sehirler[1]).toMatchObject({ kontrol: 0, devlet: 1 });
     expect(d.birimler[1]).toMatchObject({ kontrol: 0, sahip: 1 });
-    for (let i = 0; i < 60; i++) gunIlerlet(d, B);
-    expect(d.sehirler[1]).toMatchObject({ kontrol: 1, devlet: 1 });
-    expect(d.kusatmalar).toHaveLength(0);
+    // Kuşatmadan ayrılan ordu aynı yerde yeniden kuşatmaya başlamaz (yalnızca varışta denenir)
+    const f = yeni(); emirVer(f, { tur: "orduHedef", ordu: 1, x: 10000, y: 0, dugum: 1 }, B); emirleriUygula(f, B); gunIlerlet(f, B);
+    emirVer(f, { tur: "kusatmaBirak", ordu: 1 }, B); emirleriUygula(f, B);
+    for (let i = 0; i < 5; i++) gunIlerlet(f, B);
+    expect(f.kusatmalar).toHaveLength(0);
+    const e = yeni(), o = e.ordular[0]; o.dugum = 5; o.x = 20000; o.y = 10000;
+    for (let i = 0; i < DENGE.ISGAL_GUN; i++) gunIlerlet(e, B);
+    expect(e.birimler[5]).toMatchObject({ kontrol: 0, sahip: 1 });
   });
 
   it("ayrılan/geri çekilen ordu işgal süresini biriktiremez; dost arazi geri alınabilir", () => {
-    const d = yeni(), o = d.ordular[0]; o.dugum = 1; o.x = 10000;
+    const d = yeni(), o = d.ordular[0]; o.dugum = 5; o.x = 20000; o.y = 10000;
     gunIlerlet(d, B); expect(d.isgalHazirliklari[0].gun).toBe(1);
     o.cekiliyor = true; gunIlerlet(d, B); expect(d.isgalHazirliklari).toHaveLength(0);
-    o.cekiliyor = false; o.dugum = 0; o.x = 0;
-    d.birimler[0].kontrol = 1; d.birimler[0].isgalBaslangic = d.gun;
+    o.cekiliyor = false; o.dugum = 4; o.x = 40000; o.y = 0;
+    d.birimler[4].kontrol = 1; d.birimler[4].isgalBaslangic = d.gun; // A'nın şehirsiz toprağı
     for (let i = 0; i < DENGE.ISGAL_GUN; i++) gunIlerlet(d, B);
-    expect(d.birimler[0]).toMatchObject({ sahip: 0, kontrol: 0, isgalBaslangic: null });
+    expect(d.birimler[4]).toMatchObject({ sahip: 0, kontrol: 0, isgalBaslangic: null });
   });
 
-  it("AT-007/009: kuşatma emir ve zaman ister; şehir düşmesi çevre mülkiyetini değiştirmez", () => {
+  it("AT-007/009: kuşatma emir ve zaman ister; şehir toprağıyla düşer, yasal sahiplik ve komşu topraklar değişmez", () => {
     const d = kusat("saldiri"); const bas = d.gun;
     expect(d.sehirler[1].kontrol).toBe(1);
     for (let i = 0; i < DENGE.KUSATMA_EN_AZ_GUN - 1; i++) gunIlerlet(d, B);
     expect(d.sehirler[1].kontrol).toBe(1);
     gunIlerlet(d, B);
     expect(d.sehirler[1]).toMatchObject({ kontrol: 0, devlet: 1 });
-    expect(d.birimler[1].sahip).toBe(1); expect(d.birimler[2].kontrol).toBe(1);
+    expect(d.birimler[1]).toMatchObject({ sahip: 1, kontrol: 0 }); expect(d.birimler[2].kontrol).toBe(1); // TASK-0027
     expect(d.gun - bas).toBeGreaterThanOrEqual(DENGE.KUSATMA_EN_AZ_GUN);
     expect(d.aktifKesinti?.neden).toMatch(/kuşatma/); expect(degismezler(d)).toEqual([]);
   });
@@ -141,23 +153,25 @@ describe("barış ve sahiplik", () => {
     expect(d.savaslar).toHaveLength(1);
   });
 
-  it("barışta talep edilen şehir ve arazi ayrı devredilir; istenmeyen işgal geri döner", () => {
-    const d = yeni(); d.sehirler[1].kontrol = 0; d.birimler[1].kontrol = 0;
+  it("barışta talep edilen şehir toprağıyla birlikte devredilir; istenmeyen işgal geri döner", () => {
+    const d = yeni(); d.sehirler[1].kontrol = 0; d.birimler[1].kontrol = 0; d.birimler[5].kontrol = 0;
     const t = talep({ sehirler: [1] });
     expect(emirVer(d, { tur: "baris", ...t }, B).gecerli).toBe(true);
     expect(d.sehirler[1].devlet).toBe(1); // tur dışında değişmez
     emirleriUygula(d, B);
     expect(d.sehirler[1]).toMatchObject({ devlet: 0, kontrol: 0, isgalBaslangic: null, baskent: false });
-    expect(d.birimler[1]).toMatchObject({ sahip: 1, kontrol: 1, isgalBaslangic: null });
+    expect(d.birimler[1]).toMatchObject({ sahip: 0, kontrol: 0, isgalBaslangic: null });
+    expect(d.birimler[5]).toMatchObject({ sahip: 1, kontrol: 1, isgalBaslangic: null });
     expect(d.devletler[1].baskent).toBe(2); expect(d.sehirler[2].baskent).toBe(true);
     expect(d.savaslar).toHaveLength(0); expect(d.barislar).toHaveLength(1); expect(degismezler(d)).toEqual([]);
   });
 
-  it("arazi talebi şehir sahibini değiştirmez", () => {
-    const d = yeni(); d.birimler[1].kontrol = 0;
-    expect(emirVer(d, { tur: "baris", ...talep({ birimler: [1] }) }, B).gecerli).toBe(true);
+  it("şehirli toprak ayrıca talep edilemez; şehirsiz arazi talebi şehirlere dokunmaz", () => {
+    const d = yeni(); d.birimler[1].kontrol = 0; d.birimler[5].kontrol = 0;
+    expect(barisDogrula(d, talep({ birimler: [1] }))).toMatchObject({ gecerli: false, neden: expect.stringMatching(/şehriyle birlikte/) });
+    expect(emirVer(d, { tur: "baris", ...talep({ birimler: [5] }) }, B).gecerli).toBe(true);
     emirleriUygula(d, B);
-    expect(d.birimler[1]).toMatchObject({ sahip: 0, kontrol: 0 });
+    expect(d.birimler[5]).toMatchObject({ sahip: 0, kontrol: 0 });
     expect(d.sehirler[1]).toMatchObject({ devlet: 1, kontrol: 1, baskent: true });
   });
 
@@ -181,11 +195,11 @@ describe("barış ve sahiplik", () => {
   });
 
   it("tur başında tekrar doğrular; aynı savaşa iki barış teklifi kabul edilmez", () => {
-    const d = yeni(); d.birimler[1].kontrol = 0;
-    const e = { tur: "baris", ...talep({ birimler: [1] }) } as const;
+    const d = yeni(); d.birimler[5].kontrol = 0;
+    const e = { tur: "baris", ...talep({ birimler: [5] }) } as const;
     expect(emirVer(d, e, B).gecerli).toBe(true); expect(emirVer(d, e, B).gecerli).toBe(false);
-    d.birimler[1].kontrol = 1; emirleriUygula(d, B);
-    expect(d.savaslar).toHaveLength(1); expect(d.birimler[1].sahip).toBe(1);
+    d.birimler[5].kontrol = 1; emirleriUygula(d, B);
+    expect(d.savaslar).toHaveLength(1); expect(d.birimler[5].sahip).toBe(1);
     expect(d.gunluk.at(-1)?.tur).toBe("emir-reddedildi");
   });
 
@@ -193,7 +207,7 @@ describe("barış ve sahiplik", () => {
     const d = yeni();
     for (const b of d.birimler) if (b.sahip === 1) b.kontrol = 0;
     for (const c of d.sehirler) if (c.devlet === 1) c.kontrol = 0;
-    const t = talep({ birimler: [1, 2], sehirler: [1, 2] });
+    const t = talep({ birimler: [5], sehirler: [1, 2] });
     expect(savasSkoru(d, 0, 1).skor).toBe(100); expect(barisBedeli(d, 0, 1, t)).toBe(100);
     expect(emirVer(d, { tur: "baris", ...t }, B).gecerli).toBe(true); emirleriUygula(d, B);
     expect(d.devletler).toHaveLength(3); expect(d.devletler[1].baskent).toBeNull(); expect(degismezler(d)).toEqual([]);
@@ -203,7 +217,7 @@ describe("barış ve sahiplik", () => {
     const d = yeni();
     for (const b of d.birimler) if (b.sahip === 1) b.kontrol = 0;
     for (const c of d.sehirler) if (c.devlet === 1) c.kontrol = 0;
-    const t = talep({ birimler: [1, 2], sehirler: [1, 2], vasalYap: true });
+    const t = talep({ birimler: [5], sehirler: [1, 2], vasalYap: true });
     expect(emirVer(d, { tur: "baris", ...t }, B).gecerli).toBe(true);
     emirleriUygula(d, B);
     expect(d.birimler[1].sahip).toBe(1); // toprak hâlâ B'de
@@ -217,14 +231,14 @@ describe("barış ve sahiplik", () => {
     const d = yeni();
     for (const b of d.birimler) if (b.sahip === 1) b.kontrol = 0;
     for (const c of d.sehirler) if (c.devlet === 1) c.kontrol = 0;
-    expect(emirVer(d, { tur: "baris", ...talep({ birimler: [1], sehirler: [1, 2], vasalYap: true }) }, B).gecerli).toBe(false);
+    expect(emirVer(d, { tur: "baris", ...talep({ sehirler: [1, 2], vasalYap: true }) }, B).gecerli).toBe(false);
   });
 
   it("vasal kendi başına savaş ilan edemez; efendisinin savaşına zorunlu katılır; serbest bırakılabilir", () => {
     const d = yeni();
     for (const b of d.birimler) if (b.sahip === 1) b.kontrol = 0;
     for (const c of d.sehirler) if (c.devlet === 1) c.kontrol = 0;
-    emirVer(d, { tur: "baris", ...talep({ birimler: [1, 2], sehirler: [1, 2], vasalYap: true }) }, B);
+    emirVer(d, { tur: "baris", ...talep({ birimler: [5], sehirler: [1, 2], vasalYap: true }) }, B);
     emirleriUygula(d, B);
     expect(emirVer(d, { tur: "savasIlan", devlet: 1, hedef: 2 }).gecerli).toBe(false);
     expect(emirVer(d, { tur: "savasIlan", devlet: 0, hedef: 2 }).gecerli).toBe(true);
@@ -241,7 +255,7 @@ describe("barış ve sahiplik", () => {
     const d = yeni();
     for (const b of d.birimler) if (b.sahip === 1) b.kontrol = 0;
     for (const c of d.sehirler) if (c.devlet === 1) c.kontrol = 0;
-    emirVer(d, { tur: "baris", ...talep({ birimler: [1, 2], sehirler: [1, 2], vasalYap: true }) }, B);
+    emirVer(d, { tur: "baris", ...talep({ birimler: [5], sehirler: [1, 2], vasalYap: true }) }, B);
     emirleriUygula(d, B);
     const efendiOnce = d.devletler[0].hazine, vasalOnce = d.devletler[1].hazine;
     const gelir = prototipGelirleri(d), vergi = Math.floor((gelir[1] * DENGE.VASAL_VERGI_YUZDE) / 100);
@@ -255,7 +269,7 @@ describe("barış ve sahiplik", () => {
   it("barış sadece ilgili savaşı temizler; dışarıdaki ordu ışınlanmadan dönüşe başlar", () => {
     const d = kusat(), o = d.ordular[0];
     const digerSavas = { id: d.sonrakiSavasId++, saldiran: 0, savunan: 2, baslangic: d.gun }; d.savaslar.push(digerSavas);
-    d.birimler[3].kontrol = 0;
+    d.sehirler[3].kontrol = 0; // C1 (ve toprağı) diğer savaşta işgalde
     const once = { x: o.x, y: o.y, dugum: o.dugum };
     expect(emirVer(d, { tur: "baris", ...talep() }, B).gecerli).toBe(true); emirleriUygula(d, B);
     expect(d.savaslar).toEqual([digerSavas]); expect(d.birimler[3].kontrol).toBe(0); expect(d.kusatmalar).toHaveLength(0);

@@ -89,7 +89,7 @@ describe("asker toplama (4b)", () => {
     d.sehirler[0].kontrol = 1;
     for (let i = 0; i < 40; i++) gunIlerlet(d, B);
     expect(d.askerToplamalar[0].kalanGun).toBe(kalan);
-    d.sehirler[0].kontrol = 0;
+    d.sehirler[0].kontrol = d.birimler[0].kontrol = 0; // toprak şehriyle birlikte geri gelir (TASK-0027)
     for (let i = 0; i < kalan; i++) gunIlerlet(d, B);
     expect(d.askerToplamalar).toHaveLength(0);
     expect(d.ordular.reduce((s, o) => s + o.asker, 0)).toBe(1500);

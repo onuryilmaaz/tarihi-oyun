@@ -5,12 +5,19 @@ import type { Baglam, Dogrulama } from "./emirler";
 import { gecilebilir, orduKonumu, rotaBul } from "./hareket";
 import { savasiSonlandir, yikilanDevletleriTemizle } from "./savas-sonu";
 import { efendisi, vasalKur, vasalMi } from "./vasallik";
+import { sehirliBirimler, sehirToprakEsitle } from "./sehir";
 
 export const sehirDegeri = (d: DunyaDurumu, sehir: number): number => d.sehirler[sehir].baskent ? DENGE.BASKENT_DEGERI : DENGE.SEHIR_DEGERI;
 export interface BarisDevirOzeti { alinanArazi: number; alinanSehir: number; kalanArazi: number; kalanSehir: number; tamIlhak: boolean }
 /** Talepte seçilmeyen şehirler araziyle birlikte otomatik devredilmez (UX-01). */
+/** Talep edilen şehirlerle birlikte giden topraklar (şehrin ve ona bağlı şehirlerin birimleri; TASK-0027). */
+export function sehirleIleGidenBirimler(d: DunyaDurumu, sehirler: number[]): Set<number> {
+  const kume = new Set(sehirler);
+  return new Set(d.sehirler.flatMap((s, i) => ((kume.has(i) || kume.has(s.bagli)) && s.birim >= 0 ? [s.birim] : [])));
+}
 export function barisDevirOzeti(d: DunyaDurumu, karsi: number, t: BarisTalebi): BarisDevirOzeti {
-  const alinanArazi = d.birimler.filter((b, i) => b.sahip === karsi && t.birimler.includes(i)).length;
+  const giden = new Set([...t.birimler, ...sehirleIleGidenBirimler(d, t.sehirler)]);
+  const alinanArazi = d.birimler.filter((b, i) => b.sahip === karsi && giden.has(i)).length;
   const alinanSehir = d.sehirler.filter((s, i) => s.devlet === karsi && s.bagli < 0 && t.sehirler.includes(i)).length;
   const kalanArazi = d.birimler.filter((b) => b.sahip === karsi).length - alinanArazi;
   const kalanSehir = d.sehirler.filter((s) => s.devlet === karsi && s.bagli < 0).length - alinanSehir; // bağlı şehir merkeziyle gider (TASK-0026)
@@ -30,7 +37,8 @@ export function savasSkoru(d: DunyaDurumu, devlet: number, karsi: number): { sko
   return { skor: Math.max(-100, Math.min(100, Math.floor((alinan - kaybedilen) * 100 / toplam))), alinan, kaybedilen, toplam };
 }
 export function barisBedeli(d: DunyaDurumu, devlet: number, karsi: number, t: BarisTalebi): number {
-  const deger = t.birimler.length * DENGE.BOLGE_DEGERI + t.sehirler.reduce((s, i) => s + sehirDegeri(d, i), 0);
+  const giden = new Set([...t.birimler, ...sehirleIleGidenBirimler(d, t.sehirler)]);
+  const deger = giden.size * DENGE.BOLGE_DEGERI + t.sehirler.reduce((s, i) => s + sehirDegeri(d, i), 0);
   const toprak = deger > 0 ? Math.max(1, Math.floor(deger * 100 / Math.max(1, toplamDeger(d, karsi)))) : 0;
   return toprak + Math.ceil(t.tazminat / DENGE.TAZMINAT_PUAN_BASINA);
 }
@@ -50,6 +58,9 @@ export function barisDogrula(d: DunyaDurumu, t: BarisTalebi, devlet = d.ayarlar.
   if (t.birimler.some((i) => d.birimler[i].sahip !== karsi || d.birimler[i].kontrol !== devlet)
     || t.sehirler.some((i) => d.sehirler[i].devlet !== karsi || d.sehirler[i].kontrol !== devlet || d.sehirler[i].bagli >= 0)) {
     return { gecerli: false, neden: "Yalnızca bu düşmana ait ve sizin işgal ettiğiniz arazi/şehirler talep edilebilir." };
+  }
+  if (t.birimler.some((i) => sehirliBirimler(d).has(i))) {
+    return { gecerli: false, neden: "Şehri olan toprak şehriyle birlikte gider; şehri talep edin." };
   }
   if (t.tazminat > Math.max(0, d.devletler[karsi].hazine)) return { gecerli: false, neden: "Karşı taraf bu tazminatı peşin ödeyemiyor. Borçlanma yoktur; tazminatı azaltın." };
   const skor = savasSkoru(d, devlet, karsi).skor, bedel = barisBedeli(d, devlet, karsi, t);
@@ -88,6 +99,7 @@ export function barisiUygula(d: DunyaDurumu, b: Baglam, t: BarisTalebi, devlet =
     }
   }
   savasiSonlandir(d, s);
+  sehirToprakEsitle(d); // TASK-0027: verilen şehrin toprağı da gider; kalan işgaller sahibine döner
   // Turun ilk günlük muharebe adımından önce üçüncü devletlerle biten savaşlar da temizlenir.
   yikilanDevletleriTemizle(d);
   // Kaybedilen şehirlerde devam eden toplama iptal edilir; harcanmış havuz/paralar yeniden kullanılmaz.

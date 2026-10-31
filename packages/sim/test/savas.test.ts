@@ -80,8 +80,8 @@ describe("muharebe (AT-008)", () => {
     expect(r.bitis).toBeGreaterThanOrEqual(r.baslangic);
     const kaybeden = r.taraflar.find((t) => t.devlet !== r.kazanan)!;
     expect(["geri-cekildi", "dagildi"]).toContain(kaybeden.sonuc);
-    expect(d.muharebeler.filter((m) => m.taraflar.some((t) => t.devlet === osm))).toHaveLength(0);
-    expect(d.ordular.filter((o) => o.devlet === osm || o.devlet === kar).every((o) => o.muharebe === null)).toBe(true);
+    // Raporlanan muharebe bitti; AI bu arada yeni ordularla başka bir muharebe başlatmış olabilir
+    expect(d.muharebeler.some((m) => m.dugum === r.dugum && m.baslangic === r.baslangic)).toBe(false);
   });
 
   it("geri çekilen ordu kendi şehrine yürür ve çekilmeyi tamamlar", () => {

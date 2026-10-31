@@ -16,7 +16,7 @@ import type { Baglam } from "./emirler";
 import { devletMaasi, ikmalVeMaasMorali, maaslariOde, toplamalariIlerlet } from "./ordu";
 import { prototipGelirleri } from "./ekonomi";
 import { DENGE } from "./denge";
-import { isgalleriIlerlet, kusatmalariIlerlet } from "./kusatma";
+import { isgalleriIlerlet, kusatmalariIlerlet, varincaKusat } from "./kusatma";
 import { insaatlariIlerlet } from "./yatirim";
 import { arastirmalariIlerlet } from "./teknoloji";
 import { diplomasiSonumu } from "./diplomasi";
@@ -27,7 +27,7 @@ import { diplomatikTeklifSureleri } from "./yz-diplomasi";
 import { elciIlerlet } from "./elci";
 import { hukumdarlariIlerlet } from "./hanedan";
 import { iskanlariIlerlet, nufusArtisi, savasGocu } from "./nufus";
-import { bagliSehirleriEsitle, sehirBirlesmeleriIlerlet } from "./sehir";
+import { bagliSehirleriEsitle, sehirBirlesmeleriIlerlet, sehirToprakEsitle } from "./sehir";
 
 export type Siklik = "gunluk" | "aylik" | "yillik";
 
@@ -43,7 +43,7 @@ export const SISTEMLER: Sistem[] = [
     // Ordu hareketi (TASK-0006): her gün hız kadar rota tüketilir
     id: "ordu-hareket",
     siklik: "gunluk",
-    calistir(d) {
+    calistir(d, b) {
       for (const o of d.ordular) {
         if (!o.rota.length || o.muharebe !== null) continue; // muharebedeki ordu yürümez
         if (orduIlerlet(o)) {
@@ -53,6 +53,7 @@ export const SISTEMLER: Sistem[] = [
             olayEkle(d, { tur: "ordu-vardi", devlet: o.devlet, metin: `${o.ad} geri çekilmeyi tamamladı.` });
           } else {
             olayEkle(d, { tur: "ordu-vardi", devlet: o.devlet, metin: `${o.ad} hedefine vardı.` });
+            varincaKusat(d, b, o); // TASK-0027: düşman şehrinin önündeyse kuşatma kendiliğinden başlar
           }
         }
       }
@@ -67,6 +68,7 @@ export const SISTEMLER: Sistem[] = [
   { id: "kusatma", siklik: "gunluk", calistir: kusatmalariIlerlet },
   // TASK-0026: bağlı şehir merkezinin sahipliğini izler; süren birleşmeler
   { id: "bagli-sehir", siklik: "gunluk", calistir: bagliSehirleriEsitle },
+  { id: "sehir-toprak", siklik: "gunluk", calistir: sehirToprakEsitle }, // TASK-0027: toprak şehrini izler
   { id: "sehir-birlesmesi", siklik: "gunluk", calistir: sehirBirlesmeleriIlerlet },
   { id: "sehir-insaati", siklik: "gunluk", calistir: insaatlariIlerlet },
   // 8a: gemi inşası, donanma hareketi/çıkarma, deniz muharebesi

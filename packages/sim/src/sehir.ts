@@ -127,3 +127,21 @@ export function bagliSehirleriEsitle(d: DunyaDurumu): void {
     s.devlet = m.devlet; s.kontrol = m.kontrol; s.isgalBaslangic = m.isgalBaslangic;
   }
 }
+
+// --- TASK-0027 (DEC-0077): şehir ve toprağı birlikte fethedilir ----------------------------------------
+
+/** Şehri olan birimler (toprak şehirle birlikte el değiştirir; ayrıca işgal edilmez, ayrıca talep edilmez). */
+export function sehirliBirimler(d: DunyaDurumu): Set<number> {
+  return new Set(d.sehirler.flatMap((s) => (s.birim >= 0 ? [s.birim] : [])));
+}
+
+/** Şehirli toprağın yasal sahibi ve askerî kontrolü şehrini izler. */
+export function sehirToprakEsitle(d: DunyaDurumu): void {
+  for (const s of d.sehirler) {
+    const t = d.birimler[s.birim];
+    if (!t) continue;
+    t.sahip = s.devlet; t.kontrol = s.kontrol; t.isgalBaslangic = s.isgalBaslangic;
+  }
+  const sehirli = sehirliBirimler(d);
+  d.isgalHazirliklari = d.isgalHazirliklari.filter((p) => !sehirli.has(p.birim));
+}

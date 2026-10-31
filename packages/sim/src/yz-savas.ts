@@ -12,6 +12,7 @@ import { orduKusatmasi, sehirMenzilinde } from "./kusatma";
 import { barisBedeli, barisDogrula, barisiUygula, savasSkoru, sehirDegeri } from "./baris";
 import { iliski, komsuMu, muttefik, muttefikleri, saldirmazlikVar, type DiplomasiOnHesap } from "./diplomasi";
 import { aralik } from "./rastgele";
+import { sehirliBirimler } from "./sehir";
 
 const dene = (d: DunyaDurumu, b: Baglam, e: Emir) => {
   if (!emirDogrula(d, e, b, true).gecerli) return false;
@@ -61,9 +62,10 @@ export function talepKur(d: DunyaDurumu, savas: number, alan: number, karsi: num
   const sehirler = d.sehirler.flatMap((s, i) => (s.devlet === karsi && s.kontrol === alan && s.bagli < 0 ? [i] : []))
     .sort((x, y) => sehirDegeri(d, y) - sehirDegeri(d, x) || x - y);
   for (const i of sehirler) { t.sehirler.push(i); if (barisBedeli(d, alan, karsi, t) > skor) t.sehirler.pop(); }
+  const sehirli = sehirliBirimler(d); // TASK-0027: şehirli toprak şehriyle gelir
   for (let i = 0; i < d.birimler.length; i++) {
     const a = d.birimler[i];
-    if (a.sahip !== karsi || a.kontrol !== alan) continue;
+    if (a.sahip !== karsi || a.kontrol !== alan || sehirli.has(i)) continue;
     t.birimler.push(i);
     if (barisBedeli(d, alan, karsi, t) > skor) { t.birimler.pop(); break; }
   }

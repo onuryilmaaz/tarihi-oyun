@@ -1,11 +1,12 @@
 // TASK-0007/4c — arazi işgali ile şehir kuşatması birbirinden bağımsızdır (AT-007/009).
 import { olayEkle, type DunyaDurumu, type IsgalHazirligi, type Kusatma, type OrduDurumu } from "./durum";
 import { DENGE } from "./denge";
-import type { Baglam } from "./emirler";
+import { emirDogrula, emirUygula, type Baglam } from "./emirler";
 import { savasta } from "./savas";
 import { kusatmaSaldiriYuzde } from "./teknoloji";
 import { denizAblukasi } from "./deniz";
 import { kompozisyonCikar, kompozisyonMuharebeYuzde, kompozisyonOransalAl } from "./birim";
+import { sehirliBirimler } from "./sehir";
 
 export function sehirMenzilinde(d: DunyaDurumu, b: Baglam, o: OrduDurumu, sehir: number): boolean {
   const s = d.sehirler[sehir], n = s && b.ag?.dugumler[s.dugum];
@@ -52,8 +53,10 @@ export function isgalleriIlerlet(d: DunyaDurumu, b: Baglam): void {
     adaylar.get(n.b)!.add(o.devlet);
   }
   const yeni: IsgalHazirligi[] = [];
+  const sehirli = sehirliBirimler(d); // TASK-0027: şehirli toprak şehriyle birlikte el değiştirir
   for (const [birim, devletler] of adaylar) {
     const t = d.birimler[birim];
+    if (sehirli.has(birim)) continue;
     if (!t || t.sahip < 0 || devletler.size !== 1) continue; // çekişmeli veya devletsiz arazi alınmaz
     const devlet = [...devletler][0];
     if (t.kontrol === devlet || !savasta(d, devlet, t.kontrol)) continue;
@@ -119,8 +122,20 @@ export function kusatmalariIlerlet(d: DunyaDurumu, b: Baglam): void {
     s.isgalBaslangic = s.devlet === k.devlet ? null : d.gun;
     d.kusatmalar = d.kusatmalar.filter((a) => a !== k);
     const neden = s.garnizon === 0 ? "garnizon yenildi" : "erzak tükendi ve şehir teslim oldu";
-    const metin = `${s.ad}, ${k.gun} günlük kuşatma sonunda ${d.devletler[k.devlet].ad} kontrolüne geçti: ${neden}. Çevre arazilerin yasal sahibi değişmedi.`;
+    const metin = `${s.ad}, ${k.gun} günlük kuşatma sonunda ${d.devletler[k.devlet].ad} kontrolüne geçti: ${neden}. Şehrin toprağı da onunla birlikte geçti; yasal sahiplik barışla değişir.`;
     olayEkle(d, { tur: "sehir-dustu", devlet: d.ayarlar.oyuncu === k.savunan ? k.savunan : k.devlet, metin });
     if ([k.devlet, k.savunan].includes(d.ayarlar.oyuncu) && !d.aktifKesinti) d.aktifKesinti = { gun: d.gun, neden: metin };
+  }
+}
+
+/** TASK-0027: oyuncunun ordusu savaşta olduğu devletin şehrinin önüne varınca kuşatma kendiliğinden (abluka) başlar.
+ *  Yalnızca varış anında denenir; oyuncu kuşatmadan ayrılırsa aynı yerde yeniden başlamaz. AI kendi kararını verir. */
+export function varincaKusat(d: DunyaDurumu, b: Baglam, o: OrduDurumu): void {
+  if (o.devlet !== d.ayarlar.oyuncu) return;
+  for (let i = 0; i < d.sehirler.length; i++) {
+    const s = d.sehirler[i];
+    if (s.bagli >= 0 || s.kontrol < 0 || s.kontrol === o.devlet || !savasta(d, o.devlet, s.kontrol) || !sehirMenzilinde(d, b, o, i)) continue;
+    const e = { tur: "kusat", ordu: o.id, sehir: i, yontem: "abluka" } as const;
+    if (emirDogrula(d, e, b, true).gecerli) { emirUygula(d, e, b); return; }
   }
 }

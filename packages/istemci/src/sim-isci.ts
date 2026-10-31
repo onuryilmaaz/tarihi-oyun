@@ -10,7 +10,7 @@ import {
   diplomasiOnHesap, etkiDegeri, hediyePuanBedeli, iliski, iliskiBilesenleri, ittifakDegerlendir, komsuMu, muttefik, muttefikleri, savasta,
   ticaretAnlasmasiVar, ticaretDegerlendir, saldirmazlikVar, saldirmazlikDegerlendir, efendisi,
   asayisAskeri, gerekenAsayis,
-  hukumdarYasi, VERASET_ADLARI, yerelYonetimAyarla, sehirAdiDegistir, birlesmeAdaylari, bolgeKontrolu, gorunurDonanmalar, kapasite, sehirMenzilinde, sehirTicareti, type Hukumdar,
+  hukumdarYasi, VERASET_ADLARI, yerelYonetimAyarla, sehirAdiDegistir, birlesmeAdaylari, sehirliBirimler, bolgeKontrolu, gorunurDonanmalar, kapasite, sehirMenzilinde, sehirTicareti, type Hukumdar,
   ALAN_ADLARI, TEKNOLOJILER, teknolojiBul, biliyor, toplamaBedelYuzde, toplamaSuresi, etkiCarpani,
 } from "@tarihi/sim";
 import type { Istek, Ozet, Yanit } from "./sim-protokol";
@@ -205,11 +205,11 @@ function ozet(durum: DunyaDurumu): Ozet {
       .map((y) => ({ ...y, ...orduKonumu(durum.ordular.find((o) => o.id === y.id)!) })) : [],
     savaslar: durum.savaslar.filter((s) => s.saldiran === durum.ayarlar.oyuncu || s.savunan === durum.ayarlar.oyuncu)
       .map((s) => {
-        const oyuncu = durum.ayarlar.oyuncu, karsi = s.saldiran === oyuncu ? s.savunan : s.saldiran;
+        const oyuncu = durum.ayarlar.oyuncu, karsi = s.saldiran === oyuncu ? s.savunan : s.saldiran, sehirli = sehirliBirimler(durum);
         return { id: s.id, karsi, baslangic: tarihMetni(s.baslangic), saldiran: s.saldiran === oyuncu,
           ...savasSkoru(durum, oyuncu, karsi),
-          birimler: durum.birimler.flatMap((b, i) => b.sahip === karsi && b.kontrol === oyuncu ? [i] : []),
-          sehirler: durum.sehirler.flatMap((c, i) => c.devlet === karsi && c.kontrol === oyuncu ? [i] : []),
+          birimler: durum.birimler.flatMap((b, i) => b.sahip === karsi && b.kontrol === oyuncu && !sehirli.has(i) ? [i] : []), // şehirli toprak şehriyle gider
+          sehirler: durum.sehirler.flatMap((c, i) => c.devlet === karsi && c.kontrol === oyuncu && c.bagli < 0 ? [i] : []),
         };
       }),
     kusatmalar: durum.kusatmalar.filter((k) => [k.devlet, k.savunan].includes(durum.ayarlar.oyuncu)).map((k) => ({

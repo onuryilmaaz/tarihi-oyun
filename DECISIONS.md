@@ -833,6 +833,15 @@ Kaynak belge: `MASTER_SPEC.md` (v1.3). Orijinal keşif çıktısı:
   "İkisi birden, aynı kartta" (2026-10-30).
 - **Durum:** GEÇERLİ
 
+## DEC-0077 — TASK-0027: şehir ve toprağı birlikte fethedilir
+
+- **Tarih:** 2026-10-31
+- **Seçilen karar:** Şehirli toprak şehrini izler; ayrıca işgal ve ayrıca barış talebi yoktur; şehirsiz topraklar
+  eskisi gibi işgal edilir. Kuşatmadaki ordu ikmal aşınması yaşamaz [TASLAK]. MASTER_SPEC'teki "şehir ve çevresi
+  ayrı fethedilir" [KARAR]'ı DEC-0074 ve bu kararla geçersizdir.
+- **Onay kaydı:** Kullanıcı: "3- evet" (agent önerisi, 2026-10-31).
+- **Durum:** GEÇERLİ
+
 ## DEC-0076 — TASK-0026: oyuncu için şehir adı değiştirme ve birleştirme kuralları
 
 - **Tarih:** 2026-10-31

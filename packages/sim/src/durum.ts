@@ -18,6 +18,7 @@ import { baslangicHanedanlari, type AdHavuzu, type Hukumdar, type TarihiHalef, t
 import type { VergiOrani } from "./vergi";
 import { BIRIM_TURLERI, kompozisyonHizi, kompozisyonToplami, tekTurKompozisyon, type BirimTuru, type Kompozisyon } from "./birim";
 import type { Elci } from "./elci";
+import { sehirToprakEsitle } from "./sehir";
 
 export type TurSuresi = "hafta" | "ay" | "ceyrek" | "yil";
 export const TUR_SURESI_ADLARI: Record<TurSuresi, string> = {
@@ -353,7 +354,7 @@ export function baslangicDurumu(s: SenaryoVerisi, secenek: { tohum: number; oyun
     vergiOrani: "orta" as VergiOrani,
     hazineGecmisi: [],
   }));
-  return {
+  const d: DunyaDurumu = {
     sema: SEMA_SURUMU,
     senaryo: `${s.id}@${s.surum}`,
     tohum: secenek.tohum >>> 0,
@@ -417,6 +418,8 @@ export function baslangicDurumu(s: SenaryoVerisi, secenek: { tohum: number; oyun
     gunluk: [],
     sonrakiOlayId: 1,
   };
+  sehirToprakEsitle(d); // TASK-0027: toprak şehrini izler
+  return d;
 }
 
 export function olayEkle(d: DunyaDurumu, o: Omit<OlayKaydi, "id" | "gun">): OlayKaydi {

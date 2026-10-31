@@ -33,6 +33,8 @@ export function ikmalDurumu(d: DunyaDurumu, ag: HareketAgi | null, o: OrduDurumu
   if (!n) return { deger: 0, neden: "Konum bilgisi yok; ikmal hesaplanamıyor.", dusmanda: false };
   const kontrol = d.birimler[n.b]?.kontrol ?? -1;
   if (kontrol === o.devlet) return { deger: DENGE.IKAMET_IKMAL, neden: "Kendi kontrolünüzdeki toprak: tam ikmal.", dusmanda: false };
+  // TASK-0027: şehirli toprak artık ayrıca işgal edilmediği için kuşatmadaki ordu ordugâh kurar; aşınmaz [TASLAK]
+  if (d.kusatmalar.some((k) => k.ordular.includes(o.id))) return { deger: DENGE.TARAFSIZ_IKMAL, neden: "Kuşatma ordugâhı: sınırlı ikmal, aşınma yok.", dusmanda: false };
   if (kontrol >= 0 && savasta(d, o.devlet, kontrol)) return {
     deger: DENGE.DUSMAN_IKMAL, dusmanda: true,
     neden: `Düşman toprağı: günde binde ${DENGE.IKMALSIZ_KAYIP_BINDE} asker (yukarı yuvarlanır) ve ${DENGE.IKMALSIZ_MORAL / 10} puan moral kaybı.`,

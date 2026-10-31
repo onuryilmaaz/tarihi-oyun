@@ -117,19 +117,20 @@ describe("ordu hareketi", () => {
     expect(degismezler(d)).toEqual([]);
   });
 
-  it("AT-007: şehrin askerî kontrolü değişince çevresi değişmez; yasal sahip korunur", () => {
+  it("AT-007 (DEC-0074): şehrin askerî kontrolü toprağıyla birlikte değişir; diğer topraklar ve yasal sahip korunur", () => {
     const d = yeni();
-    const bursa = sehir(d, "Bursa");
+    const bursa = sehir(d, "Bursa"), toprak = d.sehirler[bursa].birim;
     const karaman = d.devletler.findIndex((v) => v.id === "kar");
-    // AI devletleri kendi aralarında savaşabilir (6c/9b); yalnızca Osmanlı arazilerinin değişmediğine bakılır
-    const osmBirimleri = () => JSON.stringify(d.birimler.filter((b) => d.devletler[b.sahip]?.id === "osm"));
+    // AI devletleri kendi aralarında savaşabilir (6c/9b); yalnızca Bursa dışındaki Osmanlı arazilerine bakılır
+    const osmBirimleri = () => JSON.stringify(d.birimler.filter((b, i) => i !== toprak && d.devletler[b.sahip]?.id === "osm"));
     const birimlerOnce = osmBirimleri();
     emirVer(d, { tur: "testIsgal", hedef: "sehir", indeks: bursa, devlet: karaman }, B);
     turuIlerlet(d, B);
     expect(d.sehirler[bursa].kontrol).toBe(karaman);
     expect(d.devletler[d.sehirler[bursa].devlet].id).toBe("osm"); // yasal sahip değişmedi
     expect(d.sehirler[bursa].isgalBaslangic).not.toBeNull();
-    expect(osmBirimleri()).toBe(birimlerOnce); // hiçbir arazi birimi etkilenmedi
+    expect(d.birimler[toprak]).toMatchObject({ kontrol: karaman, sahip: d.sehirler[bursa].devlet }); // toprak şehriyle gider
+    expect(osmBirimleri()).toBe(birimlerOnce); // diğer araziler etkilenmedi
     emirVer(d, { tur: "testIsgal", hedef: "sehir", indeks: bursa, devlet: d.sehirler[bursa].devlet }, B);
     turuIlerlet(d, B);
     expect(d.sehirler[bursa].kontrol).toBe(d.sehirler[bursa].devlet);

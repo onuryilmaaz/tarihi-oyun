@@ -10,6 +10,9 @@ Bağlayıcı kurallar: `AGENTS.md`, `MASTER_SPEC.md`, `DECISIONS.md`.
 
 ## 0. En son — BURADAN BAŞLA
 
+- **TASK-0027 (şehir ve toprağı birlikte fethedilir, DEC-0077) + varışta otomatik kuşatma commit edildi (2026-10-31).** Sıradaki (DEC-0076): (3) gelişmişlik/gelir kaynağı ekonomiye,
+  (4) Osmanlı sancak sistemi, (5) dünyaya yayma.
+
 - **TASK-0026 (şehir adı/birleştirme) + DEC-0075 (eski kayıt desteği yok) uygulandı, COMMIT EDİLMEDİ, kullanıcı testi
   bekliyor (2026-10-31).** Son commit `fed22a1`. Sıradaki plan (DEC-0076): (2) "şehir ve toprağı birlikte
   fethedilir", (3) gelişmişlik/gelir kaynağı ekonomiye, (4) Osmanlı sancak sistemi, (5) dünyaya yayma.

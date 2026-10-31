@@ -1,5 +1,12 @@
 # CHANGELOG
 
+## 2026-10-31 — TASK-0027: şehir ve toprağı birlikte fethedilir (Claude)
+
+- Şehirli toprak şehrini izler; şehir düşünce toprağı da geçer; barışta şehir toprağıyla gider. Şehirsiz toprak
+  eskisi gibi işgal edilir. Kuşatmadaki ordu aşınmaz [TASLAK]. 14 eski kural testi uyarlandı.
+- Oyuncunun ordusu düşman şehrinin önüne varınca (karadan ya da çıkarmayla) kuşatma kendiliğinden başlar; düşman
+  şehrinin panelinde "ile kuşat" / "Şehre yürü ve kuşat".
+
 ## 2026-10-31 — TASK-0026: şehir adı değiştirme ve birleştirme; eski kayıt desteği kaldırıldı (Claude)
 
 - Oyuncu kendi şehrinin adını değiştirebilir (eski ad saklanır) ve toprakları komşu iki şehrini birleştirebilir

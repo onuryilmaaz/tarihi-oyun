@@ -541,7 +541,16 @@ async function baslat() {
         <p class="not">${k ? `${k.gun} etkin gündür kuşatma altında.` : c.kontrol === ozet.oyuncu.indeks
           ? c.devlet === ozet.oyuncu.indeks ? "Şehir size ait ve askerî kontrolünüzde." : "Şehir askerî kontrolünüzde; yasal sahiplik barış antlaşmasıyla değişir."
           : "Şehir hareketle ele geçirilmez; kuşatma emri gerekir."}</p>
-        ${seciliOrdu !== null ? `<button data-sehir-hedef="${s.id}">Şehre yürü</button>` : '<p class="not">Şehre yürümek için önce ordunuzu seçin.</p>'}
+        ${(() => { // TASK-0027: şehri toprağıyla almak için kuşatma gerekir; düğme doğrudan şehir panelinde
+          const so = ozet.ordular.find((o) => o.id === seciliOrdu);
+          const dusman = c.kontrol !== ozet.oyuncu.indeks && ozet.savaslar.some((x) => x.karsi === c.kontrol);
+          if (!so) return `<p class="not">${dusman ? "Kuşatmak" : "Şehre yürümek"} için önce ordunuzu seçin.</p>`;
+          if (!dusman || k?.devlet === ozet.oyuncu.indeks) return `<button data-sehir-hedef="${s.id}">Şehre yürü</button>`;
+          if (so.kusatilabilir.includes(s.id)) return `<button class="birincil" data-kusat="${s.id}">${kacis(so.ad)} ile kuşat</button>
+            <p class="not">Abluka ile başlar; yöntemi Savaş sekmesinden değiştirebilirsiniz. Şehir düşünce toprağı da sizin olur.</p>`;
+          return `<button class="birincil" data-sehir-hedef="${s.id}">Şehre yürü ve kuşat</button>
+            <p class="not">Ordu şehrin önüne varınca kuşatma kendiliğinden (abluka) başlar.</p>`;
+        })()}
         ${yatirim}`;
     }
     if (s.tur === "birim") {
@@ -647,6 +656,12 @@ async function baslat() {
     const bagis = (e.target as HTMLElement).closest<HTMLElement>("[data-bagis]");
     if (bagis) {
       await emirGonder({ tur: "bagis", sehir: Number(bagis.dataset.bagis) }, "Bağış emri verildi; bedel ayrıldı, indirim sonraki aylık hesapta uygulanacak.");
+      return;
+    }
+    const kusatB = (e.target as HTMLElement).closest<HTMLElement>("[data-kusat]");
+    if (kusatB && seciliOrdu !== null) {
+      const sehir = Number(kusatB.dataset.kusat);
+      await emirGonder({ tur: "kusat", ordu: seciliOrdu, sehir, yontem: "abluka" }, `${senaryo.sehirler[sehir].ad} kuşatma emri verildi (abluka); bir sonraki turda başlar.`);
       return;
     }
     const sehir = (e.target as HTMLElement).closest<HTMLElement>("[data-sehir-hedef]");
