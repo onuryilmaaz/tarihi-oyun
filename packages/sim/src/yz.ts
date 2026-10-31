@@ -52,6 +52,8 @@ export function devletKarari(d: DunyaDurumu, b: Baglam, on: DiplomasiOnHesap, de
   }
   const tehdit = tehditNedeni(d, on, devlet);
   const sehirler = d.sehirler.flatMap((s, i) => (s.devlet === devlet && s.kontrol === devlet ? [i] : []));
+  // TASK-0035: hazinesi çok aylık geliri aşan AI biriktirmek yerine ordu ve sur yapar
+  const zengin = para() > DENGE.YZ_ZENGIN_AY * Math.max(DENGE.YZ_YEDEK_EN_AZ, gelirler[devlet]);
 
   const riskli = [...sehirler].sort((a, c) => d.sehirler[c].istikrar.risk - d.sehirler[a].istikrar.risk || a - c)
     .find((i) => d.sehirler[i].istikrar.risk >= DENGE.IST_HUZURSUZLUK && d.sehirler[i].istikrar.bagis === 0);
@@ -59,12 +61,13 @@ export function devletKarari(d: DunyaDurumu, b: Baglam, on: DiplomasiOnHesap, de
 
   const asker = () => {
     const bekleyen = d.askerToplamalar.filter((t) => t.devlet === devlet).reduce((t, x) => t + x.asker, 0);
-    const hedef = on.arazi[devlet] * DENGE.YZ_ASKER_ARAZI_BASINA * (tehdit ? DENGE.YZ_TEHDIT_ASKER_CARPANI : 1);
+    const hedef = on.arazi[devlet] * DENGE.YZ_ASKER_ARAZI_BASINA * (tehdit ? DENGE.YZ_TEHDIT_ASKER_CARPANI : 1)
+      * (zengin ? DENGE.YZ_ZENGIN_ASKER_YUZDE : 100) / 100;
     const eksik = hedef - butce.askerSayisi - bekleyen;
     if (eksik < DENGE.YZ_TOPLAMA_EN_AZ || para() <= 0) return false; // zar atmadan erken çık (gereksiz rastgele tüketimi yok)
     const sehir = [...sehirler].sort((x, y) => d.sehirler[y].insanGucu - d.sehirler[x].insanGucu || x - y)[0];
     if (sehir === undefined) return false;
-    const maasPayi = Math.max(0, butce.aylikNet) * (tehdit ? 100 : DENGE.YZ_MAAS_NET_YUZDE) / 100;
+    const maasPayi = Math.max(0, butce.aylikNet) * (tehdit || zengin ? 100 : DENGE.YZ_MAAS_NET_YUZDE) / 100;
     // TASK-0021 (3/4): tehdit altında süvari ağırlıklı, barışta ucuz okçu ağırlıklı, aksi halde piyade.
     const birim: BirimTuru = tehdit ? "suvari" : aralik(d, 10) < DENGE.YZ_OKCU_OLASILIK ? "okcu" : "piyade";
     const maasSiniri = Math.floor((maasPayi * 100000) / (DENGE.AYLIK_ASKER_MAASI_BINDE * aylikMaasYuzde(birim)));
@@ -77,14 +80,19 @@ export function devletKarari(d: DunyaDurumu, b: Baglam, on: DiplomasiOnHesap, de
     return true;
   };
   const sur = () => {
+    // Başkent; zenginse en kalabalık şehirler de (TASK-0035)
     const baskent = d.devletler[devlet].baskent;
-    if (baskent === null || !sehirler.includes(baskent) || sehirdeInsaatVar(d, baskent, true)) return false;
-    const s = d.sehirler[baskent];
-    const bedel = insaatMaliyeti(d, s, "sur");
-    if (bedel === null || s.sur >= yapiEnYuksek(d, devlet, "sur") || bedel > para()) return false;
-    if (!dene({ tur: "insaat", sehir: baskent, yapi: "sur", devlet })) return false;
-    d.yzSayac.insaat++;
-    return true;
+    const adaylar = [baskent, ...(zengin ? [...sehirler].sort((a, c) => d.sehirler[c].nufus - d.sehirler[a].nufus || a - c).slice(0, DENGE.YZ_ZENGIN_SUR_SEHIR) : [])];
+    for (const i of adaylar) {
+      if (i === null || !sehirler.includes(i) || sehirdeInsaatVar(d, i, true)) continue;
+      const s = d.sehirler[i];
+      const bedel = insaatMaliyeti(d, s, "sur");
+      if (bedel === null || s.sur >= yapiEnYuksek(d, devlet, "sur") || bedel > para()) continue;
+      if (!dene({ tur: "insaat", sehir: i, yapi: "sur", devlet })) continue;
+      d.yzSayac.insaat++;
+      return true;
+    }
+    return false;
   };
   const arastir = (tercih: Alan | null) => {
     const uygun = TEKNOLOJILER.filter((t) => DENGE.TEKNOLOJI[t.id].bedel <= para() && arastirmaEngeli(d, devlet, t.id, true) === null);
@@ -115,7 +123,7 @@ export function devletKarari(d: DunyaDurumu, b: Baglam, on: DiplomasiOnHesap, de
   };
 
   // Tehdit altında önce savunma; barışta önce kalkınma. Her karar adımında en çok birer iş.
-  const sira = tehdit ? [asker, sur, () => arastir("askeri"), yatirim] : [() => arastir(null), yatirim, asker];
+  const sira = tehdit ? [asker, sur, () => arastir("askeri"), yatirim] : [() => arastir(null), yatirim, asker, ...(zengin ? [sur] : [])];
   for (const adim of sira) adim();
 }
 

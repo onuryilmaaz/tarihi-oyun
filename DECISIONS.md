@@ -833,6 +833,23 @@ Kaynak belge: `MASTER_SPEC.md` (v1.3). Orijinal keşif çıktısı:
   "İkisi birden, aynı kartta" (2026-10-30).
 - **Durum:** GEÇERLİ
 
+## DEC-0081 — TASK-0036: tek emirle ordu kurma
+
+- **Tarih:** 2026-10-31
+- **Seçilen karar:** Seçilen toplanma şehrine yoldan en yakın kendi şehirlerinden (en çok 30 günlük yol) asker
+  bölüşülerek toplanır; hazır olan birlikler toplanma şehrine yürüyüp tek orduda birleşir. Bedel/süre normal toplama
+  ile aynı. Yetmezse emir reddedilir. [TASLAK]
+- **Onay kaydı:** Kullanıcı: "ayrıca tek talimatla ordu basmada olsun" (2026-10-31).
+- **Durum:** GEÇERLİ
+
+## DEC-0080 — TASK-0035: AI artan parayı harcar; teknoloji bedel ve süreleri iki katı
+
+- **Tarih:** 2026-10-31
+- **Seçilen karar:** Hazinesi 24 aylık gelirini aşan AI daha büyük ordu tutar ve sur yapar; bütün teknolojilerin
+  bedeli ve süresi iki katına çıktı. [TASLAK]
+- **Onay kaydı:** Kullanıcı: "ikisinede evet" (2026-10-31).
+- **Durum:** GEÇERLİ
+
 ## DEC-0079 — TASK-0029: sancak sistemi, nüfusa göre garnizon, toplananların orduya katılması, bağlam menüsü
 
 - **Tarih:** 2026-10-31

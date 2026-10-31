@@ -1,22 +1,15 @@
 {
  "indeks": 2151,
- "ad": "Sarreguemines",
+ "ad": "Cherbourg",
  "ulke": "France",
- "d": 63,
+ "d": 57,
  "k": "tahmin",
- "s": "Sarreguemines",
+ "s": "Cherbourg",
  "p": [
   [
    [
-    -10650,
-    10737,
-    10738,
-    10739,
-    10740,
-    10741,
-    10742,
-    10743,
-    10744
+    10721,
+    -10742
    ]
   ]
  ]

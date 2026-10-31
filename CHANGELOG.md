@@ -1,5 +1,13 @@
 # CHANGELOG
 
+## 2026-10-31 — TASK-0035/0036: AI harcıyor, teknoloji yavaş, tek emirle ordu kurma (Claude)
+
+- Zengin AI (hazine > 24 aylık gelir) daha büyük ordu tutar ve sur yapar; teknoloji bedel ve süreleri iki katı.
+- "Ordu kur": asker yakın şehirlerden bölüşülerek toplanır, birlikler seçilen şehirde tek orduda birleşir.
+- Düzeltme: Konstantiniyye'ye Asya yakasında düşen kopuk üçgen Üsküdar'a geçti. Genel kural: şehir toprağının
+  şehri içermeyen kopuk parçası, devlet fark etmeksizin en uzun sınırlı komşu şehir toprağına katılır
+  (`birim-birlestir.mjs`). Üsküdar artık Anadolu yakası sancağına bağlanıyor (boğaz eşiği 29.0°).
+
 ## 2026-10-31 — TASK-0032/0033/0034: denge, idari birimler bütün devletlerde, tarihî adlar (Claude)
 
 - Denge: yatırım geliri nüfusla ölçekli, taban tarla 8 / pazar 10, gelişmişlik her 3 seviyede, AI 60 ay geri dönüş.

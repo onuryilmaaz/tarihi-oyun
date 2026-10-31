@@ -2,8 +2,8 @@
 import { olayEkle, type DunyaDurumu, type OrduDurumu } from "./durum";
 import { aylikBakim } from "./deniz";
 import { DENGE } from "./denge";
-import { HAREKET, type HareketAgi } from "./hareket";
-import { savasta } from "./savas";
+import { HAREKET, rotaBul, type HareketAgi } from "./hareket";
+import { savasta, sayiMetni } from "./savas";
 import type { Baglam } from "./emirler";
 import { BIRIM_TURLERI, kompozisyonCikar, kompozisyonHizi, kompozisyonTopla, kompozisyonOransalAl, toplamaMaliyetiYuzde, aylikMaasYuzde, tekTurKompozisyon, type BirimTuru, type Kompozisyon } from "./birim";
 
@@ -53,8 +53,7 @@ export function toplamalariIlerlet(d: DunyaDurumu, b: Baglam): void {
     const konum = b.sehirKonumlari?.[t.sehir] ?? n;
     const kompozisyon = tekTurKompozisyon(t.birim, t.asker);
     // Şehirde bekleyen kendi ordusu varsa yeni askerler ona katılır (yürüyüş, muharebe, geri çekilme ve kuşatma dışında)
-    const bekleyen = d.ordular.find((o) => o.devlet === t.devlet && o.dugum === s.dugum && !o.rota.length && o.muharebe === null
-      && !o.cekiliyor && !d.kusatmalar.some((k) => k.ordular.includes(o.id)));
+    const bekleyen = t.toplanma === undefined ? toplanmaOrdusu(d, t.devlet, s.dugum) : undefined;
     if (bekleyen) {
       bekleyen.moral = Math.floor((bekleyen.moral * bekleyen.asker + DENGE.MORAL_EN_YUKSEK * t.asker) / (bekleyen.asker + t.asker));
       bekleyen.kompozisyon = kompozisyonTopla(bekleyen.kompozisyon, kompozisyon);
@@ -63,13 +62,46 @@ export function toplamalariIlerlet(d: DunyaDurumu, b: Baglam): void {
       olayEkle(d, { tur: "asker-toplandi", devlet: t.devlet, metin: `${s.ad}: ${t.asker} asker hazır; ${bekleyen.ad} ordusuna katıldı (${bekleyen.asker} asker).` });
       return false;
     }
-    d.ordular.push({ id: d.sonrakiOrduId++, ad: `${s.ad} Ordusu`, devlet: t.devlet, asker: t.asker,
+    const o: OrduDurumu = { id: d.sonrakiOrduId++, ad: `${s.ad} Ordusu`, devlet: t.devlet, asker: t.asker,
       kompozisyon,
       dugum: s.dugum, x: konum.x, y: konum.y, hiz: kompozisyonHizi(kompozisyon, HAREKET.TEMEL_HIZ), rota: [], ilerleme: 0, hedef: null, // TASK-0019 (3/4)
-      moral: DENGE.MORAL_EN_YUKSEK, tutum: "dengeli", cekiliyor: false, muharebe: null });
-    olayEkle(d, { tur: "asker-toplandi", devlet: t.devlet, metin: `${s.ad}: ${t.asker} asker hazır; yeni ordu kuruldu.` });
+      moral: DENGE.MORAL_EN_YUKSEK, tutum: "dengeli", cekiliyor: false, muharebe: null };
+    d.ordular.push(o);
+    // TASK-0036: toplanma şehrine yürür; yol kapanmışsa burada yeni ordu olarak kalır
+    const h = t.toplanma !== undefined ? d.sehirler[t.toplanma] : undefined;
+    const hn = h ? b.ag?.dugumler[h.dugum] : undefined;
+    const r = h && hn && b.ag && h.devlet === t.devlet ? rotaBul(d, b.ag, o, { ...(b.sehirKonumlari?.[t.toplanma!] ?? hn), dugum: h.dugum }) : null;
+    if (r?.gecerli && r.adimlar.length) {
+      o.rota = r.adimlar;
+      o.hedef = { x: r.adimlar[r.adimlar.length - 1].x, y: r.adimlar[r.adimlar.length - 1].y };
+      o.toplanma = t.toplanma;
+      olayEkle(d, { tur: "asker-toplandi", devlet: t.devlet, metin: `${s.ad}: ${t.asker} asker hazır; ${h!.ad}'daki toplanmaya yürüyor (${r.gun} gün).` });
+    } else olayEkle(d, { tur: "asker-toplandi", devlet: t.devlet, metin: `${s.ad}: ${t.asker} asker hazır; yeni ordu kuruldu.` });
     return false;
   });
+}
+
+/** Düğümde bekleyen kendi ordusu (yürüyüş, muharebe, geri çekilme ve kuşatma dışında); en kalabalığı. */
+export function toplanmaOrdusu(d: DunyaDurumu, devlet: number, dugum: number, haric = -1): OrduDurumu | undefined {
+  return d.ordular.filter((o) => o.devlet === devlet && o.dugum === dugum && o.id !== haric && !o.rota.length && o.muharebe === null
+    && !o.cekiliyor && o.toplanma === undefined && !d.kusatmalar.some((k) => k.ordular.includes(o.id)))
+    .reduce<OrduDurumu | undefined>((a, o) => (!a || o.asker > a.asker ? o : a), undefined);
+}
+
+/** TASK-0036: toplanma şehrine varan birlik oradaki orduya katılır; yoksa ilk varan ordu olur ve sonrakileri bekler. */
+export function toplanmayaKatil(d: DunyaDurumu, o: OrduDurumu): boolean {
+  const sehir = o.toplanma;
+  delete o.toplanma;
+  if (sehir === undefined || d.sehirler[sehir]?.dugum !== o.dugum) return false;
+  const a = toplanmaOrdusu(d, o.devlet, o.dugum, o.id);
+  if (!a) { o.ad = `${d.sehirler[sehir].ad} Ordusu`; return false; }
+  a.moral = Math.floor((a.moral * a.asker + o.moral * o.asker) / (a.asker + o.asker));
+  a.kompozisyon = kompozisyonTopla(a.kompozisyon, o.kompozisyon);
+  a.asker += o.asker;
+  a.hiz = kompozisyonHizi(a.kompozisyon, HAREKET.TEMEL_HIZ);
+  d.ordular = d.ordular.filter((x) => x.id !== o.id);
+  olayEkle(d, { tur: "ordu-birlesti", devlet: a.devlet, metin: `${o.ad}, ${d.sehirler[sehir].ad}'da ${a.ad} ile birleşti (${sayiMetni(a.asker)} asker).` });
+  return true;
 }
 
 export function maaslariOde(d: DunyaDurumu): void {

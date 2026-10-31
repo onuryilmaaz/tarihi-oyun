@@ -447,9 +447,10 @@ async function baslat() {
     const bedel = sayiUygun ? toplamaMaliyeti(asker, ozet.toplamaKurali.bedelYuzde, birim) : 0;
     $("toplamaBilgi").textContent = sehir
       ? `Kullanılabilir insan gücü: ${sehir.insanGucu.toLocaleString("tr-TR")}. ${ozet.toplamaKurali.gun} gün; bedel: ${bedel.toLocaleString("tr-TR")}.`
-        + (!sehir.uygun ? (sehir.ayaklanma ? " Ayaklanmada asker toplanamaz." : " Şehir ve çevresi kontrolünüzde olmalı.") : !sayiUygun ? " Pozitif tam sayı girin." : asker > sehir.insanGucu ? " İnsan gücü yetersiz." : ozet.kullanilabilirHazine < bedel ? " Hazine yetersiz; borçlanma yoktur." : " Yeni ordu şehirde kurulur.")
+        + (!sehir.uygun ? (sehir.ayaklanma ? " Ayaklanmada asker toplanamaz." : " Şehir ve çevresi kontrolünüzde olmalı.") : !sayiUygun ? " Pozitif tam sayı girin." : asker > sehir.insanGucu ? " Bu şehrin insan gücü yetmiyor; “Ordu kur” eksiği yakın şehirlerden toplar." : ozet.kullanilabilirHazine < bedel ? " Hazine yetersiz; borçlanma yoktur." : " Yeni ordu şehirde kurulur.")
       : "Asker toplanabilecek şehriniz yok.";
     $<HTMLButtonElement>("toplaBtn").disabled = mesgul || !sehir?.uygun || !sayiUygun || asker > sehir.insanGucu || ozet.kullanilabilirHazine < bedel;
+    $<HTMLButtonElement>("orduKurBtn").disabled = mesgul || !sehir?.uygun || !sayiUygun; // TASK-0036: yeterlilik simde denetlenir
   };
   $("toplamaSehir").onchange = toplamaBilgisi;
   $("toplamaBirim").onchange = toplamaBilgisi;
@@ -457,6 +458,9 @@ async function baslat() {
   $("toplaBtn").onclick = () => emirGonder({ tur: "askerTopla", sehir: Number($<HTMLSelectElement>("toplamaSehir").value),
     asker: $<HTMLInputElement>("toplamaAsker").valueAsNumber, birim: $<HTMLSelectElement>("toplamaBirim").value as BirimTuru },
     "Asker toplama emri verildi; bir sonraki turda başlar.");
+  $("orduKurBtn").onclick = () => emirGonder({ tur: "orduKur", sehir: Number($<HTMLSelectElement>("toplamaSehir").value),
+    asker: $<HTMLInputElement>("toplamaAsker").valueAsNumber, birim: $<HTMLSelectElement>("toplamaBirim").value as BirimTuru },
+    "Ordu kurma emri verildi: asker yakın şehirlerde toplanacak, hazır olanlar bu şehirde birleşecek.");
   $("toplamaListesi").addEventListener("click", (e) => {
     const b = (e.target as HTMLElement).closest<HTMLElement>("[data-toplama-iptal]");
     if (b) emirGonder({ tur: "toplamaIptal", id: Number(b.dataset.toplamaIptal) }, "Toplama iptal emri verildi; bedel bir sonraki turda iade edilir.");
@@ -955,7 +959,7 @@ async function baslat() {
       baslik = `${c.ad} · ${h.paket.devletler[c.devlet].ad}`;
       maddeler.push(["Şehri aç", () => gorunum.secVeGit({ tur: "sehir", id: sehir })]);
       if (c.devlet === oyuncu && c.kontrol === oyuncu) {
-        maddeler.push(["Asker topla…", () => {
+        maddeler.push(["Asker topla / ordu kur…", () => {
           sekmeAc("ordu");
           const sec = $<HTMLSelectElement>("toplamaSehir");
           if ([...sec.options].some((o) => o.value === String(sehir))) { sec.value = String(sehir); sec.dispatchEvent(new Event("change")); }

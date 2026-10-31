@@ -86,25 +86,35 @@ function birlestir(harita, esik, haric) {
   const kumeSehirli = new Set(sehirli);
 
   /** Bir parçanın (ya da birimin) aynı sahipli, başka kümedeki komşuları → ortak sınır uzunluğu. */
-  const komsular = (parcaListesi, kendiKok, d) => {
+  const komsular = (parcaListesi, kendiKok, d, sehirKomsusu = false) => {
     const m = new Map();
     for (const pi of parcaListesi) for (const r of parcalar[pi].p.flat()) {
       const k = r < 0 ? ~r : r;
       for (const qi of yayParcalari.get(k)) {
         const hedef = kok(parcalar[qi].birim);
-        if (hedef === kendiKok || B[parcalar[qi].birim].d !== d || haric.has(parcalar[qi].birim)) continue;
+        if (hedef === kendiKok || haric.has(parcalar[qi].birim)) continue;
+        if (sehirKomsusu ? !B[parcalar[qi].birim].s || B[parcalar[qi].birim].d < 0 : B[parcalar[qi].birim].d !== d) continue;
         m.set(hedef, (m.get(hedef) ?? 0) + yayUzunlugu(k));
       }
     }
     return [...m].sort((a, b) => b[1] - a[1] || a[0] - b[0]);
   };
 
-  // 1) Kopuk küçük parçalar: en büyük parça yerinde kalır, ötekiler komşuya taşınır
+  // 1) Kopuk küçük parçalar: en büyük parça yerinde kalır, ötekiler komşuya taşınır.
+  // Şehir toprağında (s) şehrin bulunduğu parça kalır; öteki kopuk parçalar (ör. boğazın karşı yakası) alan sınırı
+  // olmadan, devlet fark etmeksizin en uzun ortak sınırlı komşu şehir toprağına geçer (DEC-0074: sınır şehri izler)
+  const sehirNoktasi = new Map(harita.sehirler.map((c) => [c.ad, c]));
   let tasinanParca = 0;
   B.forEach((b, i) => {
     if (birimParcalari[i].length < 2 || haric.has(i)) return;
-    const sirali = [...birimParcalari[i]].sort((x, y) => parcalar[y].alan - parcalar[x].alan);
+    const c = b.s ? sehirNoktasi.get(b.s) : undefined;
+    const sehirParcasi = c ? birimParcalari[i].find((pi) => icinde(halka(parcalar[pi].p[0]), c.x, c.y)) : undefined;
+    const sirali = [...birimParcalari[i]].sort((x, y) => (y === sehirParcasi) - (x === sehirParcasi) || parcalar[y].alan - parcalar[x].alan);
     for (const pi of sirali.slice(1)) {
+      if (sehirParcasi !== undefined) {
+        const [hedef] = komsular([pi], i, b.d, true);
+        if (hedef) { parcalar[pi].birim = hedef[0]; tasinanParca++; continue; }
+      }
       if (parcalar[pi].alan >= esik) continue;
       const [hedef] = komsular([pi], i, b.d);
       if (!hedef) continue; // ada: yerinde kalır

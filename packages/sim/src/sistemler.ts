@@ -13,7 +13,7 @@ import { gundenTarih } from "./takvim";
 import { orduIlerlet } from "./hareket";
 import { moralToparla, muharebeGunleri, muharebeleriBaslat } from "./savas";
 import type { Baglam } from "./emirler";
-import { devletMaasi, ikmalVeMaasMorali, maaslariOde, toplamalariIlerlet } from "./ordu";
+import { devletMaasi, ikmalVeMaasMorali, maaslariOde, toplamalariIlerlet, toplanmayaKatil } from "./ordu";
 import { prototipGelirleri } from "./ekonomi";
 import { DENGE } from "./denge";
 import { isgalleriIlerlet, kusatmalariIlerlet, varincaKusat } from "./kusatma";
@@ -45,13 +45,16 @@ export const SISTEMLER: Sistem[] = [
     id: "ordu-hareket",
     siklik: "gunluk",
     calistir(d, b) {
-      for (const o of d.ordular) {
+      for (const o of [...d.ordular]) { // kopya: toplanmaya katılan ordu listeden çıkar
         if (!o.rota.length || o.muharebe !== null) continue; // muharebedeki ordu yürümez
         if (orduIlerlet(o)) {
           o.hedef = null;
           if (o.cekiliyor) {
             o.cekiliyor = false;
+            delete o.toplanma;
             olayEkle(d, { tur: "ordu-vardi", devlet: o.devlet, metin: `${o.ad} geri çekilmeyi tamamladı.` });
+          } else if (o.toplanma !== undefined) {
+            if (!toplanmayaKatil(d, o)) olayEkle(d, { tur: "ordu-vardi", devlet: o.devlet, metin: `${o.ad} toplanma yerine vardı.` });
           } else {
             olayEkle(d, { tur: "ordu-vardi", devlet: o.devlet, metin: `${o.ad} hedefine vardı.` });
             varincaKusat(d, b, o); // TASK-0027: düşman şehrinin önündeyse kuşatma kendiliğinden başlar

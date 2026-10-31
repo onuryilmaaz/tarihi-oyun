@@ -1,20 +1,22 @@
 {
  "indeks": 2155,
- "ad": "Nové Mesto nad Váhom",
- "ulke": "Slovakia",
- "d": 27,
+ "ad": "Znaym",
+ "ulke": "Austria",
+ "d": 66,
  "k": "tahmin",
- "s": "Nové Mesto nad Váhom",
+ "s": "Znaym",
  "p": [
   [
    [
-    -10607,
-    -10660,
-    -10665,
     10767,
+    -10568,
     10768,
     10769,
-    10770
+    10770,
+    -10763
+   ],
+   [
+    10771
    ]
   ]
  ]

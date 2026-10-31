@@ -1,5 +1,5 @@
 {
-  "aciklama": "TASK-0029: Osmanlı sancak/eyalet başlangıç taslağı — agent tahmini [TASLAK]. Merkezler 1453'e yakın tarihî sancak merkezlerinin oyundaki en yakın şehirleridir; her Osmanlı şehri kendi kıtasındaki (Rumeli: Avrupa, Anadolu/Rum: Asya) en yakın merkeze bağlanır. Sancakbeyi adları kurgusaldır.",
+  "aciklama": "TASK-0029: Osmanlı sancak/eyalet başlangıç taslağı — agent tahmini [TASLAK]. Merkezler 1453'e yakın tarihî sancak merkezlerinin oyundaki en yakın şehirleridir; her Osmanlı şehri kendi kıtasındaki (Rumeli: Avrupa, Anadolu/Rum: Asya) en yakın merkeze bağlanır. Sancakbeyi adları kurgusaldır. Bir sancağın \"sehirler\" listesi en yakın merkez kuralının yerine geçer (ör. Üsküdar → Kocaeli).",
   "devlet": "osm",
   "eyaletler": [
     { "id": "rumeli", "ad": "Rumeli", "merkez": "Sofya", "kita": "avrupa" },
@@ -23,7 +23,7 @@
     { "ad": "Avlonya", "merkez": "Berat", "eyalet": "rumeli", "bey": "Balaban Bey" },
     { "ad": "Ohri", "merkez": "Manastır", "eyalet": "rumeli", "bey": "Davud Bey" },
     { "ad": "Hüdavendigâr", "merkez": "Bursa", "eyalet": "anadolu", "bey": "Mahmud Bey" },
-    { "ad": "Kocaeli", "merkez": "Ada", "eyalet": "anadolu", "bey": "Kasım Bey" },
+    { "ad": "Kocaeli", "merkez": "Ada", "eyalet": "anadolu", "bey": "Kasım Bey", "sehirler": ["Üsküdar"] },
     { "ad": "Karesi", "merkez": "Balıkesir", "eyalet": "anadolu", "bey": "Firuz Bey" },
     { "ad": "Saruhan", "merkez": "Akhisar", "eyalet": "anadolu", "bey": "İlyas Bey" },
     { "ad": "Aydın", "merkez": "Aydın", "eyalet": "anadolu", "bey": "Halil Bey" },

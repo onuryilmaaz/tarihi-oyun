@@ -10,6 +10,14 @@ Bağlayıcı kurallar: `AGENTS.md`, `MASTER_SPEC.md`, `DECISIONS.md`.
 
 ## 0. En son — BURADAN BAŞLA
 
+- **TASK-0035 (AI harcıyor, teknoloji ×2, DEC-0080) ve TASK-0036 (tek emirle ordu kurma, DEC-0081) uygulandı,
+  COMMIT EDİLMEDİ, kullanıcı testi bekliyor (2026-10-31).** Son commit `de19919e` (TASK-0032/0033/0034 dahil).
+  Açık: Ming hâlâ ~286 bin hazine biriktiriyor (ordu hedefi toprak sayısına bağlı); Le Havre bir sonraki senaryo
+  üretiminde düşer; "Ordu kur" toplama listesinde her şehri ayrı satır gösteriyor (gruplama yapılabilir).
+  Aynı oturumda İstanbul düzeltmesi: bütün dünya grubunda ızgara kaba olduğu için Konstantiniyye bölgesi boğazı
+  aşıyordu; `birim-birlestir.mjs` artık şehirsiz kopuk parçaları komşu şehre veriyor. Senaryo yeniden üretildi ve
+  `veri/geom` yeniden ayrıldı (~1700 dosya değişti).
+
 - **TASK-0031 commit edildi (`8bb8d856`). TASK-0032 (denge), TASK-0033 (idari birimler bütün devletlerde), TASK-0034
   (tarihî adlar) uygulandı, COMMIT EDİLMEDİ, kullanıcı testi bekliyor (2026-10-31).** Açık gözlemler: AI hazine
   biriktiriyor; büyük AI'lar 10 yılda bütün teknolojileri bitiriyor; Le Havre bir sonraki senaryo üretiminde düşer. Sıradaki (DEC-0076): (4) Osmanlı sancak sistemi, (5) dünyaya

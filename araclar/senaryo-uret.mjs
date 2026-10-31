@@ -149,24 +149,27 @@ fs.writeFileSync(new URL("harita.json", hedef), haritaMetni);
 {
   const v = JSON.parse(fs.readFileSync(new URL("sancaklar.json", hedef), "utf8"));
   const enlem = (c) => millerLat(c.y / 1e4), boylam = (c) => c.x / 1e4;
-  // Boğazlar ve Ege hattı: Avrupa yakası (Rumeli) mi
-  const avrupada = (c) => boylam(c) < 26.2 || (enlem(c) >= 40.6 && boylam(c) < 29.05) || (enlem(c) >= 40.4 && boylam(c) < 26.8);
+  // Boğazlar ve Ege hattı: Avrupa yakası (Rumeli) mi. 29.0: İstanbul Boğazı (Üsküdar 29.015 Anadolu yakasında)
+  const avrupada = (c) => boylam(c) < 26.2 || (enlem(c) >= 40.6 && boylam(c) < 29.0) || (enlem(c) >= 40.4 && boylam(c) < 26.8);
   const kita = Object.fromEntries(v.eyaletler.map((e) => [e.id, e.kita]));
   const adIndeks = new Map(senaryo.sehirler.map((c, i) => [c.ad, i]));
   const sancaklar = v.sancaklar.filter((s) => {
     const m = adIndeks.get(s.merkez);
     if (m === undefined || senaryo.sehirler[m].devlet !== v.devlet) { console.warn("sancak merkezi bulunamadı:", s.ad, s.merkez); return false; }
     return true;
-  }).map((s) => ({ ...s, sehirler: [] }));
+  }).map(({ sehirler: ek, ...s }) => ({ ...s, ek, sehirler: [] }));
   const km = (a, b) => Math.hypot((boylam(a) - boylam(b)) * Math.cos((enlem(a) * Math.PI) / 180), enlem(a) - enlem(b));
+  // Elle bağlananlar (sancaklar.json'da sancağın "sehirler" listesi): en yakın merkez kuralının tarihe uymadığı yerler (ör. Üsküdar → Kocaeli)
+  const elle = new Map(sancaklar.flatMap((s) => (s.ek ?? []).map((a) => [a, s])));
   for (const c of senaryo.sehirler) {
     if (c.devlet !== v.devlet) continue;
+    if (elle.has(c.ad)) { elle.get(c.ad).sehirler.push(c.ad); continue; }
     const yaka = avrupada(c) ? "avrupa" : "asya";
     const adaylar = sancaklar.filter((s) => kita[s.eyalet] === yaka);
     const en = (adaylar.length ? adaylar : sancaklar).reduce((a, s) => (km(c, senaryo.sehirler[adIndeks.get(s.merkez)]) < km(c, senaryo.sehirler[adIndeks.get(a.merkez)]) ? s : a));
     en.sehirler.push(c.ad);
   }
-  senaryo.sancaklar = [{ devlet: v.devlet, eyaletler: v.eyaletler.map(({ id, ad, merkez }) => ({ id, ad, merkez })), sancaklar }];
+  senaryo.sancaklar = [{ devlet: v.devlet, eyaletler: v.eyaletler.map(({ id, ad, merkez }) => ({ id, ad, merkez })), sancaklar: sancaklar.map(({ ek: _ek, ...s }) => s) }];
   console.log("sancaklar:", sancaklar.map((s) => `${s.ad}:${s.sehirler.length}`).join(" "));
 
   // TASK-0033: diğer devletler (6+ şehir) için idari birimler otomatik: şehirler yakınlığa göre ~5'erli kümelere,

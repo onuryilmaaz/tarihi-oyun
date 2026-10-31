@@ -139,7 +139,7 @@ describe("teknoloji ağacı (5c)", () => {
     emirVer(d, { tur: "arastir", teknoloji: "daimiOrdu" });
     turuIlerlet(d);
     const e = yukle(kaydet(d), d.senaryo);
-    for (let i = 0; i < 8; i++) { turuIlerlet(d); turuIlerlet(e); }
+    for (let i = 0; i < Math.ceil(DENGE.TEKNOLOJI.daimiOrdu.sure / 30); i++) { turuIlerlet(d); turuIlerlet(e); } // süre denge.ts'ten
     expect(d.devletler[0].teknolojiler).toEqual(["daimiOrdu"]);
     expect(durumOzeti(e)).toBe(durumOzeti(d));
   });

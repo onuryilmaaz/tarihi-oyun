@@ -176,6 +176,7 @@ export interface OrduDurumu {
   tutum: Tutum;
   cekiliyor: boolean; // yenilgi sonrası geri çekilme yürüyüşü
   muharebe: number | null; // katıldığı muharebe kimliği
+  toplanma?: number; // TASK-0036: varınca bu şehirde bekleyen kendi ordusuyla birleşir
 }
 
 export interface OlayKaydi {
@@ -199,6 +200,7 @@ export interface AskerToplama {
   birim: BirimTuru; // TASK-0019 (23)
   kalanGun: number;
   bedel: number; // iptalde tam iade edilen tutar (sonradan teknolojiyle oran değişse de sabit kalır)
+  toplanma?: number; // TASK-0036: hazır olunca bu şehre yürür ve oradaki orduya katılır
 }
 
 export interface DunyaDurumu {
@@ -489,7 +491,7 @@ export function degismezler(d: DunyaDurumu): string[] {
     for (const t of d.askerToplamalar) {
       if (!t || !tam(t.sehir) || !d.sehirler[t.sehir] || !tam(t.devlet) || !d.devletler[t.devlet]
         || !tam(t.asker) || t.asker <= 0 || !tam(t.kalanGun) || t.kalanGun < 0 || !tam(t.id) || !tam(t.bedel) || t.bedel < 0
-        || !BIRIM_TURLERI.includes(t.birim)) h.push("asker toplama geçersiz");
+        || !BIRIM_TURLERI.includes(t.birim) || (t.toplanma !== undefined && (!tam(t.toplanma) || !d.sehirler[t.toplanma]))) h.push("asker toplama geçersiz");
       else if (toplamaIdler.has(t.id)) h.push(`asker toplama kimliği tekrar ediyor: ${t.id}`);
       else toplamaIdler.add(t.id);
     }
@@ -506,6 +508,7 @@ export function degismezler(d: DunyaDurumu): string[] {
       h.push(`ordu ${i} kompozisyonu asker sayısıyla uyuşmuyor`); // TASK-0019
     if (![o.x, o.y, o.dugum, o.hiz, o.ilerleme].every(tam) || o.hiz <= 0) h.push(`ordu ${i} konum/hız tam sayı değil`);
     if (o.rota.some((a) => ![a.x, a.y, a.d, a.m].every(tam) || a.m <= 0)) h.push(`ordu ${i} rotası geçersiz`);
+    if (o.toplanma !== undefined && (!tam(o.toplanma) || !d.sehirler[o.toplanma])) h.push(`ordu ${i} toplanma yeri geçersiz`); // TASK-0036
     if (o.rota.length && o.ilerleme >= o.rota[0].m) h.push(`ordu ${i} ilerlemesi adımı aşıyor`);
     if (!tam(o.moral) || o.moral < 0 || o.moral > DENGE.MORAL_EN_YUKSEK) h.push(`ordu ${i} morali geçersiz`);
     if (o.muharebe !== null && !d.muharebeler.some((m) => m.id === o.muharebe)) h.push(`ordu ${i} olmayan bir muharebede`);

@@ -214,3 +214,25 @@ export function kalanYol(o: OrduDurumu): { m: number; gun: number } {
   const m = o.rota.reduce((s, a) => s + a.m, 0) - o.ilerleme;
   return { m, gun: Math.ceil(m / o.hiz) };
 }
+
+/** TASK-0036: bir düğümden geçilebilir bütün düğümlere efektif yol maliyeti (Dijkstra; ulaşılamayan: Infinity). */
+export function dugumMaliyetleri(d: DunyaDurumu, ag: HareketAgi, bas: number, devlet: number): Float64Array {
+  const maliyet = new Float64Array(ag.dugumler.length).fill(Infinity);
+  maliyet[bas] = 0;
+  const y = new Yigin();
+  y.ekle(0, bas);
+  while (!y.bos) {
+    const [c, u] = y.al();
+    if (c > maliyet[u]) continue;
+    for (const ki of ag.komsu[u]) {
+      const k = ag.kenarlar[ki];
+      const v = k.a === u ? k.b : k.a;
+      if (!gecilebilir(d, ag, v, devlet)) continue;
+      if (k.g && bogazKapali(d, k.ad, devlet)) continue;
+      const [s1, s2] = kenarAdimlari(ag, ki, u);
+      const yeni = c + s1.m + s2.m;
+      if (yeni < maliyet[v]) { maliyet[v] = yeni; y.ekle(yeni, v); }
+    }
+  }
+  return maliyet;
+}

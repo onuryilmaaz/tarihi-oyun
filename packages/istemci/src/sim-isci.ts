@@ -172,10 +172,10 @@ function ozet(durum: DunyaDurumu): Ozet {
       ...durum.askerToplamalar.filter((t) => t.devlet === durum.ayarlar.oyuncu).map((t) => {
         const s = durum.sehirler[t.sehir];
         const n = baglam.ag?.dugumler[s.dugum];
-        return { id: t.id, sehir: s.ad, asker: t.asker, birim: t.birim, kalanGun: t.kalanGun,
+        return { id: t.id, sehir: t.toplanma !== undefined ? `${s.ad} → ${durum.sehirler[t.toplanma].ad}` : s.ad, asker: t.asker, birim: t.birim, kalanGun: t.kalanGun,
           bekliyor: s.istikrar.ayaklanma || !n || s.kontrol !== t.devlet || durum.birimler[n.b]?.kontrol !== t.devlet, emir: false };
       }),
-      ...durum.emirKuyrugu.flatMap((e) => e.tur !== "askerTopla" ? [] : [{ id: null, sehir: durum.sehirler[e.sehir].ad,
+      ...durum.emirKuyrugu.flatMap((e) => e.tur !== "askerTopla" ? [] : [{ id: null, sehir: e.toplanma !== undefined && e.toplanma !== e.sehir ? `${durum.sehirler[e.sehir].ad} → ${durum.sehirler[e.toplanma].ad}` : durum.sehirler[e.sehir].ad,
         asker: e.asker, birim: e.birim ?? "piyade", kalanGun: toplamaSuresi(durum, durum.ayarlar.oyuncu), bekliyor: false, emir: true }]),
     ],
     planliKesinti: durum.planliKesintiler.map((k) => ({ tarih: tarihMetni(k.gun), neden: k.neden })),

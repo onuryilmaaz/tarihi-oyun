@@ -58,6 +58,7 @@ export const DENGE = {
   TEST_GELIR_BIRIM_BASINA: 10,
   INSAN_GUCU_YUZDE: 5, // şehir nüfusundan ek asker toplama havuzu; kendiliğinden yenilenmez
   TOPLAMA_GUN: 30,
+  ORDU_KUR_EN_COK_GUN: 30, // TASK-0036: tek emirle ordu kurmada toplanma şehrine en çok bu kadar günlük yürüyüşteki şehirler katılır [TASLAK]
   TOPLAMA_ASKER_BASINA_MALIYET_BINDE: 100, // 1000 asker → 100 hazine
   AYLIK_ASKER_MAASI_BINDE: 20, // 1000 asker → ayda 20 hazine
   MAAS_AKSAMASI_MORAL: 30, // hazine eksideyken günlük; toparlanma uygulanmaz
@@ -97,17 +98,17 @@ export const DENGE = {
   YAPI_AYLIK_GELIR: { tarla: 8, pazar: 10 }, // seviye başına, 20.000 nüfusta (TASK-0032: 15/20'den indi; 2.152 şehirli dünyada yatırım araziyi katbekat geçiyordu)
   // 5c — teknoloji ağacı (DEC-0035); bedel hazine, süre takvim günü
   ARASTIRMA_YUVASI: 2,
-  TEKNOLOJI: {
-    sulama: { bedel: 800, sure: 180 },
-    kervan: { bedel: 900, sure: 180 },
-    vergi: { bedel: 1500, sure: 270 },
-    top: { bedel: 1200, sure: 240 },
-    daimiOrdu: { bedel: 1000, sure: 180 },
-    kayit: { bedel: 1200, sure: 240 },
-    yargi: { bedel: 700, sure: 150 },
-    sayim: { bedel: 900, sure: 180 },
-    bayindirlik: { bedel: 1400, sure: 240 },
-    kalyon: { bedel: 1600, sure: 300 }, // 8a, DEC-0052
+  TEKNOLOJI: { // TASK-0035: bedel ve süre 2 katı (büyük AI'lar 10 yılda hepsini bitiriyordu)
+    sulama: { bedel: 1600, sure: 360 },
+    kervan: { bedel: 1800, sure: 360 },
+    vergi: { bedel: 3000, sure: 540 },
+    top: { bedel: 2400, sure: 480 },
+    daimiOrdu: { bedel: 2000, sure: 360 },
+    kayit: { bedel: 2400, sure: 480 },
+    yargi: { bedel: 1400, sure: 300 },
+    sayim: { bedel: 1800, sure: 360 },
+    bayindirlik: { bedel: 2800, sure: 480 },
+    kalyon: { bedel: 3200, sure: 600 }, // 8a, DEC-0052
   },
   YAPI_EN_YUKSEK_TEKNOLOJIYLE: { tarla: 4, pazar: 4, sur: 6 }, // sulama / kervan / bayındırlık
   KERVAN_PAZAR_EK_GELIR: 5,
@@ -280,4 +281,8 @@ export const DENGE = {
   YAPI_NUFUS_EN_COK_YUZDE: 150,
   GELISMISLIK_YATIRIM_ADIM: 3, // her bu kadar yatırım seviyesinde gelişmişlik +1
   YZ_YATIRIM_GERI_DONUS_AY: 60, // AI ve yerel yönetici kendini bu sürede ödemeyen yatırımı yapmaz
+  // TASK-0035: AI fazla parayı harcar [TASLAK]
+  YZ_ZENGIN_AY: 24, // hazine bu kadar aylık geliri aşarsa "zengin"
+  YZ_ZENGIN_ASKER_YUZDE: 150, // zengin AI'nın barış ordusu hedefi
+  YZ_ZENGIN_SUR_SEHIR: 3, // zengin AI başkent dışında en kalabalık bu kadar şehrine sur yapar
 };

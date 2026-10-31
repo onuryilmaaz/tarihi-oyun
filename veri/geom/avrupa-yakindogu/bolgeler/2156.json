@@ -1,21 +1,19 @@
 {
  "indeks": 2156,
- "ad": "Snina",
+ "ad": "Nové Mesto nad Váhom",
  "ulke": "Slovakia",
  "d": 27,
  "k": "tahmin",
- "s": "Snina",
+ "s": "Nové Mesto nad Váhom",
  "p": [
   [
    [
-    -10715,
-    -10667,
-    10771,
+    -10607,
+    -10660,
+    -10665,
     10772,
     10773,
-    10774
-   ],
-   [
+    10774,
     10775
    ]
   ]

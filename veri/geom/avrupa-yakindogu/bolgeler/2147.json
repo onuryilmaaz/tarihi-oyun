@@ -1,13 +1,15 @@
 {
  "indeks": 2147,
- "ad": "Heidelberg",
- "ulke": "Germany",
- "d": 70,
+ "ad": "Caen",
+ "ulke": "France",
+ "d": 57,
  "k": "tahmin",
- "s": "Heidelberg",
+ "s": "Caen",
  "p": [
   [
    [
+    -10138,
+    -10561,
     10719,
     10720,
     10721,
