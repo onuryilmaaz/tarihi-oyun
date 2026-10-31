@@ -1,21 +1,24 @@
 {
  "indeks": 2724,
- "ad": "Kaysone Phomvihane",
- "ulke": "Thailand",
- "d": 105,
+ "ad": "Bicapur",
+ "ulke": "India",
+ "d": 118,
  "k": "tahmin",
- "s": "Kaysone Phomvihane",
+ "s": "Bicapur",
  "p": [
   [
    [
-    13152,
-    -13170,
+    13263,
+    13264
+   ]
+  ],
+  [
+   [
+    -13194,
+    -13136,
+    -13253,
     13265,
-    13266,
-    13267,
-    -13233,
-    -13208,
-    -13151
+    13266
    ]
   ]
  ]

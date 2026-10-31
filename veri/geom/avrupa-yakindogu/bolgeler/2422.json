@@ -1,19 +1,18 @@
 {
  "indeks": 2422,
- "ad": "Växjö",
- "ulke": "Sweden",
- "d": 75,
+ "ad": "Volokolamsk settlement",
+ "ulke": "Russia",
+ "d": 39,
  "k": "tahmin",
- "s": "Växjö",
+ "s": "Volokolamsk settlement",
  "p": [
   [
    [
-    -11774,
-    11776,
-    -11734,
-    11777,
-    11778,
-    11779
+    -11626,
+    -11705,
+    11772,
+    11773,
+    11774
    ]
   ]
  ]

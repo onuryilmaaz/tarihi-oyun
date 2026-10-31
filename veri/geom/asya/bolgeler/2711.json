@@ -1,17 +1,18 @@
 {
  "indeks": 2711,
- "ad": "Yasothon",
- "ulke": "Thailand",
- "d": 105,
+ "ad": "Chirala",
+ "ulke": "India",
+ "d": 118,
  "k": "tahmin",
- "s": "Yasothon",
+ "s": "Chirala",
  "p": [
   [
    [
-    -13143,
-    -13152,
-    13207,
-    13208
+    -13153,
+    13201,
+    -13125,
+    13202,
+    13203
    ]
   ]
  ]

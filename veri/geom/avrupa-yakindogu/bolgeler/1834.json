@@ -1,20 +1,20 @@
 {
  "indeks": 1834,
- "ad": "Madrid city",
- "ulke": "Spain",
- "d": 52,
- "k": "ohm:2849131",
- "s": "Madrid city",
+ "ad": "Karaferye",
+ "ulke": "Greece",
+ "d": 0,
+ "k": "tahmin",
+ "s": "Karaferye",
  "p": [
   [
    [
-    -8870,
-    -8891,
-    -8894,
+    -8822,
+    -8767,
+    8974,
+    -8825,
     8975,
     8976,
-    8977,
-    8978
+    8977
    ]
   ]
  ]

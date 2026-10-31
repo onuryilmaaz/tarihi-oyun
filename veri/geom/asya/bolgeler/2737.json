@@ -1,34 +1,18 @@
 {
  "indeks": 2737,
- "ad": "Mrauk U",
- "ulke": "Myanmar",
- "d": 108,
+ "ad": "Jawaharnagar Secunderabad",
+ "ulke": "India",
+ "d": 117,
  "k": "tahmin",
- "s": "Mrauk U",
+ "s": "Jawaharnagar Secunderabad",
  "p": [
   [
    [
+    -13269,
+    -13296,
     13315,
     13316,
-    13317,
-    13318,
-    13319
-   ]
-  ],
-  [
-   [
-    13320
-   ]
-  ],
-  [
-   [
-    13321
-   ]
-  ],
-  [
-   [
-    13322,
-    13323
+    13317
    ]
   ]
  ]

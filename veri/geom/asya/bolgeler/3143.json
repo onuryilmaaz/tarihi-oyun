@@ -1,18 +1,20 @@
 {
  "indeks": 3143,
- "ad": "Pohang",
- "ulke": "South Korea",
- "d": 98,
+ "ad": "Ushsharbash",
+ "ulke": "China",
+ "d": 92,
  "k": "tahmin",
- "s": "Pohang",
+ "s": "Ushsharbash",
  "p": [
   [
    [
-    -14760,
-    14904,
-    14905,
-    14906,
-    14907
+    14899,
+    706,
+    3391,
+    14900,
+    -14587,
+    14901,
+    14902
    ]
   ]
  ]

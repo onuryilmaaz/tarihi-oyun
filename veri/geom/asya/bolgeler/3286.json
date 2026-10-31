@@ -1,17 +1,20 @@
 {
  "indeks": 3286,
- "ad": "Taşkent",
- "ulke": "Uzbekistan",
- "d": 90,
+ "ad": "Pingdingbu Town",
+ "ulke": "China",
+ "d": 97,
  "k": "tahmin",
- "s": "Taşkent",
+ "s": "Pingdingbu Town",
  "p": [
   [
    [
-    -15369,
-    -15288,
-    -15301,
-    15380
+    -15307,
+    -15365,
+    15372,
+    15373,
+    15374,
+    15375,
+    15376
    ]
   ]
  ]

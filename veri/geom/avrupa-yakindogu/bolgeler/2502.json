@@ -1,19 +1,18 @@
 {
  "indeks": 2502,
- "ad": "Murinsky urban settlement",
- "ulke": "Russia",
- "d": 40,
+ "ad": "Avesta",
+ "ulke": "Sweden",
+ "d": 75,
  "k": "tahmin",
- "s": "Murinsky urban settlement",
+ "s": "Avesta",
  "p": [
   [
    [
-    12132,
-    -12019,
     -12029,
-    12133,
-    12134,
-    12135
+    -12057,
+    -12115,
+    12130,
+    12131
    ]
   ]
  ]

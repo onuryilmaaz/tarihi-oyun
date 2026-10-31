@@ -1,18 +1,20 @@
 {
  "indeks": 3263,
- "ad": "Yutian Town",
- "ulke": "China",
- "d": 97,
+ "ad": "Higashi",
+ "ulke": "Japan",
+ "d": 99,
  "k": "tahmin",
- "s": "Yutian Town",
+ "s": "Higashi",
  "p": [
   [
    [
-    -15222,
-    -15226,
-    -15283,
-    15301,
-    -15276
+    15294
+   ]
+  ],
+  [
+   [
+    15295,
+    15296
    ]
   ]
  ]

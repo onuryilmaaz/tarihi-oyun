@@ -1,14 +1,15 @@
 {
  "indeks": 1796,
- "ad": "Selanik",
- "ulke": "Greece",
- "d": 0,
+ "ad": "Bayezid",
+ "ulke": "Turkey",
+ "d": 10,
  "k": "tahmin",
- "s": "Selanik",
+ "s": "Bayezid",
  "p": [
   [
    [
-    8833,
+    -8716,
+    -8721,
     8834,
     8835,
     8836,

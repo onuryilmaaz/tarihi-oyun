@@ -1,17 +1,18 @@
 {
  "indeks": 3141,
- "ad": "Diantou Town",
- "ulke": "China",
- "d": 97,
+ "ad": "Pohang",
+ "ulke": "South Korea",
+ "d": 98,
  "k": "tahmin",
- "s": "Diantou Town",
+ "s": "Pohang",
  "p": [
   [
    [
-    -14839,
-    -14831,
-    14900,
-    -14898
+    -14748,
+    14892,
+    14893,
+    14894,
+    14895
    ]
   ]
  ]

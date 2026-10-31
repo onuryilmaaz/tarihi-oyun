@@ -9,9 +9,9 @@ const millerY = (lat) => 1.25 * Math.log(Math.tan(Math.PI / 4 + 0.4 * lat * D2R)
 const millerLat = (y) => (2.5 * (Math.atan(Math.exp((y * D2R) / 1.25)) - Math.PI / 4)) / D2R;
 
 // Belediye, semt gibi idari birimler şehir sayılmaz
-const IDARI = /(Belediyesi|Municipality|Sector|Republic|Rayon|District|ilçesi|Oblast|Arrondissement|Kreis|Gemeinde|Comune|Municipio|Powiat|Gmina|Kommune|Borough|Bezirk|Quartier|Stadtteil|Okrug|Governorate|Province|County|Muhafaza|Region|Metropol)/i;
+const IDARI = /(Nahiyesi|Belediyesi|Municipality|Sector|Republic|Rayon|District|ilçesi|Oblast|Arrondissement|Kreis|Gemeinde|Comune|Municipio|Powiat|Gmina|Kommune|Borough|Bezirk|Quartier|Stadtteil|Okrug|Governorate|Province|County|Muhafaza|Region|Metropol)/i;
 
-export function sehirleriSec(harita, aday, haric = [], ek = []) {
+export function sehirleriSec(harita, aday, haric = [], ek = [], tarihiAdlar = {}) {
   const dislanan = new Set(haric);
   // Pilot devletler: başkenti aday kutularından birinin içinde olanlar (TASK-0030: birden çok kutu)
   // TASK-0031: kutunun grubu (aynı gruptaki devletler birlikte bölünür) ve şehirler arası en küçük mesafesi
@@ -66,13 +66,16 @@ export function sehirleriSec(harita, aday, haric = [], ek = []) {
   for (let o of [...aday.adaylar].sort((a, b) => puan(b) - puan(a) || a.qid.localeCompare(b.qid, "en"))) {
     if (IDARI.test(o.ad) || IDARI.test(o.en ?? "")) continue;
     o = { ...o, ad: o.ad.split(",")[0].trim() }; // "Boston, Lincolnshire" → "Boston" (ayırt edici ek)
+    // TASK-0034: 1453'teki ad (Türkçe ya da İngilizce günümüz adına göre); günümüz adı saklanır
+    const tarihi = tarihiAdlar[o.ad] ?? tarihiAdlar[o.en ?? ""];
+    if (tarihi && tarihi !== o.ad) o = { ...o, modernAd: o.ad, ad: tarihi };
     if (adlar.has(o.ad) || dislanan.has(o.ad)) continue;
     const c = { x: o.lon, y: millerY(o.lat) };
     const enAz = kutuBul(o.lon, o.lat)?.enAzKm ?? EN_AZ_KM;
     if (secilen.some((s) => km(s, c) < enAz)) continue;
     const d = devletBul(c.x, c.y);
     if (!pilot.has(d)) continue;
-    secilen.push({ ad: o.ad, x: c.x, y: Math.round(c.y * 1e4) / 1e4, d, b: 0, qid: o.qid, nufusGunumuz: o.nufusGunumuz });
+    secilen.push({ ad: o.ad, x: c.x, y: Math.round(c.y * 1e4) / 1e4, d, b: 0, qid: o.qid, nufusGunumuz: o.nufusGunumuz, ...(o.modernAd ? { modernAd: o.modernAd } : {}) });
     adlar.add(o.ad);
     eklenen++;
   }

@@ -1,23 +1,19 @@
 {
  "indeks": 3200,
- "ad": "Gangneung",
- "ulke": "South Korea",
- "d": 98,
+ "ad": "Zhenchuan Town",
+ "ulke": "China",
+ "d": 97,
  "k": "tahmin",
- "s": "Gangneung",
+ "s": "Zhenchuan Town",
  "p": [
   [
    [
-    -15099,
-    -15034,
-    -14906,
-    15104,
-    15105
-   ]
-  ],
-  [
-   [
-    15106
+    -15048,
+    -14961,
+    -14969,
+    -15074,
+    15097,
+    15098
    ]
   ]
  ]

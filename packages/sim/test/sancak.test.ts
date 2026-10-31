@@ -19,14 +19,14 @@ const S: SenaryoVerisi = {
   ],
   ag: { dugumler: Array.from({ length: 5 }, (_, b) => ({ b, x: b * 10000, y: 0, kx: 10000, ky: 10000, z: 100 })),
     kenarlar: Array.from({ length: 4 }, (_, a) => ({ a, b: a + 1, mx: a * 10000 + 5000, my: 0, da: 5000, db: 5000, n: 0, g: 0 })) },
-  sancaklar: {
+  sancaklar: [{
     devlet: "a",
     eyaletler: [{ id: "bati", ad: "Batı", merkez: "A1" }, { id: "dogu", ad: "Doğu", merkez: "A4" }],
     sancaklar: [
       { ad: "Paşa", eyalet: "bati", merkez: "A1", bey: "Ali Bey", sehirler: ["A1", "A2"] },
-      { ad: "Uç", eyalet: "dogu", merkez: "A4", bey: "Veli Bey", sehirler: ["A3", "A4"] },
+      { ad: "Uç", eyalet: "dogu", merkez: "A4", sehirler: ["A3", "A4"] }, // bey yok: ad havuzundan üretilir (TASK-0033)
     ],
-  },
+  }],
 };
 const B = { ag: agHazirla(S.ag!), sehirKonumlari: S.sehirler.map((s) => ({ x: s.x!, y: s.y! })) };
 const yeni = () => baslangicDurumu(S, { tohum: 1 });
@@ -37,6 +37,9 @@ describe("sancak sistemi (TASK-0029)", () => {
     expect(d.eyaletler.map((e) => e.id)).toEqual(["bati", "dogu"]);
     expect(d.sancaklar.map((s) => [s.ad, s.merkez, s.sehirler])).toEqual([["Paşa", 0, [0, 1]], ["Uç", 3, [2, 3]]]);
     expect(sehirSancaklari(d)).toEqual([0, 0, 1, 1, -1]);
+    // Test devleti tarihî tabloda yok → "latin" ad havuzu: kontluk/dükalık, kurgusal kont (TASK-0033)
+    expect(d.sancaklar[1].bey).toMatch(/^Kont /);
+    expect([d.sancaklar[0].tur, d.eyaletler[0].tur]).toEqual(["kontluk", "dükalık"]);
     expect(degismezler(d)).toEqual([]);
   });
 

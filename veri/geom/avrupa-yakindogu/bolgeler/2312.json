@@ -1,27 +1,19 @@
 {
  "indeks": 2312,
- "ad": "Bangor",
- "ulke": "United Kingdom",
- "d": 58,
+ "ad": "Ostrów Mazowiecka",
+ "ulke": "Poland",
+ "d": 36,
  "k": "tahmin",
- "s": "Bangor",
+ "s": "Ostrów Mazowiecka",
  "p": [
   [
    [
-    -11170,
-    -11361,
-    11381,
-    11382
-   ]
-  ],
-  [
-   [
-    11383
-   ]
-  ],
-  [
-   [
-    11384
+    -11294,
+    -11281,
+    -11367,
+    11375,
+    11376,
+    11377
    ]
   ]
  ]

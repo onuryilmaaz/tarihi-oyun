@@ -1,17 +1,20 @@
 {
  "indeks": 1880,
- "ad": "Karadeniz Ereğli",
- "ulke": "Turkey",
+ "ad": "Kavadar",
+ "ulke": "Macedonia",
  "d": 0,
  "k": "tahmin",
- "s": "Karadeniz Ereğli",
+ "s": "Kavadar",
  "p": [
   [
    [
-    -9039,
-    -9045,
-    9133,
-    9134
+    -9025,
+    -8976,
+    -8829,
+    9127,
+    9128,
+    9129,
+    9130
    ]
   ]
  ]

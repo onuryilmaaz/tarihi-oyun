@@ -6,12 +6,12 @@ import {
   tarihMetni, turSuresiAyarla, turuIlerlet, yukle, TUR_SURESI_ADLARI, type Baglam, type DunyaDurumu,
   kompozisyonMaasi, devletMaasi, emirDogrula, ikmalDurumu, kullanilabilirHazine, kullanilabilirInsanGucu, DENGE,
   barisBedeli, barisDevirOzeti, barisDogrula, kusatmaGucu, orduKusatmasi, savasSkoru,
-  butceOzeti, insaatMaliyeti, insaatSuresi, sehirYapiGeliri, yapiSeviyesi, yapiEnYuksek, pazarGeliriSeviyeBasina, YAPI_ADLARI, YAPI_TURLERI,
+  butceOzeti, insaatMaliyeti, insaatSuresi, sehirYapiGeliri, yapiSeviyesi, yapiEnYuksek, YAPI_ADLARI, YAPI_TURLERI,
   diplomasiOnHesap, etkiDegeri, hediyePuanBedeli, iliski, iliskiBilesenleri, ittifakDegerlendir, komsuMu, muttefik, muttefikleri, savasta,
   ticaretAnlasmasiVar, ticaretDegerlendir, saldirmazlikVar, saldirmazlikDegerlendir, efendisi,
   asayisAskeri, gerekenAsayis,
   hukumdarYasi, VERASET_ADLARI, yerelYonetimAyarla, sehirAdiDegistir, birlesmeAdaylari, sehirliBirimler,
-  sancakOzetleri, sancakYonetimiAyarla, sehirSancaklari, bolgeKontrolu, gorunurDonanmalar, kapasite, sehirMenzilinde, sehirTicareti, type Hukumdar,
+  sancakOzetleri, sancakYonetimiAyarla, sehirSancaklari, idariTerim, yapiSeviyeGeliri, gelismislikYuzde, bolgeKontrolu, gorunurDonanmalar, kapasite, sehirMenzilinde, sehirTicareti, type Hukumdar,
   ALAN_ADLARI, TEKNOLOJILER, teknolojiBul, biliyor, toplamaBedelYuzde, toplamaSuresi, etkiCarpani,
 } from "@tarihi/sim";
 import type { Istek, Ozet, Yanit } from "./sim-protokol";
@@ -54,7 +54,7 @@ function ozet(durum: DunyaDurumu): Ozet {
           return {
             yapi, ad: YAPI_ADLARI[yapi], seviye: yapiSeviyesi(s, yapi), enYuksek: yapiEnYuksek(durum, s.devlet, yapi),
             maliyet: insaatMaliyeti(durum, s, yapi), sure: insaatSuresi(durum, s.devlet, yapi),
-            gelirArtisi: yapi === "sur" ? 0 : yapi === "pazar" ? pazarGeliriSeviyeBasina(durum, s.devlet) : DENGE.YAPI_AYLIK_GELIR[yapi],
+            gelirArtisi: yapi === "sur" ? 0 : Math.floor((yapiSeviyeGeliri(durum, s, yapi) * gelismislikYuzde(s)) / 100), // TASK-0032
             uygun: dog.gecerli, neden: dog.gecerli ? null : dog.neden,
           };
         }),
@@ -226,8 +226,9 @@ function ozet(durum: DunyaDurumu): Ozet {
       s.devlet === durum.ayarlar.oyuncu && s.bagli < 0 ? [[i, birlesmeAdaylari(durum, baglam, i)]] : [])),
     sancaklar: sancakOzetleri(durum, durum.ayarlar.oyuncu),
     sehirSancak: sehirSancaklari(durum),
-    sancakAdlari: durum.sancaklar.map((s) => ({ ad: s.ad, eyalet: s.eyalet, devlet: s.devlet })),
-    eyaletler: durum.eyaletler.map((e) => ({ id: e.id, ad: e.ad })),
+    sancakAdlari: durum.sancaklar.map((s) => ({ ad: s.ad, eyalet: s.eyalet, devlet: s.devlet, tur: s.tur })),
+    eyaletler: durum.eyaletler.map((e) => ({ id: e.id, ad: e.ad, tur: e.tur })),
+    idariTerim: idariTerim(durum, durum.ayarlar.oyuncu),
     sehirBirlesmeleri: durum.sehirBirlesmeleri.filter((x) => x.devlet === durum.ayarlar.oyuncu)
       .map((x) => ({ merkez: x.merkez, katilan: x.katilan, kalanGun: x.kalanGun })),
     birimSahipleri: durum.birimler.map((b) => b.sahip),

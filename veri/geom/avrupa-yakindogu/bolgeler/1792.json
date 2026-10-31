@@ -1,31 +1,19 @@
 {
  "indeks": 1792,
- "ad": "Barrio Arroyo",
- "ulke": "Spain",
- "d": 52,
+ "ad": "Corigliano Calabro",
+ "ulke": "Italy",
+ "d": 45,
  "k": "ohm:2751179",
- "s": "Barrio Arroyo",
+ "s": "Corigliano Calabro",
  "p": [
   [
    [
-    -8669,
-    -8705,
-    -8804,
-    8814,
-    8815,
-    8816
-   ],
-   [
-    8817
-   ],
-   [
-    8818
-   ],
-   [
-    8819
-   ],
-   [
-    8820
+    8818,
+    -8060,
+    -8401,
+    8819,
+    8820,
+    -8814
    ]
   ]
  ]

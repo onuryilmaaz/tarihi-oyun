@@ -1,19 +1,19 @@
 {
  "indeks": 2275,
- "ad": "Cottbus",
- "ulke": "Germany",
- "d": 69,
+ "ad": "Zhytkavichy",
+ "ulke": "Belarus",
+ "d": 35,
  "k": "tahmin",
- "s": "Cottbus",
+ "s": "Zhytkavichy",
  "p": [
   [
    [
-    -11134,
-    -11161,
-    -11214,
-    11243,
-    11244,
-    11245
+    -11019,
+    -11115,
+    -11216,
+    11236,
+    11237,
+    -11208
    ]
   ]
  ]

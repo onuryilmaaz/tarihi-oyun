@@ -1,18 +1,17 @@
 {
  "indeks": 1952,
- "ad": "Varna",
- "ulke": "Bulgaria",
- "d": 0,
+ "ad": "Makhachkala agglomeration",
+ "ulke": "Russia",
+ "d": 14,
  "k": "tahmin",
- "s": "Varna",
+ "s": "Makhachkala agglomeration",
  "p": [
   [
    [
-    -9371,
-    9442,
-    9443,
-    9444,
-    9445
+    -9235,
+    -9294,
+    9437,
+    9438
    ]
   ]
  ]

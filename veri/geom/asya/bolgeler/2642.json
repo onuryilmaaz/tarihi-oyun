@@ -1,23 +1,17 @@
 {
  "indeks": 2642,
- "ad": "Kalpitiya",
- "ulke": "Sri Lanka",
- "d": 125,
+ "ad": "Pak Phun",
+ "ulke": "Thailand",
+ "d": 105,
  "k": "tahmin",
- "s": "Kalpitiya",
+ "s": "Pak Phun",
  "p": [
   [
    [
-    -12914,
-    -12916,
-    12924,
-    12925,
-    12926
-   ]
-  ],
-  [
-   [
-    12927
+    -12815,
+    -12853,
+    12920,
+    12921
    ]
   ]
  ]

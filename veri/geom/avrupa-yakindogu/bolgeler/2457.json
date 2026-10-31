@@ -1,19 +1,17 @@
 {
  "indeks": 2457,
- "ad": "Northeast Göteborg",
- "ulke": "Sweden",
- "d": 75,
+ "ad": "Vışni Voloçyok",
+ "ulke": "Russia",
+ "d": 42,
  "k": "tahmin",
- "s": "Northeast Göteborg",
+ "s": "Vışni Voloçyok",
  "p": [
   [
    [
-    11828,
-    -11909,
-    -11908,
-    -11907,
-    -11906,
-    11856
+    -11819,
+    -11857,
+    11899,
+    11900
    ]
   ]
  ]

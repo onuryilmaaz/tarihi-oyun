@@ -1,5 +1,11 @@
 # CHANGELOG
 
+## 2026-10-31 — TASK-0032/0033/0034: denge, idari birimler bütün devletlerde, tarihî adlar (Claude)
+
+- Denge: yatırım geliri nüfusla ölçekli, taban tarla 8 / pazar 10, gelişmişlik her 3 seviyede, AI 60 ay geri dönüş.
+- 88 devlette kültüre göre adlandırılmış otomatik idari birimler (kontluk, voyvodalık, tema, vilayet…).
+- 17 şehre 1453 adı (Ruha, Ayıntab, Revan…), şehir panelinde günümüzdeki adı. 10 yıllık test sınırı 120 sn.
+
 ## 2026-10-31 — TASK-0031: şehir merkezli harita bütün dünyaya yayıldı (Claude)
 
 - Asya, Afrika'nın güneyi ve Amerika (şehirler arası en az 90 km); 128 devlet, 2.152 şehir, 414 yeni liman.

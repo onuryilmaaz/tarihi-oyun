@@ -1,21 +1,19 @@
 {
  "indeks": 2227,
- "ad": "Ashford",
- "ulke": "United Kingdom",
- "d": 58,
+ "ad": "Ústí nad Labem",
+ "ulke": "Czech Republic",
+ "d": 66,
  "k": "tahmin",
- "s": "Ashford",
+ "s": "Ústí nad Labem",
  "p": [
   [
    [
-    -11040,
-    11075,
-    11076
-   ]
-  ],
-  [
-   [
-    11077
+    -10986,
+    -10863,
+    -10954,
+    11068,
+    11069,
+    11070
    ]
   ]
  ]

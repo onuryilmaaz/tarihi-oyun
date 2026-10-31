@@ -1,15 +1,20 @@
 {
  "indeks": 1976,
- "ad": "Mangup",
- "ulke": "Russia",
- "d": 31,
- "k": "ohm:2849210",
- "s": "Mangup",
+ "ad": "Öziçe",
+ "ulke": "Republic of Serbia",
+ "d": 16,
+ "k": "tahmin",
+ "s": "Öziçe",
  "p": [
   [
    [
-    9545,
-    9546
+    -9441,
+    -9444,
+    -9533,
+    9565,
+    9566,
+    9567,
+    9568
    ]
   ]
  ]

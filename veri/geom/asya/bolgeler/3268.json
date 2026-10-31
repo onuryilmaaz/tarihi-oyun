@@ -1,17 +1,19 @@
 {
  "indeks": 3268,
- "ad": "Baotou",
+ "ad": "Railway Station Town",
  "ulke": "China",
- "d": 94,
+ "d": 92,
  "k": "tahmin",
- "s": "Baotou",
+ "s": "Railway Station Town",
  "p": [
   [
    [
-    -15266,
-    15315,
-    15316,
-    -15310
+    15309,
+    -15259,
+    -14825,
+    -15203,
+    15310,
+    15311
    ]
   ]
  ]

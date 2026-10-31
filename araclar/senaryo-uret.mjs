@@ -26,7 +26,8 @@ const { harita: kirintisiz } = birimleriBirlestir(JSON.parse(fs.readFileSync(new
 // TASK-0025 pilot: Anadolu + Balkanlar'da şehir listesi Wikidata adaylarıyla genişler, toprak şehirlere bölünür
 const { harita: sehirli, pilot, rapor: sehirRaporu } = sehirleriSec(kirintisiz, JSON.parse(fs.readFileSync(new URL("sehirler-wikidata.json", hedef), "utf8")),
   JSON.parse(fs.readFileSync(new URL("sehir-haric.json", hedef), "utf8")).adlar,
-  JSON.parse(fs.readFileSync(new URL("sehir-ek.json", hedef), "utf8")).sehirler);
+  JSON.parse(fs.readFileSync(new URL("sehir-ek.json", hedef), "utf8")).sehirler,
+  JSON.parse(fs.readFileSync(new URL("sehir-tarihi-adlar.json", hedef), "utf8")).adlar);
 const etopo = etopoOku(new URL("veri-ham/etopo2022-0.2deg.csv", kok));
 const { harita: bolgeli, rapor: bolgeRaporu } = bolgeleriUret(sehirli, etopo, { pilot });
 const { harita: birlesik, rapor: birlesimRaporu } = birimleriBirlestir(bolgeli);
@@ -120,6 +121,7 @@ const senaryo = {
     nufus: nufusTahmini(s), // 1453 tahmini (sehir-nufus.json, 9b); yoksa günümüz nüfusundan (TASK-0025) ya da eski test değeri
     ...sehirBilgisi(s, nufusTahmini(s)),
     ...(s.qid ? { qid: s.qid } : {}),
+    ...(s.modernAd ? { modernAd: s.modernAd } : {}), // TASK-0034
     dugum: dugumBul(s.x, millerLat(s.y)), // hareket ağındaki düğüm (ordu konuşlanması, geri çekilme hedefi)
     x: Math.round(s.x * 10000),
     y: Math.round(s.y * 10000),
@@ -164,8 +166,51 @@ fs.writeFileSync(new URL("harita.json", hedef), haritaMetni);
     const en = (adaylar.length ? adaylar : sancaklar).reduce((a, s) => (km(c, senaryo.sehirler[adIndeks.get(s.merkez)]) < km(c, senaryo.sehirler[adIndeks.get(a.merkez)]) ? s : a));
     en.sehirler.push(c.ad);
   }
-  senaryo.sancaklar = { devlet: v.devlet, eyaletler: v.eyaletler.map(({ id, ad, merkez }) => ({ id, ad, merkez })), sancaklar };
+  senaryo.sancaklar = [{ devlet: v.devlet, eyaletler: v.eyaletler.map(({ id, ad, merkez }) => ({ id, ad, merkez })), sancaklar }];
   console.log("sancaklar:", sancaklar.map((s) => `${s.ad}:${s.sehirler.length}`).join(" "));
+
+  // TASK-0033: diğer devletler (6+ şehir) için idari birimler otomatik: şehirler yakınlığa göre ~5'erli kümelere,
+  // büyük devletlerde (40+ şehir) kümeler de üst birimlere toplanır. Merkez en kalabalık şehir; adlar ve unvanlar
+  // simde devletin ad havuzuna göre verilir (sancak/kontluk/voyvodalık/vilayet…).
+  const kumele = (ogeler, k) => { // ogeler: { c (şehir), agirlik }[]; tohumlar en ağır öğeler; 8 tur
+    let merkezler = [...ogeler].sort((a, b) => b.agirlik - a.agirlik || a.i - b.i).slice(0, k).map((o) => o.c);
+    let atama = [];
+    for (let tur = 0; tur < 8; tur++) {
+      atama = ogeler.map((o) => merkezler.reduce((en, m, j) => (km(o.c, m) < km(o.c, merkezler[en]) ? j : en), 0));
+      merkezler = merkezler.map((m, j) => {
+        const uye = ogeler.filter((_, t) => atama[t] === j);
+        if (!uye.length) return m;
+        const ox = uye.reduce((t, o) => t + boylam(o.c), 0) / uye.length, oy = uye.reduce((t, o) => t + enlem(o.c), 0) / uye.length;
+        return uye.reduce((en, o) => (Math.hypot(boylam(o.c) - ox, enlem(o.c) - oy) < Math.hypot(boylam(en.c) - ox, enlem(en.c) - oy) ? o : en)).c;
+      });
+    }
+    return merkezler.map((_, j) => ogeler.filter((_, t) => atama[t] === j)).filter((l) => l.length);
+  };
+  let otomatik = 0;
+  for (const dv of senaryo.devletler) {
+    if (dv.id === v.devlet) continue;
+    const sehirler = senaryo.sehirler.map((c, i) => ({ c, i, agirlik: c.nufus + (c.baskent ? 1e9 : 0) })).filter((o) => o.c.devlet === dv.id);
+    if (sehirler.length < 6) continue;
+    const kumeler = kumele(sehirler, Math.max(2, Math.round(sehirler.length / 5)));
+    const sn = kumeler.map((uye) => {
+      const merkez = [...uye].sort((a, b) => b.agirlik - a.agirlik || a.i - b.i)[0];
+      return { merkez, uye, agirlik: uye.reduce((t, o) => t + o.c.nufus, 0) + (merkez.c.baskent ? 1e9 : 0) };
+    });
+    const ust = sehirler.length >= 40
+      ? kumele(sn.map((x, i) => ({ c: x.merkez.c, i, agirlik: x.agirlik, x })), Math.max(2, Math.round(sn.length / 6))).map((l) => l.map((o) => o.x))
+      : [sn];
+    const eyaletler = ust.map((liste, j) => {
+      const m = [...liste].sort((a, b) => b.agirlik - a.agirlik)[0].merkez.c;
+      return { id: `${dv.id}-${j}`, ad: m.ad, merkez: m.ad, liste };
+    });
+    senaryo.sancaklar.push({
+      devlet: dv.id,
+      eyaletler: eyaletler.map(({ id, ad, merkez }) => ({ id, ad, merkez })),
+      sancaklar: eyaletler.flatMap((e) => e.liste.map((x) => ({ ad: x.merkez.c.ad, eyalet: e.id, merkez: x.merkez.c.ad, sehirler: x.uye.map((o) => o.c.ad) }))),
+    });
+    otomatik++;
+  }
+  console.log("otomatik idari birim:", otomatik, "devlet,", senaryo.sancaklar.slice(1).reduce((t, x) => t + x.sancaklar.length, 0), "birim");
 }
 
 // TASK-0028: toprağı denize değen ve kıyıya yakın şehirler liman olur. Kıyı = tek bir birimin kullandığı yay; deniz

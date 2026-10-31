@@ -1,19 +1,20 @@
 {
  "indeks": 2561,
- "ad": "Bure",
- "ulke": "Ethiopia",
- "d": 86,
+ "ad": "Gueckedougou",
+ "ulke": "Guinea",
+ "d": 79,
  "k": "tahmin",
- "s": "Bure",
+ "s": "Gueckedougou",
  "p": [
   [
    [
-    -1464,
+    470,
+    12580,
+    -12459,
+    12581,
+    12582,
     12583,
-    12584,
-    -12572,
-    12585,
-    1422
+    451
    ]
   ]
  ]

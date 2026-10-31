@@ -1,19 +1,17 @@
 {
  "indeks": 2099,
- "ad": "Besterce",
- "ulke": "Romania",
- "d": 27,
+ "ad": "Bruck an der Mur",
+ "ulke": "Austria",
+ "d": 65,
  "k": "tahmin",
- "s": "Besterce",
+ "s": "Bruck an der Mur",
  "p": [
   [
    [
-    -10357,
-    -10281,
-    -10274,
-    -10421,
-    10442,
-    10443
+    -10376,
+    -10415,
+    10434,
+    10435
    ]
   ]
  ]

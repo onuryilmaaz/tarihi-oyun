@@ -1,20 +1,17 @@
 {
  "indeks": 2071,
- "ad": "Proletarsk",
- "ulke": "Russia",
- "d": 32,
+ "ad": "Mariupol",
+ "ulke": "Ukraine",
+ "d": 30,
  "k": "ohm:2849500",
- "s": "Proletarsk",
+ "s": "Mariupol",
  "p": [
   [
    [
-    -9890,
-    10291,
-    10292,
-    -9571
-   ],
-   [
-    10293
+    10285,
+    -9563,
+    10286,
+    -10273
    ]
   ]
  ]

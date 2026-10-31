@@ -1,22 +1,22 @@
 {
  "indeks": 2532,
- "ad": "Mbanza Kongo",
- "ulke": "Angola",
- "d": 83,
+ "ad": "Zvishavane",
+ "ulke": "Zimbabwe",
+ "d": 84,
  "k": "tahmin",
- "s": "Mbanza Kongo",
+ "s": "Zvishavane",
  "p": [
   [
    [
+    12469,
+    -691,
+    12470,
     12471,
-    4275,
-    6289,
-    3049,
-    262,
     12472,
     12473,
     12474,
-    12475
+    12475,
+    -12466
    ]
   ]
  ]

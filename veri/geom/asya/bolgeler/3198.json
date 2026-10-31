@@ -1,18 +1,23 @@
 {
  "indeks": 3198,
- "ad": "Haizitan Town",
- "ulke": "China",
- "d": 97,
+ "ad": "Gangneung",
+ "ulke": "South Korea",
+ "d": 98,
  "k": "tahmin",
- "s": "Haizitan Town",
+ "s": "Gangneung",
  "p": [
   [
    [
-    -15003,
-    -14970,
-    -15083,
-    15089,
-    15090
+    -15087,
+    -15022,
+    -14894,
+    15092,
+    15093
+   ]
+  ],
+  [
+   [
+    15094
    ]
   ]
  ]

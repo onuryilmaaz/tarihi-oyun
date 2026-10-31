@@ -1,18 +1,20 @@
 {
  "indeks": 3400,
- "ad": "Tenochtitlan",
+ "ad": "Tzintzuntzan",
  "ulke": "Mexico",
- "d": 126,
+ "d": 128,
  "k": "tahmin",
- "s": "Tenochtitlan",
+ "s": "Tzintzuntzan",
  "p": [
   [
    [
-    15807,
-    -15818,
-    -15817,
-    -15816,
-    15802
+    -15764,
+    -15795,
+    15811,
+    15812,
+    6397,
+    15813,
+    15814
    ]
   ]
  ]

@@ -1,19 +1,18 @@
 {
  "indeks": 2368,
- "ad": "Maladzyechna",
- "ulke": "Belarus",
+ "ad": "Alytus",
+ "ulke": "Lithuania",
  "d": 35,
  "k": "tahmin",
- "s": "Maladzyechna",
+ "s": "Alytus",
  "p": [
   [
    [
-    -11522,
-    -11439,
-    -11543,
-    -11574,
-    11583,
-    11584
+    -11462,
+    -11466,
+    -11512,
+    11576,
+    11577
    ]
   ]
  ]

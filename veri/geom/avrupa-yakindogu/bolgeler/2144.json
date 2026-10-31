@@ -1,17 +1,18 @@
 {
  "indeks": 2144,
- "ad": "Paris",
- "ulke": "France",
- "d": 57,
+ "ad": "Rimavská Sobota",
+ "ulke": "Slovakia",
+ "d": 27,
  "k": "tahmin",
- "s": "Paris",
+ "s": "Rimavská Sobota",
  "p": [
   [
    [
-    -10429,
-    10716,
-    10717,
-    10718
+    10711,
+    -10570,
+    10712,
+    10713,
+    -10662
    ]
   ]
  ]

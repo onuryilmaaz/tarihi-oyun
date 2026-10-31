@@ -1,18 +1,19 @@
 {
  "indeks": 2777,
- "ad": "Thanh Hoa",
- "ulke": "Vietnam",
- "d": 100,
+ "ad": "Luang Prabang",
+ "ulke": "Laos",
+ "d": 103,
  "k": "tahmin",
- "s": "Thanh Hoa",
+ "s": "Luang Prabang",
  "p": [
   [
    [
-    -13435,
-    -13368,
-    13495,
-    13496,
-    13497
+    -13403,
+    -13406,
+    -13426,
+    13489,
+    13490,
+    -13479
    ]
   ]
  ]

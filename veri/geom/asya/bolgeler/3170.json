@@ -1,22 +1,19 @@
 {
  "indeks": 3170,
- "ad": "Seosan",
- "ulke": "South Korea",
- "d": 98,
+ "ad": "Huancheng Town",
+ "ulke": "China",
+ "d": 97,
  "k": "tahmin",
- "s": "Seosan",
+ "s": "Huancheng Town",
  "p": [
   [
    [
-    14902,
-    -14999,
-    -14998,
-    14938
-   ]
-  ],
-  [
-   [
-    14999
+    -14922,
+    -14887,
+    -14963,
+    14992,
+    14993,
+    14994
    ]
   ]
  ]

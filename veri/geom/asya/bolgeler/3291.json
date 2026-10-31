@@ -1,17 +1,20 @@
 {
  "indeks": 3291,
- "ad": "Kangbao Town",
+ "ad": "Weichang Town",
  "ulke": "China",
  "d": 97,
  "k": "tahmin",
- "s": "Kangbao Town",
+ "s": "Weichang Town",
  "p": [
   [
    [
-    -15347,
-    -15320,
-    -15389,
-    15396
+    -15364,
+    -15338,
+    -15352,
+    15389,
+    15390,
+    15391,
+    -15373
    ]
   ]
  ]

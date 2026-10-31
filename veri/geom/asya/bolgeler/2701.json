@@ -1,18 +1,19 @@
 {
  "indeks": 2701,
- "ad": "Quang Nghai",
- "ulke": "Vietnam",
- "d": 101,
+ "ad": "Nakhon Sawan",
+ "ulke": "Thailand",
+ "d": 105,
  "k": "tahmin",
- "s": "Quang Nghai",
+ "s": "Nakhon Sawan",
  "p": [
   [
    [
-    -13127,
-    -13134,
-    13172,
-    13173,
-    -13171
+    -13077,
+    -13124,
+    13168,
+    13169,
+    13170,
+    13171
    ]
   ]
  ]

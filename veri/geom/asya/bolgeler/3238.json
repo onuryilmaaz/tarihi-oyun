@@ -1,22 +1,17 @@
 {
  "indeks": 3238,
- "ad": "Tanghai Town",
- "ulke": "China",
- "d": 97,
+ "ad": "Kızılarbat",
+ "ulke": "Turkmenistan",
+ "d": 90,
  "k": "tahmin",
- "s": "Tanghai Town",
+ "s": "Kızılarbat",
  "p": [
   [
    [
-    -15221,
-    15223,
-    15224,
-    15225
-   ]
-  ],
-  [
-   [
-    15226
+    -15114,
+    -15134,
+    15218,
+    -15194
    ]
   ]
  ]

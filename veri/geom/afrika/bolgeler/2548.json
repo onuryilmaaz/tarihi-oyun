@@ -1,29 +1,23 @@
 {
  "indeks": 2548,
- "ad": "Zanzibar City",
- "ulke": "United Republic of Tanzania",
- "d": 85,
+ "ad": "Tshela",
+ "ulke": "Democratic Republic of the Congo",
+ "d": 83,
  "k": "tahmin",
- "s": "Zanzibar City",
+ "s": "Tshela",
  "p": [
   [
    [
-    12529
-   ]
-  ],
-  [
-   [
-    12530
-   ]
-  ],
-  [
-   [
-    12531
-   ]
-  ],
-  [
-   [
-    12532
+    12524,
+    -12507,
+    -12463,
+    -12524,
+    12525,
+    272,
+    282,
+    291,
+    284,
+    -651
    ]
   ]
  ]

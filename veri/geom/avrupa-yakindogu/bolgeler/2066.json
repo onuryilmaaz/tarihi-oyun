@@ -1,19 +1,18 @@
 {
  "indeks": 2066,
- "ad": "Sekelhisarı",
- "ulke": "Romania",
+ "ad": "Kiskunhalas",
+ "ulke": "Hungary",
  "d": 27,
  "k": "tahmin",
- "s": "Sekelhisarı",
+ "s": "Kiskunhalas",
  "p": [
   [
    [
-    -10100,
-    10270,
-    10271,
-    10272,
-    10273,
-    10274
+    -10155,
+    -10258,
+    10266,
+    10267,
+    -10191
    ]
   ]
  ]

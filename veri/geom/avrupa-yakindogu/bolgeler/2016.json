@@ -1,20 +1,19 @@
 {
  "indeks": 2016,
- "ad": "Clermont-Ferrand",
- "ulke": "France",
- "d": 57,
+ "ad": "Alessandria",
+ "ulke": "Italy",
+ "d": 46,
  "k": "tahmin",
- "s": "Clermont-Ferrand",
+ "s": "Alessandria",
  "p": [
   [
    [
-    -9496,
-    -9468,
-    -9416,
-    9954,
-    9955,
-    9956,
-    9957
+    9505,
+    9819,
+    -9954,
+    -9953,
+    -9952,
+    9772
    ]
   ]
  ]

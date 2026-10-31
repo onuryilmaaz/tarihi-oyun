@@ -1,20 +1,19 @@
 {
  "indeks": 2336,
- "ad": "Krychaw",
- "ulke": "Belarus",
- "d": 35,
+ "ad": "Neubrandenburg",
+ "ulke": "Germany",
+ "d": 71,
  "k": "tahmin",
- "s": "Krychaw",
+ "s": "Neubrandenburg",
  "p": [
   [
    [
-    -11391,
-    -11310,
-    -11314,
-    11459,
-    11460,
-    11461,
-    11462
+    -11431,
+    -11403,
+    -11439,
+    11454,
+    11455,
+    11456
    ]
   ]
  ]

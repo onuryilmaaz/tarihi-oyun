@@ -1,19 +1,20 @@
 {
  "indeks": 2294,
- "ad": "Northampton",
- "ulke": "United Kingdom",
- "d": 58,
+ "ad": "Berlin",
+ "ulke": "Germany",
+ "d": 69,
  "k": "tahmin",
- "s": "Northampton",
+ "s": "Berlin",
  "p": [
   [
    [
-    -11251,
-    -11173,
-    -11301,
-    11324,
-    11325,
-    11326
+    11247,
+    11315,
+    -11322,
+    -11321,
+    -11320,
+    11232,
+    11246
    ]
   ]
  ]

@@ -1,20 +1,18 @@
 {
  "indeks": 3265,
- "ad": "Higashi",
- "ulke": "Japan",
- "d": 99,
+ "ad": "Luntai Town",
+ "ulke": "China",
+ "d": 92,
  "k": "tahmin",
- "s": "Higashi",
+ "s": "Luntai Town",
  "p": [
   [
    [
-    15306
-   ]
-  ],
-  [
-   [
-    15307,
-    15308
+    -15278,
+    -15262,
+    15300,
+    15301,
+    15302
    ]
   ]
  ]

@@ -1,21 +1,18 @@
 {
  "indeks": 1711,
- "ad": "Santiago do Cacém",
- "ulke": "Portugal",
- "d": 54,
- "k": "tahmin",
- "s": "Santiago do Cacém",
+ "ad": "Córdoba",
+ "ulke": "Spain",
+ "d": 52,
+ "k": "ohm:2849131",
+ "s": "Córdoba",
  "p": [
   [
    [
-    7940,
-    8498,
-    -7944,
-    -8033,
-    -8197,
-    8496,
-    -7937,
-    8497
+    -8339,
+    -8308,
+    -8344,
+    -8420,
+    8494
    ]
   ]
  ]

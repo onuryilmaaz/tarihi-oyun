@@ -1,20 +1,20 @@
 {
  "indeks": 2332,
- "ad": "Parchim",
- "ulke": "Germany",
- "d": 71,
+ "ad": "Manchester",
+ "ulke": "United Kingdom",
+ "d": 58,
  "k": "tahmin",
- "s": "Parchim",
+ "s": "Manchester",
  "p": [
   [
    [
-    11441,
-    -11371,
-    -11416,
     11442,
+    -11423,
+    -11347,
+    -11351,
+    -11391,
     11443,
-    11444,
-    11445
+    11444
    ]
   ]
  ]

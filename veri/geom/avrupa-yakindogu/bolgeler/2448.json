@@ -1,19 +1,20 @@
 {
  "indeks": 2448,
- "ad": "Chusovskoye Urban Settlement",
- "ulke": "Russia",
- "d": 39,
+ "ad": "Valmiera",
+ "ulke": "Latvia",
+ "d": 38,
  "k": "tahmin",
- "s": "Chusovskoye Urban Settlement",
+ "s": "Valmiera",
  "p": [
   [
    [
-    11872,
-    11873,
-    11874,
-    11875,
-    11876,
-    11877
+    11868,
+    -11811,
+    -11756,
+    -11855,
+    11869,
+    11870,
+    11871
    ]
   ]
  ]

@@ -1,17 +1,18 @@
 {
  "indeks": 1864,
- "ad": "Segovia",
- "ulke": "Spain",
- "d": 52,
- "k": "ohm:2849131",
- "s": "Segovia",
+ "ad": "Giresun",
+ "ulke": "Turkey",
+ "d": 4,
+ "k": "tahmin",
+ "s": "Giresun",
  "p": [
   [
    [
-    -9031,
-    -8978,
-    9087,
-    9088
+    -9010,
+    -8930,
+    -8985,
+    9082,
+    9083
    ]
   ]
  ]

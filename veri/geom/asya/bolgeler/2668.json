@@ -1,17 +1,19 @@
 {
  "indeks": 2668,
- "ad": "Kanchipuram",
+ "ad": "Krishnagiri",
  "ulke": "India",
  "d": 118,
  "k": "tahmin",
- "s": "Kanchipuram",
+ "s": "Krishnagiri",
  "p": [
   [
    [
-    13037,
-    -13054,
-    -13053,
-    -13052
+    -13037,
+    -13003,
+    -13027,
+    13047,
+    13048,
+    13049
    ]
   ]
  ]

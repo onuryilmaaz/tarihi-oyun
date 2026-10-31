@@ -1,25 +1,18 @@
 {
  "indeks": 2759,
- "ad": "Kutupalong refugee camp",
- "ulke": "Myanmar",
- "d": 114,
+ "ad": "Vang Vieng",
+ "ulke": "Laos",
+ "d": 103,
  "k": "tahmin",
- "s": "Kutupalong refugee camp",
+ "s": "Vang Vieng",
  "p": [
   [
    [
-    13407
-   ]
-  ],
-  [
-   [
-    13319,
-    -13413,
-    -13412,
-    -13411,
-    -1262,
-    -13410,
-    -13409
+    -13301,
+    -13315,
+    13404,
+    13405,
+    -13402
    ]
   ]
  ]

@@ -8,7 +8,7 @@ import { olayEkle, type DunyaDurumu } from "./durum";
 import { DENGE } from "./denge";
 import { emirDogrula, emirUygula, kullanilabilirHazine, type Baglam, type Dogrulama, type Emir } from "./emirler";
 import { insaatMaliyeti, sehirdeInsaatVar, YAPI_ADLARI } from "./yatirim";
-import { pazarGeliriSeviyeBasina } from "./teknoloji";
+import { yapiSeviyeGeliri } from "./yatirim";
 
 export interface YerelYonetim { butce: number; altSinir: number; harcanan: number }
 export const bosYerelYonetim = (): YerelYonetim => ({ butce: 0, altSinir: 0, harcanan: 0 });
@@ -62,7 +62,7 @@ export function yerelYoneticiler(d: DunyaDurumu, b: Baglam): void {
       for (const yapi of ["tarla", "pazar"] as const) {
         const bedel = insaatMaliyeti(d, d.sehirler[i], yapi);
         if (bedel === null || bedel > kalan()) continue;
-        const gelir = yapi === "tarla" ? DENGE.YAPI_AYLIK_GELIR.tarla : pazarGeliriSeviyeBasina(d, oyuncu);
+        const gelir = yapiSeviyeGeliri(d, d.sehirler[i], yapi); // TASK-0032: gerçek getiri (oyuncunun bütçesi; süre sınırı yok)
         const oran = Math.floor((gelir * 100000) / bedel);
         if (!en || oran > en.oran) en = { sehir: i, yapi, oran, bedel };
       }

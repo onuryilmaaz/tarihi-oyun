@@ -1,20 +1,20 @@
 {
  "indeks": 3361,
- "ad": "San Miguel",
- "ulke": "Peru",
+ "ad": "El Alto",
+ "ulke": "Bolivia",
  "d": 130,
  "k": "tahmin",
- "s": "San Miguel",
+ "s": "El Alto",
  "p": [
   [
    [
+    15657,
+    34,
+    40,
     15658,
-    4025,
-    4013,
     15659,
     15660,
-    15661,
-    15662
+    -15653
    ]
   ]
  ]

@@ -1,18 +1,19 @@
 {
  "indeks": 2417,
- "ad": "Pavlovski Posad",
- "ulke": "Russia",
- "d": 39,
+ "ad": "Daugavpils",
+ "ulke": "Belarus",
+ "d": 38,
  "k": "tahmin",
- "s": "Pavlovski Posad",
+ "s": "Daugavpils",
  "p": [
   [
    [
-    -11672,
-    -11749,
-    11762,
-    11763,
-    -11743
+    -11706,
+    -11673,
+    -11716,
+    11754,
+    11755,
+    11756
    ]
   ]
  ]

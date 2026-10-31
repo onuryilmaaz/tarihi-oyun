@@ -1,17 +1,18 @@
 {
  "indeks": 2708,
- "ad": "Wancheng Town",
- "ulke": "China",
- "d": 97,
+ "ad": "Belgaum",
+ "ulke": "India",
+ "d": 118,
  "k": "tahmin",
- "s": "Wancheng Town",
+ "s": "Belgaum",
  "p": [
   [
    [
-    13195,
-    13196,
-    -13191,
-    13197
+    -12802,
+    -13110,
+    -13137,
+    13193,
+    13194
    ]
   ]
  ]

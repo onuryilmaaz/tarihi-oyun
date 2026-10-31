@@ -1,19 +1,17 @@
 {
  "indeks": 3150,
- "ad": "Şibirgan",
- "ulke": "Afghanistan",
- "d": 90,
+ "ad": "Lanzhou",
+ "ulke": "China",
+ "d": 97,
  "k": "tahmin",
- "s": "Şibirgan",
+ "s": "Lanzhou",
  "p": [
   [
    [
-    -14867,
-    -14703,
-    -14884,
-    14925,
-    14926,
-    14927
+    -14853,
+    -14812,
+    14919,
+    14920
    ]
   ]
  ]

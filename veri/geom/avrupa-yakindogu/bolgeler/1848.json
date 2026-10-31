@@ -1,19 +1,17 @@
 {
  "indeks": 1848,
- "ad": "Gence",
- "ulke": "Azerbaijan",
- "d": 10,
+ "ad": "Manastır",
+ "ulke": "Greece",
+ "d": 0,
  "k": "tahmin",
- "s": "Gence",
+ "s": "Manastır",
  "p": [
   [
    [
-    -8884,
-    -8814,
-    -9001,
-    9027,
-    9028,
-    9029
+    -8990,
+    -8977,
+    9024,
+    9025
    ]
   ]
  ]

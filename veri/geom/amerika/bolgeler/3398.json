@@ -1,19 +1,18 @@
 {
  "indeks": 3398,
- "ad": "Taxco",
+ "ad": "Tenochtitlan",
  "ulke": "Mexico",
  "d": 126,
  "k": "tahmin",
- "s": "Taxco",
+ "s": "Tenochtitlan",
  "p": [
   [
    [
+    15795,
+    -15806,
     -15805,
-    -15734,
-    -15796,
     -15804,
-    15807,
-    15808
+    15790
    ]
   ]
  ]

@@ -1,36 +1,20 @@
 {
  "indeks": 2281,
- "ad": "Byerastsye",
- "ulke": "Belarus",
- "d": 35,
+ "ad": "Korkinskoe urban settlement",
+ "ulke": "Russia",
+ "d": 34,
  "k": "tahmin",
- "s": "Byerastsye",
+ "s": "Korkinskoe urban settlement",
  "p": [
   [
    [
-    -11153,
-    -11123,
-    -11167,
-    11262,
-    11263,
     11264,
     11265,
-    11266
-   ],
-   [
-    11267
-   ],
-   [
-    11268
-   ],
-   [
-    11269
-   ],
-   [
+    11266,
+    11267,
+    11268,
+    11269,
     11270
-   ],
-   [
-    11271
    ]
   ]
  ]

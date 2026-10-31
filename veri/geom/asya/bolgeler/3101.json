@@ -1,17 +1,16 @@
 {
  "indeks": 3101,
- "ad": "Shangqiu",
- "ulke": "China",
- "d": 97,
+ "ad": "Kabil",
+ "ulke": "Afghanistan",
+ "d": 90,
  "k": "tahmin",
- "s": "Shangqiu",
+ "s": "Kabil",
  "p": [
   [
    [
-    -14669,
-    -14556,
-    -14741,
-    14741,
+    -14471,
+    -14599,
+    -14718,
     14742,
     14743
    ]

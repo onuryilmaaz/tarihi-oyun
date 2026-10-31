@@ -1,20 +1,19 @@
 {
  "indeks": 2283,
- "ad": "Korkinskoe urban settlement",
- "ulke": "Russia",
- "d": 34,
+ "ad": "Siedlce",
+ "ulke": "Poland",
+ "d": 36,
  "k": "tahmin",
- "s": "Korkinskoe urban settlement",
+ "s": "Siedlce",
  "p": [
   [
    [
-    11276,
-    11277,
-    11278,
+    -11191,
+    -11142,
+    -11255,
     11279,
     11280,
-    11281,
-    11282
+    11281
    ]
   ]
  ]

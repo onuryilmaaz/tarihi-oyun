@@ -1,19 +1,16 @@
 {
  "indeks": 2447,
- "ad": "İvanovo",
- "ulke": "Russia",
- "d": 39,
+ "ad": "Aberdeen",
+ "ulke": "United Kingdom",
+ "d": 59,
  "k": "tahmin",
- "s": "İvanovo",
+ "s": "Aberdeen",
  "p": [
   [
    [
-    -11747,
-    -11800,
-    -11752,
-    11869,
-    11870,
-    11871
+    -11796,
+    11866,
+    11867
    ]
   ]
  ]

@@ -1,19 +1,21 @@
 {
  "indeks": 2970,
- "ad": "Niujie Town",
- "ulke": "China",
- "d": 97,
+ "ad": "Rahim Yar Han",
+ "ulke": "Pakistan",
+ "d": 122,
  "k": "tahmin",
- "s": "Niujie Town",
+ "s": "Rahim Yar Han",
  "p": [
   [
    [
-    -14186,
-    -14129,
-    -14190,
-    14236,
-    14237,
-    14238
+    -14110,
+    -14159,
+    14230,
+    14231,
+    14232,
+    2681,
+    14233,
+    -14188
    ]
   ]
  ]

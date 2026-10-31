@@ -1,31 +1,20 @@
 {
  "indeks": 3392,
- "ad": "San Ignacio",
- "ulke": "Belize",
- "d": 129,
+ "ad": "Tlapa de Comonfort",
+ "ulke": "Mexico",
+ "d": 126,
  "k": "tahmin",
- "s": "San Ignacio",
+ "s": "Tlapa de Comonfort",
  "p": [
   [
    [
-    15752,
-    -15781,
-    -15780
-   ]
-  ],
-  [
-   [
-    15781
-   ]
-  ],
-  [
-   [
-    15784
-   ]
-  ],
-  [
-   [
-    15785
+    -15721,
+    -15727,
+    15780,
+    4581,
+    15781,
+    15782,
+    15783
    ]
   ]
  ]

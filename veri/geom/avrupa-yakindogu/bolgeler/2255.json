@@ -1,19 +1,17 @@
 {
  "indeks": 2255,
- "ad": "Reading",
- "ulke": "United Kingdom",
- "d": 58,
+ "ad": "Leipzig",
+ "ulke": "Germany",
+ "d": 68,
  "k": "tahmin",
- "s": "Reading",
+ "s": "Leipzig",
  "p": [
   [
    [
-    -11070,
-    -11042,
-    11171,
-    11172,
-    11173,
-    11174
+    -11098,
+    -11124,
+    11168,
+    11169
    ]
   ]
  ]

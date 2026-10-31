@@ -1,18 +1,20 @@
 {
  "indeks": 3303,
- "ad": "Kaskelen",
- "ulke": "Kyrgyzstan",
- "d": 92,
+ "ad": "Tasboget",
+ "ulke": "Uzbekistan",
+ "d": 91,
  "k": "tahmin",
- "s": "Kaskelen",
+ "s": "Tasboget",
  "p": [
   [
    [
-    15453,
+    15445,
+    -15280,
+    -15160,
     -15360,
-    -15418,
-    15454,
-    15455
+    15446,
+    15447,
+    15448
    ]
   ]
  ]

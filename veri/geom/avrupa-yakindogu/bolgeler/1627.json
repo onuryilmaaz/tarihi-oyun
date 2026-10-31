@@ -1,22 +1,17 @@
 {
  "indeks": 1627,
- "ad": "Agrigento",
- "ulke": "Italy",
- "d": 53,
- "k": "ohm:2751179",
- "s": "Agrigento",
+ "ad": "Ermenek",
+ "ulke": "Turkey",
+ "d": 5,
+ "k": "tahmin",
+ "s": "Ermenek",
  "p": [
   [
    [
-    -7843,
-    8082
-   ]
-  ],
-  [
-   [
-    8083,
+    -8063,
     8084,
-    8085
+    8085,
+    8086
    ]
   ]
  ]

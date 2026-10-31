@@ -1,23 +1,19 @@
 {
  "indeks": 2550,
- "ad": "Tshela",
- "ulke": "Democratic Republic of the Congo",
- "d": 83,
+ "ad": "Benin",
+ "ulke": "Nigeria",
+ "d": 82,
  "k": "tahmin",
- "s": "Tshela",
+ "s": "Benin",
  "p": [
   [
    [
-    12536,
-    -12519,
-    -12475,
-    -12536,
-    12537,
-    272,
-    282,
-    291,
-    284,
-    -651
+    12533,
+    -12514,
+    12534,
+    12535,
+    6338,
+    4247
    ]
   ]
  ]

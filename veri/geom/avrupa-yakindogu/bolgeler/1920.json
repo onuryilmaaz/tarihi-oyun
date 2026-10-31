@@ -1,31 +1,18 @@
 {
  "indeks": 1920,
- "ad": "Ragusa",
- "ulke": "Bosnia and Herzegovina",
- "d": 21,
+ "ad": "Köstendil",
+ "ulke": "Bulgaria",
+ "d": 0,
  "k": "tahmin",
- "s": "Ragusa",
+ "s": "Köstendil",
  "p": [
   [
    [
+    -9129,
+    -9187,
     9279,
-    9280
-   ]
-  ],
-  [
-   [
-    9281,
-    -9221,
-    9282,
-    9283,
-    9284,
-    9285
-   ]
-  ],
-  [
-   [
-    -9223,
-    9286
+    9280,
+    9281
    ]
   ]
  ]

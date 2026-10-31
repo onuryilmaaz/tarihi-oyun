@@ -1,17 +1,20 @@
 {
  "indeks": 1788,
- "ad": "Valensiya",
- "ulke": "Spain",
- "d": 53,
- "k": "ohm:2751179",
- "s": "Valensiya",
+ "ad": "Erzincan",
+ "ulke": "Turkey",
+ "d": 10,
+ "k": "tahmin",
+ "s": "Erzincan",
  "p": [
   [
    [
-    -8508,
-    8801,
-    8802,
-    8803
+    -8626,
+    -8692,
+    8797,
+    8798,
+    8799,
+    8800,
+    -8753
    ]
   ]
  ]

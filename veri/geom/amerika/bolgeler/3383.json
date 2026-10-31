@@ -1,20 +1,26 @@
 {
  "indeks": 3383,
- "ad": "Escuintla",
+ "ad": "Santa Elena de la Cruz",
  "ulke": "Guatemala",
  "d": 129,
  "k": "tahmin",
- "s": "Escuintla",
+ "s": "Santa Elena de la Cruz",
  "p": [
   [
    [
+    2135,
+    2131,
+    -2138,
+    -2146,
+    15736,
+    15737,
+    -15736,
+    15738,
+    2162,
     15739,
-    806,
     15740,
     15741,
-    15742,
-    15743,
-    -2142
+    15742
    ]
   ]
  ]

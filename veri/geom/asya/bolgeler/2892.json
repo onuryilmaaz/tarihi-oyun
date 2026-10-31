@@ -1,20 +1,18 @@
 {
  "indeks": 2892,
- "ad": "Guilin",
- "ulke": "China",
- "d": 97,
+ "ad": "Bogura Sadar Upazila",
+ "ulke": "Bangladesh",
+ "d": 114,
  "k": "tahmin",
- "s": "Guilin",
+ "s": "Bogura Sadar Upazila",
  "p": [
   [
    [
-    -13858,
-    -13909,
-    13963,
-    13964,
-    13965,
-    13966,
-    13967
+    -13837,
+    -13774,
+    -13931,
+    13958,
+    -13945
    ]
   ]
  ]

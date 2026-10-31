@@ -1,16 +1,21 @@
 {
  "indeks": 2762,
- "ad": "South Mumbai",
+ "ad": "Ramagundam",
  "ulke": "India",
  "d": 117,
  "k": "tahmin",
- "s": "South Mumbai",
+ "s": "Ramagundam",
  "p": [
   [
    [
-    13372,
-    -13420,
-    -13419
+    -13364,
+    -13339,
+    -13322,
+    13410,
+    6436,
+    13411,
+    13412,
+    13413
    ]
   ]
  ]

@@ -1,18 +1,18 @@
 {
  "indeks": 1881,
- "ad": "Vezirköprü",
+ "ad": "Kastamonu",
  "ulke": "Turkey",
- "d": 0,
+ "d": 6,
  "k": "tahmin",
- "s": "Vezirköprü",
+ "s": "Kastamonu",
  "p": [
   [
    [
-    -9046,
-    -9018,
-    -9114,
-    9135,
-    9136
+    -9064,
+    -9001,
+    9131,
+    9132,
+    9133
    ]
   ]
  ]

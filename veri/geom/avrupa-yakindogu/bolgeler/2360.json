@@ -1,20 +1,19 @@
 {
  "indeks": 2360,
- "ad": "Almetyevsk urban agglomeration",
- "ulke": "Russia",
- "d": 33,
+ "ad": "Marienburg",
+ "ulke": "Poland",
+ "d": 37,
  "k": "tahmin",
- "s": "Almetyevsk urban agglomeration",
+ "s": "Marienburg",
  "p": [
   [
    [
-    -11544,
-    -11095,
-    -11344,
-    -11504,
-    11548,
-    11549,
-    11550
+    -11476,
+    -11459,
+    -11509,
+    11545,
+    11546,
+    11547
    ]
   ]
  ]

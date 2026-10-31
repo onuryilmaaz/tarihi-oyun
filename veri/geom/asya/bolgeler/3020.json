@@ -1,14 +1,18 @@
 {
  "indeks": 3020,
- "ad": "Jeju",
- "ulke": "South Korea",
- "d": 98,
+ "ad": "Anqing",
+ "ulke": "China",
+ "d": 97,
  "k": "tahmin",
- "s": "Jeju",
+ "s": "Anqing",
  "p": [
   [
    [
-    14419
+    -14382,
+    -14364,
+    14411,
+    14412,
+    -14370
    ]
   ]
  ]

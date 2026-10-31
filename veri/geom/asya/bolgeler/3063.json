@@ -1,19 +1,19 @@
 {
  "indeks": 3063,
- "ad": "Sialkot",
- "ulke": "Pakistan",
- "d": 122,
+ "ad": "Chengguan",
+ "ulke": "China",
+ "d": 97,
  "k": "tahmin",
- "s": "Sialkot",
+ "s": "Chengguan",
  "p": [
   [
    [
-    -14545,
-    -14502,
-    -14564,
+    -14433,
+    -14539,
     14589,
     14590,
-    14591
+    14591,
+    -14445
    ]
   ]
  ]

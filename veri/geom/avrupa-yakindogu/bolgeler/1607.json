@@ -1,19 +1,19 @@
 {
  "indeks": 1607,
- "ad": "El-Şemal Nahiyesi",
- "ulke": "Iraq",
+ "ad": "Keydar",
+ "ulke": "Iran",
  "d": 10,
  "k": "tahmin",
- "s": "El-Şemal Nahiyesi",
+ "s": "Keydar",
  "p": [
   [
    [
+    8020,
+    -7924,
+    -7882,
+    -8015,
     8021,
-    -7901,
-    -7768,
-    -8013,
-    8022,
-    8023
+    8022
    ]
   ]
  ]

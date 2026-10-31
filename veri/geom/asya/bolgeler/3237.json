@@ -1,19 +1,18 @@
 {
  "indeks": 3237,
- "ad": "Tientsin",
- "ulke": "China",
- "d": 97,
+ "ad": "Pyongyang",
+ "ulke": "North Korea",
+ "d": 98,
  "k": "tahmin",
- "s": "Tientsin",
+ "s": "Pyongyang",
  "p": [
   [
    [
-    -15167,
-    -15135,
-    15219,
-    15220,
-    15221,
-    15222
+    -15031,
+    -15090,
+    15215,
+    15216,
+    15217
    ]
   ]
  ]

@@ -1,17 +1,19 @@
 {
  "indeks": 2673,
- "ad": "Kampong Thom",
- "ulke": "Cambodia",
- "d": 102,
+ "ad": "Hassan",
+ "ulke": "India",
+ "d": 118,
  "k": "tahmin",
- "s": "Kampong Thom",
+ "s": "Hassan",
  "p": [
   [
    [
-    -13011,
-    -13044,
-    13071,
-    -13067
+    -12722,
+    -12727,
+    -13039,
+    13066,
+    13067,
+    13068
    ]
   ]
  ]

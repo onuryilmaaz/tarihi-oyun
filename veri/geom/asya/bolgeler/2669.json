@@ -1,19 +1,18 @@
 {
  "indeks": 2669,
- "ad": "Buôn Ma Thuột",
- "ulke": "Vietnam",
- "d": 101,
+ "ad": "Visakhapatnam",
+ "ulke": "India",
+ "d": 118,
  "k": "tahmin",
- "s": "Buôn Ma Thuột",
+ "s": "Visakhapatnam",
  "p": [
   [
    [
-    -13041,
-    -12919,
-    -12937,
-    13056,
-    13057,
-    13058
+    -13035,
+    13050,
+    13051,
+    13052,
+    13053
    ]
   ]
  ]

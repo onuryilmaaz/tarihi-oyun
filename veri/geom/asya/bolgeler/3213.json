@@ -1,18 +1,19 @@
 {
  "indeks": 3213,
- "ad": "Yinchuan",
- "ulke": "China",
- "d": 97,
+ "ad": "Beherden",
+ "ulke": "Turkmenistan",
+ "d": 90,
  "k": "tahmin",
- "s": "Yinchuan",
+ "s": "Beherden",
  "p": [
   [
    [
-    -15080,
-    -15027,
+    -15113,
+    -15054,
     -15117,
-    15139,
-    15140
+    15131,
+    15132,
+    15133
    ]
   ]
  ]

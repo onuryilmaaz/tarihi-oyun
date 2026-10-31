@@ -1,19 +1,17 @@
 {
  "indeks": 3104,
- "ad": "Muzafferabad",
- "ulke": "Pakistan",
- "d": 121,
+ "ad": "Türbet Cam",
+ "ulke": "Iran",
+ "d": 90,
  "k": "tahmin",
- "s": "Muzafferabad",
+ "s": "Türbet Cam",
  "p": [
   [
    [
-    -14641,
-    -14653,
-    -14733,
+    14755,
+    -14646,
+    -14689,
     14756,
-    700,
-    2651,
     14757
    ]
   ]

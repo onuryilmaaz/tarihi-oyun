@@ -1,18 +1,19 @@
 {
  "indeks": 1896,
- "ad": "Çaycuma",
- "ulke": "Turkey",
- "d": 0,
+ "ad": "Aranda de Duero",
+ "ulke": "Spain",
+ "d": 52,
  "k": "tahmin",
- "s": "Çaycuma",
+ "s": "Aranda de Duero",
  "p": [
   [
    [
-    -9134,
-    -9044,
-    -9073,
-    9187,
-    9188
+    -9078,
+    -8966,
+    -9116,
+    9182,
+    9183,
+    -9155
    ]
   ]
  ]

@@ -46,15 +46,14 @@ describe("gelişmişlik ve gelir kaynağı (TASK-0028)", () => {
     expect(sehirTicareti(d, A1).taban).toBe(0);
   });
 
-  it("her iki yatırım seviyesinde gelişmişlik +1 (en çok 10)", () => {
+  it("her üç yatırım seviyesinde gelişmişlik +1 (en çok 10; TASK-0032)", () => {
     const d = yeniDurum(), s = d.sehirler[A1];
     s.gelismislik = 3;
-    d.insaatlar.push({ sehir: A1, devlet: 0, yapi: "tarla", hedef: 1, kalanGun: 1 });
-    insaatlariIlerlet(d);
-    expect(s.gelismislik).toBe(3); // toplam 1 seviye
-    d.insaatlar.push({ sehir: A1, devlet: 0, yapi: "pazar", hedef: 1, kalanGun: 1 });
-    insaatlariIlerlet(d);
-    expect(s.gelismislik).toBe(4); // toplam 2 seviye
+    const bitir = (yapi: "tarla" | "pazar", hedef: number) => { d.insaatlar.push({ sehir: A1, devlet: 0, yapi, hedef, kalanGun: 1 }); insaatlariIlerlet(d); };
+    bitir("tarla", 1); bitir("pazar", 1);
+    expect(s.gelismislik).toBe(3); // toplam 2 seviye
+    bitir("tarla", 2);
+    expect(s.gelismislik).toBe(4); // toplam 3 seviye
     expect(degismezler(d)).toEqual([]);
   });
 });

@@ -1,24 +1,19 @@
 {
  "indeks": 2185,
- "ad": "Schweinfurt",
- "ulke": "Germany",
- "d": 67,
+ "ad": "Bila Tserkva",
+ "ulke": "Ukraine",
+ "d": 35,
  "k": "tahmin",
- "s": "Schweinfurt",
+ "s": "Bila Tserkva",
  "p": [
   [
    [
-    -10866,
+    -10783,
+    -10702,
+    -10640,
     10903,
     10904,
-    10905,
-    -10803,
-    10906,
-    10907,
-    10908,
-    10909,
-    10910,
-    10911
+    10905
    ]
   ]
  ]

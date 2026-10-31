@@ -1,22 +1,19 @@
 {
  "indeks": 2730,
- "ad": "Zhangzhou",
- "ulke": "China",
- "d": 97,
+ "ad": "Phitsanulok",
+ "ulke": "Thailand",
+ "d": 105,
  "k": "tahmin",
- "s": "Zhangzhou",
+ "s": "Phitsanulok",
  "p": [
   [
    [
-    -13218,
-    13290,
-    13291,
-    13292
-   ]
-  ],
-  [
-   [
-    13293
+    -13234,
+    -13171,
+    -13216,
+    13286,
+    13287,
+    13288
    ]
   ]
  ]

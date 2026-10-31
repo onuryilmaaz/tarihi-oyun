@@ -1,19 +1,25 @@
 {
  "indeks": 2757,
- "ad": "Chiang Mai",
- "ulke": "Thailand",
- "d": 104,
+ "ad": "Kutupalong refugee camp",
+ "ulke": "Myanmar",
+ "d": 114,
  "k": "tahmin",
- "s": "Chiang Mai",
+ "s": "Kutupalong refugee camp",
  "p": [
   [
    [
-    -13285,
-    -13337,
-    -13355,
-    13399,
-    13400,
-    -13272
+    13395
+   ]
+  ],
+  [
+   [
+    13307,
+    -13401,
+    -13400,
+    -13399,
+    -1262,
+    -13398,
+    -13397
    ]
   ]
  ]

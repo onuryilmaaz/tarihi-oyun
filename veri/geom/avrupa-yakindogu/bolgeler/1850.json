@@ -1,17 +1,19 @@
 {
  "indeks": 1850,
- "ad": "Manastır",
- "ulke": "Greece",
+ "ad": "Bolu",
+ "ulke": "Turkey",
  "d": 0,
  "k": "tahmin",
- "s": "Manastır",
+ "s": "Bolu",
  "p": [
   [
    [
-    -9003,
-    -8988,
+    9032,
+    -8928,
     9033,
-    9034
+    9034,
+    9035,
+    -9029
    ]
   ]
  ]

@@ -1,19 +1,16 @@
 {
  "indeks": 3223,
- "ad": "Buhara",
- "ulke": "Turkmenistan",
- "d": 90,
+ "ad": "Xinba Town",
+ "ulke": "China",
+ "d": 97,
  "k": "tahmin",
- "s": "Buhara",
+ "s": "Xinba Town",
  "p": [
   [
    [
-    -15032,
-    -15149,
-    15169,
-    15170,
-    15171,
-    15172
+    -15011,
+    -15141,
+    15165
    ]
   ]
  ]

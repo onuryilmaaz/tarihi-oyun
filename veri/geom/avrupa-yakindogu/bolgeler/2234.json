@@ -1,17 +1,19 @@
 {
  "indeks": 2234,
- "ad": "Bideford",
- "ulke": "United Kingdom",
- "d": 58,
+ "ad": "Gera",
+ "ulke": "Germany",
+ "d": 68,
  "k": "tahmin",
- "s": "Bideford",
+ "s": "Gera",
  "p": [
   [
    [
-    -10746,
-    11099,
-    -10935,
-    11100
+    -10983,
+    -10909,
+    -10988,
+    11096,
+    11097,
+    11098
    ]
   ]
  ]

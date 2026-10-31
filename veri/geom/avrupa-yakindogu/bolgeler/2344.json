@@ -1,20 +1,19 @@
 {
  "indeks": 2344,
- "ad": "Kingston upon Hull",
- "ulke": "United Kingdom",
- "d": 58,
+ "ad": "Kętrzyn",
+ "ulke": "Poland",
+ "d": 37,
  "k": "tahmin",
- "s": "Kingston upon Hull",
+ "s": "Kętrzyn",
  "p": [
   [
    [
-    11405,
-    11485,
-    11486,
-    -11482,
-    -11401,
-    -11405,
-    11484
+    11479,
+    -11416,
+    -11377,
+    -11464,
+    11480,
+    11481
    ]
   ]
  ]

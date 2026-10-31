@@ -1,20 +1,15 @@
 {
  "indeks": 1750,
- "ad": "Albacete City",
- "ulke": "Spain",
- "d": 52,
- "k": "ohm:2849131",
- "s": "Albacete City",
+ "ad": "Lecce",
+ "ulke": "Italy",
+ "d": 45,
+ "k": "ohm:2751179",
+ "s": "Lecce",
  "p": [
   [
    [
-    -8309,
-    -8539,
-    8667,
-    8668,
-    8669,
-    8670,
-    8671
+    8666,
+    8667
    ]
   ]
  ]

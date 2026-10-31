@@ -1,17 +1,18 @@
 {
  "indeks": 2581,
- "ad": "Berbera",
- "ulke": "Somaliland",
+ "ad": "Dikhil",
+ "ulke": "Ethiopia",
  "d": 87,
  "k": "tahmin",
- "s": "Berbera",
+ "s": "Dikhil",
  "p": [
   [
    [
-    -12627,
-    -12569,
-    12679,
-    12680
+    -12625,
+    -12635,
+    12670,
+    12671,
+    12672
    ]
   ]
  ]

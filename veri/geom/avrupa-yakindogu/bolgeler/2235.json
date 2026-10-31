@@ -1,22 +1,19 @@
 {
  "indeks": 2235,
- "ad": "Bad Salzungen",
- "ulke": "Germany",
- "d": 68,
+ "ad": "Liberec",
+ "ulke": "Czech Republic",
+ "d": 66,
  "k": "tahmin",
- "s": "Bad Salzungen",
+ "s": "Liberec",
  "p": [
   [
    [
+    -10953,
+    -10998,
+    11099,
+    11100,
     11101,
-    -10909,
-    -10997,
-    11102,
-    11103,
-    11104,
-    11105,
-    11106,
-    11107
+    -11069
    ]
   ]
  ]

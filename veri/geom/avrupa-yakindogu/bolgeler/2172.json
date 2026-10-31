@@ -1,19 +1,21 @@
 {
  "indeks": 2172,
- "ad": "Poltava",
- "ulke": "Ukraine",
- "d": 35,
+ "ad": "Aschaffenburg",
+ "ulke": "Germany",
+ "d": 67,
  "k": "tahmin",
- "s": "Poltava",
+ "s": "Aschaffenburg",
  "p": [
   [
    [
-    -10452,
-    -10731,
-    10855,
-    10856,
-    10857,
-    10858
+    10848,
+    10849,
+    10850,
+    10851,
+    10852,
+    10853,
+    10854,
+    10855
    ]
   ]
  ]

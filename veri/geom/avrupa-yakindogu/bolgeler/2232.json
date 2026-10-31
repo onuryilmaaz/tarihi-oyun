@@ -1,18 +1,17 @@
 {
  "indeks": 2232,
- "ad": "Rivne",
- "ulke": "Ukraine",
- "d": 35,
+ "ad": "Bideford",
+ "ulke": "United Kingdom",
+ "d": 58,
  "k": "tahmin",
- "s": "Rivne",
+ "s": "Bideford",
  "p": [
   [
    [
-    -10971,
-    -10982,
-    -11032,
-    11091,
-    -11089
+    -10734,
+    11087,
+    -10923,
+    11088
    ]
   ]
  ]

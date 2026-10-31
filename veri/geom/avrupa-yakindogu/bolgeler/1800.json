@@ -1,17 +1,18 @@
 {
  "indeks": 1800,
- "ad": "Yanya",
- "ulke": "Greece",
+ "ad": "Keskin",
+ "ulke": "Turkey",
  "d": 0,
  "k": "tahmin",
- "s": "Yanya",
+ "s": "Keskin",
  "p": [
   [
    [
-    -8588,
-    8850,
-    -8833,
-    8851
+    -8712,
+    -8786,
+    8845,
+    8846,
+    8847
    ]
   ]
  ]

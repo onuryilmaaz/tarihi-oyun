@@ -1,18 +1,20 @@
 {
  "indeks": 2768,
- "ad": "Pyinmana",
- "ulke": "Myanmar",
- "d": 106,
+ "ad": "Piang Luang",
+ "ulke": "Thailand",
+ "d": 104,
  "k": "tahmin",
- "s": "Pyinmana",
+ "s": "Piang Luang",
  "p": [
   [
    [
-    -13345,
-    -13274,
-    13443,
-    13444,
-    13445
+    -13261,
+    -13389,
+    13447,
+    13448,
+    13449,
+    13450,
+    -13432
    ]
   ]
  ]

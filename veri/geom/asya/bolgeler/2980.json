@@ -1,18 +1,19 @@
 {
  "indeks": 2980,
- "ad": "Delhi",
- "ulke": "India",
- "d": 112,
+ "ad": "Wenshui Town",
+ "ulke": "China",
+ "d": 97,
  "k": "tahmin",
- "s": "Delhi",
+ "s": "Wenshui Town",
  "p": [
   [
    [
-    -14163,
+    -14225,
     -14177,
-    14271,
-    14272,
-    14273
+    -14205,
+    14265,
+    14266,
+    14267
    ]
   ]
  ]

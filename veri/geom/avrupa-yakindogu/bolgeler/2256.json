@@ -1,20 +1,18 @@
 {
  "indeks": 2256,
- "ad": "Eindhoven",
- "ulke": "Netherlands",
- "d": 61,
+ "ad": "Opoczno",
+ "ulke": "Poland",
+ "d": 36,
  "k": "tahmin",
- "s": "Eindhoven",
+ "s": "Opoczno",
  "p": [
   [
    [
-    -11128,
-    -11016,
-    11175,
-    11176,
-    11177,
-    11178,
-    11179
+    -11104,
+    -11108,
+    11170,
+    11171,
+    11172
    ]
   ]
  ]

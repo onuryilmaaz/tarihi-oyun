@@ -1,18 +1,19 @@
 {
  "indeks": 1953,
- "ad": "Urus-Martan",
- "ulke": "Russia",
- "d": 14,
+ "ad": "Taşlıca",
+ "ulke": "Montenegro",
+ "d": 18,
  "k": "tahmin",
- "s": "Urus-Martan",
+ "s": "Taşlıca",
  "p": [
   [
    [
-    -9242,
-    -9248,
-    9446,
-    9447,
-    9448
+    -9386,
+    -9272,
+    -9209,
+    9439,
+    9440,
+    9441
    ]
   ]
  ]

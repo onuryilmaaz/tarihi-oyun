@@ -115,8 +115,9 @@ export interface Ozet {
   /** TASK-0029: sancaklar (oyuncunun), bütün şehirler için sancak indeksi ve sancak/eyalet adları */
   sancaklar: SancakOzeti[];
   sehirSancak: number[];
-  sancakAdlari: { ad: string; eyalet: string; devlet: number }[];
-  eyaletler: { id: string; ad: string }[];
+  sancakAdlari: { ad: string; eyalet: string; devlet: number; tur: string }[];
+  eyaletler: { id: string; ad: string; tur: string }[];
+  idariTerim: { sancak: string; cogul: string; eyalet: string; unvan: string }; // oyuncunun kültürüne göre (TASK-0033)
   birimSahipleri: number[];
   isgalHazirliklari: { birim: number; gun: number }[];
   barislar: BarisKaydi[];

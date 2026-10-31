@@ -1,18 +1,17 @@
 {
  "indeks": 2805,
- "ad": "Maoming",
- "ulke": "China",
- "d": 97,
+ "ad": "Chhindwara",
+ "ulke": "India",
+ "d": 116,
  "k": "tahmin",
- "s": "Maoming",
+ "s": "Chhindwara",
  "p": [
   [
    [
-    -13562,
-    13631,
     -13569,
-    13632,
-    13633
+    -13609,
+    13625,
+    13626
    ]
   ]
  ]

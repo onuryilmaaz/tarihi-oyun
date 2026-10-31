@@ -1,17 +1,19 @@
 {
  "indeks": 2101,
- "ad": "Bruck an der Mur",
- "ulke": "Austria",
- "d": 65,
+ "ad": "Terny",
+ "ulke": "Ukraine",
+ "d": 30,
  "k": "tahmin",
- "s": "Bruck an der Mur",
+ "s": "Terny",
  "p": [
   [
    [
-    -10388,
-    -10427,
-    10446,
-    10447
+    -10197,
+    -10276,
+    10438,
+    10439,
+    10440,
+    10441
    ]
   ]
  ]

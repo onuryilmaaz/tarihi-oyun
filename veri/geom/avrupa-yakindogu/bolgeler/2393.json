@@ -1,20 +1,17 @@
 {
  "indeks": 2393,
- "ad": "Kolomna",
- "ulke": "Russia",
- "d": 39,
+ "ad": "Newcastle upon Tyne",
+ "ulke": "United Kingdom",
+ "d": 58,
  "k": "tahmin",
- "s": "Kolomna",
+ "s": "Newcastle upon Tyne",
  "p": [
   [
    [
-    -11668,
-    -11528,
-    -11480,
-    -11603,
-    11670,
-    11671,
-    11672
+    -11633,
+    -11575,
+    11663,
+    11664
    ]
   ]
  ]

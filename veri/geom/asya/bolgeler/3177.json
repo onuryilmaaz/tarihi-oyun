@@ -1,17 +1,19 @@
 {
  "indeks": 3177,
- "ad": "Çinaran",
- "ulke": "Iran",
- "d": 90,
+ "ad": "Wangtuan Town",
+ "ulke": "China",
+ "d": 97,
  "k": "tahmin",
- "s": "Çinaran",
+ "s": "Wangtuan Town",
  "p": [
   [
    [
-    -14945,
-    -14987,
-    15018,
-    15019
+    -14956,
+    -14923,
+    -14995,
+    15013,
+    15014,
+    15015
    ]
   ]
  ]

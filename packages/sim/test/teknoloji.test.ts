@@ -3,7 +3,7 @@ import { describe, expect, it } from "vitest";
 import {
   agHazirla, baslangicDurumu, butceOzeti, degismezler, DENGE, durumOzeti, emirleriUygula, emirVer, gunIlerlet, insaatMaliyeti, kaydet,
   kullanilabilirHazine, muharebeGunu, muharebeGucYuzde, toplamaMaliyeti, turSuresiAyarla, turuIlerlet, yukle, type DunyaDurumu,
-  type SenaryoVerisi, type TeknolojiId,
+  yapiSeviyeGeliri, type SenaryoVerisi, type TeknolojiId,
 } from "../src";
 import { yeniDurum } from "./yardimci";
 
@@ -54,11 +54,12 @@ describe("teknoloji ağacı (5c)", () => {
     const s = d.sehirler[A1];
     s.yapilar = { tarla: 3, pazar: 3 };
     expect(insaatMaliyeti(d, s, "tarla")).toBeNull();
-    const once = butceOzeti(d, 0);
+    const once = butceOzeti(d, 0), seviyeOnce = yapiSeviyeGeliri(d, s, "pazar");
     ogren(d, "sulama", "kervan");
     expect(insaatMaliyeti(d, s, "tarla")).toBe(DENGE.YAPI_MALIYET.tarla[3]);
     expect(insaatMaliyeti(d, s, "pazar")).toBe(DENGE.YAPI_MALIYET.pazar[3]);
-    expect(butceOzeti(d, 0).aylikYapiGeliri - once.aylikYapiGeliri).toBe(3 * DENGE.KERVAN_PAZAR_EK_GELIR);
+    expect(butceOzeti(d, 0).aylikYapiGeliri - once.aylikYapiGeliri).toBe(3 * (yapiSeviyeGeliri(d, s, "pazar") - seviyeOnce)); // kervan +5, nüfusa ölçekli (TASK-0032)
+    expect(yapiSeviyeGeliri(d, s, "pazar")).toBeGreaterThan(seviyeOnce);
     ogren(d, "vergi");
     const b = butceOzeti(d, 0);
     expect(b.aylikAraziGeliri).toBe(b.araziSayisi * DENGE.VERGI_ARAZI_GELIRI);

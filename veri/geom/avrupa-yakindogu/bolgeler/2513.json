@@ -1,19 +1,18 @@
 {
  "indeks": 2513,
- "ad": "Sosnogorsk",
- "ulke": "Russia",
- "d": 40,
+ "ad": "Hudiksvall",
+ "ulke": "Sweden",
+ "d": 75,
  "k": "tahmin",
- "s": "Sosnogorsk",
+ "s": "Hudiksvall",
  "p": [
   [
    [
-    -12031,
-    -11930,
-    -12052,
-    12202,
-    12203,
-    12204
+    -12166,
+    -12181,
+    12217,
+    12218,
+    12219
    ]
   ]
  ]

@@ -1,19 +1,29 @@
 {
  "indeks": 2546,
- "ad": "Kariba",
- "ulke": "Zimbabwe",
- "d": 84,
+ "ad": "Zanzibar City",
+ "ulke": "United Republic of Tanzania",
+ "d": 85,
  "k": "tahmin",
- "s": "Kariba",
+ "s": "Zanzibar City",
  "p": [
   [
    [
-    -12480,
-    -12509,
-    -12522,
-    1352,
-    1354,
-    12522
+    12517
+   ]
+  ],
+  [
+   [
+    12518
+   ]
+  ],
+  [
+   [
+    12519
+   ]
+  ],
+  [
+   [
+    12520
    ]
   ]
  ]

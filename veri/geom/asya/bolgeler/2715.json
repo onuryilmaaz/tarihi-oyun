@@ -1,20 +1,18 @@
 {
  "indeks": 2715,
- "ad": "Yerragonda Palem",
- "ulke": "India",
- "d": 118,
+ "ad": "Lufeng",
+ "ulke": "China",
+ "d": 97,
  "k": "tahmin",
- "s": "Yerragonda Palem",
+ "s": "Lufeng",
  "p": [
   [
    [
+    13216,
+    13217,
     -13187,
-    -13162,
-    -13166,
-    -13216,
-    13222,
-    13223,
-    13224
+    13218,
+    13219
    ]
   ]
  ]

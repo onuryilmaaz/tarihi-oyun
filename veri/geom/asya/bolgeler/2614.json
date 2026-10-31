@@ -1,17 +1,22 @@
 {
  "indeks": 2614,
- "ad": "Pekalongan",
- "ulke": "Indonesia",
- "d": 111,
+ "ad": "Klang",
+ "ulke": "Malaysia",
+ "d": 109,
  "k": "tahmin",
- "s": "Pekalongan",
+ "s": "Klang",
  "p": [
   [
    [
-    -12757,
-    -12763,
-    12792,
-    12793
+    12783,
+    12784,
+    12785,
+    -12777
+   ]
+  ],
+  [
+   [
+    12786
    ]
   ]
  ]

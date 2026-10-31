@@ -1,16 +1,19 @@
 {
  "indeks": 2755,
- "ad": "Kōhoku",
- "ulke": "Japan",
- "d": 99,
+ "ad": "Chiang Mai",
+ "ulke": "Thailand",
+ "d": 104,
  "k": "tahmin",
- "s": "Kōhoku",
+ "s": "Chiang Mai",
  "p": [
   [
    [
-    13382,
-    13383,
-    13384
+    -13273,
+    -13325,
+    -13343,
+    13387,
+    13388,
+    -13260
    ]
   ]
  ]

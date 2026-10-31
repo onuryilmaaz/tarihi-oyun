@@ -1,19 +1,19 @@
 {
  "indeks": 2322,
- "ad": "Neuruppin",
- "ulke": "Germany",
- "d": 69,
+ "ad": "Bydgoszcz",
+ "ulke": "Poland",
+ "d": 37,
  "k": "tahmin",
- "s": "Neuruppin",
+ "s": "Bydgoszcz",
  "p": [
   [
    [
-    -11329,
-    -11334,
-    11413,
-    11414,
-    11415,
-    -11370
+    -11340,
+    -11292,
+    11408,
+    11409,
+    11410,
+    -11405
    ]
   ]
  ]

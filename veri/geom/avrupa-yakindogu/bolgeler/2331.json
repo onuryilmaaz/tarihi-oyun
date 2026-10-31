@@ -1,16 +1,21 @@
 {
  "indeks": 2331,
- "ad": "Rayevsky selsoviet",
- "ulke": "Russia",
- "d": 34,
+ "ad": "Stettin",
+ "ulke": "Poland",
+ "d": 71,
  "k": "tahmin",
- "s": "Rayevsky selsoviet",
+ "s": "Stettin",
  "p": [
   [
    [
-    -11342,
-    -10119,
-    11440
+    11320,
+    11401,
+    -11439,
+    -11438,
+    -11437,
+    11407,
+    11374,
+    11338
    ]
   ]
  ]

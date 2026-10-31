@@ -1,18 +1,17 @@
 {
  "indeks": 1970,
- "ad": "Xixón City",
- "ulke": "Spain",
- "d": 52,
- "k": "ohm:2849131",
- "s": "Xixón City",
+ "ad": "Kutlofça",
+ "ulke": "Bulgaria",
+ "d": 0,
+ "k": "tahmin",
+ "s": "Kutlofça",
  "p": [
   [
    [
-    9325,
-    7682,
-    -9515,
-    9506,
-    9359
+    -9425,
+    -9356,
+    9509,
+    9510
    ]
   ]
  ]

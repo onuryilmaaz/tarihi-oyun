@@ -1,21 +1,18 @@
 {
  "indeks": 1871,
- "ad": "Konstantiniyye",
+ "ad": "Samsun",
  "ulke": "Turkey",
- "d": 1,
+ "d": 0,
  "k": "tahmin",
- "s": "Konstantiniyye",
+ "s": "Samsun",
  "p": [
   [
    [
-    9106,
-    -9104
-   ]
-  ],
-  [
-   [
-    9107,
-    9108
+    9103,
+    -9004,
+    -9009,
+    9104,
+    9105
    ]
   ]
  ]

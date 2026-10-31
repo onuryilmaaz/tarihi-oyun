@@ -1,17 +1,18 @@
 {
  "indeks": 2125,
- "ad": "St. Pölten",
- "ulke": "Austria",
- "d": 65,
+ "ad": "Miskolc",
+ "ulke": "Hungary",
+ "d": 27,
  "k": "tahmin",
- "s": "St. Pölten",
+ "s": "Miskolc",
  "p": [
   [
    [
-    -10447,
-    10576,
-    10577,
-    -10540
+    -10536,
+    -10429,
+    -10483,
+    10568,
+    10569
    ]
   ]
  ]

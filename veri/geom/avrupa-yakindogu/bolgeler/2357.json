@@ -1,20 +1,19 @@
 {
  "indeks": 2357,
- "ad": "Kolding",
- "ulke": "Denmark",
- "d": 74,
+ "ad": "Nurlat urban settlement",
+ "ulke": "Russia",
+ "d": 33,
  "k": "tahmin",
- "s": "Kolding",
+ "s": "Nurlat urban settlement",
  "p": [
   [
    [
+    -11084,
+    11531,
     11532,
     11533,
     11534,
-    11789,
-    11536,
-    11537,
-    11538
+    11535
    ]
   ]
  ]

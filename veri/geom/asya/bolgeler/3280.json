@@ -1,19 +1,21 @@
 {
  "indeks": 3280,
- "ad": "Yushulinzi Town",
- "ulke": "China",
- "d": 97,
+ "ad": "Shardara",
+ "ulke": "Uzbekistan",
+ "d": 91,
  "k": "tahmin",
- "s": "Yushulinzi Town",
+ "s": "Shardara",
  "p": [
   [
    [
-    -15349,
-    -15281,
-    -15327,
-    15361,
-    15362,
-    15363
+    -15159,
+    -15284,
+    -15273,
+    -15277,
+    15356,
+    15357,
+    15358,
+    15359
    ]
   ]
  ]

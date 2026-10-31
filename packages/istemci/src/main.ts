@@ -263,17 +263,23 @@ async function baslat() {
     $("savasRozet").textContent = String(n);
   };
   let sonSancakAnahtari = "";
+  // TASK-0033: idari terimlerin iyelik hâli ve büyük harfle başlayan hâli
+  const iyelik = (tur: string) => ({ eyalet: "eyaleti", "dükalık": "dükalığı", "ülke": "ülkesi" } as Record<string, string>)[tur] ?? tur;
+  const buyukHarf = (x: string) => x.charAt(0).toLocaleUpperCase("tr") + x.slice(1);
   /** Sol panel, Devlet sekmesi: eyalet eyalet sancaklar (TASK-0029) */
   const sancaklariGoster = () => {
     $("sancakBolumu").hidden = !ozet.sancaklar.length;
+    const t = ozet.idariTerim; // TASK-0033: Sancaklar / Kontluklar / Voyvodalıklar …
+    $("sancakBaslik").textContent = t.cogul;
+    $("sancakAciklama").textContent = `Şehirler ${t.sancak} birimlerine, bunlar ${t.eyalet} birimlerine bağlıdır. "${t.unvan} yönetsin" denen ${t.sancak} biriminde bağış ve yatırımı yönetici, yukarıdaki yerel yönetim bütçesiyle yapar.`;
     const para = (x: number) => x.toLocaleString("tr-TR");
     $("sancakListesi").innerHTML = ozet.eyaletler.map((ey) => {
       const liste = ozet.sancaklar.filter((s) => s.eyalet === ey.id);
       if (!liste.length) return "";
-      return `<h3>${kacis(ey.ad)} eyaleti</h3>${liste.map((s) => `<div class="sancak-satir">
+      return `<h3>${kacis(ey.ad)} ${kacis(iyelik(ey.tur))}</h3>${liste.map((s) => `<div class="sancak-satir">
         <div><button class="bag" data-secim-sehir="${s.merkez}">${kacis(s.ad)}</button>
           <small>${kacis(s.bey)} · ${s.sehirler.length} şehir · ~${para(s.aylikGelir)}/ay · ${para(s.insanGucu)} insan gücü</small></div>
-        <button data-sancak-yonetim="${s.sancak}" data-acik="${s.yonetim ? 0 : 1}" title="${s.yonetim ? "Sancakbeyi bu sancağın şehirlerinde yerel yönetici gibi bağış ve yatırım yapıyor (yerel yönetim bütçesiyle)." : "Sancağın şehirlerini sancakbeyine bırak"}">${s.yonetim ? "Bey yönetiyor" : "Bey yönetsin"}</button>
+        <button data-sancak-yonetim="${s.sancak}" data-acik="${s.yonetim ? 0 : 1}" title="${s.yonetim ? "Yönetici bu birimin şehirlerinde yerel yönetici gibi bağış ve yatırım yapıyor (yerel yönetim bütçesiyle)." : "Birimin şehirlerini yöneticisine bırak"}">${s.yonetim ? `${kacis(t.unvan)} yönetiyor` : `${kacis(t.unvan)} yönetsin`}</button>
       </div>`).join("")}`;
     }).join("");
   };
@@ -562,7 +568,9 @@ async function baslat() {
       } as const;
       const sn = ozet.sehirSancak[s.id], sancak = sn >= 0 ? ozet.sancakAdlari[sn] : null;
       const kimlik = `<dl>${ss.tur ? `<dt>Tür</dt><dd>${SEHIR_TURU[ss.tur]}</dd>` : ""}
-        ${sancak ? `<dt>Sancak</dt><dd>${kacis(sancak.ad)} · ${kacis(ozet.eyaletler.find((e) => e.id === sancak.eyalet)?.ad ?? "")} eyaleti</dd>` : ""}
+        ${ss.modernAd ? `<dt>Günümüzdeki adı</dt><dd>${kacis(ss.modernAd)}</dd>` : ""}
+        ${sancak ? (() => { const ey = ozet.eyaletler.find((e) => e.id === sancak.eyalet);
+          return `<dt>${kacis(buyukHarf(sancak.tur))}</dt><dd>${kacis(sancak.ad)}${ey ? ` · ${kacis(ey.ad)} ${kacis(iyelik(ey.tur))}` : ""}</dd>`; })() : ""}
         <dt>Gelişmişlik</dt><dd>${cd.gelismislik}/10 · gelir %${DENGE.GELISMISLIK_TABAN + DENGE.GELISMISLIK_ADIM * cd.gelismislik}</dd>
         ${cd.gelirKaynagi ? `<dt>Gelir kaynağı</dt><dd>${GELIR[cd.gelirKaynagi]}<small class="not"> · ${KAYNAK_ETKI[cd.gelirKaynagi]}</small></dd>` : ""}
 </dl><p class="not">Gelişmişlik her iki yatırım seviyesinde artar; kuşatmayla düşmek ve ayaklanma onu geriletir.</p>`;

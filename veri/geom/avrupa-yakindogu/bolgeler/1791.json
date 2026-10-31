@@ -1,20 +1,19 @@
 {
  "indeks": 1791,
- "ad": "Hankendi",
- "ulke": "Azerbaijan",
- "d": 10,
- "k": "tahmin",
- "s": "Hankendi",
+ "ad": "Potenza",
+ "ulke": "Italy",
+ "d": 45,
+ "k": "ohm:2751179",
+ "s": "Potenza",
  "p": [
   [
    [
-    8810,
-    -8762,
-    -8642,
-    -8745,
-    8811,
     8812,
-    8813
+    8813,
+    8814,
+    8815,
+    8816,
+    8817
    ]
   ]
  ]

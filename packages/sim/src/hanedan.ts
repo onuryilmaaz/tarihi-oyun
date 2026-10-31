@@ -29,7 +29,7 @@ export interface TarihiHalef { ad: string; dogum: number; yetenek: [number, numb
 export interface VerasetAdayi extends Omit<Hukumdar, "tahtaCikis"> { tarihi: boolean; gelenek: boolean }
 export interface VerasetSecimi { devlet: number; adaylar: VerasetAdayi[]; gun: number; onceki: string }
 
-const ADLAR: Record<AdHavuzu, string[]> = {
+export const ADLAR: Record<AdHavuzu, string[]> = {
   turk: ["Ahmed", "Mehmed", "Murad", "Süleyman", "Selim", "Mustafa", "Hasan", "Hüseyin", "Ali", "Orhan", "Korkut", "Cem", "Yusuf", "İbrahim", "Kasım", "Davud", "Bayezid", "Halil", "Ömer", "Yakub"],
   slav: ["Stefan", "Lazar", "Vuk", "Ivan", "Vasiliy", "Dmitriy", "Mihail", "Boris", "Jan", "Kazimierz", "Władysław", "Petar", "Radu", "Mircea", "Bogdan", "Aleksandr"],
   rum: ["Ioannes", "Manuel", "Andronikos", "Theodoros", "Demetrios", "Alexios", "Konstantinos", "Mikhael", "Nikephoros", "Andreas"],

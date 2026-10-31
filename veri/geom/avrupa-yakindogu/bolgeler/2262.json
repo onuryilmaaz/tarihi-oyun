@@ -1,19 +1,19 @@
 {
  "indeks": 2262,
- "ad": "Londra",
- "ulke": "United Kingdom",
- "d": 58,
+ "ad": "Kozienice",
+ "ulke": "Poland",
+ "d": 36,
  "k": "tahmin",
- "s": "Londra",
+ "s": "Kozienice",
  "p": [
   [
    [
-    -11041,
-    -11077,
-    11194,
-    11195,
-    11196,
-    -11172
+    -11171,
+    -11107,
+    -11074,
+    -11143,
+    11190,
+    11191
    ]
   ]
  ]

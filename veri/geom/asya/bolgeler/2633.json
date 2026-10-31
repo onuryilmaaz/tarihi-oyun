@@ -1,18 +1,16 @@
 {
  "indeks": 2633,
- "ad": "Udangudi",
- "ulke": "India",
- "d": 118,
+ "ad": "Ca Mau",
+ "ulke": "Vietnam",
+ "d": 102,
  "k": "tahmin",
- "s": "Udangudi",
+ "s": "Ca Mau",
  "p": [
   [
    [
-    -12741,
+    12875,
     12876,
-    12877,
-    12878,
-    12879
+    12877
    ]
   ]
  ]

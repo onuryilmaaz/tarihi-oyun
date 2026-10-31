@@ -1,17 +1,18 @@
 {
  "indeks": 2603,
- "ad": "Galle",
- "ulke": "Sri Lanka",
- "d": 125,
+ "ad": "Ngamprah",
+ "ulke": "Indonesia",
+ "d": 111,
  "k": "tahmin",
- "s": "Galle",
+ "s": "Ngamprah",
  "p": [
   [
    [
-    12743,
-    12744,
-    12745,
-    12746
+    12738,
+    12739,
+    12740,
+    12741,
+    -12737
    ]
   ]
  ]

@@ -1,24 +1,21 @@
 {
  "indeks": 2225,
- "ad": "Christchurch",
+ "ad": "Ashford",
  "ulke": "United Kingdom",
  "d": 58,
  "k": "tahmin",
- "s": "Christchurch",
+ "s": "Ashford",
  "p": [
   [
    [
-    11036,
-    11071
+    -11028,
+    11063,
+    11064
    ]
   ],
   [
    [
-    11068,
-    -11043,
-    11069,
-    11070,
-    -11034
+    11065
    ]
   ]
  ]

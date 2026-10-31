@@ -1,19 +1,14 @@
 {
  "indeks": 3018,
- "ad": "Multan",
- "ulke": "Pakistan",
- "d": 122,
+ "ad": "Jeju",
+ "ulke": "South Korea",
+ "d": 98,
  "k": "tahmin",
- "s": "Multan",
+ "s": "Jeju",
  "p": [
   [
    [
-    -14368,
-    -14292,
-    -14380,
-    14412,
-    14413,
-    14414
+    14407
    ]
   ]
  ]

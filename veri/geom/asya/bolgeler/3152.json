@@ -1,17 +1,19 @@
 {
  "indeks": 3152,
- "ad": "Lanzhou",
- "ulke": "China",
- "d": 97,
+ "ad": "Daejeon",
+ "ulke": "South Korea",
+ "d": 98,
  "k": "tahmin",
- "s": "Lanzhou",
+ "s": "Daejeon",
  "p": [
   [
    [
-    -14865,
-    -14824,
-    14931,
-    14932
+    -14890,
+    -14749,
+    -14896,
+    14924,
+    14925,
+    14926
    ]
   ]
  ]

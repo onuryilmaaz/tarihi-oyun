@@ -1,17 +1,20 @@
 {
  "indeks": 2358,
- "ad": "Minsk",
- "ulke": "Belarus",
- "d": 35,
+ "ad": "Almetyevsk urban agglomeration",
+ "ulke": "Russia",
+ "d": 33,
  "k": "tahmin",
- "s": "Minsk",
+ "s": "Almetyevsk urban agglomeration",
  "p": [
   [
    [
-    -11438,
-    -11459,
-    11541,
-    11542
+    -11532,
+    -11083,
+    -11332,
+    -11492,
+    11536,
+    11537,
+    11538
    ]
   ]
  ]

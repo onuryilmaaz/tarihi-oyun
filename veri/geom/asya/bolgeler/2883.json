@@ -1,19 +1,21 @@
 {
  "indeks": 2883,
- "ad": "Zhongshu Town",
- "ulke": "China",
- "d": 97,
+ "ad": "Mymensingh Sadar Upazila",
+ "ulke": "Bangladesh",
+ "d": 114,
  "k": "tahmin",
- "s": "Zhongshu Town",
+ "s": "Mymensingh Sadar Upazila",
  "p": [
   [
    [
-    -13829,
-    -13835,
-    -13884,
-    13936,
-    13937,
-    13938
+    13930,
+    -13773,
+    -13869,
+    -13921,
+    13931,
+    1794,
+    13932,
+    13933
    ]
   ]
  ]

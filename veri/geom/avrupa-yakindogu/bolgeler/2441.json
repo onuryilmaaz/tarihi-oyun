@@ -1,20 +1,18 @@
 {
  "indeks": 2441,
- "ad": "Osinskoye urban settlement",
- "ulke": "Russia",
- "d": 39,
+ "ad": "Värnamo",
+ "ulke": "Sweden",
+ "d": 75,
  "k": "tahmin",
- "s": "Osinskoye urban settlement",
+ "s": "Värnamo",
  "p": [
   [
    [
-    -11765,
-    -11724,
-    11841,
-    11842,
+    -11816,
+    -11763,
+    -11768,
     11843,
-    11844,
-    11845
+    11844
    ]
   ]
  ]

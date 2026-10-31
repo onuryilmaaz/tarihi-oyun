@@ -1,31 +1,17 @@
 {
  "indeks": 3184,
- "ad": "Haeju",
- "ulke": "North Korea",
- "d": 98,
+ "ad": "Zhangtai Town",
+ "ulke": "China",
+ "d": 97,
  "k": "tahmin",
- "s": "Haeju",
+ "s": "Zhangtai Town",
  "p": [
   [
    [
+    -14996,
+    -14972,
+    15039,
     15040
-   ]
-  ],
-  [
-   [
-    15041,
-    15042,
-    15043
-   ]
-  ],
-  [
-   [
-    15044
-   ]
-  ],
-  [
-   [
-    15045
    ]
   ]
  ]

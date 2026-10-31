@@ -1,17 +1,19 @@
 {
  "indeks": 2173,
- "ad": "Berestyn",
- "ulke": "Ukraine",
- "d": 32,
- "k": "tahmin",
- "s": "Berestyn",
+ "ad": "Jihlava",
+ "ulke": "Czech Republic",
+ "d": 66,
+ "k": "ohm:2830504",
+ "s": "Jihlava",
  "p": [
   [
    [
-    -10730,
-    -10563,
-    10859,
-    -10856
+    -10759,
+    -10766,
+    -10823,
+    10856,
+    10857,
+    10858
    ]
   ]
  ]

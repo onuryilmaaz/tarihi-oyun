@@ -1,18 +1,17 @@
 {
  "indeks": 3144,
- "ad": "Feriman",
- "ulke": "Iran",
- "d": 90,
+ "ad": "Sanju Town",
+ "ulke": "China",
+ "d": 92,
  "k": "tahmin",
- "s": "Feriman",
+ "s": "Sanju Town",
  "p": [
   [
    [
-    -14833,
-    -14770,
-    14908,
-    14909,
-    14910
+    -14586,
+    -14858,
+    14903,
+    -14902
    ]
   ]
  ]

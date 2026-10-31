@@ -1,17 +1,20 @@
 {
  "indeks": 3240,
- "ad": "Kızılarbat",
- "ulke": "Turkmenistan",
- "d": 90,
+ "ad": "Jartai Town",
+ "ulke": "China",
+ "d": 94,
  "k": "tahmin",
- "s": "Kızılarbat",
+ "s": "Jartai Town",
  "p": [
   [
    [
-    -15126,
-    -15146,
-    15230,
-    -15206
+    -15167,
+    -15069,
+    -15129,
+    15222,
+    15223,
+    15224,
+    15225
    ]
   ]
  ]

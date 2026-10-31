@@ -1,19 +1,18 @@
 {
  "indeks": 1794,
- "ad": "Corigliano Calabro",
- "ulke": "Italy",
- "d": 45,
- "k": "ohm:2751179",
- "s": "Corigliano Calabro",
+ "ad": "Selanik",
+ "ulke": "Greece",
+ "d": 0,
+ "k": "tahmin",
+ "s": "Selanik",
  "p": [
   [
    [
+    8824,
+    8825,
+    8826,
     8827,
-    -8061,
-    -8404,
-    8828,
-    8829,
-    -8823
+    8828
    ]
   ]
  ]

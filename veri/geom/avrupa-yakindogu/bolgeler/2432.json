@@ -1,24 +1,21 @@
 {
  "indeks": 2432,
- "ad": "Visby",
- "ulke": "Sweden",
- "d": 75,
+ "ad": "Sandnes",
+ "ulke": "Norway",
+ "d": 74,
  "k": "tahmin",
- "s": "Visby",
+ "s": "Sandnes",
  "p": [
   [
    [
-    11809
+    11802,
+    11803,
+    11804
    ]
   ],
   [
    [
-    11810
-   ]
-  ],
-  [
-   [
-    11811
+    11805
    ]
   ]
  ]

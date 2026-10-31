@@ -1,20 +1,19 @@
 {
  "indeks": 1965,
- "ad": "Tırnova",
- "ulke": "Bulgaria",
- "d": 0,
- "k": "tahmin",
- "s": "Tırnova",
+ "ad": "Santander City",
+ "ulke": "Spain",
+ "d": 52,
+ "k": "ohm:2849131",
+ "s": "Santander City",
  "p": [
   [
    [
-    -9441,
-    -9349,
-    -9408,
-    9498,
-    9499,
-    9500,
-    9501
+    9492,
+    -9346,
+    -9316,
+    -9483,
+    9493,
+    9494
    ]
   ]
  ]

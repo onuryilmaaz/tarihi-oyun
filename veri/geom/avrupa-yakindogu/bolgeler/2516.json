@@ -1,20 +1,38 @@
 {
  "indeks": 2516,
- "ad": "Kondopozhskoye urban settlement",
+ "ad": "Onega",
  "ulke": "Russia",
  "d": 40,
  "k": "tahmin",
- "s": "Kondopozhskoye urban settlement",
+ "s": "Onega",
  "p": [
   [
    [
-    -12194,
-    -12187,
-    -11992,
-    -12123,
-    12232,
-    12233,
-    12234
+    -12221,
+    -12110,
+    12242,
+    12243,
+    12244
+   ]
+  ],
+  [
+   [
+    12245
+   ]
+  ],
+  [
+   [
+    12246
+   ]
+  ],
+  [
+   [
+    12247
+   ]
+  ],
+  [
+   [
+    12248
    ]
   ]
  ]

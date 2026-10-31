@@ -1,27 +1,46 @@
-// TASK-0029 (DEC-0079): şehir → sancak → eyalet (şimdilik yalnızca Osmanlı).
-// Başlangıç dağılımı senaryodan gelir (sancaklar.json taslağı). Şehir el değiştirince sancağından çıkar; devletin yeni
-// aldığı şehir en yakın sancağa katılır; merkezini kaybeden sancağın merkezi en kalabalık şehre geçer, boşalan sancak
-// kalkar. Sancakbeyi yönetimi açıksa sancağın şehirleri yerel yönetici gibi yönetilir (yerel yönetim bütçesiyle, 7d).
+// TASK-0029 (DEC-0079): şehir → sancak → eyalet. TASK-0033: Osmanlı dışında 6+ şehirli devletlerde de, kültüre göre
+// adlarla (kontluk/dükalık, voyvodalık, tema, vilayet…). Başlangıç dağılımı senaryodan gelir (Osmanlı: sancaklar.json;
+// diğerleri otomatik kümeleme). Şehir el değiştirince sancağından çıkar; devletin yeni aldığı şehir en yakın sancağa
+// katılır; merkezini kaybeden sancağın merkezi en kalabalık şehre geçer, boşalan sancak kalkar. Yönetim açıksa
+// sancağın şehirleri yerel yönetici gibi yönetilir (yerel yönetim bütçesiyle, 7d).
 
-import { olayEkle, type DunyaDurumu, type Eyalet, type Sancak, type SehirDurumu, type SenaryoVerisi } from "./durum";
+import { olayEkle, type DevletDurumu, type DunyaDurumu, type Eyalet, type Sancak, type SehirDurumu, type SenaryoVerisi } from "./durum";
 import type { Baglam, Dogrulama } from "./emirler";
 import { araziGelirleri, yapiGelirleri } from "./ekonomi";
 import { sehirTicareti } from "./ticaret";
+import { ADLAR, type AdHavuzu } from "./hanedan";
 
-export function baslangicSancaklari(s: SenaryoVerisi, sehirler: SehirDurumu[], bul: (id: string | null) => number): { eyaletler: Eyalet[]; sancaklar: Sancak[] } {
-  const v = s.sancaklar;
-  if (!v) return { eyaletler: [], sancaklar: [] };
-  const devlet = bul(v.devlet);
-  if (devlet < 0) return { eyaletler: [], sancaklar: [] };
+/** Kültüre (ad havuzuna) göre idari terimler ve yönetici unvanı (TASK-0033) [TASLAK]. */
+export const IDARI_TERIMLER: Record<AdHavuzu, { sancak: string; cogul: string; eyalet: string; unvan: string }> = {
+  turk: { sancak: "sancak", cogul: "Sancaklar", eyalet: "eyalet", unvan: "Bey" },
+  slav: { sancak: "voyvodalık", cogul: "Voyvodalıklar", eyalet: "ülke", unvan: "Voyvoda" },
+  latin: { sancak: "kontluk", cogul: "Kontluklar", eyalet: "dükalık", unvan: "Kont" },
+  rum: { sancak: "tema", cogul: "Temalar", eyalet: "eyalet", unvan: "Kefali" },
+  asya: { sancak: "vilayet", cogul: "Vilayetler", eyalet: "eyalet", unvan: "Vali" },
+  genel: { sancak: "vilayet", cogul: "Vilayetler", eyalet: "eyalet", unvan: "Vali" },
+};
+export const idariTerim = (d: DunyaDurumu, devlet: number) => IDARI_TERIMLER[d.devletler[devlet]?.adHavuzu ?? "genel"] ?? IDARI_TERIMLER.genel;
+
+export function baslangicSancaklari(s: SenaryoVerisi, sehirler: SehirDurumu[], devletler: DevletDurumu[], bul: (id: string | null) => number): { eyaletler: Eyalet[]; sancaklar: Sancak[] } {
+  const eyaletler: Eyalet[] = [], sancaklar: Sancak[] = [];
   const ad = new Map(sehirler.map((c, i) => [c.ad, i]));
-  const sancaklar: Sancak[] = [];
-  for (const x of v.sancaklar) {
-    const merkez = ad.get(x.merkez);
-    const liste = x.sehirler.map((a) => ad.get(a)).filter((i): i is number => i !== undefined && sehirler[i].devlet === devlet);
-    if (merkez === undefined || !liste.includes(merkez)) continue;
-    sancaklar.push({ ad: x.ad, devlet, eyalet: x.eyalet, merkez, bey: x.bey, sehirler: liste, yonetim: false });
+  for (const v of s.sancaklar ?? []) {
+    const devlet = bul(v.devlet);
+    if (devlet < 0) continue;
+    const terim = IDARI_TERIMLER[devletler[devlet].adHavuzu] ?? IDARI_TERIMLER.genel;
+    const adlar = ADLAR[devletler[devlet].adHavuzu] ?? ADLAR.genel;
+    v.sancaklar.forEach((x, j) => {
+      const merkez = ad.get(x.merkez);
+      const liste = x.sehirler.map((a) => ad.get(a)).filter((i): i is number => i !== undefined && sehirler[i].devlet === devlet);
+      if (merkez === undefined || !liste.includes(merkez)) return;
+      const kisi = adlar[(devlet * 7 + j * 3) % adlar.length]; // kurgusal, durumsuz
+      // Türkçede unvan sonda ("Ali Bey"), diğer kültürlerde başta ("Kont Henri", "Voyvoda Stefan")
+      const bey = x.bey ?? (terim.unvan === "Bey" ? `${kisi} ${terim.unvan}` : `${terim.unvan} ${kisi}`);
+      sancaklar.push({ ad: x.ad, devlet, eyalet: x.eyalet, merkez, bey, sehirler: liste, yonetim: false, tur: terim.sancak });
+    });
+    eyaletler.push(...v.eyaletler.map((e) => ({ id: e.id, ad: e.ad, devlet, tur: terim.eyalet })));
   }
-  return { eyaletler: v.eyaletler.map((e) => ({ id: e.id, ad: e.ad, devlet })), sancaklar };
+  return { eyaletler, sancaklar };
 }
 
 /** Şehir → sancak indeksi (−1: sancaksız). */

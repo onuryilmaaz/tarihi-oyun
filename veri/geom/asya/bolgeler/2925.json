@@ -1,22 +1,20 @@
 {
  "indeks": 2925,
- "ad": "Panchagarh Sadar Upazila",
- "ulke": "Bangladesh",
- "d": 114,
+ "ad": "Navabşah",
+ "ulke": "Pakistan",
+ "d": 123,
  "k": "tahmin",
- "s": "Panchagarh Sadar Upazila",
+ "s": "Navabşah",
  "p": [
   [
    [
-    -13982,
-    -13959,
-    -14044,
-    14086,
-    14087,
-    715,
-    1240,
-    1236,
-    -14049
+    14080,
+    2685,
+    14081,
+    -13417,
+    -14013,
+    14082,
+    14083
    ]
   ]
  ]

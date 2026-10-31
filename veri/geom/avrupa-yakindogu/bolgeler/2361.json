@@ -1,30 +1,18 @@
 {
  "indeks": 2361,
- "ad": "Rostock",
- "ulke": "Germany",
- "d": 71,
+ "ad": "Barrow-in-Furness",
+ "ulke": "United Kingdom",
+ "d": 58,
  "k": "tahmin",
- "s": "Rostock",
+ "s": "Barrow-in-Furness",
  "p": [
   [
    [
-    11447,
-    11551
-   ]
-  ],
-  [
-   [
-    11443,
-    -11556,
-    -11567,
-    -11554,
-    -11553,
-    11468
-   ]
-  ],
-  [
-   [
-    11556
+    -11445,
+    -11472,
+    11548,
+    11549,
+    11550
    ]
   ]
  ]

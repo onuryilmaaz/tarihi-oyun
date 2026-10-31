@@ -1,19 +1,17 @@
 {
  "indeks": 2588,
- "ad": "Siguirini",
- "ulke": "Guinea",
- "d": 79,
+ "ad": "Kobo",
+ "ulke": "Ethiopia",
+ "d": 86,
  "k": "tahmin",
- "s": "Siguirini",
+ "s": "Kobo",
  "p": [
   [
    [
-    -12694,
-    -12651,
     -12679,
-    -12665,
-    12695,
-    12696
+    -12678,
+    12687,
+    12688
    ]
   ]
  ]

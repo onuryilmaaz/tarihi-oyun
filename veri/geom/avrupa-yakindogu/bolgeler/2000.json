@@ -1,21 +1,19 @@
 {
  "indeks": 2000,
- "ad": "Bordo",
- "ulke": "France",
- "d": 58,
+ "ad": "Semendire",
+ "ulke": "Republic of Serbia",
+ "d": 16,
  "k": "tahmin",
- "s": "Bordo",
+ "s": "Semendire",
  "p": [
   [
    [
-    -9508,
-    -9465,
-    -9498,
-    9826,
+    -9566,
+    -9532,
+    -9697,
     9827,
     9828,
-    9829,
-    9830
+    9829
    ]
   ]
  ]

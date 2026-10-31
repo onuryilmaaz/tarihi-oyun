@@ -1,19 +1,18 @@
 {
  "indeks": 2803,
- "ad": "Menglong Town",
- "ulke": "Laos",
+ "ad": "Maoming",
+ "ulke": "China",
  "d": 97,
  "k": "tahmin",
- "s": "Menglong Town",
+ "s": "Maoming",
  "p": [
   [
    [
-    -13622,
-    -13625,
-    -13493,
-    -13605,
-    13625,
-    13626
+    -13550,
+    13619,
+    -13557,
+    13620,
+    13621
    ]
   ]
  ]

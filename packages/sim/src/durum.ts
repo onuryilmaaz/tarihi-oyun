@@ -72,9 +72,10 @@ export interface SehirDurumu {
   gelirKaynagi: GelirKaynagi | null; // şehrin ana işi; null = etkisiz (TASK-0028)
   bagli: number; // birleşmeyle bağlandığı merkez şehir; −1 = bağımsız (TASK-0026)
 }
-export interface Eyalet { id: string; ad: string; devlet: number }
+export interface Eyalet { id: string; ad: string; devlet: number; tur: string } // tur: eyalet/dükalık/ülke… (TASK-0033)
 export interface Sancak {
   ad: string; devlet: number; eyalet: string; merkez: number; bey: string; sehirler: number[];
+  tur: string; // sancak/kontluk/voyvodalık/tema/vilayet (TASK-0033)
   yonetim: boolean; // sancakbeyi şehirleri yerel yönetici gibi yönetir
 }
 export interface SehirBirlesmesi { merkez: number; katilan: number; devlet: number; kalanGun: number } // TASK-0026
@@ -275,6 +276,7 @@ export interface SenaryoVerisi {
     ad: string; devlet: string; birim: number; baskent: boolean; nufus: number; dugum?: number; x?: number; y?: number;
     // TASK-0025 şehir bilgileri [TASLAK]; pilotta yalnızca arayüzde gösterilir
     tur?: SehirTuru; gelismislik?: number; gelirKaynagi?: GelirKaynagi; qid?: string;
+    modernAd?: string; // TASK-0034: 1453 adı verildiyse günümüzdeki adı
   }[];
   ordular?: { ad: string; devlet: string; asker: number; dugum: number; x: number; y: number }[];
   // Başlangıç ilişkileri ve ittifakları (6a; tarihî tahmin, [TASLAK])
@@ -286,12 +288,12 @@ export interface SenaryoVerisi {
     veraset: { acik: string[]; secimli: string[] };
     adHavuzu: Partial<Record<AdHavuzu, string[]>>;
   };
-  // TASK-0029: sancak/eyalet başlangıç taslağı (şehir adlarıyla)
+  // TASK-0029/0033: idari birim taslağı, devlet başına (şehir adlarıyla); bey yoksa ad havuzundan üretilir
   sancaklar?: {
     devlet: string;
     eyaletler: { id: string; ad: string; merkez: string }[];
-    sancaklar: { ad: string; eyalet: string; merkez: string; bey: string; sehirler: string[] }[];
-  };
+    sancaklar: { ad: string; eyalet: string; merkez: string; bey?: string; sehirler: string[] }[];
+  }[];
   // 1453 nüfus grupları (7b; tahmini, [TASLAK]): karışım [din, kültür, binde]
   // Deniz bölgeleri, limanlar, boğazlar, başlangıç donanmaları (8a; tahmini, [TASLAK])
   deniz?: {
@@ -403,7 +405,7 @@ export function baslangicDurumu(s: SenaryoVerisi, secenek: { tohum: number; oyun
     diplomatikTeklifSoguma: s.devletler.map(() => -DENGE.YZ_DIPLOMASI_SOGUMA_GUN),
     elciler: [],
     sehirBirlesmeleri: [],
-    ...baslangicSancaklari(s, sehirler, bul),
+    ...baslangicSancaklari(s, sehirler, devletler, bul),
     sonrakiElciId: 1,
     ateskesler: [],
     verasetSecimi: null,

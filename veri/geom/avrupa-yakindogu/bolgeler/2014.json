@@ -1,19 +1,20 @@
 {
  "indeks": 2014,
- "ad": "Doboya",
- "ulke": "Bosnia and Herzegovina",
- "d": 17,
+ "ad": "Clermont-Ferrand",
+ "ulke": "France",
+ "d": 57,
  "k": "tahmin",
- "s": "Doboya",
+ "s": "Clermont-Ferrand",
  "p": [
   [
    [
-    -9700,
-    -9703,
-    -9917,
-    9949,
-    9950,
-    -9914
+    -9484,
+    -9456,
+    -9404,
+    9942,
+    9943,
+    9944,
+    9945
    ]
   ]
  ]

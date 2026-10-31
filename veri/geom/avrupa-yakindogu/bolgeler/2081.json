@@ -1,17 +1,19 @@
 {
  "indeks": 2081,
- "ad": "Yverdon-les-Bains",
- "ulke": "Switzerland",
- "d": 51,
+ "ad": "Varat",
+ "ulke": "Romania",
+ "d": 27,
  "k": "tahmin",
- "s": "Yverdon-les-Bains",
+ "s": "Varat",
  "p": [
   [
    [
-    -10220,
-    -10185,
-    10364,
-    10365
+    -10341,
+    -10158,
+    -10163,
+    10362,
+    10363,
+    10364
    ]
   ]
  ]

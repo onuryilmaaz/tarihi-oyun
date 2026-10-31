@@ -1,26 +1,19 @@
 {
  "indeks": 2500,
- "ad": "Uppsala",
- "ulke": "Sweden",
- "d": 75,
+ "ad": "Murinsky urban settlement",
+ "ulke": "Russia",
+ "d": 40,
  "k": "tahmin",
- "s": "Uppsala",
+ "s": "Murinsky urban settlement",
  "p": [
   [
    [
-    12106,
-    12124,
-    12125,
-    12126,
-    -12068,
-    -11998,
-    -12106,
+    12120,
+    -12007,
+    -12017,
+    12121,
+    12122,
     12123
-   ]
-  ],
-  [
-   [
-    12127
    ]
   ]
  ]

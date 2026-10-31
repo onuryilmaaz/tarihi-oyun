@@ -1,20 +1,24 @@
 {
  "indeks": 2291,
- "ad": "Starodub",
- "ulke": "Ukraine",
- "d": 35,
+ "ad": "Urban settlement Uchaly",
+ "ulke": "Russia",
+ "d": 34,
  "k": "tahmin",
- "s": "Starodub",
+ "s": "Urban settlement Uchaly",
  "p": [
   [
    [
-    -11309,
-    -11186,
-    -11138,
-    -11191,
+    11272,
+    11273,
+    11308,
+    11309,
+    -11265,
+    11310,
     11311,
-    11312,
-    11313
+    -10105,
+    11305,
+    11306,
+    11307
    ]
   ]
  ]

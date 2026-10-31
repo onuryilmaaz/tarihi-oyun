@@ -1,19 +1,18 @@
 {
  "indeks": 3341,
- "ad": "Ayagöz",
- "ulke": "Kazakhstan",
- "d": 92,
+ "ad": "Manzhouli",
+ "ulke": "Mongolia",
+ "d": 94,
  "k": "tahmin",
- "s": "Ayagöz",
+ "s": "Manzhouli",
  "p": [
   [
    [
-    -15532,
-    -15543,
-    -15569,
-    -15576,
-    15582,
-    15583
+    -15533,
+    -15570,
+    15575,
+    1161,
+    15576
    ]
   ]
  ]

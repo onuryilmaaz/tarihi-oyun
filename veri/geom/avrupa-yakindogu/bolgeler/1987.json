@@ -1,29 +1,18 @@
 {
  "indeks": 1987,
- "ad": "Naurskaya",
- "ulke": "Russia",
- "d": 14,
+ "ad": "Bugojno",
+ "ulke": "Bosnia and Herzegovina",
+ "d": 17,
  "k": "tahmin",
- "s": "Naurskaya",
+ "s": "Bugojno",
  "p": [
   [
    [
-    9682,
-    9683,
-    9684,
-    -9458,
-    -9448,
-    -9491,
-    9685,
+    -9471,
+    -9388,
     9686,
     9687,
-    9688,
-    -9678
-   ]
-  ],
-  [
-   [
-    9689
+    9688
    ]
   ]
  ]

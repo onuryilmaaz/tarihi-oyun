@@ -1,19 +1,20 @@
 {
  "indeks": 2308,
- "ad": "Zwolle",
- "ulke": "Netherlands",
- "d": 61,
+ "ad": "Bielsk Podlaski",
+ "ulke": "Poland",
+ "d": 36,
  "k": "tahmin",
- "s": "Zwolle",
+ "s": "Bielsk Podlaski",
  "p": [
   [
    [
-    -11257,
-    -11243,
+    -11280,
+    -11254,
+    -11329,
+    11363,
+    11364,
     11365,
-    11366,
-    11367,
-    -11345
+    11366
    ]
   ]
  ]

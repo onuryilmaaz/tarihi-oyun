@@ -1,19 +1,17 @@
 {
  "indeks": 3387,
- "ad": "Alvarado",
+ "ad": "Zihuatanejo",
  "ulke": "Mexico",
  "d": 126,
  "k": "tahmin",
- "s": "Alvarado",
+ "s": "Zihuatanejo",
  "p": [
   [
    [
-    15760,
-    4589,
-    15761,
-    -15760,
-    15762,
-    15763
+    15758,
+    -15724,
+    15759,
+    15760
    ]
   ]
  ]

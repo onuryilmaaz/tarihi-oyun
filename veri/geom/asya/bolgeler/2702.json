@@ -1,18 +1,19 @@
 {
  "indeks": 2702,
- "ad": "Berhampur",
- "ulke": "India",
- "d": 120,
+ "ad": "Chaiyaphum",
+ "ulke": "Thailand",
+ "d": 105,
  "k": "tahmin",
- "s": "Berhampur",
+ "s": "Chaiyaphum",
  "p": [
   [
    [
-    13129,
-    -13178,
-    -13177,
-    -13176,
-    -13175
+    -13123,
+    -13112,
+    -13133,
+    13172,
+    13173,
+    -13169
    ]
   ]
  ]

@@ -1,22 +1,17 @@
 {
  "indeks": 2309,
- "ad": "Salzwedel",
- "ulke": "Germany",
- "d": 68,
+ "ad": "Pochepskoye Urban Settlement",
+ "ulke": "Russia",
+ "d": 35,
  "k": "tahmin",
- "s": "Salzwedel",
+ "s": "Pochepskoye Urban Settlement",
  "p": [
   [
    [
-    11368,
-    -11288,
-    -11330,
-    11369,
-    11370,
-    11371,
-    11372,
-    11373,
-    11374
+    -11300,
+    -11178,
+    11367,
+    11368
    ]
   ]
  ]

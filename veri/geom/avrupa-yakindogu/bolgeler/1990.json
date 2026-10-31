@@ -1,19 +1,26 @@
 {
  "indeks": 1990,
- "ad": "Bobovac",
- "ulke": "Bosnia and Herzegovina",
- "d": 17,
+ "ad": "Köstence",
+ "ulke": "Romania",
+ "d": 0,
  "k": "tahmin",
- "s": "Bobovac",
+ "s": "Köstence",
  "p": [
   [
    [
-    -9699,
-    -9399,
-    -9454,
-    -9581,
+    -9432,
     9701,
-    9702
+    -9598,
+    9702,
+    -9593,
+    9703,
+    9704
+   ]
+  ],
+  [
+   [
+    -9600,
+    9705
    ]
   ]
  ]

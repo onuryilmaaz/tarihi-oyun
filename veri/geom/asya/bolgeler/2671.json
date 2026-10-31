@@ -1,18 +1,17 @@
 {
  "indeks": 2671,
- "ad": "Visakhapatnam",
- "ulke": "India",
- "d": 118,
+ "ad": "Kampong Thom",
+ "ulke": "Cambodia",
+ "d": 102,
  "k": "tahmin",
- "s": "Visakhapatnam",
+ "s": "Kampong Thom",
  "p": [
   [
    [
-    -13047,
-    13062,
-    13063,
-    13064,
-    13065
+    -12999,
+    -13032,
+    13059,
+    -13055
    ]
   ]
  ]

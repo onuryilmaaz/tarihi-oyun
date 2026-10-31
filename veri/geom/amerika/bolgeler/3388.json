@@ -1,19 +1,21 @@
 {
  "indeks": 3388,
- "ad": "Totonicapán",
- "ulke": "Guatemala",
- "d": 129,
+ "ad": "Buenavista Tomatlán",
+ "ulke": "Mexico",
+ "d": 128,
  "k": "tahmin",
- "s": "Totonicapán",
+ "s": "Buenavista Tomatlán",
  "p": [
   [
    [
-    15768,
-    -15743,
-    -15745,
-    -15750,
-    15769,
-    -2144
+    15761,
+    -15761,
+    15762,
+    15763,
+    15764,
+    15765,
+    4577,
+    4344
    ]
   ]
  ]

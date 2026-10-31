@@ -1,4 +1,32 @@
 {
   "aciklama": "TASK-0025: Wikidata adaylarından elle dışlananlar — 1453'te olmayan ya da yerleşim olmayan yerler. Ada göre eşleşir.",
-  "adlar": ["Kırıkkale", "Karabük", "Batman", "Didim", "Dalaman", "Kocaali", "Çatören", "Helvaçavur", "Zavodskoy", "Vasyurinskoe", "Oleshky", "Belene", "Kumluca", "Manavgat", "Gazipaşa", "Elazığ", "Bingöl", "Akçakale", "Hani"]
+  "adlar": [
+    "Kırıkkale",
+    "Karabük",
+    "Batman",
+    "Didim",
+    "Dalaman",
+    "Kocaali",
+    "Çatören",
+    "Helvaçavur",
+    "Zavodskoy",
+    "Vasyurinskoe",
+    "Oleshky",
+    "Belene",
+    "Kumluca",
+    "Manavgat",
+    "Gazipaşa",
+    "Elazığ",
+    "Bingöl",
+    "Akçakale",
+    "Hani",
+    "Osmaniye",
+    "Sarıkamış",
+    "Uludere",
+    "Karlıova",
+    "Sheladize",
+    "El-Şemal Nahiyesi",
+    "Siyahçeşme",
+    "Le Havre"
+  ]
 }

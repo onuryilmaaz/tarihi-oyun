@@ -1,20 +1,18 @@
 {
  "indeks": 1950,
- "ad": "Leskofça",
- "ulke": "Republic of Serbia",
+ "ad": "Varna",
+ "ulke": "Bulgaria",
  "d": 0,
  "k": "tahmin",
- "s": "Leskofça",
+ "s": "Varna",
  "p": [
   [
    [
-    -9404,
-    -9292,
-    -9369,
-    9436,
-    9437,
-    9438,
-    9439
+    -9359,
+    9430,
+    9431,
+    9432,
+    9433
    ]
   ]
  ]

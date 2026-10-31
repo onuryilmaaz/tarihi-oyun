@@ -1,19 +1,21 @@
 {
  "indeks": 3090,
- "ad": "Shuangshipu Town",
- "ulke": "China",
- "d": 97,
+ "ad": "Çagçaran",
+ "ulke": "Afghanistan",
+ "d": 90,
  "k": "tahmin",
- "s": "Shuangshipu Town",
+ "s": "Çagçaran",
  "p": [
   [
    [
-    -14661,
-    -14549,
-    -14607,
-    14694,
-    14695,
-    14696
+    -14686,
+    -14515,
+    -14258,
+    -14593,
+    -14473,
+    14689,
+    14690,
+    14691
    ]
   ]
  ]

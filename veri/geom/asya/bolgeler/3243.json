@@ -1,19 +1,18 @@
 {
  "indeks": 3243,
- "ad": "Shuozhou",
- "ulke": "China",
- "d": 97,
+ "ad": "Tokchon",
+ "ulke": "North Korea",
+ "d": 98,
  "k": "tahmin",
- "s": "Shuozhou",
+ "s": "Tokchon",
  "p": [
   [
    [
-    -15155,
-    -15159,
-    15238,
-    15239,
-    15240,
-    15241
+    -15216,
+    -15089,
+    15233,
+    15234,
+    15235
    ]
   ]
  ]

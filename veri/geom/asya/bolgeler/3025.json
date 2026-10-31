@@ -1,21 +1,18 @@
 {
  "indeks": 3025,
- "ad": "Taunsa Sharif",
- "ulke": "Pakistan",
- "d": 122,
+ "ad": "Xiaogan",
+ "ulke": "China",
+ "d": 97,
  "k": "tahmin",
- "s": "Taunsa Sharif",
+ "s": "Xiaogan",
  "p": [
   [
    [
-    14431,
-    -14369,
-    -14415,
-    14432,
-    14433,
-    2661,
-    2669,
-    2677
+    14395,
+    -14427,
+    -14426,
+    14374,
+    14360
    ]
   ]
  ]

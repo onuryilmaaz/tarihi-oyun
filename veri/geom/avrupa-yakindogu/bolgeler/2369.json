@@ -1,19 +1,18 @@
 {
  "indeks": 2369,
- "ad": "Northallerton",
- "ulke": "United Kingdom",
- "d": 58,
+ "ad": "Kaluga",
+ "ulke": "Russia",
+ "d": 35,
  "k": "tahmin",
- "s": "Northallerton",
+ "s": "Kaluga",
  "p": [
   [
    [
-    -11561,
-    -11483,
-    -11487,
-    11585,
-    11586,
-    11587
+    -11514,
+    -11518,
+    11578,
+    11579,
+    11580
    ]
   ]
  ]

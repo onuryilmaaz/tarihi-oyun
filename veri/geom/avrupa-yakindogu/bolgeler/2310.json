@@ -1,20 +1,27 @@
 {
  "indeks": 2310,
- "ad": "Bielsk Podlaski",
- "ulke": "Poland",
- "d": 36,
+ "ad": "Bangor",
+ "ulke": "United Kingdom",
+ "d": 58,
  "k": "tahmin",
- "s": "Bielsk Podlaski",
+ "s": "Bangor",
  "p": [
   [
    [
-    -11292,
-    -11266,
-    -11341,
-    11375,
-    11376,
-    11377,
-    11378
+    -11158,
+    -11349,
+    11369,
+    11370
+   ]
+  ],
+  [
+   [
+    11371
+   ]
+  ],
+  [
+   [
+    11372
    ]
   ]
  ]

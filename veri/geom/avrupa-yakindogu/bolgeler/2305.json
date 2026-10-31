@@ -1,20 +1,17 @@
 {
  "indeks": 2305,
- "ad": "Shrewsbury",
+ "ad": "Norwich",
  "ulke": "United Kingdom",
  "d": 58,
  "k": "tahmin",
- "s": "Shrewsbury",
+ "s": "Norwich",
  "p": [
   [
    [
-    -11169,
-    -11210,
-    -11253,
-    11357,
-    11358,
-    11359,
-    11360
+    -11287,
+    -11218,
+    11351,
+    11352
    ]
   ]
  ]

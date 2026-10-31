@@ -1,19 +1,19 @@
 {
  "indeks": 3118,
- "ad": "Sunzhen Town",
+ "ad": "Huatugou Town",
  "ulke": "China",
- "d": 97,
+ "d": 96,
  "k": "tahmin",
- "s": "Sunzhen Town",
+ "s": "Huatugou Town",
  "p": [
   [
    [
-    -14734,
-    -14667,
-    -14829,
-    14829,
-    14830,
-    14831
+    -14443,
+    -14809,
+    14823,
+    14824,
+    14825,
+    -14677
    ]
   ]
  ]

@@ -1,18 +1,19 @@
 {
  "indeks": 2347,
- "ad": "Mahilyov",
- "ulke": "Belarus",
- "d": 35,
+ "ad": "Chishminsky possoviet",
+ "ulke": "Russia",
+ "d": 34,
  "k": "tahmin",
- "s": "Mahilyov",
+ "s": "Chishminsky possoviet",
  "p": [
   [
    [
-    -11411,
-    -11392,
-    -11463,
-    11494,
-    11495
+    -11331,
+    -11429,
+    11488,
+    11489,
+    11490,
+    11491
    ]
   ]
  ]

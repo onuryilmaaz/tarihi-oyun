@@ -1,18 +1,15 @@
 {
  "indeks": 1922,
- "ad": "Köstendil",
- "ulke": "Bulgaria",
- "d": 0,
+ "ad": "Sinop",
+ "ulke": "Turkey",
+ "d": 6,
  "k": "tahmin",
- "s": "Köstendil",
+ "s": "Sinop",
  "p": [
   [
    [
-    -9141,
-    -9197,
-    9290,
-    9291,
-    9292
+    -9136,
+    9283
    ]
   ]
  ]

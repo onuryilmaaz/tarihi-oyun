@@ -1,27 +1,22 @@
 {
  "indeks": 2233,
- "ad": "Upravlenchesky township",
- "ulke": "Kazakhstan",
- "d": 32,
- "k": "ohm:2849493",
- "s": "Upravlenchesky township",
+ "ad": "Bad Salzungen",
+ "ulke": "Germany",
+ "d": 68,
+ "k": "tahmin",
+ "s": "Bad Salzungen",
  "p": [
   [
    [
+    11089,
+    -10897,
+    -10985,
+    11090,
+    11091,
     11092,
-    -10929,
-    -9992,
-    -10121,
     11093,
     11094,
-    11095,
-    11096
-   ],
-   [
-    11097
-   ],
-   [
-    11098
+    11095
    ]
   ]
  ]

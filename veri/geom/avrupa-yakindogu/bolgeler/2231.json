@@ -1,20 +1,27 @@
 {
  "indeks": 2231,
- "ad": "Lutsk",
- "ulke": "Ukraine",
- "d": 35,
- "k": "tahmin",
- "s": "Lutsk",
+ "ad": "Upravlenchesky township",
+ "ulke": "Kazakhstan",
+ "d": 32,
+ "k": "ohm:2849493",
+ "s": "Upravlenchesky township",
  "p": [
   [
    [
-    -11027,
-    -10974,
-    11087,
-    -10972,
-    11088,
-    11089,
-    11090
+    11080,
+    -10917,
+    -9980,
+    -10109,
+    11081,
+    11082,
+    11083,
+    11084
+   ],
+   [
+    11085
+   ],
+   [
+    11086
    ]
   ]
  ]

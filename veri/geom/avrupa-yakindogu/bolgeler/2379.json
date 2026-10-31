@@ -1,18 +1,15 @@
 {
  "indeks": 2379,
- "ad": "Kasimov",
- "ulke": "Russia",
- "d": 43,
+ "ad": "Nakskov",
+ "ulke": "Denmark",
+ "d": 74,
  "k": "tahmin",
- "s": "Kasimov",
+ "s": "Nakskov",
  "p": [
   [
    [
-    -11601,
-    -11464,
-    -11297,
-    11613,
-    11614
+    11617,
+    11618
    ]
   ]
  ]

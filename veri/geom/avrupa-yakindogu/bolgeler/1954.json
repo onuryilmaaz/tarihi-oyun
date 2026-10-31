@@ -1,17 +1,19 @@
 {
  "indeks": 1954,
- "ad": "Makhachkala agglomeration",
- "ulke": "Russia",
- "d": 14,
+ "ad": "Mitroviçe",
+ "ulke": "Kosovo",
+ "d": 16,
  "k": "tahmin",
- "s": "Makhachkala agglomeration",
+ "s": "Mitroviçe",
  "p": [
   [
    [
-    -9246,
-    -9306,
-    9449,
-    9450
+    -9300,
+    -9393,
+    -9428,
+    9442,
+    9443,
+    -9440
    ]
   ]
  ]

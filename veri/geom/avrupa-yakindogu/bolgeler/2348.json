@@ -1,21 +1,21 @@
 {
  "indeks": 2348,
- "ad": "Roslavl",
+ "ad": "Ashinskoye urban settlement",
  "ulke": "Russia",
- "d": 35,
+ "d": 34,
  "k": "tahmin",
- "s": "Roslavl",
+ "s": "Ashinskoye urban settlement",
  "p": [
   [
    [
-    -11460,
-    -11313,
-    -11381,
-    -11396,
+    -11490,
+    11492,
+    -11312,
+    11493,
+    11494,
+    11495,
     11496,
-    11497,
-    11498,
-    11499
+    11497
    ]
   ]
  ]

@@ -1,19 +1,16 @@
 {
  "indeks": 2385,
- "ad": "Carlisle",
- "ulke": "United Kingdom",
- "d": 58,
+ "ad": "Kazan",
+ "ulke": "Russia",
+ "d": 33,
  "k": "tahmin",
- "s": "Carlisle",
+ "s": "Kazan",
  "p": [
   [
    [
-    11643,
-    -11562,
-    -11588,
-    11644,
-    11645,
-    -11575
+    -11535,
+    11636,
+    -11582
    ]
   ]
  ]

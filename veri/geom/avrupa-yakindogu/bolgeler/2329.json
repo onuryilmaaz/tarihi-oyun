@@ -1,17 +1,16 @@
 {
  "indeks": 2329,
- "ad": "Deeside",
- "ulke": "United Kingdom",
- "d": 58,
+ "ad": "Rayevsky selsoviet",
+ "ulke": "Russia",
+ "d": 34,
  "k": "tahmin",
- "s": "Deeside",
+ "s": "Rayevsky selsoviet",
  "p": [
   [
    [
-    -11382,
-    -11360,
-    11434,
-    11435
+    -11330,
+    -10107,
+    11428
    ]
   ]
  ]

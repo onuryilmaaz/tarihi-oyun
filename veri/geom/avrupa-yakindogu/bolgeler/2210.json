@@ -1,18 +1,18 @@
 {
  "indeks": 2210,
- "ad": "Charleroi",
- "ulke": "Belgium",
+ "ad": "Tournai",
+ "ulke": "France",
  "d": 61,
  "k": "tahmin",
- "s": "Charleroi",
+ "s": "Tournai",
  "p": [
   [
    [
-    -10721,
-    -10903,
-    11004,
-    11005,
-    11006
+    -10924,
+    -10710,
+    -10995,
+    10998,
+    10999
    ]
   ]
  ]

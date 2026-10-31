@@ -1,20 +1,18 @@
 {
  "indeks": 3246,
- "ad": "Hamhung",
- "ulke": "North Korea",
- "d": 98,
+ "ad": "Semerkant",
+ "ulke": "Uzbekistan",
+ "d": 90,
  "k": "tahmin",
- "s": "Hamhung",
+ "s": "Semerkant",
  "p": [
   [
    [
-    -15246,
-    -15100,
-    -15106,
-    15248,
-    15249,
-    15250,
-    15251
+    -15135,
+    -15126,
+    -15151,
+    15243,
+    15244
    ]
   ]
  ]

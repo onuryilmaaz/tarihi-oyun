@@ -1,18 +1,29 @@
 {
  "indeks": 2754,
- "ad": "Balasore",
- "ulke": "India",
- "d": 120,
+ "ad": "Koyra Upazila",
+ "ulke": "Bangladesh",
+ "d": 114,
  "k": "tahmin",
- "s": "Balasore",
+ "s": "Koyra Upazila",
  "p": [
   [
    [
-    -13242,
-    13378,
     13379,
-    13380,
-    13381
+    13501,
+    13381,
+    13382,
+    13383,
+    13384
+   ]
+  ],
+  [
+   [
+    13385
+   ]
+  ],
+  [
+   [
+    13386
    ]
   ]
  ]

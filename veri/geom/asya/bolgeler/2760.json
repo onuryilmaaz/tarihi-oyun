@@ -1,18 +1,16 @@
 {
  "indeks": 2760,
- "ad": "Nan",
- "ulke": "Thailand",
- "d": 104,
+ "ad": "South Mumbai",
+ "ulke": "India",
+ "d": 117,
  "k": "tahmin",
- "s": "Nan",
+ "s": "South Mumbai",
  "p": [
   [
    [
-    -13353,
-    -13314,
-    13413,
-    13414,
-    13415
+    13360,
+    -13408,
+    -13407
    ]
   ]
  ]

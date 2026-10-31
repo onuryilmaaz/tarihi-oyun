@@ -1,19 +1,21 @@
 {
  "indeks": 2421,
- "ad": "Kristianstad",
- "ulke": "Sweden",
- "d": 75,
+ "ad": "Velikiye Luki",
+ "ulke": "Russia",
+ "d": 41,
  "k": "tahmin",
- "s": "Kristianstad",
+ "s": "Velikiye Luki",
  "p": [
   [
    [
-    -11704,
-    11772,
-    11773,
-    11774,
-    11775,
-    -11770
+    -11714,
+    -11696,
+    -11600,
+    -11636,
+    11768,
+    11769,
+    11770,
+    11771
    ]
   ]
  ]

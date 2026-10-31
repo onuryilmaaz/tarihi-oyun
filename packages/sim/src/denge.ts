@@ -94,7 +94,7 @@ export const DENGE = {
   // Hedef seviyeye göre bedel: indeks = hedef seviye − 1 (sur 1. seviyeden başlar, 0. indeks kullanılmaz)
   YAPI_MALIYET: { tarla: [300, 600, 1200, 2000], pazar: [400, 800, 1600, 2600], sur: [0, 800, 1200, 1800, 2500, 3500] }, // son basamak teknolojiyle açılır (5c)
   YAPI_SURE_GUN: { tarla: 60, pazar: 90, sur: 120 },
-  YAPI_AYLIK_GELIR: { tarla: 15, pazar: 20 }, // seviye başına, şehir kontrolünüzdeyken
+  YAPI_AYLIK_GELIR: { tarla: 8, pazar: 10 }, // seviye başına, 20.000 nüfusta (TASK-0032: 15/20'den indi; 2.152 şehirli dünyada yatırım araziyi katbekat geçiyordu)
   // 5c — teknoloji ağacı (DEC-0035); bedel hazine, süre takvim günü
   ARASTIRMA_YUVASI: 2,
   TEKNOLOJI: {
@@ -274,4 +274,10 @@ export const DENGE = {
   KAYNAK_ZANAAT_PAZAR: 115,
   KAYNAK_ZANAAT_TOPLAMA: 90, // zanaat şehrinde asker toplama bedeli
   KAYNAK_HAYVANCILIK_SUVARI: 80, // hayvancılık şehrinde süvari toplama bedeli
+  // TASK-0032 denge (2.152 şehirli dünya) [TASLAK]
+  YAPI_REFERANS_NUFUS: 20000, // yatırım geliri bu nüfusta %100; nüfusla orantılı
+  YAPI_NUFUS_EN_AZ_YUZDE: 25,
+  YAPI_NUFUS_EN_COK_YUZDE: 150,
+  GELISMISLIK_YATIRIM_ADIM: 3, // her bu kadar yatırım seviyesinde gelişmişlik +1
+  YZ_YATIRIM_GERI_DONUS_AY: 60, // AI ve yerel yönetici kendini bu sürede ödemeyen yatırımı yapmaz
 };

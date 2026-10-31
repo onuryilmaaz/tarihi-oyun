@@ -1,16 +1,17 @@
 {
  "indeks": 2706,
- "ad": "Haikou",
+ "ad": "Wancheng Town",
  "ulke": "China",
  "d": 97,
  "k": "tahmin",
- "s": "Haikou",
+ "s": "Wancheng Town",
  "p": [
   [
    [
-    13189,
-    13190,
-    13191
+    13183,
+    13184,
+    -13179,
+    13185
    ]
   ]
  ]

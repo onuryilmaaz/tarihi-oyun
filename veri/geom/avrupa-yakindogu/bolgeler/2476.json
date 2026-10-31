@@ -1,18 +1,17 @@
 {
  "indeks": 2476,
- "ad": "Viljandi",
- "ulke": "Estonia",
- "d": 38,
+ "ad": "Dobryanskoye Urban Settlement",
+ "ulke": "Russia",
+ "d": 39,
  "k": "tahmin",
- "s": "Viljandi",
+ "s": "Dobryanskoye Urban Settlement",
  "p": [
   [
    [
-    -11883,
-    -11936,
-    11971,
-    11972,
-    -11962
+    -11881,
+    -11866,
+    11966,
+    -11929
    ]
   ]
  ]

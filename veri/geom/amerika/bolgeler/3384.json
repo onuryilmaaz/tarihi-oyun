@@ -1,21 +1,17 @@
 {
  "indeks": 3384,
- "ad": "Jalapa",
- "ulke": "Guatemala",
- "d": 129,
+ "ad": "Las Choapas",
+ "ulke": "Mexico",
+ "d": 126,
  "k": "tahmin",
- "s": "Jalapa",
+ "s": "Las Choapas",
  "p": [
   [
    [
-    15744,
-    -15742,
     15745,
-    808,
-    813,
-    925,
-    2169,
-    2168,
+    4591,
+    -2139,
+    2133,
     15746,
     15747
    ]

@@ -1,17 +1,22 @@
 {
  "indeks": 2151,
- "ad": "Camborne",
- "ulke": "United Kingdom",
- "d": 58,
+ "ad": "Sarreguemines",
+ "ulke": "France",
+ "d": 63,
  "k": "tahmin",
- "s": "Camborne",
+ "s": "Sarreguemines",
  "p": [
   [
    [
-    10744,
-    10745,
-    10746,
-    10930
+    -10650,
+    10737,
+    10738,
+    10739,
+    10740,
+    10741,
+    10742,
+    10743,
+    10744
    ]
   ]
  ]

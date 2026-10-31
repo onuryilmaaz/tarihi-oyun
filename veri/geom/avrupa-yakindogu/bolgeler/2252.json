@@ -1,19 +1,17 @@
 {
  "indeks": 2252,
- "ad": "Wieluń",
- "ulke": "Poland",
- "d": 36,
+ "ad": "Swansea",
+ "ulke": "United Kingdom",
+ "d": 58,
  "k": "tahmin",
- "s": "Wieluń",
+ "s": "Swansea",
  "p": [
   [
    [
-    -11150,
-    -11051,
-    -11118,
-    11161,
-    11162,
-    11163
+    11155,
+    11156,
+    11157,
+    11158
    ]
   ]
  ]

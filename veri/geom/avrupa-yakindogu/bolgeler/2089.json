@@ -1,18 +1,18 @@
 {
  "indeks": 2089,
- "ad": "İstolni Belgrad",
+ "ad": "Kecskemét",
  "ulke": "Hungary",
  "d": 27,
  "k": "tahmin",
- "s": "İstolni Belgrad",
+ "s": "Kecskemét",
  "p": [
   [
    [
-    -10350,
-    -10205,
-    10405,
-    10406,
-    10407
+    -10267,
+    -10257,
+    -10344,
+    10402,
+    -10397
    ]
   ]
  ]

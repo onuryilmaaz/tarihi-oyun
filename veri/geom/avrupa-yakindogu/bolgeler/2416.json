@@ -1,20 +1,18 @@
 {
  "indeks": 2416,
- "ad": "Kopenhag",
- "ulke": "Denmark",
- "d": 74,
+ "ad": "Sarapul",
+ "ulke": "Russia",
+ "d": 33,
  "k": "tahmin",
- "s": "Kopenhag",
+ "s": "Sarapul",
  "p": [
   [
    [
-    11650,
-    -11761
-   ]
-  ],
-  [
-   [
-    11761
+    -11717,
+    -11538,
+    -11713,
+    11752,
+    11753
    ]
   ]
  ]

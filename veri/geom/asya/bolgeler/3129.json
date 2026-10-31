@@ -1,18 +1,17 @@
 {
  "indeks": 3129,
- "ad": "Meymene",
- "ulke": "Afghanistan",
- "d": 90,
+ "ad": "Gabasumdo",
+ "ulke": "China",
+ "d": 96,
  "k": "tahmin",
- "s": "Meymene",
+ "s": "Gabasumdo",
  "p": [
   [
    [
-    -14699,
-    -14704,
-    14866,
-    14867,
-    14868
+    -14608,
+    -14769,
+    14863,
+    14864
    ]
   ]
  ]

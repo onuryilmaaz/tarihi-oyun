@@ -1,21 +1,18 @@
 {
  "indeks": 2350,
- "ad": "Ashinskoye urban settlement",
- "ulke": "Russia",
- "d": 34,
+ "ad": "Szczecinek",
+ "ulke": "Poland",
+ "d": 71,
  "k": "tahmin",
- "s": "Ashinskoye urban settlement",
+ "s": "Szczecinek",
  "p": [
   [
    [
-    -11502,
     11504,
-    -11324,
+    -11479,
     11505,
     11506,
-    11507,
-    11508,
-    11509
+    -11501
    ]
   ]
  ]

@@ -1,19 +1,18 @@
 {
  "indeks": 1996,
- "ad": "Silistre",
- "ulke": "Bulgaria",
- "d": 0,
- "k": "tahmin",
- "s": "Silistre",
+ "ad": "Roșiori de Vede",
+ "ulke": "Romania",
+ "d": 28,
+ "k": "ohm:2929115",
+ "s": "Roșiori de Vede",
  "p": [
   [
    [
-    -9600,
-    -9503,
-    -9445,
-    -9717,
-    9797,
-    9798
+    9512,
+    -9811,
+    -9810,
+    9590,
+    9570
    ]
   ]
  ]

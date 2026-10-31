@@ -1,20 +1,23 @@
 {
  "indeks": 2604,
- "ad": "Jabodetabek",
+ "ad": "Rawajaya",
  "ulke": "Indonesia",
  "d": 111,
  "k": "tahmin",
- "s": "Jabodetabek",
+ "s": "Rawajaya",
  "p": [
   [
    [
-    12747
+    12742,
+    12743,
+    12744,
+    12745,
+    -12740
    ]
   ],
   [
    [
-    12748,
-    12749
+    12746
    ]
   ]
  ]

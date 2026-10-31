@@ -1,21 +1,22 @@
 {
  "indeks": 2914,
- "ad": "Chenzhou",
- "ulke": "China",
- "d": 97,
+ "ad": "Rangpur Sadar Upazila",
+ "ulke": "Bangladesh",
+ "d": 114,
  "k": "tahmin",
- "s": "Chenzhou",
+ "s": "Rangpur Sadar Upazila",
  "p": [
   [
    [
-    -13908,
-    -13953,
-    -13970,
-    -13973,
-    -14023,
-    14032,
-    14033,
-    -13964
+    -13946,
+    -13959,
+    -13934,
+    14027,
+    1796,
+    14028,
+    14029,
+    14030,
+    14031
    ]
   ]
  ]

@@ -1,19 +1,23 @@
 {
  "indeks": 2628,
- "ad": "Chukai",
+ "ad": "Bukit Mertarajam",
  "ulke": "Malaysia",
  "d": 109,
  "k": "tahmin",
- "s": "Chukai",
+ "s": "Bukit Mertarajam",
  "p": [
   [
    [
-    -12798,
-    -12802,
-    -12809,
-    12854,
+    12854
+   ]
+  ],
+  [
+   [
     12855,
-    12856
+    -12780,
+    12856,
+    12857,
+    12858
    ]
   ]
  ]

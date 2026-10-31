@@ -35,11 +35,20 @@ export const insaatSuresi = (d: DunyaDurumu, devlet: number, yapi: YapiTuru) =>
   Math.ceil(DENGE.YAPI_SURE_GUN[yapi] * insaatSureYuzde(d, devlet) / 100);
 
 /** Şehrin yapılarından gelen aylık gelir (şehir yasal sahibinin askerî kontrolündeyken). */
+/** Yatırım geliri şehrin nüfusuyla ölçeklenir (TASK-0032): küçük kasabada %25, büyük şehirde en çok %200. */
+export const yapiNufusYuzde = (s: SehirDurumu): number => Math.max(DENGE.YAPI_NUFUS_EN_AZ_YUZDE,
+  Math.min(DENGE.YAPI_NUFUS_EN_COK_YUZDE, Math.floor((s.nufus * 100) / DENGE.YAPI_REFERANS_NUFUS)));
+
+/** Bir yapı seviyesinin aylık geliri (gelişmişlik ve istikrar hariç): taban × gelir kaynağı × nüfus. */
+export function yapiSeviyeGeliri(d: DunyaDurumu, s: SehirDurumu, yapi: "tarla" | "pazar"): number {
+  const taban = yapi === "tarla" ? DENGE.YAPI_AYLIK_GELIR.tarla : pazarGeliriSeviyeBasina(d, s.devlet);
+  return Math.floor((taban * kaynakYapiYuzde(s, yapi) * yapiNufusYuzde(s)) / 10000);
+}
+
 export function sehirYapiGeliri(d: DunyaDurumu, s: SehirDurumu): number {
   if (s.kontrol !== s.devlet) return 0;
-  // TASK-0028: gelir kaynağı yapının, gelişmişlik bütün şehrin gelirini çarpar
-  const ham = Math.floor((s.yapilar.tarla * DENGE.YAPI_AYLIK_GELIR.tarla * kaynakYapiYuzde(s, "tarla")
-    + s.yapilar.pazar * pazarGeliriSeviyeBasina(d, s.devlet) * kaynakYapiYuzde(s, "pazar")) / 100);
+  // TASK-0028: gelir kaynağı yapının, gelişmişlik bütün şehrin gelirini çarpar; TASK-0032: nüfus ölçeği
+  const ham = s.yapilar.tarla * yapiSeviyeGeliri(d, s, "tarla") + s.yapilar.pazar * yapiSeviyeGeliri(d, s, "pazar");
   return Math.floor((Math.floor((ham * gelismislikYuzde(s)) / 100) * sehirGelirYuzde(s)) / 100);
 }
 
@@ -65,7 +74,7 @@ export function insaatlariIlerlet(d: DunyaDurumu): void {
     if (i.yapi === "sur") s.sur = i.hedef;
     else {
       s.yapilar[i.yapi] = i.hedef;
-      if ((s.yapilar.tarla + s.yapilar.pazar) % 2 === 0) gelismislikDegistir(s, 1); // her iki yatırım seviyesinde +1 (TASK-0028)
+      if ((s.yapilar.tarla + s.yapilar.pazar) % DENGE.GELISMISLIK_YATIRIM_ADIM === 0) gelismislikDegistir(s, 1); // TASK-0028/0032
     }
     sil();
     olayEkle(d, { tur: "insaat-bitti", devlet: i.devlet, metin: `${s.ad}: ${YAPI_ADLARI[i.yapi]} ${i.hedef}. seviyeye yükseldi.` });

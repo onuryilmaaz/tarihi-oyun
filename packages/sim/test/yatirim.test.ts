@@ -2,7 +2,7 @@
 import { describe, expect, it } from "vitest";
 import {
   DENGE, butceOzeti, degismezler, durumOzeti, emirVer, gundenTarih, gunIlerlet, kaydet, kullanilabilirHazine, insaatlariIlerlet,
-  turSuresiAyarla, turuIlerlet, yukle, type DunyaDurumu,
+  turSuresiAyarla, turuIlerlet, yapiSeviyeGeliri, yukle, type DunyaDurumu,
 } from "../src";
 import { yeniDurum } from "./yardimci";
 
@@ -53,8 +53,9 @@ describe("şehir yatırımları (5b)", () => {
     expect(d.sehirler[A2].yapilar.pazar).toBe(1);
     expect(d.gunluk.some((o) => o.tur === "insaat-bitti")).toBe(true);
     const butce = butceOzeti(d, 0);
-    expect(butce.aylikYapiGeliri).toBe(DENGE.YAPI_AYLIK_GELIR.pazar);
-    expect(butce.aylikGelir).toBe(once + DENGE.YAPI_AYLIK_GELIR.pazar);
+    const seviye = yapiSeviyeGeliri(d, d.sehirler[A2], "pazar"); // nüfusa ölçekli (TASK-0032)
+    expect(butce.aylikYapiGeliri).toBe(seviye);
+    expect(butce.aylikGelir).toBe(once + seviye);
     // Bir sonraki ay başında hazineye işlenen fark, özetteki aylık net farkla birebir aynı
     const hazine = d.devletler[0].hazine;
     do gunIlerlet(d); while (gundenTarih(d.gun).gun !== 1);

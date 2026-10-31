@@ -1,20 +1,18 @@
 {
  "indeks": 2178,
- "ad": "Olomouc",
- "ulke": "Czech Republic",
- "d": 66,
- "k": "ohm:2830504",
- "s": "Olomouc",
+ "ad": "Bardejov",
+ "ulke": "Slovakia",
+ "d": 27,
+ "k": "tahmin",
+ "s": "Bardejov",
  "p": [
   [
    [
-    -10833,
-    -10782,
-    10877,
-    10878,
-    10879,
-    10880,
-    10881
+    -10824,
+    -10716,
+    -10775,
+    10872,
+    10873
    ]
   ]
  ]

@@ -1,19 +1,17 @@
 {
  "indeks": 2686,
- "ad": "Prachin Buri",
- "ulke": "Thailand",
- "d": 105,
+ "ad": "Srikakulam",
+ "ulke": "India",
+ "d": 118,
  "k": "tahmin",
- "s": "Prachin Buri",
+ "s": "Srikakulam",
  "p": [
   [
    [
-    -13034,
-    -13019,
-    -13071,
-    13122,
-    13123,
-    13124
+    -13052,
+    13116,
+    13117,
+    13118
    ]
   ]
  ]

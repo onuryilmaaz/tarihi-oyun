@@ -47,5 +47,5 @@ describe("1453 senaryosu", () => {
     const b = yukle(kaydet(a), a.senaryo);
     turuIlerlet(a, baglam); turuIlerlet(b, baglam);
     expect(durumOzeti(b)).toBe(durumOzeti(a));
-  }, 60000); // 132 AI devletiyle 21 oyun yılı (6b–7b) birkaç saniye sürer
+  }, 120000); // 132 AI devletiyle 21 oyun yılı; 2.152 şehirli dünyada (TASK-0031) tam takımda 60 sn sınırına dayanıyordu
 });

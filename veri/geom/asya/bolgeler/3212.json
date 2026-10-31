@@ -1,19 +1,17 @@
 {
  "indeks": 3212,
- "ad": "Şerabad",
- "ulke": "Uzbekistan",
- "d": 90,
+ "ad": "Hongshanyao",
+ "ulke": "China",
+ "d": 97,
  "k": "tahmin",
- "s": "Şerabad",
+ "s": "Hongshanyao",
  "p": [
   [
    [
-    -15112,
-    -15015,
-    -15109,
-    15136,
-    15137,
-    15138
+    -15062,
+    -15103,
+    15129,
+    15130
    ]
   ]
  ]

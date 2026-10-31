@@ -1,18 +1,19 @@
 {
  "indeks": 1841,
- "ad": "Görice",
- "ulke": "Albania",
+ "ad": "Amasya",
+ "ulke": "Turkey",
  "d": 0,
  "k": "tahmin",
- "s": "Görice",
+ "s": "Amasya",
  "p": [
   [
    [
-    9001,
-    -8989,
+    -8913,
+    -8832,
     9002,
     9003,
-    -8933
+    9004,
+    9005
    ]
   ]
  ]

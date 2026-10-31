@@ -1,50 +1,21 @@
 {
  "indeks": 2722,
- "ad": "Castle town of Kagoshima",
- "ulke": "Japan",
- "d": 99,
+ "ad": "Kaysone Phomvihane",
+ "ulke": "Thailand",
+ "d": 105,
  "k": "tahmin",
- "s": "Castle town of Kagoshima",
+ "s": "Kaysone Phomvihane",
  "p": [
   [
    [
-    13248
-   ]
-  ],
-  [
-   [
-    13249
-   ]
-  ],
-  [
-   [
-    13250
-   ]
-  ],
-  [
-   [
-    13253
-   ]
-  ],
-  [
-   [
+    13140,
+    -13158,
+    13253,
     13254,
-    13255
-   ]
-  ],
-  [
-   [
-    13256
-   ]
-  ],
-  [
-   [
-    13259
-   ]
-  ],
-  [
-   [
-    13260
+    13255,
+    -13221,
+    -13196,
+    -13139
    ]
   ]
  ]

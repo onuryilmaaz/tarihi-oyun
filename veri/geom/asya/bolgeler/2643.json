@@ -1,18 +1,22 @@
 {
  "indeks": 2643,
- "ad": "Trincomalee",
- "ulke": "Sri Lanka",
- "d": 125,
+ "ad": "Ninh Thuận",
+ "ulke": "Vietnam",
+ "d": 101,
  "k": "tahmin",
- "s": "Trincomalee",
+ "s": "Ninh Thuận",
  "p": [
   [
    [
-    12924,
-    -12930,
-    -12929,
-    12822,
-    12914
+    -12906,
+    12922,
+    12923,
+    12924
+   ]
+  ],
+  [
+   [
+    12925
    ]
   ]
  ]

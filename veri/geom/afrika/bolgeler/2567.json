@@ -1,20 +1,18 @@
 {
  "indeks": 2567,
- "ad": "Degehabur",
- "ulke": "Ethiopia",
- "d": 87,
+ "ad": "Banankoro",
+ "ulke": "Guinea",
+ "d": 79,
  "k": "tahmin",
- "s": "Degehabur",
+ "s": "Banankoro",
  "p": [
   [
    [
-    12614,
-    -12543,
-    -12563,
-    12615,
-    12616,
-    12617,
-    -1452
+    -12582,
+    -12458,
+    -12571,
+    12612,
+    12613
    ]
   ]
  ]

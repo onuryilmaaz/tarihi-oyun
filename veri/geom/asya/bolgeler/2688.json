@@ -1,17 +1,19 @@
 {
  "indeks": 2688,
- "ad": "Srikakulam",
- "ulke": "India",
- "d": 118,
+ "ad": "Ayutthaya",
+ "ulke": "Thailand",
+ "d": 105,
  "k": "tahmin",
- "s": "Srikakulam",
+ "s": "Ayutthaya",
  "p": [
   [
    [
-    -13064,
-    13128,
-    13129,
-    13130
+    -13083,
+    -13023,
+    -13113,
+    13122,
+    13123,
+    -13076
    ]
   ]
  ]

@@ -1,19 +1,18 @@
 {
  "indeks": 2438,
- "ad": "Tver",
+ "ad": "Pereslavl-Zalesski",
  "ulke": "Russia",
- "d": 42,
+ "d": 39,
  "k": "tahmin",
- "s": "Tver",
+ "s": "Pereslavl-Zalesski",
  "p": [
   [
    [
-    -11797,
-    -11786,
-    -11803,
-    11833,
-    11834,
-    11835
+    -11801,
+    -11793,
+    11827,
+    11828,
+    -11825
    ]
   ]
  ]

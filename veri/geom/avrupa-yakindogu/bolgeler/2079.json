@@ -1,18 +1,17 @@
 {
  "indeks": 2079,
- "ad": "Vaslui",
- "ulke": "Romania",
- "d": 29,
+ "ad": "Yverdon-les-Bains",
+ "ulke": "Switzerland",
+ "d": 51,
  "k": "tahmin",
- "s": "Vaslui",
+ "s": "Yverdon-les-Bains",
  "p": [
   [
    [
-    -10177,
-    -10181,
-    10359,
-    10360,
-    -10295
+    -10208,
+    -10173,
+    10352,
+    10353
    ]
   ]
  ]

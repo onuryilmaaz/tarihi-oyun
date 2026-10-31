@@ -1,17 +1,19 @@
 {
  "indeks": 2069,
- "ad": "Targul",
- "ulke": "Romania",
- "d": 27,
- "k": "tahmin",
- "s": "Targul",
+ "ad": "Proletarsk",
+ "ulke": "Russia",
+ "d": 32,
+ "k": "ohm:2849500",
+ "s": "Proletarsk",
  "p": [
   [
    [
-    -10140,
-    -10101,
-    -10275,
+    -9878,
+    10279,
     10280,
+    -9559
+   ],
+   [
     10281
    ]
   ]

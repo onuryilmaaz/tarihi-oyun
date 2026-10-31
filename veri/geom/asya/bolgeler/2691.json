@@ -1,23 +1,19 @@
 {
  "indeks": 2691,
- "ad": "Machilipatnam",
+ "ad": "Gadag-Betageri",
  "ulke": "India",
  "d": 118,
  "k": "tahmin",
- "s": "Machilipatnam",
+ "s": "Gadag-Betageri",
  "p": [
   [
    [
-    13136,
-    13137,
-    -13045,
-    13138,
-    13139
-   ]
-  ],
-  [
-   [
-    13140
+    -13109,
+    -13069,
+    13133,
+    13134,
+    13135,
+    13136
    ]
   ]
  ]

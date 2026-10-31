@@ -1,24 +1,22 @@
 {
  "indeks": 2923,
- "ad": "Taizhou",
- "ulke": "China",
- "d": 97,
+ "ad": "Panchagarh Sadar Upazila",
+ "ulke": "Bangladesh",
+ "d": 114,
  "k": "tahmin",
- "s": "Taizhou",
+ "s": "Panchagarh Sadar Upazila",
  "p": [
   [
    [
-    14009,
-    14074
-   ]
-  ],
-  [
-   [
-    14001,
-    -14073,
-    -14072,
-    -14071,
-    -14070
+    -13970,
+    -13947,
+    -14032,
+    14074,
+    14075,
+    715,
+    1240,
+    1236,
+    -14037
    ]
   ]
  ]

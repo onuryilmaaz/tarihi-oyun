@@ -1,29 +1,18 @@
 {
  "indeks": 2661,
- "ad": "Chanthaburi",
- "ulke": "Cambodia",
+ "ad": "Chaophraya Surasak",
+ "ulke": "Thailand",
  "d": 105,
  "k": "tahmin",
- "s": "Chanthaburi",
+ "s": "Chaophraya Surasak",
  "p": [
   [
    [
-    13016,
-    -12955,
-    -13013,
-    13017,
-    13018,
-    13019
-   ]
-  ],
-  [
-   [
-    13020
-   ]
-  ],
-  [
-   [
-    13021
+    13020,
+    -13008,
+    13021,
+    13022,
+    13023
    ]
   ]
  ]

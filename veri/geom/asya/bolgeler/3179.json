@@ -1,19 +1,17 @@
 {
  "indeks": 3179,
- "ad": "Wangtuan Town",
- "ulke": "China",
- "d": 97,
+ "ad": "Jecheon",
+ "ulke": "South Korea",
+ "d": 98,
  "k": "tahmin",
- "s": "Wangtuan Town",
+ "s": "Jecheon",
  "p": [
   [
    [
-    -14968,
-    -14935,
-    -15007,
-    15025,
-    15026,
-    15027
+    -14925,
+    -14895,
+    15021,
+    15022
    ]
   ]
  ]

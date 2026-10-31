@@ -1,26 +1,19 @@
 {
  "indeks": 3385,
- "ad": "Santa Elena de la Cruz",
- "ulke": "Guatemala",
- "d": 129,
+ "ad": "Alvarado",
+ "ulke": "Mexico",
+ "d": 126,
  "k": "tahmin",
- "s": "Santa Elena de la Cruz",
+ "s": "Alvarado",
  "p": [
   [
    [
-    2135,
-    2131,
-    -2138,
-    -2146,
     15748,
+    4589,
     15749,
     -15748,
     15750,
-    2162,
-    15751,
-    15752,
-    15753,
-    15754
+    15751
    ]
   ]
  ]

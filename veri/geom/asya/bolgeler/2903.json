@@ -1,19 +1,17 @@
 {
  "indeks": 2903,
- "ad": "Huajiang Town",
- "ulke": "China",
- "d": 97,
+ "ad": "Siwana",
+ "ulke": "India",
+ "d": 119,
  "k": "tahmin",
- "s": "Huajiang Town",
+ "s": "Siwana",
  "p": [
   [
    [
-    -13985,
     -13882,
-    -13806,
-    -13990,
-    13996,
-    13997
+    13998,
+    13999,
+    -13966
    ]
   ]
  ]

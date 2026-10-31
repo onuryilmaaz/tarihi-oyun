@@ -1,18 +1,22 @@
 {
  "indeks": 2879,
- "ad": "Khajuraho",
- "ulke": "India",
- "d": 116,
+ "ad": "Sylhet Sadar Upazila",
+ "ulke": "Bangladesh",
+ "d": 114,
  "k": "tahmin",
- "s": "Khajuraho",
+ "s": "Sylhet Sadar Upazila",
  "p": [
   [
    [
-    -13741,
-    -13749,
-    -13897,
-    13920,
-    13921
+    -13868,
+    13916,
+    1789,
+    13917,
+    -13891,
+    13918,
+    1792,
+    13919,
+    13920
    ]
   ]
  ]

@@ -1,25 +1,19 @@
 {
  "indeks": 2170,
- "ad": "Kaiserslautern",
- "ulke": "Germany",
- "d": 70,
+ "ad": "Poltava",
+ "ulke": "Ukraine",
+ "d": 35,
  "k": "tahmin",
- "s": "Kaiserslautern",
+ "s": "Poltava",
  "p": [
   [
    [
-    10840,
-    10841,
-    10842,
+    -10440,
+    -10719,
     10843,
     10844,
-    -10753,
     10845,
-    10846,
-    10847,
-    -10736,
-    10848,
-    10849
+    10846
    ]
   ]
  ]

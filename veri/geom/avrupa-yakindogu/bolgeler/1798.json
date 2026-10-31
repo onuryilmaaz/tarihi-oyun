@@ -1,19 +1,17 @@
 {
  "indeks": 1798,
- "ad": "Doğubayazıt",
- "ulke": "Turkey",
- "d": 10,
+ "ad": "Yanya",
+ "ulke": "Greece",
+ "d": 0,
  "k": "tahmin",
- "s": "Doğubayazıt",
+ "s": "Yanya",
  "p": [
   [
    [
-    -8722,
-    -8727,
-    8843,
-    8844,
-    8845,
-    8846
+    -8588,
+    8841,
+    -8824,
+    8842
    ]
   ]
  ]

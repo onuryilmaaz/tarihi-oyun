@@ -1,15 +1,21 @@
 {
  "indeks": 1924,
- "ad": "Sinop",
- "ulke": "Turkey",
- "d": 6,
+ "ad": "Tshinvali",
+ "ulke": "Georgia",
+ "d": 12,
  "k": "tahmin",
- "s": "Sinop",
+ "s": "Tshinvali",
  "p": [
   [
    [
-    -9148,
-    9294
+    -9192,
+    -9195,
+    -9233,
+    9287,
+    9288,
+    9289,
+    9290,
+    9291
    ]
   ]
  ]

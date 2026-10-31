@@ -1,17 +1,19 @@
 {
  "indeks": 2592,
- "ad": "Niagassola",
- "ulke": "Guinea",
- "d": 79,
+ "ad": "Mek'ele",
+ "ulke": "Ethiopia",
+ "d": 86,
  "k": "tahmin",
- "s": "Niagassola",
+ "s": "Mek'ele",
  "p": [
   [
    [
-    -12696,
-    -12664,
-    -12587,
-    12704
+    12697,
+    -12690,
+    -12688,
+    -12677,
+    12698,
+    12699
    ]
   ]
  ]

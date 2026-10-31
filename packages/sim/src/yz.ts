@@ -10,12 +10,13 @@ import { prototipGelirleri } from "./ekonomi";
 import { devletMaasi, toplamaMaliyeti, toplamAskerSayisi } from "./ordu";
 import { aralik } from "./rastgele";
 import { diplomasiOnHesap, iliski, komsuMu, type DiplomasiOnHesap } from "./diplomasi";
-import { arastirmaEngeli, pazarGeliriSeviyeBasina, TEKNOLOJILER, yapiEnYuksek, type Alan } from "./teknoloji";
+import { arastirmaEngeli, TEKNOLOJILER, yapiEnYuksek, type Alan } from "./teknoloji";
 import { insaatMaliyeti, sehirdeInsaatVar } from "./yatirim";
 import { gundenTarih } from "./takvim";
 import { barisKararlari, savasKarari } from "./yz-savas";
 import { diplomatikTeklifKarari } from "./yz-diplomasi";
 import { aylikMaasYuzde, toplamaMaliyetiYuzde, type BirimTuru } from "./birim";
+import { yapiSeviyeGeliri } from "./yatirim";
 
 /** Tehdit nedeni (herkesin bildiği bilgilerden) ya da null. */
 export function tehditNedeni(d: DunyaDurumu, on: DiplomasiOnHesap, devlet: number): string | null {
@@ -102,7 +103,8 @@ export function devletKarari(d: DunyaDurumu, b: Baglam, on: DiplomasiOnHesap, de
       for (const yapi of ["tarla", "pazar"] as const) {
         const bedel = insaatMaliyeti(d, d.sehirler[i], yapi);
         if (bedel === null || bedel > para()) continue;
-        const gelir = yapi === "tarla" ? DENGE.YAPI_AYLIK_GELIR.tarla : pazarGeliriSeviyeBasina(d, devlet);
+        const gelir = yapiSeviyeGeliri(d, d.sehirler[i], yapi); // TASK-0032: gerçek (nüfusa ölçekli) getiri
+        if (gelir * DENGE.YZ_YATIRIM_GERI_DONUS_AY < bedel) continue; // kendini geç ödeyen yatırım yapılmaz
         const oran = Math.floor((gelir * 100000) / bedel);
         if (!en || oran > en.oran) en = { sehir: i, yapi, oran, bedel };
       }

@@ -1,19 +1,21 @@
 {
  "indeks": 2187,
- "ad": "Bila Tserkva",
- "ulke": "Ukraine",
- "d": 35,
+ "ad": "Bayreuth",
+ "ulke": "Germany",
+ "d": 67,
  "k": "tahmin",
- "s": "Bila Tserkva",
+ "s": "Bayreuth",
  "p": [
   [
    [
+    -10790,
+    -10748,
     -10795,
-    -10714,
-    -10652,
-    10915,
-    10916,
-    10917
+    -10865,
+    10907,
+    10908,
+    10909,
+    -10895
    ]
   ]
  ]

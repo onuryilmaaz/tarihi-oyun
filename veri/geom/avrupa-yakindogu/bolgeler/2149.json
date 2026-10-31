@@ -1,18 +1,17 @@
 {
  "indeks": 2149,
- "ad": "Heidelberg",
- "ulke": "Germany",
- "d": 70,
+ "ad": "Camborne",
+ "ulke": "United Kingdom",
+ "d": 58,
  "k": "tahmin",
- "s": "Heidelberg",
+ "s": "Camborne",
  "p": [
   [
    [
-    10731,
     10732,
     10733,
     10734,
-    10735
+    10918
    ]
   ]
  ]

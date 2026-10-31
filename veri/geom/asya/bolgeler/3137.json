@@ -1,19 +1,18 @@
 {
  "indeks": 3137,
- "ad": "Fengcheng Town",
+ "ad": "Gangou Town",
  "ulke": "China",
  "d": 97,
  "k": "tahmin",
- "s": "Fengcheng Town",
+ "s": "Gangou Town",
  "p": [
   [
    [
-    -14775,
     -14810,
-    14890,
-    14891,
-    14892,
-    -14826
+    -14794,
+    -14841,
+    14883,
+    14884
    ]
   ]
  ]

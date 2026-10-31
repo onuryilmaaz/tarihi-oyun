@@ -1,18 +1,18 @@
 {
  "indeks": 1856,
- "ad": "Barselona",
- "ulke": "Spain",
- "d": 53,
- "k": "ohm:2751179",
- "s": "Barselona",
+ "ad": "Serez",
+ "ulke": "Greece",
+ "d": 0,
+ "k": "tahmin",
+ "s": "Serez",
  "p": [
   [
    [
-    9054,
-    9055,
-    9056,
-    9057,
-    9058
+    -8827,
+    9052,
+    -8992,
+    9053,
+    9054
    ]
   ]
  ]
