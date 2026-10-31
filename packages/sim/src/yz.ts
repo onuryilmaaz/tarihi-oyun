@@ -5,12 +5,12 @@
 
 import { olayEkle, type DunyaDurumu } from "./durum";
 import { DENGE } from "./denge";
-import { BOS_BAGLAM, emirDogrula, emirUygula, type Baglam, type Emir } from "./emirler";
+import { BOS_BAGLAM, emirDogrula, emirUygula, sehirToplamaYuzde, type Baglam, type Emir } from "./emirler";
 import { butceOzeti } from "./ekonomi";
 import { toplamaMaliyeti } from "./ordu";
 import { aralik } from "./rastgele";
 import { diplomasiOnHesap, iliski, komsuMu, type DiplomasiOnHesap } from "./diplomasi";
-import { arastirmaEngeli, pazarGeliriSeviyeBasina, TEKNOLOJILER, toplamaBedelYuzde, yapiEnYuksek, type Alan } from "./teknoloji";
+import { arastirmaEngeli, pazarGeliriSeviyeBasina, TEKNOLOJILER, yapiEnYuksek, type Alan } from "./teknoloji";
 import { insaatMaliyeti, sehirdeInsaatVar } from "./yatirim";
 import { gundenTarih } from "./takvim";
 import { barisKararlari, savasKarari } from "./yz-savas";
@@ -65,7 +65,7 @@ export function devletKarari(d: DunyaDurumu, b: Baglam, on: DiplomasiOnHesap, de
     // TASK-0021 (3/4): tehdit altında süvari ağırlıklı, barışta ucuz okçu ağırlıklı, aksi halde piyade.
     const birim: BirimTuru = tehdit ? "suvari" : aralik(d, 10) < DENGE.YZ_OKCU_OLASILIK ? "okcu" : "piyade";
     const maasSiniri = Math.floor((maasPayi * 100000) / (DENGE.AYLIK_ASKER_MAASI_BINDE * aylikMaasYuzde(birim)));
-    const yuzde = toplamaBedelYuzde(d, devlet);
+    const yuzde = sehirToplamaYuzde(d, sehir, birim); // TASK-0028: şehrin gelir kaynağı
     const paraSiniri = Math.floor((Math.max(0, para()) * 10000000) / (DENGE.TOPLAMA_ASKER_BASINA_MALIYET_BINDE * yuzde * toplamaMaliyetiYuzde(birim)));
     const n = Math.min(eksik, maasSiniri, paraSiniri, d.sehirler[sehir].insanGucu);
     if (n < DENGE.YZ_TOPLAMA_EN_AZ || toplamaMaliyeti(n, yuzde, birim) > para()) return false;

@@ -86,6 +86,7 @@ describe("gerçek işgal ve kuşatma", () => {
     gunIlerlet(d, B);
     expect(d.sehirler[1]).toMatchObject({ kontrol: 0, devlet: 1 });
     expect(d.birimler[1]).toMatchObject({ sahip: 1, kontrol: 0 }); expect(d.birimler[2].kontrol).toBe(1); // TASK-0027
+    expect(d.sehirler[1].gelismislik).toBe(DENGE.GELISMISLIK_VARSAYILAN - 1); // TASK-0028: düşen şehir geriler
     expect(d.gun - bas).toBeGreaterThanOrEqual(DENGE.KUSATMA_EN_AZ_GUN);
     expect(d.aktifKesinti?.neden).toMatch(/kuşatma/); expect(degismezler(d)).toEqual([]);
   });

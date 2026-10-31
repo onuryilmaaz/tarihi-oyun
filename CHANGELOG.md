@@ -1,5 +1,10 @@
 # CHANGELOG
 
+## 2026-10-31 — TASK-0028: kıyı limanları; gelişmişlik ve gelir kaynağı ekonomide (Claude)
+
+- 54 kıyı şehri liman oldu (toplam 124). Gelişmişlik gelir çarpanı, gelir kaynağı etkileri, gelişmişlik değişimi
+  (yatırım +, kuşatma/ayaklanma −). Şema 28. Şehir panelinde canlı değerler.
+
 ## 2026-10-31 — TASK-0027: şehir ve toprağı birlikte fethedilir (Claude)
 
 - Şehirli toprak şehrini izler; şehir düşünce toprağı da geçer; barışta şehir toprağıyla gider. Şehirsiz toprak

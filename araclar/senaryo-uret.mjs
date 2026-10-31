@@ -143,6 +143,54 @@ const senaryo = {
 };
 
 fs.writeFileSync(new URL("harita.json", hedef), haritaMetni);
+// TASK-0028: toprağı denize değen ve kıyıya yakın şehirler liman olur. Kıyı = tek bir birimin kullandığı yay; deniz
+// alanları kıyıda karanın altına taştığı için kıyı noktası hangi deniz alanının içindeyse şehir o denize açılır.
+// deniz.json'daki elle tutulan limanlar önceliklidir.
+{
+  const LIMAN_KIYI_UZAK = 0.35; // derece (≈ 35 km): şehir kıyıdan bu kadar uzaksa liman sayılmaz
+  const kullanim = new Map();
+  for (const b of harita.birimler) for (const r of b.p.flat(2)) { const k = r < 0 ? ~r : r; kullanim.set(k, (kullanim.get(k) ?? 0) + 1); }
+  const denizler = harita.denizAlanlari.map((z) => {
+    const polys = z.p;
+    let x0 = Infinity, y0 = Infinity, x1 = -Infinity, y1 = -Infinity;
+    for (const poly of polys) for (let i = 0; i < poly[0].length; i += 2) { x0 = Math.min(x0, poly[0][i]); x1 = Math.max(x1, poly[0][i]); y0 = Math.min(y0, poly[0][i + 1]); y1 = Math.max(y1, poly[0][i + 1]); }
+    return { id: z.id, polys, kutu: [x0, y0, x1, y1] };
+  });
+  const icindeDuz = (h, x, y) => {
+    let ic = false;
+    for (let i = 0, j = h.length - 2; i < h.length; j = i, i += 2) {
+      const xi = h[i], yi = h[i + 1], xj = h[j], yj = h[j + 1];
+      if ((yi > y) !== (yj > y) && x < ((xj - xi) * (y - yi)) / (yj - yi) + xi) ic = !ic;
+    }
+    return ic;
+  };
+  const denizBul = (x, y) => denizler.find((z) => x >= z.kutu[0] && x <= z.kutu[2] && y >= z.kutu[1] && y <= z.kutu[3]
+    && z.polys.some((poly) => icindeDuz(poly[0], x, y) && !poly.slice(1).some((h) => icindeDuz(h, x, y))))?.id;
+  const elle = new Set(Object.values(senaryo.deniz.limanlar).flat());
+  let yeni = 0;
+  senaryo.sehirler.forEach((c, i) => {
+    if (elle.has(c.ad) || c.birim < 0) return;
+    const sx = c.x / 1e4, sy = c.y / 1e4, oy = new Map();
+    let enYakin = Infinity;
+    for (const poly of harita.birimler[c.birim].p) for (const ring of poly) for (const r of ring) {
+      const k = r < 0 ? ~r : r;
+      if (kullanim.get(k) !== 1) continue; // komşu birimle paylaşılan yay kıyı değildir
+      const a = harita.arklar[k];
+      for (let j = 0; j < a.length; j += 4) { // her ikinci nokta yeterli
+        enYakin = Math.min(enYakin, Math.hypot(a[j] - sx, a[j + 1] - sy));
+        const z = denizBul(a[j], a[j + 1]);
+        if (z) oy.set(z, (oy.get(z) ?? 0) + 1);
+      }
+    }
+    const [z, n] = [...oy].sort((p, q) => q[1] - p[1])[0] ?? [];
+    if (!z || n < 3 || enYakin > LIMAN_KIYI_UZAK) return;
+    (senaryo.deniz.limanlar[z] ??= []).push(c.ad);
+    limanAdlari.add(c.ad);
+    Object.assign(c, sehirBilgisi(harita.sehirler[i], c.nufus)); // liman artık ticaret geliri kaynağı
+    yeni++;
+  });
+  console.log("limanlar:", { elle: elle.size, yeni });
+}
 fs.writeFileSync(new URL("senaryo.json", hedef), JSON.stringify(senaryo));
 fs.copyFileSync(new URL("wikidata-1453.json", kaynak), new URL("wikidata.json", hedef));
 const birimsiz = senaryo.sehirler.filter((s) => s.birim < 0).map((s) => s.ad);

@@ -1,4 +1,4 @@
-import type { Istikrar, BarisDevirOzeti } from "@tarihi/sim";
+import type { Istikrar, BarisDevirOzeti, GelirKaynagi } from "@tarihi/sim";
 // Ana iş parçacığı ↔ simülasyon Worker'ı mesaj protokolü.
 
 import type { Alan, Degerlendirme, IliskiBileseni, TeknolojiId, YapiTuru, BarisKaydi, BarisTalebi, ButceOzeti, Dogrulama, Emir, KusatmaYontemi, MuharebeRaporu, OlayKaydi, RotaKirilimi, SenaryoVerisi, Tutum, TurSonucu, TurSuresi, YabanciOrdu, BirimTuru, Kompozisyon } from "@tarihi/sim";
@@ -107,7 +107,7 @@ export interface Ozet {
   savaslar: { id: number; karsi: number; baslangic: string; saldiran: boolean; skor: number; alinan: number; kaybedilen: number; toplam: number; birimler: number[]; sehirler: number[] }[];
   kusatmalar: { sehir: number; devlet: number; savunan: number; yontem: KusatmaYontemi; gun: number; erzak: number; gucYeterli: boolean | null }[];
   sehirDurumlari: { devlet: number; kontrol: number; baskent: boolean; sur: number; garnizon: number; garnizonTahmin: boolean;
-    ad: string; eskiAd: string | null; bagli: number; birim: number }[]; // TASK-0026: ad değişebilir, bağlı şehir gizlenir
+    ad: string; eskiAd: string | null; bagli: number; birim: number; gelismislik: number; gelirKaynagi: GelirKaynagi | null }[]; // TASK-0026: ad değişebilir, bağlı şehir gizlenir
   /** Oyuncunun kendi şehirleri için birleştirilebilecek komşu şehirler ve süren birleşmeler (TASK-0026) */
   birlesmeAdaylari: Record<number, number[]>;
   sehirBirlesmeleri: { merkez: number; katilan: number; kalanGun: number }[];

@@ -5,6 +5,7 @@ import type { Baglam } from "./emirler";
 import { savasta } from "./savas";
 import { disDestek } from "./casusluk";
 import { vergiRiskPuani } from "./vergi";
+import { gelismislikDegistir } from "./sehir";
 
 export interface RiskBileseni { id: string; ad: string; puan: number }
 export interface Istikrar {
@@ -78,6 +79,7 @@ export function istikrarAyi(d: DunyaDurumu, b: Baglam): void {
       olayEkle(d, { tur: "ayaklanma-bitti", devlet: s.devlet, metin: `${s.ad}: ayaklanma ${i.risk < DENGE.IST_HUZURSUZLUK ? "risk düştüğü" : "ordu asayişi sağladığı"} için sona erdi.` });
     } else if (!ayak && i.yuksekAy >= DENGE.IST_AYAKLANMA_AY) {
       i.ayaklanma = true; i.asayisAy = 0;
+      gelismislikDegistir(s, -1); // TASK-0028: ayaklanma şehri geriletir
       const metin = `${s.ad}: risk üç ay en az %${DENGE.IST_AYAKLANMA} kaldı; ayaklanma başladı. Gelir ve asker toplama durdu, inşaat bekliyor.`;
       olayEkle(d, { tur: "ayaklanma", devlet: s.devlet, metin });
       if (s.devlet === d.ayarlar.oyuncu && !d.aktifKesinti) d.aktifKesinti = { gun: d.gun, neden: metin };

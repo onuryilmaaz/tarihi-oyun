@@ -261,4 +261,13 @@ export const DENGE = {
   SEHIR_BIRLESTIR_BEDEL: 500,
   SEHIR_BIRLESTIR_GUN: 30,
   SEHIR_BIRLESTIR_RISK: 10, // iki şehrin istikrar riskine eklenir (aylık hesapta söner)
+  // TASK-0028 gelişmişlik ve gelir kaynağı [TASLAK]
+  GELISMISLIK_VARSAYILAN: 5, // senaryoda yoksa (%100)
+  GELISMISLIK_TABAN: 70, // gelir yüzdesi = taban + adım × gelişmişlik (1 → %76, 5 → %100, 10 → %130)
+  GELISMISLIK_ADIM: 6,
+  KAYNAK_TARIM_TARLA: 125, // tarım şehrinde tarla geliri
+  KAYNAK_TICARET_PAZAR: 125, // ticaret şehrinde pazar ve liman geliri
+  KAYNAK_ZANAAT_PAZAR: 115,
+  KAYNAK_ZANAAT_TOPLAMA: 90, // zanaat şehrinde asker toplama bedeli
+  KAYNAK_HAYVANCILIK_SUVARI: 80, // hayvancılık şehrinde süvari toplama bedeli
 };

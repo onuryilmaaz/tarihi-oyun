@@ -6,7 +6,7 @@ import { savasta } from "./savas";
 import { kusatmaSaldiriYuzde } from "./teknoloji";
 import { denizAblukasi } from "./deniz";
 import { kompozisyonCikar, kompozisyonMuharebeYuzde, kompozisyonOransalAl } from "./birim";
-import { sehirliBirimler } from "./sehir";
+import { gelismislikDegistir, sehirliBirimler } from "./sehir";
 
 export function sehirMenzilinde(d: DunyaDurumu, b: Baglam, o: OrduDurumu, sehir: number): boolean {
   const s = d.sehirler[sehir], n = s && b.ag?.dugumler[s.dugum];
@@ -120,6 +120,7 @@ export function kusatmalariIlerlet(d: DunyaDurumu, b: Baglam): void {
     if (k.gun < DENGE.KUSATMA_EN_AZ_GUN || (s.garnizon > 0 && k.erzak > 0)) continue;
     s.kontrol = k.devlet;
     s.isgalBaslangic = s.devlet === k.devlet ? null : d.gun;
+    gelismislikDegistir(s, -1); // TASK-0028: kuşatmayla düşen şehir geriler
     d.kusatmalar = d.kusatmalar.filter((a) => a !== k);
     const neden = s.garnizon === 0 ? "garnizon yenildi" : "erzak tükendi ve şehir teslim oldu";
     const metin = `${s.ad}, ${k.gun} günlük kuşatma sonunda ${d.devletler[k.devlet].ad} kontrolüne geçti: ${neden}. Şehrin toprağı da onunla birlikte geçti; yasal sahiplik barışla değişir.`;

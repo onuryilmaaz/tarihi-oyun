@@ -109,6 +109,7 @@ function birlestir(d: DunyaDurumu, a: number, c: number): void {
     merkez.yapilar[y] = Math.min(yapiEnYuksek(d, merkez.devlet, y), merkez.yapilar[y] + katilan.yapilar[y]);
   }
   merkez.sur = Math.max(merkez.sur, katilan.sur);
+  merkez.gelismislik = Math.max(merkez.gelismislik, katilan.gelismislik); // TASK-0028
   merkez.istikrar.risk = Math.min(100, merkez.istikrar.risk + DENGE.SEHIR_BIRLESTIR_RISK);
   Object.assign(katilan, { insanGucu: 0, garnizon: 0, yapilar: { tarla: 0, pazar: 0 }, yonetici: false, bagli: m });
   katilan.istikrar.risk = Math.min(100, katilan.istikrar.risk + DENGE.SEHIR_BIRLESTIR_RISK);
@@ -144,4 +145,35 @@ export function sehirToprakEsitle(d: DunyaDurumu): void {
   }
   const sehirli = sehirliBirimler(d);
   d.isgalHazirliklari = d.isgalHazirliklari.filter((p) => !sehirli.has(p.birim));
+}
+
+// --- TASK-0028 (DEC-0078): gelişmişlik ve gelir kaynağı -------------------------------------------------
+
+/** Şehrin (ve toprağının) gelir yüzdesi: gelişmişlik 1 → %76, 5 → %100, 10 → %130. */
+export const gelismislikYuzde = (s: SehirDurumu): number => DENGE.GELISMISLIK_TABAN + DENGE.GELISMISLIK_ADIM * s.gelismislik;
+
+/** Gelir kaynağının yapı gelirine etkisi (yüzde). */
+export function kaynakYapiYuzde(s: SehirDurumu, yapi: "tarla" | "pazar"): number {
+  if (yapi === "tarla") return s.gelirKaynagi === "tarim" ? DENGE.KAYNAK_TARIM_TARLA : 100;
+  return s.gelirKaynagi === "ticaret" ? DENGE.KAYNAK_TICARET_PAZAR : s.gelirKaynagi === "zanaat" ? DENGE.KAYNAK_ZANAAT_PAZAR : 100;
+}
+export const kaynakLimanYuzde = (s: SehirDurumu): number => (s.gelirKaynagi === "ticaret" ? DENGE.KAYNAK_TICARET_PAZAR : 100);
+
+/** Gelir kaynağının asker toplama bedeline etkisi (yüzde). */
+export function kaynakToplamaYuzde(s: SehirDurumu, birim: string): number {
+  if (s.gelirKaynagi === "zanaat") return DENGE.KAYNAK_ZANAAT_TOPLAMA;
+  if (s.gelirKaynagi === "hayvancilik" && birim === "suvari") return DENGE.KAYNAK_HAYVANCILIK_SUVARI;
+  return 100;
+}
+
+/** Gelişmişlik değişimi (1–10 arasında). */
+export function gelismislikDegistir(s: SehirDurumu, fark: number): void {
+  s.gelismislik = Math.max(1, Math.min(10, s.gelismislik + fark));
+}
+
+/** Birim → şehir (şehirli toprağın geliri şehrin gelişmişliğiyle çarpılır). */
+export function birimSehirleri(d: DunyaDurumu): Map<number, number> {
+  const m = new Map<number, number>();
+  d.sehirler.forEach((s, i) => { if (s.birim >= 0 && !m.has(s.birim)) m.set(s.birim, i); });
+  return m;
 }

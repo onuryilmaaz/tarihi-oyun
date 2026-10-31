@@ -67,6 +67,8 @@ export interface SehirDurumu {
   gruplar: NufusGrubu[]; // din × kültür; toplam = nufus (7b)
   yapilar: { tarla: number; pazar: number }; // 5b şehir yatırımları (seviye 0–en yüksek)
   eskiAd: string | null; // oyuncu adını değiştirdiyse ilk adı (TASK-0026)
+  gelismislik: number; // 1–10; gelir çarpanı, yatırımla artar, kuşatma ve ayaklanmayla düşer (TASK-0028)
+  gelirKaynagi: GelirKaynagi | null; // şehrin ana işi; null = etkisiz (TASK-0028)
   bagli: number; // birleşmeyle bağlandığı merkez şehir; −1 = bağımsız (TASK-0026)
 }
 export interface SehirBirlesmesi { merkez: number; katilan: number; devlet: number; kalanGun: number } // TASK-0026
@@ -297,7 +299,7 @@ export interface SenaryoVerisi {
 // 5: kuşatma, gerçek işgal ve barış (TASK-0007/4c); şema 3–4 için eklemeli dönüşüm var.
 // Şema geçmişi: 6 şehir yatırımları (5b), 7 teknoloji (5c), 8 diplomasi (6a), 9 AI ekonomi (6b), 10 AI savaş/barış (6c),
 // 11 hükümdar ve veraset (7a), 12 nüfus grupları ve iskân (7b), 13 istikrar (7c), 14 yerel yönetim (7d)
-export const SEMA_SURUMU = 27; // geliştirme sürümü; eski kayıtlar taşınmaz (DEC-0075). 27: şehir adı/birleştirme (TASK-0026)
+export const SEMA_SURUMU = 28; // geliştirme sürümü; eski kayıtlar taşınmaz (DEC-0075). 28: gelişmişlik/gelir kaynağı (TASK-0028)
 // 19 vergi oranı ve hazine geçmişi (TASK-0017), 18 arazi verimi (9b), 15 donanma ve deniz (8a), 16 ticaret ve ambargo (8b), 17 casusluk (8c)
 
 export function baslangicDurumu(s: SenaryoVerisi, secenek: { tohum: number; oyuncu?: string }): DunyaDurumu {
@@ -321,7 +323,8 @@ export function baslangicDurumu(s: SenaryoVerisi, secenek: { tohum: number; oyun
       insanGucu: Math.floor(c.nufus * DENGE.INSAN_GUCU_YUZDE / 100), baskent: c.baskent,
       sur: c.baskent ? DENGE.BASKENT_SUR : DENGE.SEHIR_SUR,
       garnizon: c.baskent ? DENGE.BASKENT_GARNIZON : DENGE.SEHIR_GARNIZON, yapilar: { tarla: 0, pazar: 0 },
-      istikrar: bosIstikrar(), yonetici: false, gruplar: baslangicGruplari(s, c.ad, c.devlet, c.nufus), eskiAd: null, bagli: -1 };
+      istikrar: bosIstikrar(), yonetici: false, gruplar: baslangicGruplari(s, c.ad, c.devlet, c.nufus), eskiAd: null, bagli: -1,
+      gelismislik: c.gelismislik ?? DENGE.GELISMISLIK_VARSAYILAN, gelirKaynagi: c.gelirKaynagi ?? null };
   });
   // TASK-0019: senaryo/garnizon orduları başlangıçta tamamen piyade sayılır; hız kompozisyondan hesaplanır.
   const yeniOrdu = (id: number, ad: string, devlet: number, asker: number, dugum: number, x: number, y: number): OrduDurumu => {
@@ -452,6 +455,8 @@ export function degismezler(d: DunyaDurumu): string[] {
   d.sehirler.forEach((c, i) => {
     if (!tam(c.nufus) || c.nufus < 0) h.push(`şehir ${i} nüfusu geçersiz`);
     if (typeof c.ad !== "string" || !c.ad.trim() || (c.eskiAd !== null && typeof c.eskiAd !== "string")) h.push(`şehir ${i} adı geçersiz`);
+    if (!tam(c.gelismislik) || c.gelismislik < 1 || c.gelismislik > 10
+      || (c.gelirKaynagi !== null && !["tarim", "hayvancilik", "ticaret", "zanaat"].includes(c.gelirKaynagi))) h.push(`şehir ${i} ekonomisi geçersiz`);
     if (!tam(c.bagli) || c.bagli < -1 || c.bagli >= d.sehirler.length || c.bagli === i
       || (c.bagli >= 0 && (d.sehirler[c.bagli].bagli !== -1 || c.devlet !== d.sehirler[c.bagli].devlet || c.nufus !== 0))) h.push(`şehir ${i} bağlılığı geçersiz`);
     if (!tam(c.insanGucu) || c.insanGucu < 0) h.push(`şehir ${i} insan gücü geçersiz`);

@@ -833,6 +833,16 @@ Kaynak belge: `MASTER_SPEC.md` (v1.3). Orijinal keşif çıktısı:
   "İkisi birden, aynı kartta" (2026-10-30).
 - **Durum:** GEÇERLİ
 
+## DEC-0078 — TASK-0028: kıyı limanları, gelişmişlik ve gelir kaynağı ekonomide
+
+- **Tarih:** 2026-10-31
+- **Seçilen karar:** Toprağı denize değen ve kıyıya yakın şehirler liman olur (elle tutulan limanlar önceliklidir).
+  Gelişmişlik (1–10) şehir ve toprağının gelirini %76–%130 arası çarpar; yatırımla artar, kuşatma ve ayaklanmayla
+  düşer. Gelir kaynağı: tarım tarla +%25, ticaret pazar/liman +%25, zanaat pazar +%15 ve toplama −%10, hayvancılık
+  süvari −%20. Sayılar [TASLAK].
+- **Onay kaydı:** Kullanıcı: "evet" (2026-10-31) — agent önerisi.
+- **Durum:** GEÇERLİ
+
 ## DEC-0077 — TASK-0027: şehir ve toprağı birlikte fethedilir
 
 - **Tarih:** 2026-10-31

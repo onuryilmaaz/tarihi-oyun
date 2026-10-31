@@ -519,10 +519,17 @@ async function baslat() {
       const ss = senaryo.sehirler[s.id];
       const SEHIR_TURU = { kasaba: "Kasaba", sehir: "Şehir", buyuksehir: "Büyük şehir" } as const;
       const GELIR = { tarim: "Tarım", hayvancilik: "Hayvancılık", ticaret: "Ticaret (liman)", zanaat: "Zanaat ve ticaret" } as const;
-      const kimlik = !ss.tur ? "" : `<dl><dt>Tür</dt><dd>${SEHIR_TURU[ss.tur]}</dd>
-        <dt>Gelişmişlik</dt><dd>${ss.gelismislik}/10</dd>
-        <dt>Gelir kaynağı</dt><dd>${GELIR[ss.gelirKaynagi!]}</dd>
-</dl>`;
+      const cd = ozet.sehirDurumlari[s.id];
+      const KAYNAK_ETKI = {
+        tarim: `Tarla geliri +%${DENGE.KAYNAK_TARIM_TARLA - 100}`,
+        ticaret: `Pazar ve liman geliri +%${DENGE.KAYNAK_TICARET_PAZAR - 100}`,
+        zanaat: `Pazar geliri +%${DENGE.KAYNAK_ZANAAT_PAZAR - 100}, asker toplama −%${100 - DENGE.KAYNAK_ZANAAT_TOPLAMA}`,
+        hayvancilik: `Süvari toplama −%${100 - DENGE.KAYNAK_HAYVANCILIK_SUVARI}`,
+      } as const;
+      const kimlik = `<dl>${ss.tur ? `<dt>Tür</dt><dd>${SEHIR_TURU[ss.tur]}</dd>` : ""}
+        <dt>Gelişmişlik</dt><dd>${cd.gelismislik}/10 · gelir %${DENGE.GELISMISLIK_TABAN + DENGE.GELISMISLIK_ADIM * cd.gelismislik}</dd>
+        ${cd.gelirKaynagi ? `<dt>Gelir kaynağı</dt><dd>${GELIR[cd.gelirKaynagi]}<small class="not"> · ${KAYNAK_ETKI[cd.gelirKaynagi]}</small></dd>` : ""}
+</dl><p class="not">Gelişmişlik her iki yatırım seviyesinde artar; kuşatmayla düşmek ve ayaklanma onu geriletir.</p>`;
       const sd = ozet.sehirDurumlari[s.id], adi = (i: number) => kacis(senaryo.sehirler[i].ad);
       const birlesme = ozet.sehirBirlesmeleri.find((x) => x.merkez === s.id || x.katilan === s.id);
       const adaylar = ozet.birlesmeAdaylari[s.id] ?? [];

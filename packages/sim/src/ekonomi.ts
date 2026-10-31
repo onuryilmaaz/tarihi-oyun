@@ -10,6 +10,7 @@ import { araziGeliriBirimBasina } from "./teknoloji";
 import { birimGelirYuzdeleri } from "./istikrar";
 import { hukumdarGelirYuzde } from "./hanedan";
 import { vergiGelirYuzde, type VergiOrani } from "./vergi";
+import { birimSehirleri, gelismislikYuzde } from "./sehir";
 
 export interface ButceOzeti {
   hazine: number;
@@ -32,9 +33,13 @@ export interface ButceOzeti {
 export function araziGelirleri(d: DunyaDurumu): number[] {
   const gelir = new Array<number>(d.devletler.length).fill(0);
   const birimBasina = d.devletler.map((_, i) => araziGeliriBirimBasina(d, i)); // Para ve Vergi Reformu (5c)
-  const etki = birimGelirYuzdeleri(d);
-  // Arazi verimi (9b): 10 ortalama; birim başına gelir verimle ölçeklenir
-  d.birimler.forEach((b, i) => { if (b.sahip >= 0) gelir[b.sahip] += Math.floor((birimBasina[b.sahip] * b.verim * etki[i]) / 1000); });
+  const etki = birimGelirYuzdeleri(d), sehri = birimSehirleri(d);
+  // Arazi verimi (9b): 10 ortalama; birim başına gelir verimle ölçeklenir. Şehirli toprak şehrin gelişmişliğiyle (TASK-0028)
+  d.birimler.forEach((b, i) => {
+    if (b.sahip < 0) return;
+    const s = sehri.get(i), gel = s === undefined ? 100 : gelismislikYuzde(d.sehirler[s]);
+    gelir[b.sahip] += Math.floor((birimBasina[b.sahip] * b.verim * etki[i] * gel) / 100000);
+  });
   return gelir.map((g, i) => Math.floor((Math.floor((g * hukumdarGelirYuzde(d, i)) / 100) * vergiGelirYuzde(d, i)) / 100)); // hükümdar (7a) + vergi oranı
 }
 

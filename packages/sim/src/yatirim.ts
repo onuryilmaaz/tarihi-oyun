@@ -6,6 +6,7 @@ import { olayEkle, type DunyaDurumu, type SehirDurumu } from "./durum";
 import { sehirGelirYuzde } from "./istikrar";
 import { DENGE } from "./denge";
 import { insaatSureYuzde, pazarGeliriSeviyeBasina, surBedelYuzde, yapiEnYuksek } from "./teknoloji";
+import { gelismislikDegistir, gelismislikYuzde, kaynakYapiYuzde } from "./sehir";
 
 export type YapiTuru = "tarla" | "pazar" | "sur";
 export const YAPI_TURLERI: YapiTuru[] = ["tarla", "pazar", "sur"];
@@ -36,7 +37,10 @@ export const insaatSuresi = (d: DunyaDurumu, devlet: number, yapi: YapiTuru) =>
 /** Şehrin yapılarından gelen aylık gelir (şehir yasal sahibinin askerî kontrolündeyken). */
 export function sehirYapiGeliri(d: DunyaDurumu, s: SehirDurumu): number {
   if (s.kontrol !== s.devlet) return 0;
-  return Math.floor((s.yapilar.tarla * DENGE.YAPI_AYLIK_GELIR.tarla + s.yapilar.pazar * pazarGeliriSeviyeBasina(d, s.devlet)) * sehirGelirYuzde(s) / 100);
+  // TASK-0028: gelir kaynağı yapının, gelişmişlik bütün şehrin gelirini çarpar
+  const ham = Math.floor((s.yapilar.tarla * DENGE.YAPI_AYLIK_GELIR.tarla * kaynakYapiYuzde(s, "tarla")
+    + s.yapilar.pazar * pazarGeliriSeviyeBasina(d, s.devlet) * kaynakYapiYuzde(s, "pazar")) / 100);
+  return Math.floor((Math.floor((ham * gelismislikYuzde(s)) / 100) * sehirGelirYuzde(s)) / 100);
 }
 
 /** Bekleyen ya da süren bir inşaat varsa kimliği; şehir başına aynı anda tek inşaat. */
@@ -59,7 +63,10 @@ export function insaatlariIlerlet(d: DunyaDurumu): void {
     i.kalanGun--;
     if (i.kalanGun > 0) continue;
     if (i.yapi === "sur") s.sur = i.hedef;
-    else s.yapilar[i.yapi] = i.hedef;
+    else {
+      s.yapilar[i.yapi] = i.hedef;
+      if ((s.yapilar.tarla + s.yapilar.pazar) % 2 === 0) gelismislikDegistir(s, 1); // her iki yatırım seviyesinde +1 (TASK-0028)
+    }
     sil();
     olayEkle(d, { tur: "insaat-bitti", devlet: i.devlet, metin: `${s.ad}: ${YAPI_ADLARI[i.yapi]} ${i.hedef}. seviyeye yükseldi.` });
   }

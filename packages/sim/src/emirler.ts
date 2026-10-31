@@ -24,7 +24,7 @@ import { BIRIM_ADLARI, birimTuruGecerli, kompozisyonCikar, kompozisyonHizi, komp
 import { biliyor, arastirmaEngeli, teknolojiBul, teknolojiGecerli, toplamaBedelYuzde, toplamaSuresi, type TeknolojiId } from "./teknoloji";
 import { VERGI_ADLARI, vergiOraniGecerli, type VergiOrani } from "./vergi";
 import { elciEngeli } from "./elci";
-import { bagimsiz, birlesmeBaslat, birlesmeEngeli } from "./sehir";
+import { bagimsiz, birlesmeBaslat, birlesmeEngeli, kaynakToplamaYuzde } from "./sehir";
 
 /** Statik senaryo verisi (dünya durumuna girmez, kayda yazılmaz). */
 export interface Baglam {
@@ -97,7 +97,7 @@ function bekleyenHarcama(d: DunyaDurumu, devlet: number): number {
   for (const e of d.emirKuyrugu) {
     if (e.tur === "bagis" && d.sehirler[e.sehir]?.devlet === devlet) s += DENGE.IST_BAGIS_BEDEL;
     if (e.tur === "harca" && e.devlet === devlet) s += e.miktar;
-    if (e.tur === "askerTopla" && d.sehirler[e.sehir]?.devlet === devlet) s += toplamaMaliyeti(e.asker, toplamaBedelYuzde(d, devlet), e.birim ?? "piyade");
+    if (e.tur === "askerTopla" && d.sehirler[e.sehir]?.devlet === devlet) s += toplamaMaliyeti(e.asker, sehirToplamaYuzde(d, e.sehir, e.birim ?? "piyade"), e.birim ?? "piyade");
     if (e.tur === "insaat" && d.sehirler[e.sehir]?.devlet === devlet) s += insaatMaliyeti(d, d.sehirler[e.sehir], e.yapi) ?? 0;
     if (e.tur === "hediye" && d.ayarlar.oyuncu === devlet) s += e.miktar;
     if (e.tur === "elciGonder" && d.ayarlar.oyuncu === devlet) s += DENGE.ELCI_BEDEL;
@@ -111,6 +111,12 @@ function bekleyenHarcama(d: DunyaDurumu, devlet: number): number {
 }
 
 const orduBul = (d: DunyaDurumu, id: number): OrduDurumu | undefined => d.ordular.find((o) => o.id === id);
+
+/** Asker toplama bedel yüzdesi: devletin teknolojisi × şehrin gelir kaynağı (TASK-0028). */
+export function sehirToplamaYuzde(d: DunyaDurumu, sehir: number, birim: string): number {
+  const s = d.sehirler[sehir];
+  return Math.floor((toplamaBedelYuzde(d, s.devlet) * kaynakToplamaYuzde(s, birim)) / 100);
+}
 
 export function kullanilabilirHazine(d: DunyaDurumu, devlet: number): number {
   return d.devletler[devlet].hazine - bekleyenHarcama(d, devlet);
@@ -359,7 +365,7 @@ export function emirDogrula(d: DunyaDurumu, e: Emir, b: Baglam = BOS_BAGLAM, kuy
       const havuz = kuyrukHaric ? s.insanGucu : kullanilabilirInsanGucu(d, e.sehir);
       if (e.asker > havuz) return { gecerli: false, neden: `İnsan gücü yetersiz: ${havuz} asker toplanabilir.` };
       const para = kuyrukHaric ? d.devletler[s.devlet].hazine : kullanilabilirHazine(d, s.devlet);
-      if (para < 0 || toplamaMaliyeti(e.asker, toplamaBedelYuzde(d, s.devlet), e.birim ?? "piyade") > para) return { gecerli: false, neden: `Hazine yetersiz: ${para} kullanılabilir. Borçlanma yoktur.` };
+      if (para < 0 || toplamaMaliyeti(e.asker, sehirToplamaYuzde(d, e.sehir, e.birim ?? "piyade"), e.birim ?? "piyade") > para) return { gecerli: false, neden: `Hazine yetersiz: ${para} kullanılabilir. Borçlanma yoktur.` };
       return { gecerli: true };
     }
     case "toplamaIptal": {
@@ -549,7 +555,7 @@ export function emirUygula(d: DunyaDurumu, e: Emir, b: Baglam = BOS_BAGLAM): voi
     }
     case "askerTopla": {
       const s = d.sehirler[e.sehir], birim = e.birim ?? "piyade";
-      const bedel = toplamaMaliyeti(e.asker, toplamaBedelYuzde(d, s.devlet), birim);
+      const bedel = toplamaMaliyeti(e.asker, sehirToplamaYuzde(d, e.sehir, birim), birim);
       const sure = toplamaSuresi(d, s.devlet);
       d.devletler[s.devlet].hazine -= bedel;
       s.insanGucu -= e.asker;
