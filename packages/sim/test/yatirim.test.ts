@@ -1,8 +1,8 @@
 // TASK-0008/5b: şehir yatırımları (DEC-0033)
 import { describe, expect, it } from "vitest";
 import {
-  DENGE, SEMA_SURUMU, butceOzeti, degismezler, durumOzeti, emirVer, gundenTarih, gunIlerlet, kaydet, kullanilabilirHazine,
-  insaatlariIlerlet, turSuresiAyarla, turuIlerlet, yukle, type DunyaDurumu,
+  DENGE, butceOzeti, degismezler, durumOzeti, emirVer, gundenTarih, gunIlerlet, kaydet, kullanilabilirHazine, insaatlariIlerlet,
+  turSuresiAyarla, turuIlerlet, yukle, type DunyaDurumu,
 } from "../src";
 import { yeniDurum } from "./yardimci";
 
@@ -91,7 +91,7 @@ describe("şehir yatırımları (5b)", () => {
     expect(d.devletler[0].hazine).toBe(hazine);
   });
 
-  it("inşaat sürerken kayıt/yükleme sonucu değiştirmez; şema 5 kaydı dönüştürülür", () => {
+  it("inşaat sürerken kayıt/yükleme sonucu değiştirmez", () => {
     const d = yeniDurum(5);
     d.devletler[0].hazine = 5000;
     emirVer(d, { tur: "insaat", sehir: A1, yapi: "tarla" });
@@ -99,14 +99,5 @@ describe("şehir yatırımları (5b)", () => {
     const e = yukle(kaydet(d), d.senaryo);
     for (let i = 0; i < 4; i++) { turuIlerlet(d); turuIlerlet(e); }
     expect(durumOzeti(e)).toBe(durumOzeti(d));
-    // Şema 5 kaydı (yapı alanları yok) yüklenince yapılar 0, inşaat listesi boş
-    const p = JSON.parse(kaydet(yeniDurum()));
-    p.sema = 5; p.durum.sema = 5;
-    delete p.durum.insaatlar;
-    for (const s of p.durum.sehirler) delete s.yapilar;
-    const g = yukle(JSON.stringify(p));
-    expect(g.sema).toBe(SEMA_SURUMU);
-    expect(g.sehirler.every((s) => s.yapilar.tarla === 0 && s.yapilar.pazar === 0)).toBe(true);
-    expect(g.insaatlar).toEqual([]);
   });
 });

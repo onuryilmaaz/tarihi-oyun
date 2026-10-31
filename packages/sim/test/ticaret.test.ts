@@ -1,8 +1,8 @@
 // TASK-0011/8b: ticaret yolları, abluka, boğaz geçidi, ambargo (DEC-0051, DEC-0052)
 import { describe, expect, it } from "vitest";
 import {
-  baslangicDurumu, butceOzeti, degismezler, DENGE, diplomasiOnHesap, emirleriUygula, emirVer, iliskiBilesenleri, kaydet, SEMA_SURUMU,
-  sehirTicareti, ticaretGelirleri, yukle, type DunyaDurumu, type SenaryoVerisi,
+  baslangicDurumu, butceOzeti, degismezler, DENGE, diplomasiOnHesap, emirleriUygula, emirVer, iliskiBilesenleri, sehirTicareti,
+  ticaretGelirleri, type DunyaDurumu, type SenaryoVerisi,
 } from "../src";
 
 // İki deniz: z0 (A1 limanı) ve z1 (B1 limanı); z1'in ticareti z0'dan geçer
@@ -65,17 +65,6 @@ describe("ticaret (8b)", () => {
     emirleriUygula(d);
     expect(d.ambargolar).toEqual([]);
     expect(degismezler(d)).toEqual([]);
-  });
-
-  it("şema 15 kaydı dönüştürülür (ambargo yok, geçit etkisiz)", () => {
-    const p = JSON.parse(kaydet(yeni()));
-    p.sema = 15; p.durum.sema = 15;
-    delete p.durum.ambargolar;
-    for (const b of p.durum.deniz.bolgeler) delete b.gecit;
-    const g = yukle(JSON.stringify(p));
-    expect(g.sema).toBe(SEMA_SURUMU);
-    expect(g.deniz.bolgeler.every((b) => b.gecit === -1)).toBe(true);
-    expect(degismezler(g)).toEqual([]);
   });
 
   it("TASK-0017: aktif ticaret anlaşması liman gelirine ek yüzde verir", () => {

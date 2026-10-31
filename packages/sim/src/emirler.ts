@@ -24,6 +24,7 @@ import { BIRIM_ADLARI, birimTuruGecerli, kompozisyonCikar, kompozisyonHizi, komp
 import { biliyor, arastirmaEngeli, teknolojiBul, teknolojiGecerli, toplamaBedelYuzde, toplamaSuresi, type TeknolojiId } from "./teknoloji";
 import { VERGI_ADLARI, vergiOraniGecerli, type VergiOrani } from "./vergi";
 import { elciEngeli } from "./elci";
+import { bagimsiz, birlesmeBaslat, birlesmeEngeli } from "./sehir";
 
 /** Statik senaryo verisi (dünya durumuna girmez, kayda yazılmaz). */
 export interface Baglam {
@@ -85,7 +86,9 @@ export type Emir =
 
   | { tur: "vergiAyarla"; oran: VergiOrani; devlet?: number } // TASK-0017
   // Casusluk görevi (TASK-0011/8c); devlet: yalnızca AI
-  | { tur: "casusluk"; hedef: number; gorev: GorevTuru; sehir: number | null; devlet?: number };
+  | { tur: "casusluk"; hedef: number; gorev: GorevTuru; sehir: number | null; devlet?: number }
+  // TASK-0026: iki komşu şehri birleştir (30 gün; küçük olan merkeze bağlanır)
+  | { tur: "sehirBirlestir"; sehir: number; katilan: number };
 
 export type Dogrulama = { gecerli: true } | { gecerli: false; neden: string };
 
@@ -102,6 +105,7 @@ function bekleyenHarcama(d: DunyaDurumu, devlet: number): number {
     if (e.tur === "gemiInsa" && d.sehirler[e.sehir]?.devlet === devlet && GEMI_TURLERI.includes(e.gemi)) s += e.adet * DENGE.GEMI[e.gemi].bedel;
     if (e.tur === "iskan" && d.ayarlar.oyuncu === devlet) s += iskanBedeli(e.miktar);
     if (e.tur === "arastir" && d.ayarlar.oyuncu === devlet && teknolojiGecerli(e.teknoloji)) s += DENGE.TEKNOLOJI[e.teknoloji].bedel;
+    if (e.tur === "sehirBirlestir" && d.ayarlar.oyuncu === devlet) s += DENGE.SEHIR_BIRLESTIR_BEDEL;
   }
   return s;
 }
@@ -126,7 +130,22 @@ export function emirDogrula(d: DunyaDurumu, e: Emir, b: Baglam = BOS_BAGLAM, kuy
     (x.tur === "orduBol" && x.ordu === e.ordu) || (x.tur === "orduBirlestir" && [x.ordu, x.diger].includes(e.ordu)))) {
     return { gecerli: false, neden: "Bu ordu için bölme/birleştirme emri bekliyor; önce turu ilerletin." };
   }
+  // TASK-0026: birleşmeyle bağlanmış şehir hiçbir emrin hedefi olamaz
+  for (const alan of ["sehir", "katilan", "kaynak", "hedef"] as const) {
+    if (alan === "hedef" && e.tur !== "iskan") continue; // diğer emirlerde hedef bir devlettir
+    const i = (e as Record<string, unknown>)[alan];
+    if (typeof i === "number" && d.sehirler[i] && !bagimsiz(d.sehirler[i])) return { gecerli: false, neden: `${d.sehirler[i].ad} başka bir şehre bağlıdır.` };
+  }
   switch (e.tur) {
+    case "sehirBirlestir": {
+      const engel = birlesmeEngeli(d, b, d.ayarlar.oyuncu, e.sehir, e.katilan, kuyrukHaric);
+      if (engel) return { gecerli: false, neden: engel };
+      if (!kuyrukHaric && d.emirKuyrugu.some((x) => x.tur === "sehirBirlestir" && [x.sehir, x.katilan].some((i) => i === e.sehir || i === e.katilan)))
+        return { gecerli: false, neden: "Bu şehirler için birleştirme emri zaten bekliyor." };
+      const para = kuyrukHaric ? d.devletler[d.ayarlar.oyuncu].hazine : kullanilabilirHazine(d, d.ayarlar.oyuncu);
+      if (para < DENGE.SEHIR_BIRLESTIR_BEDEL) return { gecerli: false, neden: "Birleştirme için hazine yetersiz; borçlanma yoktur." };
+      return { gecerli: true };
+    }
     case "bagis": {
       const c = d.sehirler[e.sehir], devlet = e.devlet ?? d.ayarlar.oyuncu;
       if (!c || c.devlet !== devlet || c.kontrol !== devlet) return { gecerli: false, neden: "Bağış yalnızca kontrolünüzdeki kendi şehrinize yapılır." };
@@ -480,6 +499,9 @@ export function emirleriUygula(d: DunyaDurumu, b: Baglam = BOS_BAGLAM): void {
 /** Doğrulanmış tek emri uygular (oyuncu kuyruğu ve AI kararları aynı yolu kullanır). */
 export function emirUygula(d: DunyaDurumu, e: Emir, b: Baglam = BOS_BAGLAM): void {
   switch (e.tur) {
+    case "sehirBirlestir":
+      birlesmeBaslat(d, d.ayarlar.oyuncu, e.sehir, e.katilan);
+      break;
     case "bagis": {
       const c = d.sehirler[e.sehir];
       d.devletler[c.devlet].hazine -= DENGE.IST_BAGIS_BEDEL;

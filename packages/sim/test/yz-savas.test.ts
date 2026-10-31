@@ -1,9 +1,9 @@
 // TASK-0009/6c: AI savaş ilanı, sefer, barış ve oyuncuya gelen teklifler (DEC-0038, DEC-0040)
 import { describe, expect, it } from "vitest";
 import {
-  agHazirla, barisDogrula, barisiUygula, barisKararlari, baslangicDurumu, degismezler, DENGE, diplomasiOnHesap, durumOzeti, emirleriUygula, emirVer,
-  muharebeleriBaslat, muharebeGunleri, sayiMetni,
-  etkiEkle, gunIlerlet, kaydet, savasKarari, yikilanDevletleriTemizle, savasta, SEMA_SURUMU, seferKararlari, yukle, type DunyaDurumu, type SenaryoVerisi,
+  agHazirla, barisDogrula, barisiUygula, barisKararlari, baslangicDurumu, degismezler, DENGE, diplomasiOnHesap, durumOzeti, emirleriUygula,
+  emirVer, muharebeleriBaslat, muharebeGunleri, sayiMetni, etkiEkle, gunIlerlet, kaydet, savasKarari, yikilanDevletleriTemizle, savasta,
+  seferKararlari, yukle, type DunyaDurumu, type SenaryoVerisi,
 } from "../src";
 import { askerAyarla } from "./yardimci";
 
@@ -137,7 +137,7 @@ describe("AI savaş ve barış (6c)", () => {
     expect(degismezler(f)).toEqual([]);
   });
 
-  it("AI savaşları sürerken kayıt/yükleme sonucu değiştirmez; şema 9 kaydı dönüştürülür", () => {
+  it("AI savaşları sürerken kayıt/yükleme sonucu değiştirmez", () => {
     const d = yeni();
     askerAyarla(d.ordular.find((o) => o.devlet === Bd)!, 30000);
     savasAc(d, Bd, C);
@@ -145,12 +145,6 @@ describe("AI savaş ve barış (6c)", () => {
     const e = yukle(kaydet(d), d.senaryo);
     for (let i = 0; i < 60; i++) { gunIlerlet(d, B); gunIlerlet(e, B); d.aktifKesinti = e.aktifKesinti = null; }
     expect(durumOzeti(e)).toBe(durumOzeti(d));
-    const p = JSON.parse(kaydet(yeni()));
-    p.sema = 9; p.durum.sema = 9;
-    delete p.durum.barisTeklifleri; delete p.durum.sonrakiTeklifId; delete p.durum.ateskesler;
-    const g = yukle(JSON.stringify(p));
-    expect(g.sema).toBe(SEMA_SURUMU);
-    expect(degismezler(g)).toEqual([]);
   });
   it("mantık: yıkılan devletin savaşı biter; talep kurulamayan AI savaşı 4 yılda bir şekilde biter", () => {
     const d = yeni();

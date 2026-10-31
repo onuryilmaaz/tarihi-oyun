@@ -32,3 +32,4 @@ export * from "./vergi";
 export * from "./vasallik";
 export * from "./birim";
 export * from "./elci";
+export * from "./sehir";

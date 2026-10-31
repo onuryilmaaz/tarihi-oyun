@@ -833,6 +833,25 @@ Kaynak belge: `MASTER_SPEC.md` (v1.3). Orijinal keşif çıktısı:
   "İkisi birden, aynı kartta" (2026-10-30).
 - **Durum:** GEÇERLİ
 
+## DEC-0076 — TASK-0026: oyuncu için şehir adı değiştirme ve birleştirme kuralları
+
+- **Tarih:** 2026-10-31
+- **Seçilen karar:** Ad değiştirme ve birleştirme bir oyuncu özelliğidir (harita düzenleyicisi değil). Kurallar
+  `tasks/TASK-0026.md`'deki gibidir (agent önerisi). Sıralı plan: (1) bu iş, (2) "şehir ve toprağı birlikte
+  fethedilir", (3) gelişmişlik/gelir kaynağının ekonomiye bağlanması, (4) Osmanlı sancak sistemi (şehir → sancak →
+  eyalet, sancakbeyi yerel yönetici gibi; önce yalnızca Osmanlı), (5) dünyaya yayma.
+- **Onay kaydı:** Kullanıcı: "1- b 2- uygundur 3- uygundur" ve "hepsi uygun" (2026-10-31).
+- **Durum:** GEÇERLİ
+
+## DEC-0075 — Geliştirme aşamasında geriye dönük kayıt uyumluluğu yok
+
+- **Tarih:** 2026-10-31
+- **Seçilen karar:** Eski şemalı kayıtlar taşınmaz; güncel şemadan farklı kayıt açık bir mesajla reddedilir. Kayıt
+  dönüştürücü zinciri (şema 3→26), eski kayıt onarımı ve eski şema testleri kaldırıldı; içerik özeti zorunlu.
+- **Onay kaydı:** Kullanıcı: "eski kayıtlara gerek yok. geliştirme aşamasında olduğumuz için geriye dönük bişey
+  yapma. gereksiz eski şeyleride temizle." (2026-10-31)
+- **Durum:** GEÇERLİ
+
 ## DEC-0074 — TASK-0025 onayı: şehir merkezli harita (MASTER_SPEC KARAR değişikliği)
 
 - **Tarih:** 2026-10-31

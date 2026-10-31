@@ -42,7 +42,7 @@ describe("1453 senaryosu", () => {
     // tam 10 yıl tamamlanmış olsa da takvim tarihi birkaç hafta/ay ileri kayabilir — en az 10 yıl geçtiği doğrulanır.
     const { yil } = gundenTarih(a.gun);
     expect(yil).toBeGreaterThanOrEqual(1463);
-    expect(yil).toBeLessThanOrEqual(1466);
+    expect(yil).toBeLessThanOrEqual(1474); // TASK-0025: şehir haritasında AI daha sık teklif gönderiyor (~15 kesinti)
     expect(durumOzeti(oyna())).toBe(durumOzeti(a));
     const b = yukle(kaydet(a), a.senaryo);
     turuIlerlet(a, baglam); turuIlerlet(b, baglam);

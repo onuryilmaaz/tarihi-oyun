@@ -20,7 +20,7 @@ import { SOZLUK } from "./sozluk";
 
 ozelSecimleriKur();
 import { haritaYukle } from "./harita/veri";
-import { haritaGorunumuKur, kacis, KONUMLAR, type Katmanlar, type WdDevlet } from "./harita/gorunum";
+import { haritaGorunumuKur, kacis, KONUMLAR, type Katmanlar } from "./harita/gorunum";
 import { SimHatasi, SimIstemcisi, type Ozet, type RotaOnizleme } from "./sim-protokol";
 import { SURUM } from "./surum";
 import { kayitlariListele, kayitOku, kayitSil, kayitYaz, tumKayitlariSil, type Yuva } from "./kayit-deposu";
@@ -71,11 +71,9 @@ async function baslat() {
     document.fonts.load('500 20px "Inter"'),
     document.fonts.load('700 20px "Inter"'),
   ]);
-  const [h, senaryo, wikidata] = await Promise.all([
+  const [h, senaryo] = await Promise.all([
     haritaYukle(`${SENARYO_YOLU}harita.json`),
     fetch(`${SENARYO_YOLU}senaryo.json`).then((r) => r.json() as Promise<SenaryoVerisi>),
-    fetch(`${SENARYO_YOLU}wikidata.json`).then((r) => r.json()).then((j) => j.devletler as Record<string, WdDevlet>)
-      .catch(() => ({} as Record<string, WdDevlet>)),
   ]);
   // Harita ve senaryo aynı devlet sırasını kullanmalı (araclar/senaryo-uret.mjs)
   if (h.paket.devletler.length !== senaryo.devletler.length
@@ -91,7 +89,7 @@ async function baslat() {
     etiket: $<HTMLInputElement>("kEtiket").checked,
     guven: $<HTMLInputElement>("kGuven").checked,
   });
-  const gorunum = haritaGorunumuKur(h, wikidata,
+  const gorunum = haritaGorunumuKur(h,
     { kap: $("tuvalKap"), etiketKap: $("etiketler"), orduKap: $("ordular"), kagit: $("kagit"), bilgi: $("bilgi"), ipucu: $("ipucu") },
     katmanAyarlari);
   for (const id of ["kArazi", "kNehir", "kSehir", "kEtiket", "kGuven"]) $(id).addEventListener("change", gorunum.istek);
@@ -281,6 +279,7 @@ async function baslat() {
       `<li data-tur="${kacis(o.tur)}"><time>${kacis(tarihMetni(o.gun))}</time>${kacis(o.metin)}</li>`).join("")
       || "<li class=\"bos\">Henüz olay yok.</li>";
     $("ozetHash").textContent = ozet.hash;
+    ozet.sehirDurumlari.forEach((c, i) => { senaryo.sehirler[i].ad = c.ad; }); // TASK-0026: oyuncu adı değiştirebilir
     gorunum.mulkiyetGoster(ozet.birimSahipleri, ozet.sehirDurumlari);
     gorunum.oyuncuyuAyarla(ozet.oyuncu.indeks);
     const plan = new Map<number, [number, number][]>();
@@ -300,7 +299,7 @@ async function baslat() {
     }
     $("butceKalemleri").innerHTML = `<dt>Hazine</dt><dd>${para(butce.hazine)}</dd>
       <dt>Emirlere ayrılan</dt><dd>${para(butce.ayrilan)}</dd><dt>Kullanılabilir</dt><dd>${para(butce.kullanilabilir)}</dd>
-      <dt>Aylık gelir (prototip)</dt><dd>+${para(butce.aylikGelir)}<small class="not"> · arazi ${para(butce.aylikAraziGeliri)} (${para(butce.araziSayisi)} arazi) + yapılar ${para(butce.aylikYapiGeliri)} + ticaret ${para(butce.aylikTicaretGeliri)}</small></dd>
+      <dt>Aylık gelir</dt><dd>+${para(butce.aylikGelir)}<small class="not"> · arazi ${para(butce.aylikAraziGeliri)} (${para(butce.araziSayisi)} arazi) + yapılar ${para(butce.aylikYapiGeliri)} + ticaret ${para(butce.aylikTicaretGeliri)}</small></dd>
       <dt>Aylık ordu maaşı</dt><dd>−${para(butce.aylikMaas)}<small class="not"> · ${para(butce.askerSayisi)} asker</small></dd>
       <dt>Aylık fark</dt><dd id="butceNet" class="${butce.aylikNet < 0 ? "eksi" : "artı"}">${butce.aylikNet > 0 ? "+" : ""}${para(butce.aylikNet)}</dd>`;
     $("butceSehirleri").innerHTML = butce.sehirler.length
@@ -479,7 +478,7 @@ async function baslat() {
       const y = ozet.sehirYatirimlari.find((v) => v.indeks === s.id);
       const yonetici = !y ? "" : `<div class="satir eylem"><button data-eylem="yonetici" data-sehir="${s.id}" data-acik="${y.yonetici ? 0 : 1}">Yerel yönetici: ${y.yonetici ? "Açık — kapat" : "Kapalı — aç"}</button></div>
         <p class="not">${y.yonetici ? `Ayda bir, sol paneldeki bütçe tavanı içinde riskliyse bağış, değilse tarla/pazar yapar. Sizin emirleriniz önce gelir.${ozet.yerelYonetim.butce ? "" : " Bütçe tavanı 0 olduğu için şu an harcama yapmaz."}` : "Açarsanız bu şehrin bağış ve tarla/pazar kararlarını bütçe tavanı içinde yönetici verir."}</p>`;
-      const yatirim = !y ? "" : `${yonetici}<h4>Şehir yatırımları (prototip değerleri)</h4>
+      const yatirim = !y ? "" : `${yonetici}<h4>Şehir yatırımları</h4>
         <p class="not">Yapıların aylık geliri: +${y.aylikGelir.toLocaleString("tr-TR")}${y.insaat ? ` · ${kacis(y.insaat.ad)} ${y.insaat.hedef}. seviye ${y.insaat.emir ? "emri bekliyor" : y.insaat.durdu ? "kuşatma/ayaklanma nedeniyle durdu" : `yapılıyor (${y.insaat.kalanGun} gün kaldı)`}` : ""}</p>
         <ul class="yatirimlar">${y.secenekler.map((o) => `<li><span><b>${kacis(o.ad)}</b> ${o.seviye}/${o.enYuksek}
           <small>${o.maliyet === null ? "En yüksek seviye" : `${o.seviye + 1}. seviye: ${o.maliyet.toLocaleString("tr-TR")} · ${o.sure} gün · ${o.yapi === "sur" ? "kuşatma direnci artar" : `aylık +${o.gelirArtisi}`}`}</small></span>
@@ -523,9 +522,21 @@ async function baslat() {
       const kimlik = !ss.tur ? "" : `<dl><dt>Tür</dt><dd>${SEHIR_TURU[ss.tur]}</dd>
         <dt>Gelişmişlik</dt><dd>${ss.gelismislik}/10</dd>
         <dt>Gelir kaynağı</dt><dd>${GELIR[ss.gelirKaynagi!]}</dd>
-        ${ss.qid ? `<dt>Kaynak</dt><dd><a href="https://www.wikidata.org/wiki/${ss.qid}" target="_blank" rel="noopener">Wikidata ${ss.qid}</a></dd>` : ""}</dl>
-        <p class="not">Tür, gelişmişlik ve gelir kaynağı tahminidir; henüz ekonomiye bağlı değildir (pilot).</p>`;
-      return `${kimlik}${istikrar}${nufus}${iskan}${ticaret}${tersane}<h4>Şehir savunması (prototip değerleri)</h4><dl><dt>Sur seviyesi</dt><dd>${c.sur}</dd>
+</dl>`;
+      const sd = ozet.sehirDurumlari[s.id], adi = (i: number) => kacis(senaryo.sehirler[i].ad);
+      const birlesme = ozet.sehirBirlesmeleri.find((x) => x.merkez === s.id || x.katilan === s.id);
+      const adaylar = ozet.birlesmeAdaylari[s.id] ?? [];
+      const sehirYonetimi = sd.bagli >= 0 ? `<p class="not">Bu şehir ${adi(sd.bagli)} şehrine bağlıdır.</p>`
+        : sd.devlet !== ozet.oyuncu.indeks ? "" : `<h4>Şehir adı ve birleştirme</h4>
+        ${sd.eskiAd ? `<p class="not">Eski adı: ${kacis(sd.eskiAd)}</p>` : ""}
+        <div class="iskan-satir"><input id="sehirYeniAd" type="text" maxlength="${DENGE.SEHIR_ADI_EN_UZUN}" value="${kacis(sd.ad)}" aria-label="Yeni ad" />
+          <button data-eylem="sehirAdi" data-sehir="${s.id}">Adını değiştir</button></div>
+        ${birlesme ? `<p class="not">${adi(birlesme.merkez)} ile ${adi(birlesme.katilan)} birleşiyor: ${birlesme.kalanGun} gün kaldı.</p>`
+          : adaylar.length ? `<div class="iskan-satir"><select id="birlesmeHedef" aria-label="Birleşecek şehir">${adaylar.map((i) => `<option value="${i}">${adi(i)}</option>`).join("")}</select>
+          <button data-eylem="sehirBirlestir" data-sehir="${s.id}">Birleştir</button></div>
+          <p class="not">Bedel ${DENGE.SEHIR_BIRLESTIR_BEDEL}, ${DENGE.SEHIR_BIRLESTIR_GUN} gün. Büyük şehir (başkent varsa başkent) merkez kalır; küçüğün nüfusu ve yapıları ona geçer. Geri alınamaz.</p>`
+          : '<p class="not">Birleştirilebilecek komşu şehriniz yok (toprağı komşu, kontrolünüzde, kuşatma ve ayaklanma altında olmayan).</p>'}`;
+      return `${kimlik}${sehirYonetimi}${istikrar}${nufus}${iskan}${ticaret}${tersane}<h4>Şehir savunması</h4><dl><dt>Sur seviyesi</dt><dd>${c.sur}</dd>
         <dt>Garnizon</dt><dd>${c.garnizonTahmin ? "Yaklaşık " : ""}${c.garnizon.toLocaleString("tr-TR")}</dd></dl>
         <p class="not">${k ? `${k.gun} etkin gündür kuşatma altında.` : c.kontrol === ozet.oyuncu.indeks
           ? c.devlet === ozet.oyuncu.indeks ? "Şehir size ait ve askerî kontrolünüzde." : "Şehir askerî kontrolünüzde; yasal sahiplik barış antlaşmasıyla değişir."
@@ -665,6 +676,21 @@ async function baslat() {
       const hedef = Number(amb.dataset.devlet), acik = amb.dataset.acik === "1", ad = h.paket.devletler[hedef].ad;
       if (acik && !await onayIste("Ambargo", `${ad}'na ticaret ambargosu konsun mu? Onların liman ticareti %${DENGE.AMBARGO_HEDEF_YUZDE}, sizinki %${DENGE.AMBARGO_KOYAN_YUZDE} azalır; size bakışları ${DENGE.AMBARGO_ILISKI} puan bozulur.`, "Ambargo koy", true)) return;
       await emirGonder({ tur: "ambargo", hedef, acik }, acik ? `${ad}'na ambargo emri verildi (bir sonraki tur).` : `${ad} ambargosunun kaldırılması emri verildi.`);
+      return;
+    }
+    const adB = (e.target as HTMLElement).closest<HTMLElement>('[data-eylem="sehirAdi"]');
+    if (adB) {
+      const y = await sim.gonder({ tip: "sehirAdi", sehir: Number(adB.dataset.sehir), ad: $<HTMLInputElement>("sehirYeniAd").value });
+      ozet = y.ozet; arayuzuGuncelle(); gorunum.istek();
+      if (y.dogrulama && !y.dogrulama.gecerli) bildir(y.dogrulama.neden, "uyari"); else bildir("Şehrin adı değişti.");
+      return;
+    }
+    const birB = (e.target as HTMLElement).closest<HTMLElement>('[data-eylem="sehirBirlestir"]');
+    if (birB) {
+      const sehir = Number(birB.dataset.sehir), katilan = Number($<HTMLSelectElement>("birlesmeHedef").value);
+      const ad = (i: number) => senaryo.sehirler[i].ad;
+      if (!await onayIste("Şehirleri birleştir", `${ad(sehir)} ile ${ad(katilan)} birleştirilsin mi? Bedel ${DENGE.SEHIR_BIRLESTIR_BEDEL}, ${DENGE.SEHIR_BIRLESTIR_GUN} gün sürer. Büyük şehir merkez kalır, küçük şehir ona bağlanır. Bu işlem geri alınamaz.`, "Birleştir", true)) return;
+      await emirGonder({ tur: "sehirBirlestir", sehir, katilan }, `${ad(sehir)}–${ad(katilan)} birleştirme emri verildi; bir sonraki tur başlar.`);
       return;
     }
     const yelken = (e.target as HTMLElement).closest<HTMLElement>('[data-eylem="yelken"]');

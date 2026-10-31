@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 import {
-  agHazirla, barisBedeli, barisDevirOzeti, barisDogrula, baslangicDurumu, degismezler, DENGE, durumOzeti, emirleriUygula, emirVer,
+  SEMA_SURUMU, agHazirla, barisBedeli, barisDevirOzeti, barisDogrula, baslangicDurumu, degismezler, DENGE, durumOzeti, emirleriUygula, emirVer,
   gunIlerlet, kaydet, muharebeleriBaslat, prototipGelirleri, savasSkoru, turSuresiAyarla, turuIlerlet, vasalVergisiAl, yukle,
   type BarisTalebi, type KusatmaYontemi, type SenaryoVerisi,
 } from "../src";
@@ -252,16 +252,6 @@ describe("barış ve sahiplik", () => {
     expect(degismezler(d)).toEqual([]);
   });
 
-  it("şema 21 → 22: eski kayıtta vasallık yok, boş listeyle taşınır", () => {
-    const d = yeni();
-    const p = JSON.parse(kaydet(d));
-    delete p.ozet; delete p.durum.vasalliklar;
-    p.sema = 21; p.durum.sema = 21;
-    const g = yukle(JSON.stringify(p), d.senaryo);
-    expect(g.vasalliklar).toEqual([]);
-    expect(degismezler(g)).toEqual([]);
-  });
-
   it("barış sadece ilgili savaşı temizler; dışarıdaki ordu ışınlanmadan dönüşe başlar", () => {
     const d = kusat(), o = d.ordular[0];
     const digerSavas = { id: d.sonrakiSavasId++, saldiran: 0, savunan: 2, baslangic: d.gun }; d.savaslar.push(digerSavas);
@@ -306,16 +296,11 @@ describe("4c kayıt ve determinizm", () => {
     expect(durumOzeti(d)).toBe(durumOzeti(e)); expect(degismezler(e)).toEqual([]);
   });
 
-  it("şema 4 dönüşümü mevcut toplama, para ve orduları korur; bozuk kuşatma reddedilir", () => {
-    const d = yeni(); emirVer(d, { tur: "askerTopla", sehir: 0, asker: 100 }, B); emirleriUygula(d, B);
-    const p = JSON.parse(kaydet(d)); p.sema = p.durum.sema = 4;
-    delete p.durum.kusatmalar; delete p.durum.isgalHazirliklari; delete p.durum.barislar;
-    for (const c of p.durum.sehirler) { delete c.sur; delete c.garnizon; }
-    expect(yukle(JSON.stringify(p))).toEqual(d);
+  it("bozuk kuşatma ve eski şemalı kayıt reddedilir", () => {
     const q = JSON.parse(kaydet(kusat())); q.durum.kusatmalar[0].ordular = [999];
     expect(() => yukle(JSON.stringify(q))).toThrow(/tutarsız/);
-    p.durum.sema = 5;
-    expect(() => yukle(JSON.stringify(p))).toThrow(/şema sürümleri uyuşmuyor/);
+    const p = JSON.parse(kaydet(yeni())); p.sema = p.durum.sema = SEMA_SURUMU - 1;
+    expect(() => yukle(JSON.stringify(p))).toThrow(/eski bir geliştirme sürümüne/);
   });
 
   it("aynı gün sayısında farklı tur süreleri aynı işgal/kuşatma sonucunu üretir", () => {

@@ -1,8 +1,8 @@
 // TASK-0011/8c: casusluk görevleri (DEC-0051, DEC-0053)
 import { describe, expect, it } from "vitest";
 import {
-  agHazirla, baslangicDurumu, casusGorevleriIlerlet, degismezler, DENGE, diplomasiOnHesap, durumOzeti, emirleriUygula, emirVer,
-  disDestek, gorunurYabanciOrdular, gunIlerlet, iliskiBilesenleri, istihbaratVar, kaydet, kullanilabilirHazine, riskBilesenleri, SEMA_SURUMU, yukle,
+  agHazirla, baslangicDurumu, casusGorevleriIlerlet, degismezler, DENGE, diplomasiOnHesap, durumOzeti, emirleriUygula, emirVer, disDestek,
+  gorunurYabanciOrdular, gunIlerlet, iliskiBilesenleri, istihbaratVar, kaydet, kullanilabilirHazine, riskBilesenleri, yukle,
   type DunyaDurumu, type GorevTuru, type SenaryoVerisi,
 } from "../src";
 
@@ -114,18 +114,12 @@ describe("casusluk (8c)", () => {
     expect(isyan && sabotaj).toBe(true);
   });
 
-  it("görev sürerken kayıt/yükleme sonucu değiştirmez; şema 16 kaydı dönüştürülür", () => {
+  it("görev sürerken kayıt/yükleme sonucu değiştirmez", () => {
     const d = yeni();
     emirVer(d, { tur: "casusluk", hedef: B, gorev: "askeri", sehir: null });
     emirleriUygula(d);
     const e = yukle(kaydet(d), d.senaryo);
     for (let i = 0; i < 60; i++) { gunIlerlet(d, B_); gunIlerlet(e, B_); }
     expect(durumOzeti(e)).toBe(durumOzeti(d));
-    const p = JSON.parse(kaydet(yeni()));
-    p.sema = 16; p.durum.sema = 16;
-    delete p.durum.casusGorevleri; delete p.durum.casusEtkileri; delete p.durum.sonrakiGorevId;
-    const g = yukle(JSON.stringify(p));
-    expect(g.sema).toBe(SEMA_SURUMU);
-    expect(degismezler(g)).toEqual([]);
   });
 });

@@ -2,9 +2,8 @@
 import { describe, expect, it } from "vitest";
 import {
   agHazirla, baslangicDurumu, bolgeKontrolu, butceOzeti, degismezler, DENGE, denizAblukasi, devletMaasi, donanmaGucu, durumOzeti,
-  gemiInsalariIlerlet,
-  emirleriUygula, emirVer, gemiSayisi, gunIlerlet, kaydet, kullanilabilirHazine, rotaBul, SEMA_SURUMU, yukle,
-  type DunyaDurumu, type SenaryoVerisi,
+  gemiInsalariIlerlet, emirleriUygula, emirVer, gemiSayisi, gunIlerlet, kaydet, kullanilabilirHazine, rotaBul, yukle, type DunyaDurumu,
+  type SenaryoVerisi,
 } from "../src";
 
 // Doğrusal kara: düğüm 0–1 (a), 2–3 (b); 1–2 arası "Test Boğazı". Deniz: z0 (A1 limanı), z1 (B1 limanı)
@@ -135,7 +134,7 @@ describe("donanma ve deniz (8a)", () => {
     expect(d.gunluk.some((x) => /kıyısına çıktı/.test(x.metin))).toBe(true);
   });
 
-  it("kayıt/yükleme sonucu değiştirmez; şema 14 kaydı dönüştürülür (deniz kapalı)", () => {
+  it("kayıt/yükleme sonucu değiştirmez", () => {
     const d = yeni();
     savas(d);
     emirVer(d, { tur: "donanmaHedef", donanma: fa(d).id, bolge: Z1 }, B);
@@ -143,12 +142,5 @@ describe("donanma ve deniz (8a)", () => {
     const e = yukle(kaydet(d), d.senaryo);
     for (let i = 0; i < 30; i++) { gunIlerlet(d, B); gunIlerlet(e, B); d.aktifKesinti = e.aktifKesinti = null; }
     expect(durumOzeti(e)).toBe(durumOzeti(d));
-    const p = JSON.parse(kaydet(yeni()));
-    p.sema = 14; p.durum.sema = 14;
-    delete p.durum.deniz; delete p.durum.donanmalar; delete p.durum.sonrakiDonanmaId; delete p.durum.gemiInsalari;
-    const g = yukle(JSON.stringify(p));
-    expect(g.sema).toBe(SEMA_SURUMU);
-    expect(g.donanmalar).toEqual([]);
-    expect(degismezler(g)).toEqual([]);
   });
 });

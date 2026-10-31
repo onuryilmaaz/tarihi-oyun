@@ -9,6 +9,7 @@ export type Istek = { id: number } & (
   | { tip: "turSuresi"; sure: TurSuresi }
   // Yerel yönetim ayarı (7d): tur süresi gibi anında uygulanır, harcama yapmaz
   | { tip: "yonetim"; sehir?: number; acik?: boolean; butce?: number; altSinir?: number }
+  | { tip: "sehirAdi"; sehir: number; ad: string } // TASK-0026
   | { tip: "emir"; emir: Emir }
   | { tip: "turuIlerlet" }
   | { tip: "kaydet" }
@@ -105,7 +106,11 @@ export interface Ozet {
   yabanciOrdular: YabanciOrdu[]; // yalnızca görünenler; kesin asker sayısı yok (AT-013)
   savaslar: { id: number; karsi: number; baslangic: string; saldiran: boolean; skor: number; alinan: number; kaybedilen: number; toplam: number; birimler: number[]; sehirler: number[] }[];
   kusatmalar: { sehir: number; devlet: number; savunan: number; yontem: KusatmaYontemi; gun: number; erzak: number; gucYeterli: boolean | null }[];
-  sehirDurumlari: { devlet: number; kontrol: number; baskent: boolean; sur: number; garnizon: number; garnizonTahmin: boolean }[];
+  sehirDurumlari: { devlet: number; kontrol: number; baskent: boolean; sur: number; garnizon: number; garnizonTahmin: boolean;
+    ad: string; eskiAd: string | null; bagli: number; birim: number }[]; // TASK-0026: ad değişebilir, bağlı şehir gizlenir
+  /** Oyuncunun kendi şehirleri için birleştirilebilecek komşu şehirler ve süren birleşmeler (TASK-0026) */
+  birlesmeAdaylari: Record<number, number[]>;
+  sehirBirlesmeleri: { merkez: number; katilan: number; kalanGun: number }[];
   birimSahipleri: number[];
   isgalHazirliklari: { birim: number; gun: number }[];
   barislar: BarisKaydi[];

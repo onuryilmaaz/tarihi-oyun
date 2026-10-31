@@ -1,5 +1,13 @@
 # CHANGELOG
 
+## 2026-10-31 — TASK-0026: şehir adı değiştirme ve birleştirme; eski kayıt desteği kaldırıldı (Claude)
+
+- Oyuncu kendi şehrinin adını değiştirebilir (eski ad saklanır) ve toprakları komşu iki şehrini birleştirebilir
+  (500, 30 gün; büyük ya da başkent merkez kalır, küçük şehir bağlanır). Şema 27.
+- DEC-0075: eski kayıtlar taşınmaz; kayıt dönüştürücü zinciri, eski kayıt onarımı ve eski şema testleri kaldırıldı.
+- Harita: Üsküdar'ın Avrupa yakasına taşan kıyı şeridi giderildi (bölgeler yalnızca kendi kara parçasıyla kesişir,
+  boşluklar aynı kara parçasındaki en yakın bölgeye verilir).
+
 ## 2026-10-31 — TASK-0025 pilot: şehir merkezli harita (Anadolu + Balkanlar) (Claude)
 
 - Wikidata (CC0) şehir adayları (`araclar/sehir-wikidata.mjs`, `sehirler-wikidata.json`), seçim ve seyreltme

@@ -1,8 +1,7 @@
 import { describe, expect, it } from "vitest";
 import {
-  agHazirla, baslangicDurumu, degismezler, DENGE, devletMaasi, durumOzeti, emirleriUygula, emirVer,
-  gunIlerlet, ikmalDurumu, kaydet, kullanilabilirHazine, kullanilabilirInsanGucu, maaslariOde,
-  SEMA_SURUMU, toplamaMaliyeti, turSuresiAyarla, turuIlerlet, yukle, type SenaryoVerisi,
+  agHazirla, baslangicDurumu, degismezler, DENGE, devletMaasi, durumOzeti, emirleriUygula, emirVer, gunIlerlet, ikmalDurumu, kaydet,
+  kullanilabilirHazine, kullanilabilirInsanGucu, maaslariOde, toplamaMaliyeti, turSuresiAyarla, turuIlerlet, yukle, type SenaryoVerisi,
 } from "../src";
 import { askerAyarla, dunyaOzeti } from "./yardimci";
 
@@ -120,20 +119,6 @@ describe("TASK-0017: asker toplama iptali", () => {
     expect(emirVer(d, { tur: "toplamaIptal", id }, B).gecerli).toBe(false);
   });
 
-  it("şema 19 → 20: eski kayıttaki süren toplamaya kimlik ve iade bedeli eklenir", () => {
-    const d = yeni(); emirVer(d, topla, B); emirleriUygula(d, B);
-    const p = JSON.parse(kaydet(d));
-    delete p.ozet;
-    delete p.durum.sonrakiToplamaId;
-    for (const t of p.durum.askerToplamalar) { delete t.id; delete t.bedel; }
-    p.sema = 19; p.durum.sema = 19;
-    const g = yukle(JSON.stringify(p), d.senaryo);
-    expect(g.sema).toBe(SEMA_SURUMU);
-    expect(g.askerToplamalar[0].id).toBe(1);
-    expect(g.askerToplamalar[0].bedel).toBe(toplamaMaliyeti(500));
-    expect(g.sonrakiToplamaId).toBe(2);
-    expect(degismezler(g)).toEqual([]);
-  });
 });
 
 describe("maaş ve ikmal", () => {
@@ -239,13 +224,8 @@ describe("4b kayıt ve determinizm", () => {
     expect(durumOzeti(e)).toBe(durumOzeti(d));
   });
 
-  it("şema 3 dönüşümü mevcut para, ordu, savaş ve emirleri korur", () => {
-    const d = yeni(); emirVer(d, { tur: "orduTutum", ordu: 1, tutum: "inatci" }, B);
-    const paket = JSON.parse(kaydet(d)); paket.sema = paket.durum.sema = 3;
-    delete paket.durum.askerToplamalar;
-    for (const s of paket.durum.sehirler) delete s.insanGucu;
-    const e = yukle(JSON.stringify(paket));
-    expect(e).toEqual(d);
+  it("bozuk asker toplama içeren kayıt reddedilir", () => {
+    const d = yeni();
     const bozuk = JSON.parse(kaydet(d)); bozuk.durum.askerToplamalar = [{ sehir: 0, devlet: 0, asker: -5, kalanGun: 3 }];
     expect(() => yukle(JSON.stringify(bozuk))).toThrow(/tutarsız/);
   });

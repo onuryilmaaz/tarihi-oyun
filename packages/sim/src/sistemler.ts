@@ -27,6 +27,7 @@ import { diplomatikTeklifSureleri } from "./yz-diplomasi";
 import { elciIlerlet } from "./elci";
 import { hukumdarlariIlerlet } from "./hanedan";
 import { iskanlariIlerlet, nufusArtisi, savasGocu } from "./nufus";
+import { bagliSehirleriEsitle, sehirBirlesmeleriIlerlet } from "./sehir";
 
 export type Siklik = "gunluk" | "aylik" | "yillik";
 
@@ -64,6 +65,9 @@ export const SISTEMLER: Sistem[] = [
   { id: "ikmal-maas-moral", siklik: "gunluk", calistir: (d, b) => ikmalVeMaasMorali(d, b.ag) },
   { id: "gercek-isgal", siklik: "gunluk", calistir: isgalleriIlerlet },
   { id: "kusatma", siklik: "gunluk", calistir: kusatmalariIlerlet },
+  // TASK-0026: bağlı şehir merkezinin sahipliğini izler; süren birleşmeler
+  { id: "bagli-sehir", siklik: "gunluk", calistir: bagliSehirleriEsitle },
+  { id: "sehir-birlesmesi", siklik: "gunluk", calistir: sehirBirlesmeleriIlerlet },
   { id: "sehir-insaati", siklik: "gunluk", calistir: insaatlariIlerlet },
   // 8a: gemi inşası, donanma hareketi/çıkarma, deniz muharebesi
   { id: "gemi-insasi", siklik: "gunluk", calistir: gemiInsalariIlerlet },

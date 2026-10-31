@@ -1,8 +1,8 @@
 // TASK-0019 (1/4, DEC-0068): birim çeşitliliği — veri modeli ve asker toplama
 import { describe, expect, it } from "vitest";
 import {
-  agHazirla, baslangicDurumu, degismezler, DENGE, devletMaasi, emirleriUygula, emirVer,
-  HAREKET, kaydet, kusatmaGucu, muharebeleriBaslat, muharebeGunleri, SEMA_SURUMU, toplamaMaliyeti, turSuresiAyarla, turuIlerlet, yukle, type SenaryoVerisi,
+  agHazirla, baslangicDurumu, degismezler, DENGE, devletMaasi, emirleriUygula, emirVer, HAREKET, kusatmaGucu, muharebeleriBaslat,
+  muharebeGunleri, toplamaMaliyeti, turSuresiAyarla, turuIlerlet, type SenaryoVerisi,
 } from "../src";
 
 const senaryo: SenaryoVerisi = {
@@ -79,17 +79,6 @@ describe("TASK-0019 (1/4): birim çeşitliliği — veri modeli ve asker toplama
     expect(degismezler(d)).toEqual([]);
   });
 
-  it("şema 22 → 23: eski kayıttaki ordu ve toplamalar tamamen piyade sayılır", () => {
-    const d = yeni();
-    const p = JSON.parse(kaydet(d));
-    delete p.ozet;
-    for (const o of p.durum.ordular) delete o.kompozisyon;
-    p.sema = 22; p.durum.sema = 22;
-    const g = yukle(JSON.stringify(p), d.senaryo);
-    expect(g.sema).toBe(SEMA_SURUMU);
-    expect(g.ordular[0].kompozisyon).toEqual({ piyade: g.ordular[0].asker, okcu: 0, suvari: 0 });
-    expect(degismezler(g)).toEqual([]);
-  });
 });
 
 describe("TASK-0019 (2/4): muharebe gücü ve kayıp dağılımı", () => {

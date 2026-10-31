@@ -1,9 +1,8 @@
 // TASK-0010/7b: nüfus grupları, artış, göç, iskân, din ilişkisi (DEC-0045)
 import { describe, expect, it } from "vitest";
 import {
-  baslangicDurumu, degismezler, DENGE, diplomasiOnHesap, durumOzeti, emirleriUygula, emirVer, gunIlerlet, iliskiBilesenleri,
-  iskanBedeli, kaydet, kullanilabilirHazine, nufusArtisi, nufusCikar, paylastir, savasGocu, SEMA_SURUMU, yukle,
-  type DunyaDurumu, type SenaryoVerisi,
+  baslangicDurumu, degismezler, DENGE, diplomasiOnHesap, durumOzeti, emirleriUygula, emirVer, gunIlerlet, iliskiBilesenleri, iskanBedeli,
+  kaydet, kullanilabilirHazine, nufusArtisi, nufusCikar, paylastir, savasGocu, yukle, type DunyaDurumu, type SenaryoVerisi,
 } from "../src";
 import { TEST_SENARYOSU } from "./yardimci";
 
@@ -85,7 +84,7 @@ describe("nüfus grupları (7b)", () => {
     expect(iliskiBilesenleri(e, diplomasiOnHesap(e, null), B, A).some((x) => /din/.test(x.ad))).toBe(false);
   });
 
-  it("kayıt/yükleme sonucu değiştirmez; şema 11 kaydı dönüştürülür", () => {
+  it("kayıt/yükleme sonucu değiştirmez", () => {
     const d = yeni();
     d.devletler[A].hazine = 1000;
     emirVer(d, { tur: "iskan", kaynak: A2, hedef: A1, miktar: 1000 });
@@ -93,14 +92,5 @@ describe("nüfus grupları (7b)", () => {
     const e = yukle(kaydet(d), d.senaryo);
     for (let i = 0; i < 400; i++) { gunIlerlet(d); gunIlerlet(e); }
     expect(durumOzeti(e)).toBe(durumOzeti(d));
-    const p = JSON.parse(kaydet(yeni()));
-    p.sema = 11; p.durum.sema = 11;
-    delete p.durum.iskanlar;
-    for (const s of p.durum.sehirler) delete s.gruplar;
-    for (const v of p.durum.devletler) { delete v.din; delete v.kultur; }
-    const g = yukle(JSON.stringify(p));
-    expect(g.sema).toBe(SEMA_SURUMU);
-    expect(g.sehirler[0].gruplar).toEqual([{ din: "bilinmiyor", kultur: "diger", nufus: 50000 }]);
-    expect(degismezler(g)).toEqual([]);
   });
 });

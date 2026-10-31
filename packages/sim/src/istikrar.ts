@@ -62,6 +62,7 @@ export function riskBilesenleri(d: DunyaDurumu, sehir: number, b: Baglam): RiskB
 
 export function istikrarAyi(d: DunyaDurumu, b: Baglam): void {
   d.sehirler.forEach((s, sehir) => {
+    if (s.bagli >= 0) return; // bağlı şehir ayrı istikrar hesabı yapmaz (TASK-0026)
     const i = s.istikrar, once = i.risk, ayak = i.ayaklanma;
     const bilesenler = riskBilesenleri(d, sehir, b);
     i.degisim = bilesenler.map((x) => ({ ...x, puan: x.puan - (i.bilesenler.find((p) => p.id === x.id)?.puan ?? 0) })).filter((x) => x.puan !== 0);

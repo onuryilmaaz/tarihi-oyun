@@ -23,11 +23,6 @@ export const KONUMLAR: Record<string, [number, number, number]> = { // boylam, e
   konstantiniyye: [28.97, 41.01, 260],
 };
 
-export type WdDevlet = {
-  qid?: string; kurulus?: number; yikilis?: number;
-  baskentler?: { ad: string; durum: "gecerli" | "degil" | "belirsiz" }[];
-};
-
 export interface Katmanlar { arazi: boolean; nehir: boolean; sehir: boolean; etiket: boolean; guven: boolean }
 
 export interface HaritaGorunumu {
@@ -45,7 +40,7 @@ export interface HaritaGorunumu {
   ordulariGoster(ordular: OrduOzeti[], yabanci: YabanciOrdu[], secili: number | null, planli: Map<number, [number, number][]>): void;
   /** [birim, kontrol eden, gün], [şehir, kontrol eden, gün] */
   isgalGoster(birimler: [number, number, number][], sehirler: [number, number, number][]): void;
-  mulkiyetGoster(birimler: number[], sehirler: { devlet: number; baskent: boolean }[]): void;
+  mulkiyetGoster(birimler: number[], sehirler: { devlet: number; baskent: boolean; ad: string; bagli: number; birim: number }[]): void;
   orduyaOdaklan(o: OrduOzeti): void;
   /** Donanma ve deniz bölgesi işaretleri (8a): x,y Miller × 10⁴; tıklanınca olaylar.donanmaSec */
   donanmalariGoster(liste: { anahtar: string; x: number; y: number; html: string; sinif: string; donanma: number | null }[]): void;
@@ -61,7 +56,7 @@ export interface HaritaGorunumu {
   };
 }
 
-export function haritaGorunumuKur(h: Harita, wikidata: Record<string, WdDevlet>,
+export function haritaGorunumuKur(h: Harita,
   ogeler: { kap: HTMLElement; etiketKap: HTMLElement; orduKap: HTMLElement; kagit: HTMLElement; bilgi: HTMLElement; ipucu: HTMLElement },
   katmanAyarlari: () => Katmanlar): HaritaGorunumu {
   const tema = TEMALAR[0];
@@ -230,24 +225,6 @@ export function haritaGorunumuKur(h: Harita, wikidata: Record<string, WdDevlet>,
     const c = devletRengi(tema, h.paket.devletler[d].ton, d);
     return `<span class="renk" style="background:#${c.getHexString(THREE.SRGBColorSpace)}"></span>`;
   };
-  const kaynakMetni = (kaynak?: string) => !kaynak || kaynak === "tahmin" ? "Tahmin (agent, kaynaksız)"
-    : kaynak === "tahmin-elle" ? "Tahmin (elle bölme)"
-    : `<a href="https://www.openhistoricalmap.org/relation/${kaynak.slice(4)}" target="_blank" rel="noopener">OpenHistoricalMap #${kaynak.slice(4)}</a> (CC0)`;
-  const devletKaynakSatirlari = (d: number) => {
-    const dv = h.paket.devletler[d];
-    const kay = dv.kaynak
-      ? `OHM payı %${Math.round(dv.kaynak.ohmOran * 100)} · güven: <b>${dv.kaynak.guven === "orta" ? "orta" : "düşük"}</b>`
-      : "Tahmin";
-    const wd = wikidata[dv.id];
-    let wdSatir = "";
-    if (wd?.qid) {
-      const bk = (wd.baskentler ?? []).filter((x) => x.durum !== "degil")
-        .map((x) => kacis(x.ad) + (x.durum === "gecerli" ? " ✓" : "")).join(", ");
-      wdSatir = `<dt>Wikidata</dt><dd><a href="https://www.wikidata.org/wiki/${wd.qid}" target="_blank" rel="noopener">${wd.qid}</a> · ${wd.kurulus ?? "?"}–${wd.yikilis ?? "?"}</dd>
-        <dt>Başkent (Wikidata)</dt><dd>${bk || "—"}</dd>`;
-    }
-    return `<dt>Sınır kaynağı</dt><dd>${kay}</dd>${wdSatir}`;
-  };
   const kontrolSatiri = (isgal?: [number, number]) => isgal
     ? `<dt>Askerî kontrol</dt><dd class="isgal">${devletRenkKutusu(isgal[0])}${kacis(h.paket.devletler[isgal[0]].ad)} · işgal ${kacis(tarihMetni(isgal[1]))}</dd>`
     : "";
@@ -264,25 +241,25 @@ export function haritaGorunumuKur(h: Harita, wikidata: Record<string, WdDevlet>,
     if (secim.tur === "devlet") {
       const d = p.devletler[secim.id];
       yol.push(devletYolu(secim.id));
-      const sehirler = h.devletSehirleri[secim.id].map((i) => p.sehirler[i]);
-      const baskent = sehirler.find((s) => s.b);
+      const sehirler = h.devletSehirleri[secim.id].map((i) => ({ i, s: p.sehirler[i] }))
+        .sort((a, b) => b.s.b - a.s.b || a.s.ad.localeCompare(b.s.ad, "tr"));
+      const baskent = sehirler.find((x) => x.s.b);
       govde = `<h3>${devletRenkKutusu(secim.id)}${kacis(d.ad)}${secim.id === oyuncu ? ' <span class="rozet">Siz</span>' : ""}</h3><dl>
-        <dt>Başkent</dt><dd>${baskent ? kacis(baskent.ad) : "—"}</dd>
-        <dt>Arazi birimi</dt><dd>${h.devletBirimleri[secim.id].length}</dd>
-        ${devletKaynakSatirlari(secim.id)}
-        <dt>Şehirler</dt><dd>${sehirler.length ? sehirler.map((s) => `<button class="bag" data-secim="sehir:${p.sehirler.indexOf(s)}">${kacis(s.ad)}</button>`).join(", ") : "—"}</dd>
-      </dl><p class="ipucu-metin">Arazi birimini seçmek için devletin içine tekrar tıklayın.</p>`;
+        <dt>Başkent</dt><dd>${baskent ? `<button class="bag" data-secim="sehir:${baskent.i}">${kacis(baskent.s.ad)}</button>` : "—"}</dd>
+        <dt>Şehir</dt><dd>${sehirler.length}</dd>
+      </dl>${sehirler.length > 1 ? `<details class="sehir-listesi"><summary>Şehirler (${sehirler.length})</summary>
+        <div class="sehir-izgara">${sehirler.map((x) => `<button class="bag" data-secim="sehir:${x.i}">${kacis(x.s.ad)}</button>`).join("")}</div></details>` : ""}`;
     } else if (secim.tur === "birim") {
-      const b = p.birimler[secim.id];
-      yol.push(devletYolu(b.d), `<span class="yol-sabit">${kacis(b.ad)}</span>`);
-      const sehirler = h.birimSehirleri[secim.id];
-      govde = `<h3>${kacis(b.ad)}</h3><dl>
+      // Toprak: birleşmiş şehirlerin toprakları tek bölge; bölgenin (gizli olmayan) şehri başlıkta
+      const b = p.birimler[secim.id], grup = h.birimGrubu[secim.id];
+      const sehirler = p.birimler.flatMap((_, i) => (h.birimGrubu[i] === grup ? h.birimSehirleri[i] : [])).filter((i) => !p.sehirler[i].gizli);
+      const baslik = sehirler.length ? `${p.sehirler[sehirler[0]].ad} toprağı` : b.ad;
+      yol.push(devletYolu(b.d), `<span class="yol-sabit">${kacis(baslik)}</span>`);
+      govde = `<h3>${kacis(baslik)}</h3><dl>
         <dt>Devlet</dt><dd>${b.d >= 0 ? kacis(p.devletler[b.d].ad) : "Yerleşik devlet yok"}</dd>
-        <dt>Modern idari birim</dt><dd>${kacis(b.ad)} (${kacis(b.ulke)})</dd>
-        <dt>Sınır kaynağı</dt><dd>${kaynakMetni(b.k)}</dd>
+        ${sehirler.length ? `<dt>Şehir</dt><dd>${sehirler.map((i) => `<button class="bag" data-secim="sehir:${i}">${kacis(p.sehirler[i].ad)}</button>`).join(", ")}</dd>` : ""}
         ${kontrolSatiri(birimIsgal.get(secim.id))}
-        <dt>Şehirler</dt><dd>${sehirler.length ? sehirler.map((i) => `<button class="bag" data-secim="sehir:${i}">${kacis(p.sehirler[i].ad)}</button>`).join(", ") : "—"}</dd>
-      </dl><p class="ipucu-metin">Arazi birimi şimdilik modern il/eyalet sınırıdır (prototip verisi).</p>`;
+      </dl>`;
     } else if (secim.tur === "deniz") {
       const z = p.denizAlanlari![secim.id];
       yol.push(`<span class="yol-sabit">Denizler</span>`, `<span class="yol-sabit">${kacis(z.ad)}</span>`);
@@ -320,7 +297,7 @@ export function haritaGorunumuKur(h: Harita, wikidata: Record<string, WdDevlet>,
     if (!katmanAyarlari().sehir) return -1;
     let en = -1, enD = 11 * 11;
     h.paket.sehirler.forEach((s, i) => {
-      if (g.z < (s.b ? ESIK.baskent : ESIK.sehir)) return;
+      if (s.gizli || g.z < (s.b ? ESIK.baskent : ESIK.sehir)) return;
       const [sx, sy] = dunyadanEkrana(s.x, s.y);
       const d = (sx - px) ** 2 + (sy - py) ** 2;
       if (d < enD) { enD = d; en = i; }
@@ -493,14 +470,22 @@ export function haritaGorunumuKur(h: Harita, wikidata: Record<string, WdDevlet>,
       let degisti = false;
       birimler.forEach((d, i) => { if (h.paket.birimler[i].d !== d) { h.paket.birimler[i].d = d; degisti = true; } });
       sehirler.forEach((s, i) => {
-        const c = h.paket.sehirler[i];
-        if (c.d !== s.devlet || !!c.b !== s.baskent) { c.d = s.devlet; c.b = Number(s.baskent); degisti = true; }
+        const c = h.paket.sehirler[i], gizli = s.bagli >= 0;
+        if (c.d !== s.devlet || !!c.b !== s.baskent || c.ad !== s.ad || !!c.gizli !== gizli) {
+          c.d = s.devlet; c.b = Number(s.baskent); c.ad = s.ad; c.gizli = gizli; degisti = true;
+        }
+      });
+      // Birleşen şehirlerin toprakları: bağlı şehrin birimi merkezin birimine katılır
+      sehirler.forEach((s) => {
+        if (s.birim < 0) return;
+        const g = s.bagli >= 0 ? sehirler[s.bagli].birim : s.birim;
+        if (g >= 0 && h.birimGrubu[s.birim] !== g) { h.birimGrubu[s.birim] = g; degisti = true; }
       });
       if (!degisti) return;
       h.devletBirimleri = h.paket.devletler.map(() => []);
       h.devletSehirleri = h.paket.devletler.map(() => []);
       h.paket.birimler.forEach((b, i) => { if (b.d >= 0) h.devletBirimleri[b.d].push(i); });
-      h.paket.sehirler.forEach((s, i) => h.devletSehirleri[s.d].push(i));
+      h.paket.sehirler.forEach((s, i) => { if (!s.gizli) h.devletSehirleri[s.d].push(i); });
       // Etiket: devletin elinde kalan en büyük bitişik toprak parçasında (başkent başka devletin toprağında kalsa bile)
       h.paket.devletler.forEach((d, i) => { d.etiket = etiketHesapla(i, ilkEtiketler[i]); });
       mulkiyetKatmanlariniGuncelle(k, h, tema, sahne);

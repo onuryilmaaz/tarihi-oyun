@@ -1,8 +1,9 @@
 import { describe, expect, it } from "vitest";
-import { agHazirla, araziGelirleri, asayisAskeri, baslangicDurumu, bosIstikrar, degismezler, DENGE, SEMA_SURUMU,
-  diplomasiOnHesap, devletKarari, durumOzeti, emirleriUygula, emirVer, gerekenAsayis,
-  insaatlariIlerlet, istikrarAsamasi, istikrarAyi, kaydet, kullanilabilirHazine, riskBilesenleri, sehirGelirYuzde, sehirYapiGeliri,
-  toplamalariIlerlet, yukle, type DunyaDurumu } from "../src";
+import {
+  agHazirla, araziGelirleri, asayisAskeri, baslangicDurumu, degismezler, DENGE, diplomasiOnHesap, devletKarari, durumOzeti, emirleriUygula,
+  emirVer, gerekenAsayis, insaatlariIlerlet, istikrarAsamasi, istikrarAyi, kaydet, kullanilabilirHazine, riskBilesenleri, sehirGelirYuzde,
+  sehirYapiGeliri, toplamalariIlerlet, yukle, type DunyaDurumu,
+} from "../src";
 import { TEST_SENARYOSU } from "./yardimci";
 
 const B = { ag: agHazirla({ dugumler: TEST_SENARYOSU.sehirler.map((s, i) => ({ b: s.birim, x: i * 10000, y: 0, z: 100, kx: 10000, ky: 10000 })),
@@ -136,12 +137,8 @@ describe("7c bağış, AI ve kayıt", () => {
     expect(d.sehirler[2].istikrar.bagis).toBe(DENGE.IST_BAGIS_INDIRIM);
     expect(d.sehirler[2].istikrar.risk).toBe(70); // aylık hesap dışında risk değişmez
   });
-  it("12→13 (ve sonrası) eski kayıt durumunu korur, fetih tarihini geçmişten taşır; bozuk risk reddedilir", () => {
-    const d = yeni(); d.barislar.push({ savas: 1, devlet: 0, karsi: 1, sehirler: [1], birimler: [], gun: d.gun - 10, tazminat: 0 });
-    const p = JSON.parse(kaydet(d)); p.sema = p.durum.sema = 12; for (const s of p.durum.sehirler) delete s.istikrar;
-    const e = yukle(JSON.stringify(p)); expect(e.sema).toBe(SEMA_SURUMU); expect(e.ordular).toEqual(d.ordular); expect(e.devletler).toEqual(d.devletler);
-    expect(e.sehirler[1].istikrar).toEqual({ ...bosIstikrar(), fetihGun: d.gun - 10 });
-    const q = JSON.parse(kaydet(e)); q.durum.sehirler[1].istikrar.risk = 101; expect(() => yukle(JSON.stringify(q))).toThrow(/istikrar/);
+  it("bozuk istikrar riski içeren kayıt reddedilir", () => {
+    const q = JSON.parse(kaydet(yeni())); q.durum.sehirler[1].istikrar.risk = 101; expect(() => yukle(JSON.stringify(q))).toThrow(/istikrar/);
   });
   it("riskli şehir ve yardım kayıt/yükle sonrası aynı deterministik sonuca devam eder", () => {
     const d = kriz(); ay(d); const e = yukle(kaydet(d));

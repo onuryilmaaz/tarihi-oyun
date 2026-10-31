@@ -1,9 +1,9 @@
 // TASK-0008/5c: teknoloji ağacı (DEC-0035)
 import { describe, expect, it } from "vitest";
 import {
-  agHazirla, baslangicDurumu, butceOzeti, degismezler, DENGE, durumOzeti, emirleriUygula, emirVer, gunIlerlet, insaatMaliyeti,
-  kaydet, kullanilabilirHazine, muharebeGunu, muharebeGucYuzde, SEMA_SURUMU, toplamaMaliyeti, turSuresiAyarla, turuIlerlet, yukle,
-  type DunyaDurumu, type SenaryoVerisi, type TeknolojiId,
+  agHazirla, baslangicDurumu, butceOzeti, degismezler, DENGE, durumOzeti, emirleriUygula, emirVer, gunIlerlet, insaatMaliyeti, kaydet,
+  kullanilabilirHazine, muharebeGunu, muharebeGucYuzde, toplamaMaliyeti, turSuresiAyarla, turuIlerlet, yukle, type DunyaDurumu,
+  type SenaryoVerisi, type TeknolojiId,
 } from "../src";
 import { yeniDurum } from "./yardimci";
 
@@ -132,7 +132,7 @@ describe("teknoloji ağacı (5c)", () => {
     expect(toplu).toBeLessThanOrEqual(Math.floor(duz * 3 / 2) + 1);
   });
 
-  it("araştırma sürerken kayıt/yükleme sonucu değiştirmez; şema 6 kaydı dönüştürülür (AT-011)", () => {
+  it("araştırma sürerken kayıt/yükleme sonucu değiştirmez (AT-011)", () => {
     const d = yeniDurum();
     d.devletler[0].hazine = 5000;
     emirVer(d, { tur: "arastir", teknoloji: "daimiOrdu" });
@@ -141,13 +141,5 @@ describe("teknoloji ağacı (5c)", () => {
     for (let i = 0; i < 8; i++) { turuIlerlet(d); turuIlerlet(e); }
     expect(d.devletler[0].teknolojiler).toEqual(["daimiOrdu"]);
     expect(durumOzeti(e)).toBe(durumOzeti(d));
-    const p = JSON.parse(kaydet(yeniDurum()));
-    p.sema = 6; p.durum.sema = 6;
-    delete p.durum.arastirmalar;
-    for (const v of p.durum.devletler) delete v.teknolojiler;
-    const g = yukle(JSON.stringify(p));
-    expect(g.sema).toBe(SEMA_SURUMU);
-    expect(g.arastirmalar).toEqual([]);
-    expect(g.devletler.every((v) => v.teknolojiler.length === 0)).toBe(true);
   });
 });

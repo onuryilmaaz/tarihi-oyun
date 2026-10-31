@@ -360,6 +360,14 @@ function devletiBol(T, k, sehirler, yukseklik, nehirler, { sehirKipi = false } =
   const cikis = new Map(); // etiket → köşe → hedef köşeler
   const ekle = (e, a, b) => { if (e < 0) return; const m = cikis.get(e) ?? cikis.set(e, new Map()).get(e); (m.get(a) ?? m.set(a, []).get(a)).push(b); };
   for (const [a, b, sol, sag] of kenarlar) { ekle(sol, a, b); ekle(sag, b, a); }
+  // Etiketin hücrelerinin bulunduğu kara parçaları
+  const parcaEtiket = new Map(), etiketliParca = new Set();
+  for (const c of icHucreler) {
+    const e = icEtiket[c];
+    if (e < 0) continue;
+    (parcaEtiket.get(e) ?? parcaEtiket.set(e, new Set()).get(e)).add(ic[c]);
+    etiketliParca.add(ic[c]);
+  }
   const sonuc = [];
   for (const [e, m] of cikis) {
     const halkalar = [];
@@ -392,13 +400,34 @@ function devletiBol(T, k, sehirler, yukseklik, nehirler, { sehirKipi = false } =
     const dislar = halkalar.filter((h) => isaretli(h) > 0), delikler = halkalar.filter((h) => isaretli(h) < 0);
     let ham = dislar.length ? polygonClipping.union(...dislar.map((h) => [h])) : [];
     if (ham.length && delikler.length) ham = polygonClipping.difference(ham, ...delikler.map((h) => [h]));
-    let mp;
-    try { mp = polygonClipping.intersection(T, ham); } catch (hata) { console.log("kesişim hatası", e, hata.message, ham.length, ham.map((p) => p.map((h) => h.length))); mp = []; }
-    if (!mp.length) { console.log("boş kesişim", e, halkalar.length, ham.length); continue; }
+    // Bölge yalnızca kendi hücrelerinin bulunduğu kara parçalarıyla (ve hiç bölgesi olmayan adalarla) kesişir;
+    // böylece dar bir boğazın karşı kıyısındaki, hücreye düşmeyen ince kıyı şeridi bu bölgeye geçmez
+    const parcalar = parcaEtiket.get(e) ?? new Set();
+    const izinli = T.filter((_, pi) => parcalar.has(pi + 1) || !etiketliParca.has(pi + 1));
+    const mp = izinli.length && ham.length ? polygonClipping.intersection(izinli, ham) : [];
+    if (!mp.length) continue;
     const ornek = [];
     for (const c of icHucreler) if (icEtiket[c] === e && ornek.length < 40) ornek.push(merkez(c));
-    sonuc.push({ e, mp, ornek: ornek.length ? ornek : [mp[0][0][0]] });
+    sonuc.push({ e, mp, ornek: ornek.length ? ornek : [mp[0][0][0]], parcalar });
   }
+  // Boşluklar (kara parçasının hiçbir bölgeye düşmeyen ince kıyı şeritleri): aynı kara parçasındaki en yakın bölgeye
+  // Kara parçası başına küçük fark işlemleri (tek büyük işlem polygon-clipping'de sayısal hataya düşebiliyor)
+  T.forEach((P, pi) => {
+    const adaylar = sonuc.filter((b) => b.parcalar.has(pi + 1));
+    if (!adaylar.length) return;
+    let bosluk;
+    try { bosluk = polygonClipping.difference([P], ...adaylar.map((b) => b.mp)); } catch { return; }
+    for (const g of bosluk) {
+      const [gx, gy] = g[0][0];
+      const uzaklik = (b) => {
+        let en = Infinity;
+        for (const poly of b.mp) for (const [x, y] of poly[0]) en = Math.min(en, (x - gx) ** 2 + (y - gy) ** 2);
+        return en;
+      };
+      const hedef = adaylar.reduce((a, b) => (uzaklik(b) < uzaklik(a) ? b : a));
+      try { hedef.mp = polygonClipping.union(hedef.mp, [g]); } catch { /* sayısal hata: şerit boş kalır */ }
+    }
+  });
   // Adlar
   const yon = (dx, dy) => ["doğusu", "kuzeydoğusu", "kuzeyi", "kuzeybatısı", "batısı", "güneybatısı", "güneyi", "güneydoğusu"][((Math.round(Math.atan2(dy, dx) / (Math.PI / 4)) % 8) + 8) % 8];
   const kullanilan = new Map();

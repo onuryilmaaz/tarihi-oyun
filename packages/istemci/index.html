@@ -172,6 +172,11 @@
     .nufus-liste span.renk { width: 10px; height: 10px; border-radius: 2px; display: inline-block; margin-right: 6px; }
     .iskan-satir { display: flex; gap: 6px; align-items: center; flex-wrap: wrap; }
     .iskan-satir input { width: 90px; }
+    .iskan-satir #sehirYeniAd { width: auto; flex: 1; min-width: 0; }
+    .sehir-listesi { margin-top: 8px; }
+    .sehir-listesi summary { cursor: pointer; color: var(--vurgu); font-size: 13px; }
+    .sehir-izgara { display: grid; grid-template-columns: 1fr 1fr; gap: 2px 12px; max-height: 240px; overflow-y: auto; margin-top: 6px; padding-right: 4px; }
+    .sehir-izgara .bag { text-align: left; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
     #diplomasiLejant { position: fixed; left: calc(var(--yan-genislik) + 24px); bottom: 132px; z-index: 5; padding: 10px 12px; font-size: 12px; display: grid; gap: 4px; }
     #diplomasiLejant span { display: inline-block; width: 12px; height: 12px; border-radius: 3px; margin-right: 6px; vertical-align: -2px; }
     .iliski-bilesen { list-style: none; margin: 4px 0 8px; padding: 0; font-size: 12px; display: grid; gap: 2px; }
@@ -361,8 +366,6 @@
     #kesinti h3 { font-family: "Cinzel", serif; margin: 0 0 4px; font-size: 18px; color: var(--uyari); }
     #kesinti p { margin: 8px 0 16px; }
 
-    #lejant { left: calc(var(--yan-genislik) + 24px); bottom: 12px; padding: 8px 12px; font-size: 11.5px; color: var(--soluk); max-width: 560px; pointer-events: none; }
-    #lejant b { color: var(--metin); font-weight: 600; }
     #ipucu { position: fixed; left: 0; top: 0; pointer-events: none; background: var(--panel); color: var(--metin);
       border: 1px solid var(--cizgi); border-radius: 5px; padding: 3px 8px; font-size: 12px; white-space: nowrap; }
     #yukleniyor { position: fixed; inset: 0; display: grid; place-items: center; color: var(--soluk); background: #1b1814; z-index: 20; }
@@ -377,12 +380,12 @@
       height: calc((100vh - 36px) / var(--olcek) - var(--ust)); max-height: none; }
     #bilgi { top: calc(var(--ust) + 24px / var(--olcek)); right: calc(12px / var(--olcek));
       max-height: calc((100vh - 36px) / var(--olcek) - var(--ust)); }
-    #lejant, #nufusLejant, #diplomasiLejant { left: calc(var(--yan-genislik) * var(--olcek) + 24px); }
+    #nufusLejant, #diplomasiLejant { left: calc(var(--yan-genislik) * var(--olcek) + 24px); }
     .menu-kart, #teknoloji .panel, #baris .panel, #rapor .panel, #barisTeklifi .panel, #dipTeklifi .panel, #verasetPencere .panel { max-height: calc((100vh - 48px) / var(--olcek)); }
     button:focus-visible, [role="tab"]:focus-visible, a:focus-visible { outline: 2px solid var(--vurgu); outline-offset: 2px; }
     @media (prefers-reduced-motion: reduce) { *, *::before, *::after { transition: none !important; animation: none !important; } }
     /* Küçük ekran: mobil arayüz sonraya (DEC-0013); burada yalnızca bozulmama */
-    @media (max-width: 1180px) { #lejant { display: none; } #ust { gap: 10px; } }
+    @media (max-width: 1180px) { #ust { gap: 10px; } }
     @media (max-width: 980px) {
       :root { --yan-genislik: 290px; --ust: 112px; }
       #ust { flex-wrap: wrap; align-content: center; padding: 6px 10px; row-gap: 6px; }
@@ -449,7 +452,7 @@
           </div>
           <dl id="butceKalemleri"></dl>
           <p id="orduGideri" class="not"></p>
-          <p class="not">Gelir hâlâ prototip hesabıdır. Aylık fark, mevcut arazi ve ordular korunursa geçerlidir; toplama ve tazminat gibi tek seferlik işlemler bu farka dahil değildir.</p>
+          <p class="not">Aylık fark, mevcut arazi ve ordular korunursa geçerlidir; toplama ve tazminat gibi tek seferlik işlemler bu farka dahil değildir.</p>
           <details id="butceDokum">
             <summary>Şehir bazlı gelir ve hazine geçmişi</summary>
             <dl id="butceSehirleri"></dl>
@@ -695,12 +698,6 @@
     </div>
   </div>
 
-  <div id="lejant" class="panel">
-    <b>Prototip verisi — gerçek senaryo verisi değildir.</b> 1453 sınırları: OpenHistoricalMap (CC0) + agent tahmini.
-    Coğrafya: Natural Earth. Takvim: Jülyen.<br />
-    Boşluk: turu ilerlet · Sürükle: kaydır · Tekerlek: yakınlaştır · Tıkla: devlet, tekrar tıkla: arazi · Esc: üst seviye ·
-    Ordu seç, sonra <b>sağ tık</b>: hedef
-  </div>
   <div id="ipucu" hidden></div>
   <div id="yukleniyor">Dünya hazırlanıyor…</div>
   <script type="module" src="/src/main.ts"></script>

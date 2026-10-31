@@ -1,5 +1,4 @@
-// Yerel kayıt deposu: IndexedDB (DEC-0023). Yuvalar: "otomatik" ve oyuncunun adlandırdığı kayıtlar ("kayit:…", 9a);
-// eski sürümün "manuel" yuvası da listelenir.
+// Yerel kayıt deposu: IndexedDB (DEC-0023). Yuvalar: "otomatik" ve oyuncunun adlandırdığı kayıtlar ("kayit:…", 9a).
 // Her yazma tek bir IndexedDB işleminde yapılır; işlem ya tamamen yazılır ya hiç yazılmaz (atomik).
 // Kayıt metni yazılmadan önce simülasyonda üretilmiş ve doğrulanmış olmalıdır.
 

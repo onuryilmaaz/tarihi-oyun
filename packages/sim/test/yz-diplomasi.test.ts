@@ -1,8 +1,8 @@
 // TASK-0020 (1/3, DEC-0069): AI'dan oyuncuya diplomatik teklifler (ittifak/ticaret/saldırmazlık).
 import { describe, expect, it } from "vitest";
 import {
-  agHazirla, baslangicDurumu, degismezler, DENGE, diplomasiOnHesap, diplomatikTeklifKarari, diplomatikTeklifSureleri,
-  emirDogrula, emirUygula, emirVer, etkiEkle, muttefik, saldirmazlikVar, ticaretAnlasmasiVar, type DunyaDurumu, type SenaryoVerisi,
+  agHazirla, baslangicDurumu, degismezler, DENGE, diplomasiOnHesap, diplomatikTeklifKarari, diplomatikTeklifSureleri, emirDogrula,
+  emirUygula, emirVer, etkiEkle, muttefik, saldirmazlikVar, ticaretAnlasmasiVar, type SenaryoVerisi,
 } from "../src";
 
 // A (oyuncu) ve B komşu; C, A'ya komşu değil (B üzerinden ulaşılır).

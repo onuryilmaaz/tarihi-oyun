@@ -9,7 +9,7 @@ export interface Devlet {
   kaynak?: { ohmOran: number; guven: "orta" | "dusuk"; ohm: number[] }; // v0.2
 }
 
-export interface Sehir { ad: string; x: number; y: number; d: number; b: number }
+export interface Sehir { ad: string; x: number; y: number; d: number; b: number; gizli?: boolean } // gizli: birleşmeyle bağlandı (TASK-0026)
 
 export interface Paket {
   surum?: string;
@@ -35,6 +35,7 @@ export interface Harita {
   devletBirimleri: number[][];
   devletSehirleri: number[][];
   birimSehirleri: number[][];
+  birimGrubu: Int32Array; // birleşen şehirlerin toprakları tek bölge gibi çizilir: birim → grubun temsilci birimi (TASK-0026)
   denizHalkalari: Float32Array[][][]; // deniz bölgesi → poligon → halka
   izgara: Map<number, [number, number][]>;
   hucre: number;
@@ -111,6 +112,7 @@ export async function haritaYukle(url: string): Promise<Harita> {
     paket, arklar, halkalar, yaySahipA, yaySahipB, devletBirimleri,
     devletSehirleri: paket.devletler.map(() => []),
     birimSehirleri: paket.birimler.map(() => []),
+    birimGrubu: Int32Array.from(paket.birimler, (_, i) => i),
     denizHalkalari: (paket.denizAlanlari ?? []).map((z) => z.p.map((poly) => poly.map((r) => Float32Array.from(r)))),
     izgara, hucre,
   };

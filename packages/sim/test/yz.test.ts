@@ -1,8 +1,8 @@
 // TASK-0009/6b: AI ekonomi ve ordu hazırlığı (DEC-0039)
 import { describe, expect, it } from "vitest";
 import {
-  agHazirla, baslangicDurumu, butceOzeti, degismezler, DENGE, devletKarari, diplomasiOnHesap, durumOzeti, emirVer, gundenTarih,
-  gunIlerlet, kaydet, SEMA_SURUMU, tehditNedeni, turSuresiAyarla, turuIlerlet, yukle, type DunyaDurumu, type SenaryoVerisi,
+  agHazirla, baslangicDurumu, butceOzeti, degismezler, DENGE, devletKarari, diplomasiOnHesap, durumOzeti, emirVer, gundenTarih, gunIlerlet,
+  kaydet, tehditNedeni, turSuresiAyarla, turuIlerlet, yukle, type DunyaDurumu, type SenaryoVerisi,
 } from "../src";
 import { yeniDurum } from "./yardimci";
 
@@ -105,7 +105,7 @@ describe("AI ekonomi (6b)", () => {
     expect(d.yzSayac).toEqual({ insaat: 0, arastirma: 0, asker: 0 });
   });
 
-  it("AI kararlarıyla kayıt/yükleme ve tur süresi sonucu değiştirmez; şema 8 kaydı dönüştürülür", () => {
+  it("AI kararlarıyla kayıt/yükleme ve tur süresi sonucu değiştirmez", () => {
     const d = yeniDurum(), e = yeniDurum();
     for (const v of [...d.devletler, ...e.devletler]) v.hazine = 20000;
     turSuresiAyarla(d, "ay");
@@ -118,11 +118,5 @@ describe("AI ekonomi (6b)", () => {
     while (d.gun < e.gun) gunIlerlet(d);
     expect(d.arastirmalar).toEqual(e.arastirmalar);
     expect(d.insaatlar).toEqual(e.insaatlar);
-    const p = JSON.parse(kaydet(yeniDurum()));
-    p.sema = 8; p.durum.sema = 8;
-    delete p.durum.yzSayac;
-    const g = yukle(JSON.stringify(p));
-    expect(g.sema).toBe(SEMA_SURUMU);
-    expect(g.yzSayac).toEqual({ insaat: 0, arastirma: 0, asker: 0 });
   });
 });

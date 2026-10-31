@@ -256,4 +256,9 @@ export const DENGE = {
   // TASK-0021 (2/4, DEC-0070) — elçi küçük başarısızlık/yakalanma riski; casusluğun yakalanma desenini mirror eder
   ELCI_BASARISIZLIK_YUZDE: 15, // varış gününde yakalanma olasılığı
   ELCI_YAKALANMA_ILISKI: -15, // yakalanınca ilişkiye eklenir (zamanla söner, casustan daha hafif)
+  // TASK-0026 şehir adı ve birleştirme [TASLAK]
+  SEHIR_ADI_EN_UZUN: 32,
+  SEHIR_BIRLESTIR_BEDEL: 500,
+  SEHIR_BIRLESTIR_GUN: 30,
+  SEHIR_BIRLESTIR_RISK: 10, // iki şehrin istikrar riskine eklenir (aylık hesapta söner)
 };

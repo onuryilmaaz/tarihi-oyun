@@ -1,8 +1,8 @@
 // TASK-0010/7a: hükümdar ve veraset (DEC-0043)
 import { describe, expect, it } from "vitest";
 import {
-  baslangicDurumu, butceOzeti, degismezler, DENGE, diplomasiOnHesap, durumOzeti, emirleriUygula, emirVer, gundenTarih,
-  gunIlerlet, hukumdarlariIlerlet, iliskiBilesenleri, kaydet, muharebeGucYuzde, SEMA_SURUMU, yukle, type DunyaDurumu, type SenaryoVerisi,
+  baslangicDurumu, butceOzeti, degismezler, DENGE, diplomasiOnHesap, durumOzeti, emirleriUygula, emirVer, gundenTarih, gunIlerlet,
+  hukumdarlariIlerlet, iliskiBilesenleri, kaydet, muharebeGucYuzde, yukle, type DunyaDurumu, type SenaryoVerisi,
 } from "../src";
 import { TEST_SENARYOSU } from "./yardimci";
 
@@ -82,7 +82,7 @@ describe("hükümdar ve veraset (7a)", () => {
     expect(e.gunluk.at(-1)!.metin).toMatch(/divan en uygun adayı seçti/);
   });
 
-  it("ölüm ve aday üretimi rastgele sayı akışını tüketmez; kayıt/yükleme sonucu değiştirmez; şema 10 dönüştürülür", () => {
+  it("ölüm ve aday üretimi rastgele sayı akışını tüketmez; kayıt/yükleme sonucu değiştirmez", () => {
     const d = yeni();
     const rng = d.rng;
     for (let i = 0; i < 24; i++) hukumdarlariIlerlet(d);
@@ -90,13 +90,5 @@ describe("hükümdar ve veraset (7a)", () => {
     const e = yukle(kaydet(d), d.senaryo);
     for (let i = 0; i < 400; i++) { gunIlerlet(d); gunIlerlet(e); }
     expect(durumOzeti(e)).toBe(durumOzeti(d));
-    const p = JSON.parse(kaydet(yeni()));
-    p.sema = 10; p.durum.sema = 10;
-    delete p.durum.verasetSecimi;
-    for (const v of p.durum.devletler) { delete v.hukumdar; delete v.veraset; delete v.adHavuzu; delete v.tarihiHalef; }
-    const g = yukle(JSON.stringify(p));
-    expect(g.sema).toBe(SEMA_SURUMU);
-    expect(g.devletler.every((v) => v.hukumdar?.kurgusal && v.veraset === "babadan")).toBe(true);
-    expect(degismezler(g)).toEqual([]);
   });
 });

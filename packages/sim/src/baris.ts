@@ -11,18 +11,18 @@ export interface BarisDevirOzeti { alinanArazi: number; alinanSehir: number; kal
 /** Talepte seçilmeyen şehirler araziyle birlikte otomatik devredilmez (UX-01). */
 export function barisDevirOzeti(d: DunyaDurumu, karsi: number, t: BarisTalebi): BarisDevirOzeti {
   const alinanArazi = d.birimler.filter((b, i) => b.sahip === karsi && t.birimler.includes(i)).length;
-  const alinanSehir = d.sehirler.filter((s, i) => s.devlet === karsi && t.sehirler.includes(i)).length;
+  const alinanSehir = d.sehirler.filter((s, i) => s.devlet === karsi && s.bagli < 0 && t.sehirler.includes(i)).length;
   const kalanArazi = d.birimler.filter((b) => b.sahip === karsi).length - alinanArazi;
-  const kalanSehir = d.sehirler.filter((s) => s.devlet === karsi).length - alinanSehir;
+  const kalanSehir = d.sehirler.filter((s) => s.devlet === karsi && s.bagli < 0).length - alinanSehir; // bağlı şehir merkeziyle gider (TASK-0026)
   return { alinanArazi, alinanSehir, kalanArazi, kalanSehir, tamIlhak: kalanArazi === 0 && kalanSehir === 0 };
 }
 function toplamDeger(d: DunyaDurumu, devlet: number): number {
   return d.birimler.filter((b) => b.sahip === devlet).length * DENGE.BOLGE_DEGERI
-    + d.sehirler.reduce((s, c, i) => s + (c.devlet === devlet ? sehirDegeri(d, i) : 0), 0);
+    + d.sehirler.reduce((s, c, i) => s + (c.devlet === devlet && c.bagli < 0 ? sehirDegeri(d, i) : 0), 0);
 }
 function isgalDegeri(d: DunyaDurumu, sahip: number, kontrol: number): number {
   return d.birimler.filter((b) => b.sahip === sahip && b.kontrol === kontrol).length * DENGE.BOLGE_DEGERI
-    + d.sehirler.reduce((s, c, i) => s + (c.devlet === sahip && c.kontrol === kontrol ? sehirDegeri(d, i) : 0), 0);
+    + d.sehirler.reduce((s, c, i) => s + (c.devlet === sahip && c.kontrol === kontrol && c.bagli < 0 ? sehirDegeri(d, i) : 0), 0);
 }
 export function savasSkoru(d: DunyaDurumu, devlet: number, karsi: number): { skor: number; alinan: number; kaybedilen: number; toplam: number } {
   const alinan = isgalDegeri(d, karsi, devlet), kaybedilen = isgalDegeri(d, devlet, karsi);
@@ -48,7 +48,7 @@ export function barisDogrula(d: DunyaDurumu, t: BarisTalebi, devlet = d.ayarlar.
   }
   if (!Number.isSafeInteger(t.tazminat) || t.tazminat < 0) return { gecerli: false, neden: "Tazminat sıfır veya pozitif tam sayı olmalı." };
   if (t.birimler.some((i) => d.birimler[i].sahip !== karsi || d.birimler[i].kontrol !== devlet)
-    || t.sehirler.some((i) => d.sehirler[i].devlet !== karsi || d.sehirler[i].kontrol !== devlet)) {
+    || t.sehirler.some((i) => d.sehirler[i].devlet !== karsi || d.sehirler[i].kontrol !== devlet || d.sehirler[i].bagli >= 0)) {
     return { gecerli: false, neden: "Yalnızca bu düşmana ait ve sizin işgal ettiğiniz arazi/şehirler talep edilebilir." };
   }
   if (t.tazminat > Math.max(0, d.devletler[karsi].hazine)) return { gecerli: false, neden: "Karşı taraf bu tazminatı peşin ödeyemiyor. Borçlanma yoktur; tazminatı azaltın." };
@@ -65,7 +65,7 @@ export function barisDogrula(d: DunyaDurumu, t: BarisTalebi, devlet = d.ayarlar.
 function baskentleriGuncelle(d: DunyaDurumu): void {
   d.devletler.forEach((v, devlet) => {
     if (v.baskent !== null && d.sehirler[v.baskent]?.devlet === devlet) return;
-    const aday = d.sehirler.map((s, i) => ({ s, i })).filter(({ s }) => s.devlet === devlet)
+    const aday = d.sehirler.map((s, i) => ({ s, i })).filter(({ s }) => s.devlet === devlet && s.bagli < 0)
       .sort((a, b) => b.s.nufus - a.s.nufus || a.i - b.i);
     v.baskent = aday[0]?.i ?? null;
   });

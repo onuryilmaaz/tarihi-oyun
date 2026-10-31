@@ -17,7 +17,7 @@ export const bosYerelYonetim = (): YerelYonetim => ({ butce: 0, altSinir: 0, har
 export function yerelYonetimAyarla(d: DunyaDurumu, a: { sehir?: number; acik?: boolean; butce?: number; altSinir?: number }): Dogrulama {
   if (a.sehir !== undefined) {
     const s = d.sehirler[a.sehir];
-    if (!s || s.devlet !== d.ayarlar.oyuncu) return { gecerli: false, neden: "Yalnızca kendi şehrinize yönetici atayabilirsiniz." };
+    if (!s || s.devlet !== d.ayarlar.oyuncu || s.bagli >= 0) return { gecerli: false, neden: "Yalnızca kendi (bağımsız) şehrinize yönetici atayabilirsiniz." };
   }
   for (const x of [a.butce, a.altSinir]) {
     if (x === undefined) continue;

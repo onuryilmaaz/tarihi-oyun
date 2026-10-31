@@ -51,7 +51,7 @@ export class Etiketler {
       const [x, y, r] = d.etiket!;
       this.ekle("devlet", d.ad, x, y, r);
     }
-    const sehirler = h.paket.sehirler.map((s, i) => ({ s, i }))
+    const sehirler = h.paket.sehirler.map((s, i) => ({ s, i })).filter(({ s }) => !s.gizli)
       .sort((a, b) => b.s.b - a.s.b || h.paket.devletler[b.s.d].alan - h.paket.devletler[a.s.d].alan);
     for (const { s } of sehirler) {
       const bi = birimBul(h, s.x, s.y), cevre = h.paket.birimler[bi]?.d;

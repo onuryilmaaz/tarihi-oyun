@@ -65,7 +65,10 @@ export interface SehirDurumu {
   yonetici: boolean; // oyuncunun yerel yöneticisi açık mı (7d)
   gruplar: NufusGrubu[]; // din × kültür; toplam = nufus (7b)
   yapilar: { tarla: number; pazar: number }; // 5b şehir yatırımları (seviye 0–en yüksek)
+  eskiAd: string | null; // oyuncu adını değiştirdiyse ilk adı (TASK-0026)
+  bagli: number; // birleşmeyle bağlandığı merkez şehir; −1 = bağımsız (TASK-0026)
 }
+export interface SehirBirlesmesi { merkez: number; katilan: number; devlet: number; kalanGun: number } // TASK-0026
 
 export type KusatmaYontemi = "abluka" | "saldiri" | "bekle";
 export interface Kusatma {
@@ -218,6 +221,7 @@ export interface DunyaDurumu {
   sonrakiDiplomatikTeklifId: number;
   diplomatikTeklifSoguma: number[]; // devlet başına son teklif günü; gelen kutusunu boğmaması için soğuma süresi (TASK-0020 1/3)
   elciler: Elci[]; // yoldaki elçiler (TASK-0020 2/3)
+  sehirBirlesmeleri: SehirBirlesmesi[]; // süren şehir birleşmeleri (TASK-0026)
   sonrakiElciId: number;
   ateskesler: Ateskes[];
   verasetSecimi: VerasetSecimi | null; // oyuncunun halef seçimi (7a)
@@ -292,7 +296,7 @@ export interface SenaryoVerisi {
 // 5: kuşatma, gerçek işgal ve barış (TASK-0007/4c); şema 3–4 için eklemeli dönüşüm var.
 // Şema geçmişi: 6 şehir yatırımları (5b), 7 teknoloji (5c), 8 diplomasi (6a), 9 AI ekonomi (6b), 10 AI savaş/barış (6c),
 // 11 hükümdar ve veraset (7a), 12 nüfus grupları ve iskân (7b), 13 istikrar (7c), 14 yerel yönetim (7d)
-export const SEMA_SURUMU = 26; // 26 muharebe raporu birim kırılımı (TASK-0021), 25 elçi gönderme (TASK-0020), 24 AI diplomatik teklifleri (TASK-0020), 23 birim çeşitliliği (TASK-0019), 22 vasallık (TASK-0018), 21 ticaret anlaşması ve saldırmazlık paktı (TASK-0017), 20 asker toplama iptali (TASK-0017),
+export const SEMA_SURUMU = 27; // geliştirme sürümü; eski kayıtlar taşınmaz (DEC-0075). 27: şehir adı/birleştirme (TASK-0026)
 // 19 vergi oranı ve hazine geçmişi (TASK-0017), 18 arazi verimi (9b), 15 donanma ve deniz (8a), 16 ticaret ve ambargo (8b), 17 casusluk (8c)
 
 export function baslangicDurumu(s: SenaryoVerisi, secenek: { tohum: number; oyuncu?: string }): DunyaDurumu {
@@ -316,7 +320,7 @@ export function baslangicDurumu(s: SenaryoVerisi, secenek: { tohum: number; oyun
       insanGucu: Math.floor(c.nufus * DENGE.INSAN_GUCU_YUZDE / 100), baskent: c.baskent,
       sur: c.baskent ? DENGE.BASKENT_SUR : DENGE.SEHIR_SUR,
       garnizon: c.baskent ? DENGE.BASKENT_GARNIZON : DENGE.SEHIR_GARNIZON, yapilar: { tarla: 0, pazar: 0 },
-      istikrar: bosIstikrar(), yonetici: false, gruplar: baslangicGruplari(s, c.ad, c.devlet, c.nufus) };
+      istikrar: bosIstikrar(), yonetici: false, gruplar: baslangicGruplari(s, c.ad, c.devlet, c.nufus), eskiAd: null, bagli: -1 };
   });
   // TASK-0019: senaryo/garnizon orduları başlangıçta tamamen piyade sayılır; hız kompozisyondan hesaplanır.
   const yeniOrdu = (id: number, ad: string, devlet: number, asker: number, dugum: number, x: number, y: number): OrduDurumu => {
@@ -378,6 +382,7 @@ export function baslangicDurumu(s: SenaryoVerisi, secenek: { tohum: number; oyun
     sonrakiDiplomatikTeklifId: 1,
     diplomatikTeklifSoguma: s.devletler.map(() => -DENGE.YZ_DIPLOMASI_SOGUMA_GUN),
     elciler: [],
+    sehirBirlesmeleri: [],
     sonrakiElciId: 1,
     ateskesler: [],
     verasetSecimi: null,
@@ -443,6 +448,9 @@ export function degismezler(d: DunyaDurumu): string[] {
   });
   d.sehirler.forEach((c, i) => {
     if (!tam(c.nufus) || c.nufus < 0) h.push(`şehir ${i} nüfusu geçersiz`);
+    if (typeof c.ad !== "string" || !c.ad.trim() || (c.eskiAd !== null && typeof c.eskiAd !== "string")) h.push(`şehir ${i} adı geçersiz`);
+    if (!tam(c.bagli) || c.bagli < -1 || c.bagli >= d.sehirler.length || c.bagli === i
+      || (c.bagli >= 0 && (d.sehirler[c.bagli].bagli !== -1 || c.devlet !== d.sehirler[c.bagli].devlet || c.nufus !== 0))) h.push(`şehir ${i} bağlılığı geçersiz`);
     if (!tam(c.insanGucu) || c.insanGucu < 0) h.push(`şehir ${i} insan gücü geçersiz`);
     if (!tam(c.sur) || c.sur < 0 || !tam(c.garnizon) || c.garnizon < 0) h.push(`şehir ${i} savunması geçersiz`);
     if (!tam(c.devlet) || c.devlet < 0 || c.devlet >= n) h.push(`şehir ${i} devleti geçersiz`);
@@ -542,6 +550,12 @@ export function degismezler(d: DunyaDurumu): string[] {
   for (const e of d.elciler) {
     if (!d.devletler[e.hedef] || e.hedef === d.ayarlar.oyuncu || !tam(e.id) || e.id >= d.sonrakiElciId
       || !tam(e.kalanGun) || e.kalanGun <= 0 || e.kalanGun > DENGE.ELCI_GUN) h.push(`elçi ${e.id} geçersiz`);
+  }
+  if (!Array.isArray(d.sehirBirlesmeleri)) h.push("şehir birleşmeleri yok");
+  else for (const b of d.sehirBirlesmeleri) {
+    const m = d.sehirler[b.merkez], k = d.sehirler[b.katilan];
+    if (!m || !k || b.merkez === b.katilan || m.bagli !== -1 || k.bagli !== -1 || !d.devletler[b.devlet]
+      || !tam(b.kalanGun) || b.kalanGun <= 0 || b.kalanGun > DENGE.SEHIR_BIRLESTIR_GUN) h.push("şehir birleşmesi geçersiz");
   }
   for (const a of d.ateskesler) if (!d.devletler[a.a] || !d.devletler[a.b] || a.a >= a.b || !tam(a.bitis)) h.push("ateşkes geçersiz");
   for (const t of d.ticaretAnlasmalari) if (!d.devletler[t.a] || !d.devletler[t.b] || t.a >= t.b || !tam(t.baslangic)) h.push("ticaret anlaşması geçersiz");

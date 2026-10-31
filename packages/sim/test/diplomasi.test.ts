@@ -1,9 +1,9 @@
 // TASK-0009/6a: ilişkiler, savunma ittifakı ve hediye (DEC-0038)
 import { describe, expect, it } from "vitest";
 import {
-  agHazirla, baslangicDurumu, degismezler, DENGE, diplomasiOnHesap, diplomasiSonumu, durumOzeti, emirleriUygula, emirVer, etkiEkle, gunIlerlet,
-  hediyePuanBedeli, iliski, iliskiBilesenleri, ittifakKur, kaydet, kullanilabilirHazine, muttefik, savasta, SEMA_SURUMU,
-  turuIlerlet, yukle, type DunyaDurumu, type SenaryoVerisi,
+  agHazirla, baslangicDurumu, degismezler, DENGE, diplomasiOnHesap, diplomasiSonumu, durumOzeti, emirleriUygula, emirVer, etkiEkle,
+  gunIlerlet, hediyePuanBedeli, iliski, iliskiBilesenleri, ittifakKur, kaydet, kullanilabilirHazine, muttefik, savasta, turuIlerlet, yukle,
+  type DunyaDurumu, type SenaryoVerisi,
 } from "../src";
 import { TEST_SENARYOSU, yeniDurum } from "./yardimci";
 
@@ -99,7 +99,7 @@ describe("diplomasi (6a)", () => {
     expect(iliski(d, o, C, A)).toBe(-10);
   });
 
-  it("kayıt/yükleme sonucu değiştirmez; şema 7 kaydı dönüştürülür (AT-011)", () => {
+  it("kayıt/yükleme sonucu değiştirmez (AT-011)", () => {
     const d = yeniDurum();
     d.devletler[A].hazine = 5000;
     emirVer(d, { tur: "hediye", hedef: B, miktar: 500 });
@@ -108,13 +108,6 @@ describe("diplomasi (6a)", () => {
     const e = yukle(kaydet(d), d.senaryo);
     for (let i = 0; i < 4; i++) { turuIlerlet(d); turuIlerlet(e); }
     expect(durumOzeti(e)).toBe(durumOzeti(d));
-    const p = JSON.parse(kaydet(yeniDurum()));
-    p.sema = 7; p.durum.sema = 7;
-    delete p.durum.iliskiEtkileri; delete p.durum.saldirganlik; delete p.durum.ittifaklar;
-    const g = yukle(JSON.stringify(p));
-    expect(g.sema).toBe(SEMA_SURUMU);
-    expect(g.saldirganlik).toHaveLength(g.devletler.length);
-    expect(degismezler(g)).toEqual([]);
   });
 });
 
@@ -163,21 +156,12 @@ describe("TASK-0017 (4/4): ticaret anlaşması ve saldırmazlık paktı", () => 
     expect(emirVer(d, { tur: "saldirmazlikTeklif", hedef: B, ay: 12 }).gecerli).toBe(false);
   });
 
-  it("kayıt/yükleme korur; şema 20 kaydı boş listelerle 21'e taşınır", () => {
+  it("kayıt/yükleme anlaşma ve paktları korur", () => {
     const d = yeniDurum();
     etkiEkle(d, A, B, "tarih", DENGE.TICARET_ANLASMA_ESIGI);
     sonuc(d, { tur: "ticaretTeklif", hedef: B }, { tur: "saldirmazlikTeklif", hedef: C, ay: 24 });
     const e = yukle(kaydet(d), d.senaryo);
     expect(e.ticaretAnlasmalari).toEqual(d.ticaretAnlasmalari);
     expect(e.saldirmazlikPaktlari).toEqual(d.saldirmazlikPaktlari);
-
-    const p = JSON.parse(kaydet(yeniDurum()));
-    delete p.durum.ticaretAnlasmalari; delete p.durum.saldirmazlikPaktlari;
-    p.sema = 20; p.durum.sema = 20;
-    const g = yukle(JSON.stringify(p));
-    expect(g.sema).toBe(SEMA_SURUMU);
-    expect(g.ticaretAnlasmalari).toEqual([]);
-    expect(g.saldirmazlikPaktlari).toEqual([]);
-    expect(degismezler(g)).toEqual([]);
   });
 });

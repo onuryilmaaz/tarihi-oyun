@@ -39,18 +39,3 @@ export function yikilanDevletleriTemizle(d: DunyaDurumu): void {
       metin: `${d.devletler[devlet].ad} yıkıldı; toprağı kalmayan ${sayiMetni(asker)} asker dağıldı.` });
   }
 }
-
-/** Eski H-02 kayıtlarında zaten silinmiş savaştan kalan ilişkiler. Yeni sahiplik üretmez. */
-export function eskiSavasKalintilariniTemizle(d: DunyaDurumu): void {
-  yikilanDevletleriTemizle(d);
-  const savasVar = (a: number, b: number) => d.savaslar.some((s) =>
-    (s.saldiran === a && s.savunan === b) || (s.saldiran === b && s.savunan === a));
-  const biten = new Set(d.muharebeler.filter((m) => !savasVar(m.taraflar[0].devlet, m.taraflar[1].devlet)).map((m) => m.id));
-  for (const o of d.ordular) if (o.muharebe !== null && biten.has(o.muharebe)) o.muharebe = null;
-  d.muharebeler = d.muharebeler.filter((m) => !biten.has(m.id));
-  d.kusatmalar = d.kusatmalar.filter((k) => savasVar(k.devlet, k.savunan));
-  const yasayan = new Set([...d.birimler.map((b) => b.sahip), ...d.sehirler.map((s) => s.devlet)]);
-  for (const b of d.birimler) if (!yasayan.has(b.kontrol) && b.kontrol >= 0) { b.kontrol = b.sahip; b.isgalBaslangic = null; }
-  for (const s of d.sehirler) if (!yasayan.has(s.kontrol)) { s.kontrol = s.devlet; s.isgalBaslangic = null; }
-  d.isgalHazirliklari = d.isgalHazirliklari.filter((p) => yasayan.has(p.devlet));
-}

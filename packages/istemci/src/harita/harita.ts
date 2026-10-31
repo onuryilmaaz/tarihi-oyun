@@ -194,6 +194,7 @@ export function mulkiyetKatmanlariniGuncelle(k: Katmanlar, h: Harita, t: Tema, s
     const a = h.yaySahipA[i], b = h.yaySahipB[i];
     if (a < 0 || b < 0) continue;
     const A = h.paket.birimler[a], B = h.paket.birimler[b];
+    if (h.birimGrubu[a] === h.birimGrubu[b]) continue; // birleşmiş şehir toprakları arasında çizgi yok
     if (A.d !== B.d) yayParcalari(h.arklar[i], A.k?.startsWith("ohm:") && B.k?.startsWith("ohm:") ? devlet : tahmin);
     else if (A.d >= 0) yayParcalari(h.arklar[i], ic);
   }
@@ -203,7 +204,7 @@ export function mulkiyetKatmanlariniGuncelle(k: Katmanlar, h: Harita, t: Tema, s
     l.computeLineDistances();
   }
   for (const [p, baskent] of [[k.sehirler, false], [k.baskentler, true]] as const) {
-    const konum = h.paket.sehirler.filter((s) => !!s.b === baskent).flatMap((s) => [s.x, s.y, 0]);
+    const konum = h.paket.sehirler.filter((s) => !!s.b === baskent && !s.gizli).flatMap((s) => [s.x, s.y, 0]);
     p.geometry.dispose();
     p.geometry = new THREE.BufferGeometry().setAttribute("position", new THREE.Float32BufferAttribute(konum, 3));
   }
@@ -314,7 +315,7 @@ export function secimiCiz(k: Katmanlar, h: Harita, t: Tema, s: Secim) {
 
   let birimler: number[] = [];
   if (s?.tur === "devlet") birimler = h.devletBirimleri[s.id];
-  else if (s?.tur === "birim") birimler = [s.id];
+  else if (s?.tur === "birim") birimler = h.paket.birimler.map((_, i) => i).filter((i) => h.birimGrubu[i] === h.birimGrubu[s.id]);
   for (const bi of birimler) {
     const bas = k.birimKose[2 * bi] * 3, n = k.birimKose[2 * bi + 1] * 3;
     for (let i = bas; i < bas + n; i++) dizi[i] += (1 - dizi[i]) * t.vurgu;

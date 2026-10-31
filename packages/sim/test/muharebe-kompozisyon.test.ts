@@ -1,6 +1,6 @@
 // TASK-0021 (1/4, DEC-0070): muharebe raporunda birim türü kırılımı.
 import { describe, expect, it } from "vitest";
-import { baslangicDurumu, degismezler, kaydet, muharebeGunleri, muharebeleriBaslat, yukle, type DunyaDurumu, type SenaryoVerisi } from "../src";
+import { baslangicDurumu, degismezler, muharebeGunleri, muharebeleriBaslat, type DunyaDurumu, type SenaryoVerisi } from "../src";
 
 // İki devletli, başkentlerinde garnizon ordusu kurulacak küçük senaryo (dugum/x/y tanımlı; bkz. yz-savas.test.ts deseni).
 const S: SenaryoVerisi = {
@@ -49,16 +49,5 @@ describe("muharebe raporu birim kırılımı (TASK-0021 1/4)", () => {
     expect(tb.kayipKompozisyon.okcu).toBe(0);
     expect(tb.kayipKompozisyon.piyade).toBe(tb.kayip);
     expect(degismezler(d)).toEqual([]);
-  });
-
-  it("eski kayıtta (şema 25) kayıp kompozisyonu yoktu; yüklenince boş sayılır, kayıt geçerli kalır", () => {
-    const { d } = suvariPiyadeMuharebesi();
-    const paket = JSON.parse(kaydet(d));
-    expect(paket.sema).toBe(26);
-    expect(paket.durum.muharebeRaporlari[0].taraflar[0].kayipKompozisyon.suvari).toBeGreaterThan(0); // gerçek veri vardı
-    const eski = yukle(JSON.stringify({ ...paket, sema: 25, durum: { ...paket.durum, sema: 25 } }), d.senaryo);
-    expect(degismezler(eski)).toEqual([]);
-    const [ta] = eski.muharebeRaporlari[0].taraflar;
-    expect(ta.kayipKompozisyon).toEqual({ piyade: 0, okcu: 0, suvari: 0 }); // eski kayıtta bilinmiyor; boş sayılır
   });
 });

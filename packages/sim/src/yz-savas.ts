@@ -58,7 +58,7 @@ export function savasKarari(d: DunyaDurumu, b: Baglam, on: DiplomasiOnHesap, dev
 /** alan'ın işgal ettiği, karsi'ya ait yerlerden skoru aşmayan en değerli talep (şehirler önce). */
 export function talepKur(d: DunyaDurumu, savas: number, alan: number, karsi: number, skor: number): BarisTalebi {
   const t: BarisTalebi = { savas, birimler: [], sehirler: [], tazminat: 0 };
-  const sehirler = d.sehirler.flatMap((s, i) => (s.devlet === karsi && s.kontrol === alan ? [i] : []))
+  const sehirler = d.sehirler.flatMap((s, i) => (s.devlet === karsi && s.kontrol === alan && s.bagli < 0 ? [i] : []))
     .sort((x, y) => sehirDegeri(d, y) - sehirDegeri(d, x) || x - y);
   for (const i of sehirler) { t.sehirler.push(i); if (barisBedeli(d, alan, karsi, t) > skor) t.sehirler.pop(); }
   for (let i = 0; i < d.birimler.length; i++) {
@@ -145,7 +145,7 @@ export function seferKararlari(d: DunyaDurumu, b: Baglam): void {
       const gereken = (i: number) => Math.max(1, tahminiGarnizon(d, i)) * (d.sehirler[i].sur + 1);
       const kusatilabilir = (i: number) => {
         const s = d.sehirler[i], k = d.kusatmalar.find((x) => x.sehir === i);
-        return s.dugum >= 0 && dusmanlar.has(s.kontrol) && savasta(d, devlet, s.kontrol) && (!k || k.devlet === devlet) && guc >= gereken(i);
+        return s.dugum >= 0 && s.bagli < 0 && dusmanlar.has(s.kontrol) && savasta(d, devlet, s.kontrol) && (!k || k.devlet === devlet) && guc >= gereken(i);
       };
       // 1) Menzildeki düşman şehrini kuşat
       const yakin = d.sehirler.findIndex((_, i) => kusatilabilir(i) && sehirMenzilinde(d, b, o, i));
