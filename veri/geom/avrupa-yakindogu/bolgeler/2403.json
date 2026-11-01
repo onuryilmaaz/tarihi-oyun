@@ -1,21 +1,19 @@
 {
  "indeks": 2403,
- "ad": "Urban settlement Birsk",
- "ulke": "Russia",
- "d": 34,
+ "ad": "Marienburg",
+ "ulke": "Poland",
+ "d": 37,
  "k": "tahmin",
- "s": "Urban settlement Birsk",
+ "s": "Marienburg",
  "p": [
   [
    [
-    -11540,
-    -11494,
-    -11501,
-    11711,
-    11712,
-    11713,
-    11714,
-    11715
+    -11291,
+    -11267,
+    -11324,
+    11357,
+    11358,
+    11359
    ]
   ]
  ]

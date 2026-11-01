@@ -1,17 +1,18 @@
 {
  "indeks": 3350,
- "ad": "Karaotkel",
- "ulke": "Kazakhstan",
- "d": 91,
+ "ad": "Meihekou",
+ "ulke": "China",
+ "d": 95,
  "k": "tahmin",
- "s": "Karaotkel",
+ "s": "Meihekou",
  "p": [
   [
    [
-    -15593,
-    -15562,
-    -15588,
-    15609
+    -15279,
+    -15282,
+    -15267,
+    15312,
+    15313
    ]
   ]
  ]

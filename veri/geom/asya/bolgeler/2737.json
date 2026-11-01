@@ -1,18 +1,19 @@
 {
  "indeks": 2737,
- "ad": "Jawaharnagar Secunderabad",
- "ulke": "India",
- "d": 117,
+ "ad": "Ayutthaya",
+ "ulke": "Thailand",
+ "d": 105,
  "k": "tahmin",
- "s": "Jawaharnagar Secunderabad",
+ "s": "Ayutthaya",
  "p": [
   [
    [
-    -13272,
-    -13299,
-    13318,
-    13319,
-    13320
+    -12978,
+    -12918,
+    -13008,
+    13017,
+    13018,
+    -12971
    ]
   ]
  ]

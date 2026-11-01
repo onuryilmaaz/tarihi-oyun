@@ -1,21 +1,19 @@
 {
  "indeks": 2348,
- "ad": "Ashinskoye urban settlement",
- "ulke": "Russia",
- "d": 34,
+ "ad": "Nottingham",
+ "ulke": "United Kingdom",
+ "d": 58,
  "k": "tahmin",
- "s": "Ashinskoye urban settlement",
+ "s": "Nottingham",
  "p": [
   [
    [
-    -11493,
-    11495,
-    -11315,
-    11496,
-    11497,
-    11498,
-    11499,
-    11500
+    -11120,
+    -11071,
+    11160,
+    11161,
+    11162,
+    11163
    ]
   ]
  ]

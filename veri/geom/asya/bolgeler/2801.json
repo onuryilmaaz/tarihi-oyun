@@ -1,19 +1,18 @@
 {
  "indeks": 2801,
- "ad": "Menglong Town",
- "ulke": "Laos",
- "d": 97,
+ "ad": "Balasore",
+ "ulke": "India",
+ "d": 120,
  "k": "tahmin",
- "s": "Menglong Town",
+ "s": "Balasore",
  "p": [
   [
    [
-    -13613,
-    -13616,
-    -13484,
-    -13596,
-    13616,
-    13617
+    -13125,
+    13261,
+    13262,
+    13263,
+    13264
    ]
   ]
  ]

@@ -1,17 +1,22 @@
 {
  "indeks": 2579,
- "ad": "Berbera",
- "ulke": "Somaliland",
- "d": 87,
+ "ad": "Mbanza Kongo",
+ "ulke": "Angola",
+ "d": 83,
  "k": "tahmin",
- "s": "Berbera",
+ "s": "Mbanza Kongo",
  "p": [
   [
    [
-    -12618,
-    -12560,
-    12670,
-    12671
+    12354,
+    4282,
+    6296,
+    3055,
+    262,
+    12355,
+    12356,
+    12357,
+    12358
    ]
   ]
  ]

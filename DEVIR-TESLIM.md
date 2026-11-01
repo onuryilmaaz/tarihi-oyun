@@ -10,8 +10,10 @@ Bağlayıcı kurallar: `AGENTS.md`, `MASTER_SPEC.md`, `DECISIONS.md`.
 
 ## 0. En son — BURADAN BAŞLA
 
-- **TASK-0039 (insan gücü yenilenir, DEC-0084) uygulandı, COMMIT EDİLMEDİ, kullanıcı testi bekliyor (2026-11-01).**
-  TASK-0038 ve sur eki commit+push edildi (`75291069`, `58af08c2`). İzlenecek: 10 yılda hazinesi eksi devlet 4 → 11.
+- **TASK-0040 (şehirsiz kırıntılar + çıkarma düzeltmesi) uygulandı, COMMIT EDİLMEDİ (2026-11-01).** TASK-0039
+  commit+push edildi (`464d2451`). Senaryo yeniden üretildi (2.208 şehir), `veri/geom` yeniden ayrıldı.
+  Bekleyen karar: hazinesi eksi küçük AI'lar (Oyrat, Büyük Orda, Tibet…) — maaş gelirden büyük, terhis mekaniği yok;
+  kullanıcıya "terhis" önerildi.
 
 - **TASK-0035 (AI harcıyor, teknoloji ×2, DEC-0080) ve TASK-0036 (tek emirle ordu kurma, DEC-0081) commit+push
   edildi (`00c3bdce`, 2026-10-31); kullanıcı testi bekliyor. Üsküdar Kocaeli sancağına elle bağlandı.**

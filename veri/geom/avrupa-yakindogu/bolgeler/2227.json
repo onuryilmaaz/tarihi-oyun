@@ -1,19 +1,18 @@
 {
  "indeks": 2227,
- "ad": "Ústí nad Labem",
- "ulke": "Czech Republic",
+ "ad": "Zabrze",
+ "ulke": "Poland",
  "d": 66,
  "k": "tahmin",
- "s": "Ústí nad Labem",
+ "s": "Zabrze",
  "p": [
   [
    [
-    -10989,
-    -10866,
-    -10957,
-    11071,
-    11072,
-    11073
+    -10689,
+    -10652,
+    -10694,
+    10749,
+    10750
    ]
   ]
  ]

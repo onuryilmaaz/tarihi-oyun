@@ -1,18 +1,27 @@
 {
  "indeks": 2247,
- "ad": "Lublin",
- "ulke": "Poland",
- "d": 36,
- "k": "tahmin",
- "s": "Lublin",
+ "ad": "Upravlenchesky township",
+ "ulke": "Kazakhstan",
+ "d": 32,
+ "k": "ohm:2849493",
+ "s": "Upravlenchesky township",
  "p": [
   [
    [
-    -11076,
-    -11115,
-    11143,
-    11144,
-    11145
+    10822,
+    -10673,
+    -9883,
+    -10015,
+    10823,
+    10824,
+    10825,
+    10826
+   ],
+   [
+    10827
+   ],
+   [
+    10828
    ]
   ]
  ]

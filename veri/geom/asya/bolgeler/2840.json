@@ -1,19 +1,22 @@
 {
  "indeks": 2840,
- "ad": "Dighinala Upazila",
- "ulke": "Bangladesh",
- "d": 114,
+ "ad": "Amravati",
+ "ulke": "India",
+ "d": 117,
  "k": "tahmin",
- "s": "Dighinala Upazila",
+ "s": "Amravati",
  "p": [
   [
    [
-    -13681,
-    13783,
-    1265,
-    1783,
-    13784,
-    -13694
+    -13383,
+    -13371,
+    -13356,
+    13462,
+    13463,
+    13464,
+    13465,
+    13466,
+    13467
    ]
   ]
  ]

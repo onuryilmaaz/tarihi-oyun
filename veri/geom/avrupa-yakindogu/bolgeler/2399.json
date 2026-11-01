@@ -1,19 +1,20 @@
 {
  "indeks": 2399,
- "ad": "Kusa urban settlement",
+ "ad": "Almetyevsk urban agglomeration",
  "ulke": "Russia",
- "d": 34,
+ "d": 33,
  "k": "tahmin",
- "s": "Kusa urban settlement",
+ "s": "Almetyevsk urban agglomeration",
  "p": [
   [
    [
-    -11497,
-    -11314,
-    -11274,
-    11700,
-    11701,
-    11702
+    -11336,
+    -10825,
+    -11093,
+    -11307,
+    11340,
+    11341,
+    11342
    ]
   ]
  ]

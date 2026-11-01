@@ -1,5 +1,5 @@
 // TASK-0025 (DEC-0074): Wikidata adaylarından pilot bölgesinin şehirlerini seçer ve haritaya ekler.
-// Pilot devletler: başkenti kutunun içinde olanlar. Aday, düştüğü arazi biriminin devletine aittir (1453 OHM + tahmin);
+// Pilot devletler: başkenti (ya da başkenti yoksa toprağı) kutunun içinde olanlar. Aday, düştüğü arazi biriminin devletine aittir (1453 OHM + tahmin);
 // pilot devletine düşmeyen aday alınmaz. Öncelik: mevcut şehirler (hep kalır) → antik/1453 öncesi kaydı olanlar →
 // günümüz nüfusu. Şehirler arası en az EN_AZ_KM; aynı adlı ikinci şehir alınmaz (veriler ada göre eşleşir).
 
@@ -21,6 +21,14 @@ export function sehirleriSec(harita, aday, haric = [], ek = [], tarihiAdlar = {}
   harita.sehirler.forEach((s) => {
     const k = s.b === 1 ? kutuBul(s.x, millerLat(s.y)) : null;
     if (k && !pilot.has(s.d)) pilot.set(s.d, k.grup);
+  });
+  // Başkenti olmayan ya da şehirsiz devletler (ör. "Kutsal Roma İmparatorluğu (diğer)" torbası, İrlanda Lordlukları):
+  // toprağı bir kutuya düşüyorsa onlar da bölüşüme girer; yoksa şehirsiz kırıntıları komşuların arasında kalır
+  harita.birimler.forEach((b) => {
+    if (b.d < 0 || pilot.has(b.d) || !b.p[0]?.[0]?.length) return;
+    const r = b.p[0][0][0], a = harita.arklar[r < 0 ? ~r : r];
+    const k = kutuBul(a[0], millerLat(a[1]));
+    if (k) pilot.set(b.d, k.grup);
   });
 
   // Birim bulma (ızgara ön süzgeçli nokta-poligon)

@@ -1,19 +1,18 @@
 {
  "indeks": 3186,
- "ad": "Yixing Town",
+ "ad": "Gangou Town",
  "ulke": "China",
  "d": 97,
  "k": "tahmin",
- "s": "Yixing Town",
+ "s": "Gangou Town",
  "p": [
   [
    [
-    -14912,
-    -15001,
-    15047,
-    15048,
-    15049,
-    -15040
+    -14707,
+    -14691,
+    -14738,
+    14780,
+    14781
    ]
   ]
  ]

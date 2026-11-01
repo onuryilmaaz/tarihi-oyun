@@ -1,5 +1,11 @@
 # CHANGELOG
 
+## 2026-11-01 — TASK-0040: şehirsiz toprak kırıntıları ve çıkarma düzeltmeleri (Claude)
+
+- Başkentsiz/şehirsiz devletler de şehir merkezli bölüşüme girdi (HRE torbası, İrlanda, Çerkes, Cürçen); şehirsiz bölge
+  kalmadı, Passau çevresindeki kırıntılar kalktı. 2.208 şehir.
+- Çıkarma: yalnızca çıkılabilir limanlar hedeflenir; inemeyen ordu gemide yeni hedef alabilir.
+
 ## 2026-11-01 — TASK-0039: insan gücü havuzu yenilenir (Claude)
 
 - Boşalan asker havuzu her ay tavanın 1/12'si kadar dolar (1 yılda tam). Havuz yetmeyince "Ordu kur" ile toplanabilecek

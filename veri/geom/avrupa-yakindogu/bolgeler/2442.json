@@ -1,16 +1,21 @@
 {
  "indeks": 2442,
- "ad": "Ventspils",
- "ulke": "Latvia",
- "d": 38,
+ "ad": "Ystad",
+ "ulke": "Sweden",
+ "d": 75,
  "k": "tahmin",
- "s": "Ventspils",
+ "s": "Ystad",
  "p": [
   [
    [
-    11785,
-    -11849,
-    11815
+    11492,
+    11493,
+    11494
+   ]
+  ],
+  [
+   [
+    11495
    ]
   ]
  ]

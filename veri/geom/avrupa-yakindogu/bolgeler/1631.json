@@ -1,21 +1,18 @@
 {
  "indeks": 1631,
- "ad": "Dundalk",
- "ulke": "Ireland",
- "d": 58,
- "k": "tahmin",
- "s": "Dundalk",
+ "ad": "La Línea de la Concepción",
+ "ulke": "Spain",
+ "d": 52,
+ "k": "ohm:2849131",
+ "s": "La Línea de la Concepción",
  "p": [
   [
    [
-    8097,
-    8098,
-    8099,
-    8100,
-    8101,
-    8102,
-    8103,
-    8104
+    8110,
+    1826,
+    8111,
+    8112,
+    -8085
    ]
   ]
  ]

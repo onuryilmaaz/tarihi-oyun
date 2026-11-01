@@ -1,20 +1,18 @@
 {
  "indeks": 3292,
- "ad": "Dalanzadgad",
- "ulke": "China",
- "d": 94,
+ "ad": "Tokchon",
+ "ulke": "North Korea",
+ "d": 98,
  "k": "tahmin",
- "s": "Dalanzadgad",
+ "s": "Tokchon",
  "p": [
   [
    [
-    -15335,
-    -15228,
-    -15303,
-    15395,
-    15396,
-    15397,
-    15398
+    -15113,
+    -14986,
+    15130,
+    15131,
+    15132
    ]
   ]
  ]

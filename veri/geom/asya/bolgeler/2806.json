@@ -1,19 +1,25 @@
 {
  "indeks": 2806,
- "ad": "Lashio",
+ "ad": "Kutupalong refugee camp",
  "ulke": "Myanmar",
- "d": 106,
+ "d": 114,
  "k": "tahmin",
- "s": "Lashio",
+ "s": "Kutupalong refugee camp",
  "p": [
   [
    [
-    -13619,
-    -13453,
-    -13615,
-    13630,
-    13631,
-    13632
+    13290
+   ]
+  ],
+  [
+   [
+    13202,
+    -13296,
+    -13295,
+    -13294,
+    -1268,
+    -13293,
+    -13292
    ]
   ]
  ]

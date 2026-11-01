@@ -1,20 +1,18 @@
 {
  "indeks": 2220,
- "ad": "Kiev",
- "ulke": "Ukraine",
- "d": 35,
+ "ad": "Karlovy Vary",
+ "ulke": "Czech Republic",
+ "d": 66,
  "k": "tahmin",
- "s": "Kiev",
+ "s": "Karlovy Vary",
  "p": [
   [
    [
-    -10992,
-    -10908,
-    11049,
-    11050,
-    11051,
-    11052,
-    11053
+    -10664,
+    -10649,
+    10728,
+    10729,
+    10730
    ]
   ]
  ]

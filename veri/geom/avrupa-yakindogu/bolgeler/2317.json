@@ -1,19 +1,24 @@
 {
  "indeks": 2317,
- "ad": "Boston",
- "ulke": "United Kingdom",
- "d": 58,
+ "ad": "Urban settlement Uchaly",
+ "ulke": "Russia",
+ "d": 34,
  "k": "tahmin",
- "s": "Boston",
+ "s": "Urban settlement Uchaly",
  "p": [
   [
    [
-    11315,
-    11390,
-    -11396,
-    -11395,
-    11355,
-    11290
+    11025,
+    11026,
+    11065,
+    11066,
+    -11018,
+    11067,
+    11068,
+    -10011,
+    11062,
+    11063,
+    11064
    ]
   ]
  ]

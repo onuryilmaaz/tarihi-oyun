@@ -1,20 +1,17 @@
 {
  "indeks": 2439,
- "ad": "Osinskoye urban settlement",
- "ulke": "Russia",
- "d": 39,
+ "ad": "Newcastle upon Tyne",
+ "ulke": "United Kingdom",
+ "d": 58,
  "k": "tahmin",
- "s": "Osinskoye urban settlement",
+ "s": "Newcastle upon Tyne",
  "p": [
   [
    [
-    -11756,
-    -11715,
-    11832,
-    11833,
-    11834,
-    11835,
-    11836
+    -11444,
+    -11401,
+    11480,
+    11481
    ]
   ]
  ]

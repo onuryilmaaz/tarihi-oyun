@@ -1,17 +1,18 @@
 {
  "indeks": 3323,
- "ad": "Arvayker",
- "ulke": "Mongolia",
- "d": 94,
+ "ad": "Chengde",
+ "ulke": "China",
+ "d": 97,
  "k": "tahmin",
- "s": "Arvayker",
+ "s": "Chengde",
  "p": [
   [
    [
-    -15398,
-    15525,
-    15526,
-    -15518
+    -15190,
+    -15168,
+    15235,
+    15236,
+    15237
    ]
   ]
  ]

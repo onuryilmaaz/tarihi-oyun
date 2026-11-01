@@ -1,19 +1,18 @@
 {
  "indeks": 3250,
- "ad": "Endican",
- "ulke": "Kyrgyzstan",
+ "ad": "Magdanly",
+ "ulke": "Turkmenistan",
  "d": 90,
  "k": "tahmin",
- "s": "Endican",
+ "s": "Magdanly",
  "p": [
   [
    [
-    15258,
-    -15155,
-    -14943,
-    -15204,
-    15259,
-    15260
+    -14915,
+    -14812,
+    -14901,
+    14996,
+    14997
    ]
   ]
  ]

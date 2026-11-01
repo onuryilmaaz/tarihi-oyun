@@ -1,18 +1,20 @@
 {
  "indeks": 2337,
- "ad": "Grudziądz",
+ "ad": "Bielsk Podlaski",
  "ulke": "Poland",
- "d": 37,
+ "d": 36,
  "k": "tahmin",
- "s": "Grudziądz",
+ "s": "Bielsk Podlaski",
  "p": [
   [
    [
-    -11413,
-    -11417,
-    11460,
-    11461,
-    11462
+    -11034,
+    -11007,
+    -11090,
+    11125,
+    11126,
+    11127,
+    11128
    ]
   ]
  ]

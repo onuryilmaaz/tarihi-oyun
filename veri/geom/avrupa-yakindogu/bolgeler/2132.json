@@ -1,20 +1,18 @@
 {
  "indeks": 2132,
- "ad": "Zvenıhorodka",
- "ulke": "Ukraine",
- "d": 35,
+ "ad": "Miskolc",
+ "ulke": "Hungary",
+ "d": 27,
  "k": "tahmin",
- "s": "Zvenıhorodka",
+ "s": "Miskolc",
  "p": [
   [
    [
-    10636,
-    -10501,
-    -10199,
-    -10443,
-    10637,
-    10638,
-    10639
+    -10341,
+    -10280,
+    -10323,
+    10375,
+    10376
    ]
   ]
  ]

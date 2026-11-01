@@ -1,20 +1,17 @@
 {
  "indeks": 2319,
- "ad": "Babruysk",
- "ulke": "Belarus",
- "d": 35,
+ "ad": "Ibbenbüren",
+ "ulke": "Germany",
+ "d": 72,
  "k": "tahmin",
- "s": "Babruysk",
+ "s": "Ibbenbüren",
  "p": [
   [
    [
-    -11240,
-    -11218,
-    -11384,
-    11401,
-    11402,
-    11403,
-    -11399
+    -11044,
+    -10939,
+    -11030,
+    11072
    ]
   ]
  ]

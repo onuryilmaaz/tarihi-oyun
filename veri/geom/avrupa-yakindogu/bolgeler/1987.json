@@ -1,18 +1,17 @@
 {
  "indeks": 1987,
- "ad": "Bugojno",
- "ulke": "Bosnia and Herzegovina",
- "d": 17,
- "k": "tahmin",
- "s": "Bugojno",
+ "ad": "Kefe",
+ "ulke": "Russia",
+ "d": 23,
+ "k": "ohm:2849500",
+ "s": "Kefe",
  "p": [
   [
    [
-    -9471,
-    -9388,
-    9686,
-    9687,
-    9688
+    9605,
+    9606,
+    9607,
+    9608
    ]
   ]
  ]

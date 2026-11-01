@@ -1,23 +1,23 @@
 {
  "indeks": 2689,
- "ad": "Machilipatnam",
- "ulke": "India",
- "d": 118,
+ "ad": "Kalpitiya",
+ "ulke": "Sri Lanka",
+ "d": 125,
  "k": "tahmin",
- "s": "Machilipatnam",
+ "s": "Kalpitiya",
  "p": [
   [
    [
-    13127,
-    13128,
-    -13036,
-    13129,
-    13130
+    -12797,
+    -12799,
+    12807,
+    12808,
+    12809
    ]
   ],
   [
    [
-    13131
+    12810
    ]
   ]
  ]

@@ -1,18 +1,17 @@
 {
  "indeks": 2413,
- "ad": "Edinburgh",
- "ulke": "United Kingdom",
- "d": 59,
+ "ad": "Kiel",
+ "ulke": "Germany",
+ "d": 72,
  "k": "tahmin",
- "s": "Edinburgh",
+ "s": "Kiel",
  "p": [
   [
    [
-    11566,
-    11682,
-    -11748,
-    11667,
-    11636
+    -11259,
+    -11287,
+    11402,
+    -11370
    ]
   ]
  ]

@@ -11,7 +11,7 @@ import {
   ticaretAnlasmasiVar, ticaretDegerlendir, saldirmazlikVar, saldirmazlikDegerlendir, efendisi,
   asayisAskeri, gerekenAsayis,
   hukumdarYasi, VERASET_ADLARI, yerelYonetimAyarla, sehirAdiDegistir, birlesmeAdaylari, sehirliBirimler,
-  sancakOzetleri, sancakYonetimiAyarla, sehirSancaklari, idariTerim, yapiSeviyeGeliri, gelismislikYuzde, bolgeKontrolu, gorunurDonanmalar, kapasite, sehirMenzilinde, sehirTicareti, type Hukumdar,
+  sancakOzetleri, sancakYonetimiAyarla, sehirSancaklari, idariTerim, yapiSeviyeGeliri, gelismislikYuzde, bolgeKontrolu, gorunurDonanmalar, kapasite, cikarmaEngeli, denizYolu, sehirMenzilinde, sehirTicareti, type Hukumdar,
   ALAN_ADLARI, TEKNOLOJILER, teknolojiBul, biliyor, toplamaBedelYuzde, toplamaSuresi, etkiCarpani,
 } from "@tarihi/sim";
 import type { Istek, Ozet, Yanit } from "./sim-protokol";
@@ -78,7 +78,8 @@ function ozet(durum: DunyaDurumu): Ozet {
     limanlar: durum.deniz.limanlar,
     donanmalar: durum.donanmalar.filter((f) => f.devlet === durum.ayarlar.oyuncu).map((f) => ({
       id: f.id, ad: f.ad, bolge: f.bolge, kadirga: f.kadirga, kalyon: f.kalyon, moral: f.moral, rota: f.rota, kalanGun: f.kalanGun,
-      kapasite: kapasite(f), yuk: f.yuk && { ad: f.yuk.ad, asker: f.yuk.asker }, cikarmaHedef: f.cikarmaHedef,
+      kapasite: kapasite(f), yuk: f.yuk && { id: f.yuk.id, ad: f.yuk.ad, asker: f.yuk.asker }, cikarmaHedef: f.cikarmaHedef,
+      hedefLimanlar: durum.deniz.limanlar.flatMap((bolge, i) => bolge >= 0 && !cikarmaEngeli(durum, baglam, f.devlet, i) && denizYolu(durum, f.bolge, bolge) !== null ? [i] : []),
       emirBekliyor: durum.emirKuyrugu.some((e) => "donanma" in e && e.donanma === f.id),
       binebilir: durum.ordular.filter((o) => o.devlet === f.devlet && durum.sehirler.some((c, i) => durum.deniz.limanlar[i] === f.bolge
         && c.kontrol === f.devlet && sehirMenzilinde(durum, baglam, o, i))).map((o) => ({ id: o.id, ad: o.ad, asker: o.asker })),

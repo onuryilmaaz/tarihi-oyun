@@ -1,18 +1,22 @@
 {
  "indeks": 2669,
- "ad": "Visakhapatnam",
- "ulke": "India",
- "d": 118,
+ "ad": "Kalmunai",
+ "ulke": "Sri Lanka",
+ "d": 125,
  "k": "tahmin",
- "s": "Visakhapatnam",
+ "s": "Kalmunai",
  "p": [
   [
    [
-    -13038,
-    13053,
-    13054,
-    13055,
-    13056
+    -12628,
+    12704,
+    12705,
+    12706
+   ]
+  ],
+  [
+   [
+    12707
    ]
   ]
  ]

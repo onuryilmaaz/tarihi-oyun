@@ -1,19 +1,20 @@
 {
  "indeks": 3335,
- "ad": "Janaarqa",
- "ulke": "Kazakhstan",
- "d": 91,
+ "ad": "Pingdingbu Town",
+ "ulke": "China",
+ "d": 97,
  "k": "tahmin",
- "s": "Janaarqa",
+ "s": "Pingdingbu Town",
  "p": [
   [
    [
-    -15553,
-    -15464,
-    -15525,
-    15560,
-    15561,
-    15562
+    -15209,
+    -15264,
+    15272,
+    15273,
+    15274,
+    15275,
+    15276
    ]
   ]
  ]

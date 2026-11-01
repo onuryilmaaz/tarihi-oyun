@@ -1,19 +1,18 @@
 {
  "indeks": 1918,
- "ad": "Ragusa",
- "ulke": "Bosnia and Herzegovina",
- "d": 21,
- "k": "tahmin",
- "s": "Ragusa",
+ "ad": "Pescara",
+ "ulke": "Italy",
+ "d": 45,
+ "k": "ohm:2751179",
+ "s": "Pescara",
  "p": [
   [
    [
-    9270,
-    -9210,
-    9271,
-    9272,
-    9273,
-    9381
+    -9232,
+    -8905,
+    -9137,
+    9285,
+    9286
    ]
   ]
  ]

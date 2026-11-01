@@ -1,19 +1,18 @@
 {
  "indeks": 2690,
- "ad": "Surin",
- "ulke": "Cambodia",
- "d": 105,
+ "ad": "Trincomalee",
+ "ulke": "Sri Lanka",
+ "d": 125,
  "k": "tahmin",
- "s": "Surin",
+ "s": "Trincomalee",
  "p": [
   [
    [
-    -13114,
-    -13061,
-    13132,
-    13133,
-    13134,
-    13135
+    12807,
+    -12813,
+    -12812,
+    12705,
+    12797
    ]
   ]
  ]

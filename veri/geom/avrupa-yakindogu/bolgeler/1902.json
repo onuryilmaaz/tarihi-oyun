@@ -1,17 +1,18 @@
 {
  "indeks": 1902,
- "ad": "Ahtı",
- "ulke": "Russia",
- "d": 14,
+ "ad": "Zakatala",
+ "ulke": "Azerbaijan",
+ "d": 13,
  "k": "tahmin",
- "s": "Ahtı",
+ "s": "Zakatala",
  "p": [
   [
    [
-    -9146,
-    -9151,
-    9197,
-    9198
+    -9082,
+    -9030,
+    -9158,
+    9214,
+    9215
    ]
   ]
  ]

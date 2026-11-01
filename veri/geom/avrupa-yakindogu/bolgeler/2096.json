@@ -1,19 +1,18 @@
 {
  "indeks": 2096,
- "ad": "Törökszentmiklós",
+ "ad": "Kecskemét",
  "ulke": "Hungary",
  "d": 27,
  "k": "tahmin",
- "s": "Törökszentmiklós",
+ "s": "Kecskemét",
  "p": [
   [
    [
-    -10404,
-    -10344,
-    10428,
-    10429,
-    10430,
-    -10399
+    -10154,
+    -10144,
+    -10198,
+    10241,
+    -10236
    ]
   ]
  ]

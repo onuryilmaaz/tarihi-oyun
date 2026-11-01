@@ -1,17 +1,24 @@
 {
  "indeks": 2671,
- "ad": "Kampong Thom",
- "ulke": "Cambodia",
- "d": 102,
+ "ad": "Brunei",
+ "ulke": "Malaysia",
+ "d": 110,
  "k": "tahmin",
- "s": "Kampong Thom",
+ "s": "Brunei",
  "p": [
   [
    [
-    -13002,
-    -13035,
-    13062,
-    -13058
+    -12702,
+    12720,
+    21,
+    12721,
+    12722,
+    12723
+   ]
+  ],
+  [
+   [
+    12724
    ]
   ]
  ]

@@ -1,20 +1,17 @@
 {
  "indeks": 2294,
- "ad": "Berlin",
- "ulke": "Germany",
- "d": 69,
+ "ad": "Ipswich",
+ "ulke": "United Kingdom",
+ "d": 58,
  "k": "tahmin",
- "s": "Berlin",
+ "s": "Ipswich",
  "p": [
   [
    [
-    -11319,
-    -11322,
-    -11250,
-    -11236,
-    11322,
-    11323,
-    11324
+    -10935,
+    10975,
+    10976,
+    10977
    ]
   ]
  ]

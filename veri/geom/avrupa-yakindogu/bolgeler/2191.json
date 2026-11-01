@@ -1,17 +1,23 @@
 {
  "indeks": 2191,
- "ad": "Exeter",
- "ulke": "United Kingdom",
- "d": 58,
- "k": "tahmin",
- "s": "Exeter",
+ "ad": "Hmelnitski",
+ "ulke": "Ukraine",
+ "d": 36,
+ "k": "ohm:2696429",
+ "s": "Hmelnitski",
  "p": [
   [
    [
-    10922,
-    10923,
-    10924,
-    10925
+    -10575,
+    -10443,
+    -10540,
+    10632,
+    10633,
+    10634,
+    10635
+   ],
+   [
+    10636
    ]
   ]
  ]

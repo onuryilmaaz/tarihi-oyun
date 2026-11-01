@@ -1,22 +1,17 @@
 {
  "indeks": 2407,
- "ad": "Klaipėda",
- "ulke": "Lithuania",
- "d": 37,
+ "ad": "Koszalin",
+ "ulke": "Poland",
+ "d": 71,
  "k": "tahmin",
- "s": "Klaipėda",
+ "s": "Koszalin",
  "p": [
   [
    [
-    -11651,
-    11728,
-    11729
-   ]
-  ],
-  [
-   [
-    -11597,
-    11730
+    -11317,
+    -11322,
+    11384,
+    11385
    ]
   ]
  ]

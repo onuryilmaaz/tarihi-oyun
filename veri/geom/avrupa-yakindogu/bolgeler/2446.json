@@ -1,19 +1,17 @@
 {
  "indeks": 2446,
- "ad": "Chusovskoye Urban Settlement",
- "ulke": "Russia",
- "d": 39,
+ "ad": "Ukmergė",
+ "ulke": "Lithuania",
+ "d": 35,
  "k": "tahmin",
- "s": "Chusovskoye Urban Settlement",
+ "s": "Ukmergė",
  "p": [
   [
    [
-    11863,
-    11864,
-    11865,
-    11866,
-    11867,
-    11868
+    -11468,
+    -11433,
+    11515,
+    11516
    ]
   ]
  ]

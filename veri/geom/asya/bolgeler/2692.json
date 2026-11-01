@@ -1,19 +1,22 @@
 {
  "indeks": 2692,
- "ad": "Ubon Ratchathani",
- "ulke": "Thailand",
- "d": 105,
+ "ad": "Ninh Thuận",
+ "ulke": "Vietnam",
+ "d": 101,
  "k": "tahmin",
- "s": "Ubon Ratchathani",
+ "s": "Ninh Thuận",
  "p": [
   [
    [
-    13132,
-    -13143,
-    -13142,
-    -13141,
-    13097,
-    13059
+    -12801,
+    12817,
+    12818,
+    12819
+   ]
+  ],
+  [
+   [
+    12820
    ]
   ]
  ]

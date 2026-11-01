@@ -1,18 +1,19 @@
 {
  "indeks": 2087,
- "ad": "İstolni Belgrad",
- "ulke": "Hungary",
- "d": 27,
+ "ad": "Chur",
+ "ulke": "Switzerland",
+ "d": 73,
  "k": "tahmin",
- "s": "İstolni Belgrad",
+ "s": "Chur",
  "p": [
   [
    [
-    -10339,
-    -10194,
-    10394,
-    10395,
-    10396
+    -10083,
+    -10121,
+    10208,
+    10209,
+    10210,
+    10211
    ]
   ]
  ]

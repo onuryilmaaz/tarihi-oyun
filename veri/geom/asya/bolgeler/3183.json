@@ -1,19 +1,18 @@
 {
  "indeks": 3183,
- "ad": "Zhanglan",
- "ulke": "China",
- "d": 97,
+ "ad": "Bazarak",
+ "ulke": "Afghanistan",
+ "d": 90,
  "k": "tahmin",
- "s": "Zhanglan",
+ "s": "Bazarak",
  "p": [
   [
    [
-    -14909,
-    -14913,
-    15039,
-    15040,
-    15041,
-    -14970
+    -14640,
+    -14614,
+    14773,
+    14774,
+    -14766
    ]
   ]
  ]

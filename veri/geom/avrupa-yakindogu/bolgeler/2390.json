@@ -1,18 +1,21 @@
 {
  "indeks": 2390,
- "ad": "Serpuhov",
+ "ad": "Ashinskoye urban settlement",
  "ulke": "Russia",
- "d": 39,
+ "d": 34,
  "k": "tahmin",
- "s": "Serpuhov",
+ "s": "Ashinskoye urban settlement",
  "p": [
   [
    [
-    -11582,
-    -11520,
-    11658,
-    11659,
-    11660
+    -11305,
+    11307,
+    -11069,
+    11308,
+    11309,
+    11310,
+    11311,
+    11312
    ]
   ]
  ]

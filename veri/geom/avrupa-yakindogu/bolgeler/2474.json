@@ -1,18 +1,17 @@
 {
  "indeks": 2474,
- "ad": "Viljandi",
- "ulke": "Estonia",
- "d": 38,
+ "ad": "Kovrov",
+ "ulke": "Russia",
+ "d": 39,
  "k": "tahmin",
- "s": "Viljandi",
+ "s": "Kovrov",
  "p": [
   [
    [
-    -11874,
-    -11927,
-    11962,
-    11963,
-    -11953
+    -11575,
+    -11441,
+    -11582,
+    11628
    ]
   ]
  ]

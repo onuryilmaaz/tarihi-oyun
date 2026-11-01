@@ -1,18 +1,20 @@
 {
  "indeks": 2304,
- "ad": "Birmingham",
- "ulke": "United Kingdom",
- "d": 58,
+ "ad": "Zasechnoe",
+ "ulke": "Russia",
+ "d": 32,
  "k": "tahmin",
- "s": "Birmingham",
+ "s": "Zasechnoe",
  "p": [
   [
    [
-    -11243,
-    -11318,
-    11352,
-    11353,
-    -11349
+    -10507,
+    -10674,
+    -10823,
+    11013,
+    11014,
+    11015,
+    11016
    ]
   ]
  ]

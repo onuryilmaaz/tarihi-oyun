@@ -1,22 +1,18 @@
 {
  "indeks": 2941,
- "ad": "Panzhihua",
- "ulke": "China",
- "d": 97,
+ "ad": "Bogura Sadar Upazila",
+ "ulke": "Bangladesh",
+ "d": 114,
  "k": "tahmin",
- "s": "Panzhihua",
+ "s": "Bogura Sadar Upazila",
  "p": [
   [
    [
-    -13986,
-    -14039,
-    -14098,
-    14145,
-    14146,
-    14147,
-    14148,
-    14149,
-    -14058
+    -13732,
+    -13669,
+    -13826,
+    13853,
+    -13840
    ]
   ]
  ]

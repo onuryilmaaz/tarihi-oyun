@@ -1,20 +1,18 @@
 {
  "indeks": 2109,
- "ad": "Basel",
- "ulke": "France",
- "d": 73,
+ "ad": "Bruck an der Mur",
+ "ulke": "Austria",
+ "d": 65,
  "k": "tahmin",
- "s": "Basel",
+ "s": "Bruck an der Mur",
  "p": [
   [
    [
-    -10384,
-    -10387,
-    -10394,
-    10489,
-    10490,
-    10491,
-    10492
+    -10217,
+    -10254,
+    10304,
+    10305,
+    10306
    ]
   ]
  ]

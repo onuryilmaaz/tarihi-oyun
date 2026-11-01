@@ -1,17 +1,16 @@
 {
  "indeks": 2796,
- "ad": "Debagarh",
- "ulke": "India",
- "d": 120,
+ "ad": "Basuo",
+ "ulke": "China",
+ "d": 97,
  "k": "tahmin",
- "s": "Debagarh",
+ "s": "Basuo",
  "p": [
   [
    [
-    -13536,
-    -13235,
-    13591,
-    13592
+    -13122,
+    13242,
+    13243
    ]
   ]
  ]

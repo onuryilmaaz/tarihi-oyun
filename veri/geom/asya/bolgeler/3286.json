@@ -1,20 +1,18 @@
 {
  "indeks": 3286,
- "ad": "Pingdingbu Town",
- "ulke": "China",
- "d": 97,
+ "ad": "Pyongyang",
+ "ulke": "North Korea",
+ "d": 98,
  "k": "tahmin",
- "s": "Pingdingbu Town",
+ "s": "Pyongyang",
  "p": [
   [
    [
-    -15310,
-    -15368,
-    15375,
-    15376,
-    15377,
-    15378,
-    15379
+    -14928,
+    -14987,
+    15112,
+    15113,
+    15114
    ]
   ]
  ]

@@ -1,20 +1,17 @@
 {
  "indeks": 2364,
- "ad": "Borisov",
- "ulke": "Belarus",
- "d": 35,
+ "ad": "Deeside",
+ "ulke": "United Kingdom",
+ "d": 58,
  "k": "tahmin",
- "s": "Borisov",
+ "s": "Deeside",
  "p": [
   [
    [
-    -11533,
-    -11449,
-    -11403,
-    -11487,
-    11562,
-    11563,
-    11564
+    -11135,
+    -11112,
+    11215,
+    11216
    ]
   ]
  ]

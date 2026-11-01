@@ -1,23 +1,20 @@
 {
  "indeks": 2217,
- "ad": "Brighton/Worthing/Littlehampton",
- "ulke": "United Kingdom",
- "d": 58,
+ "ad": "Razumnoye",
+ "ulke": "Ukraine",
+ "d": 32,
  "k": "tahmin",
- "s": "Brighton/Worthing/Littlehampton",
+ "s": "Razumnoye",
  "p": [
   [
    [
-    11029,
-    11030,
-    11031,
-    11032,
-    11033
-   ]
-  ],
-  [
-   [
-    11034
+    -10616,
+    -10414,
+    10719,
+    10720,
+    10721,
+    10722,
+    10723
    ]
   ]
  ]

@@ -1,20 +1,17 @@
 {
  "indeks": 2343,
- "ad": "Chojnice",
+ "ad": "Gorzów Wielkopolski",
  "ulke": "Poland",
- "d": 37,
+ "d": 69,
  "k": "tahmin",
- "s": "Chojnice",
+ "s": "Gorzów Wielkopolski",
  "p": [
   [
    [
-    -11409,
-    -11414,
-    -11463,
-    11478,
-    11479,
-    11480,
-    11481
+    -11102,
+    -11085,
+    11146,
+    11147
    ]
   ]
  ]

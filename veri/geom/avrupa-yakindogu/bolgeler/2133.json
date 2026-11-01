@@ -1,20 +1,18 @@
 {
  "indeks": 2133,
- "ad": "Kamianobridski Raion",
- "ulke": "Ukraine",
- "d": 32,
+ "ad": "Freiburg im Breisgau",
+ "ulke": "Germany",
+ "d": 72,
  "k": "tahmin",
- "s": "Kamianobridski Raion",
+ "s": "Freiburg im Breisgau",
  "p": [
   [
    [
-    -10550,
-    -9561,
-    -10555,
-    10640,
-    10641,
-    10642,
-    10643
+    -10319,
+    -10231,
+    10377,
+    10378,
+    10379
    ]
   ]
  ]

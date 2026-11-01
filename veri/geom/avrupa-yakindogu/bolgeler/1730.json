@@ -1,20 +1,20 @@
 {
  "indeks": 1730,
- "ad": "Montemor-o-Novo",
- "ulke": "Portugal",
- "d": 54,
- "k": "tahmin",
- "s": "Montemor-o-Novo",
+ "ad": "Pozoblanco",
+ "ulke": "Spain",
+ "d": 52,
+ "k": "ohm:2849131",
+ "s": "Pozoblanco",
  "p": [
   [
    [
-    7935,
-    -8492,
-    -8194,
-    8570,
-    8571,
-    -7892,
-    7937
+    -8345,
+    -8500,
+    -8424,
+    8577,
+    8578,
+    8579,
+    -8533
    ]
   ]
  ]

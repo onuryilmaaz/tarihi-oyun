@@ -1,18 +1,19 @@
 {
  "indeks": 3201,
- "ad": "Magdanly",
- "ulke": "Turkmenistan",
- "d": 90,
+ "ad": "Daejeon",
+ "ulke": "South Korea",
+ "d": 98,
  "k": "tahmin",
- "s": "Magdanly",
+ "s": "Daejeon",
  "p": [
   [
    [
-    -15021,
-    -14918,
-    -15007,
-    15102,
-    15103
+    -14787,
+    -14646,
+    -14793,
+    14821,
+    14822,
+    14823
    ]
   ]
  ]

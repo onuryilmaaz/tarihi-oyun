@@ -1,20 +1,19 @@
 {
  "indeks": 2281,
- "ad": "Korkinskoe urban settlement",
- "ulke": "Russia",
- "d": 34,
+ "ad": "Londra",
+ "ulke": "United Kingdom",
+ "d": 58,
  "k": "tahmin",
- "s": "Korkinskoe urban settlement",
+ "s": "Londra",
  "p": [
   [
    [
-    11267,
-    11268,
-    11269,
-    11270,
-    11271,
-    11272,
-    11273
+    -10766,
+    -10807,
+    10933,
+    10934,
+    10935,
+    -10910
    ]
   ]
  ]

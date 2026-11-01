@@ -1,16 +1,18 @@
 {
  "indeks": 1645,
- "ad": "Boumerdès",
+ "ad": "Guelma",
  "ulke": "Algeria",
  "d": 78,
  "k": "tahmin",
- "s": "Boumerdès",
+ "s": "Guelma",
  "p": [
   [
    [
-    -8079,
-    -8124,
-    8165
+    -8048,
+    -7965,
+    -7870,
+    8171,
+    8172
    ]
   ]
  ]

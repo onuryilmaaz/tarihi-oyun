@@ -1,16 +1,19 @@
 {
  "indeks": 2447,
- "ad": "Aberdeen",
- "ulke": "United Kingdom",
- "d": 59,
+ "ad": "Mojaysk",
+ "ulke": "Russia",
+ "d": 39,
  "k": "tahmin",
- "s": "Aberdeen",
+ "s": "Mojaysk",
  "p": [
   [
    [
-    -11799,
-    11869,
-    11870
+    -11436,
+    -11407,
+    -11475,
+    11517,
+    11518,
+    11519
    ]
   ]
  ]

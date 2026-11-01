@@ -1,18 +1,19 @@
 {
  "indeks": 3093,
- "ad": "Shili Town",
+ "ad": "Gaochuan Town",
  "ulke": "China",
  "d": 97,
  "k": "tahmin",
- "s": "Shili Town",
+ "s": "Gaochuan Town",
  "p": [
   [
    [
-    -14635,
-    -14594,
-    -14655,
-    14714,
-    14715
+    -14300,
+    -14390,
+    14396,
+    14397,
+    14398,
+    14399
    ]
   ]
  ]

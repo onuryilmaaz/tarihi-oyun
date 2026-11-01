@@ -1,19 +1,21 @@
 {
  "indeks": 2008,
- "ad": "Saneskimoşet",
- "ulke": "Bosnia and Herzegovina",
- "d": 17,
- "k": "tahmin",
- "s": "Saneskimoşet",
+ "ad": "Pola",
+ "ulke": "Croatia",
+ "d": 22,
+ "k": "ohm:2800700",
+ "s": "Pola",
  "p": [
   [
    [
-    -9472,
-    -9689,
-    9901,
-    9902,
-    9903,
-    -9897
+    9755,
+    9756,
+    9757
+   ]
+  ],
+  [
+   [
+    9758
    ]
   ]
  ]

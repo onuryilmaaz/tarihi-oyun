@@ -1,19 +1,17 @@
 {
  "indeks": 2338,
- "ad": "Ełk",
- "ulke": "Poland",
- "d": 37,
+ "ad": "Pochepskoye Urban Settlement",
+ "ulke": "Russia",
+ "d": 35,
  "k": "tahmin",
- "s": "Ełk",
+ "s": "Pochepskoye Urban Settlement",
  "p": [
   [
    [
-    -11379,
-    -11369,
-    11463,
-    11464,
-    11465,
-    11466
+    -11057,
+    -10926,
+    11129,
+    11130
    ]
   ]
  ]

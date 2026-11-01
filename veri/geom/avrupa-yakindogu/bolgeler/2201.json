@@ -1,17 +1,19 @@
 {
  "indeks": 2201,
- "ad": "İzyaslav",
- "ulke": "Ukraine",
- "d": 36,
+ "ad": "Bayreuth",
+ "ulke": "Germany",
+ "d": 67,
  "k": "tahmin",
- "s": "İzyaslav",
+ "s": "Bayreuth",
  "p": [
   [
    [
-    -10883,
-    10971,
-    10972,
-    -10961
+    -10618,
+    -10557,
+    -10650,
+    10663,
+    10664,
+    10665
    ]
   ]
  ]

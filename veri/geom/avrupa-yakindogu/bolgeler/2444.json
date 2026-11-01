@@ -1,18 +1,19 @@
 {
  "indeks": 2444,
- "ad": "Torjok",
+ "ad": "Kusa urban settlement",
  "ulke": "Russia",
- "d": 42,
+ "d": 34,
  "k": "tahmin",
- "s": "Torjok",
+ "s": "Kusa urban settlement",
  "p": [
   [
    [
-    -11789,
-    -11827,
-    11858,
-    11859,
-    -11821
+    -11309,
+    -11068,
+    -11024,
+    11498,
+    11499,
+    11500
    ]
   ]
  ]

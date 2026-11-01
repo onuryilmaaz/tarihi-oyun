@@ -1,17 +1,22 @@
 {
  "indeks": 3229,
- "ad": "Shenmu Kasabası",
- "ulke": "China",
- "d": 97,
+ "ad": "Nishi",
+ "ulke": "Japan",
+ "d": 99,
  "k": "tahmin",
- "s": "Shenmu Kasabası",
+ "s": "Nishi",
  "p": [
   [
    [
-    -15052,
-    -15102,
-    -15148,
-    15195
+    -14534,
+    -14898,
+    -14902,
+    14920
+   ]
+  ],
+  [
+   [
+    14921
    ]
   ]
  ]

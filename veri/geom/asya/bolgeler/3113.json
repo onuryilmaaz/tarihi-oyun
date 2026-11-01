@@ -1,18 +1,17 @@
 {
  "indeks": 3113,
- "ad": "Golmud",
- "ulke": "China",
- "d": 96,
+ "ad": "Tarin Kot",
+ "ulke": "Afghanistan",
+ "d": 90,
  "k": "tahmin",
- "s": "Golmud",
+ "s": "Tarin Kot",
  "p": [
   [
    [
-    -14445,
-    -14511,
-    14809,
-    14810,
-    14811
+    -14152,
+    -14173,
+    -14362,
+    14488
    ]
   ]
  ]

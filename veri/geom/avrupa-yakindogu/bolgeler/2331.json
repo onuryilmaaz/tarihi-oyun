@@ -1,21 +1,18 @@
 {
  "indeks": 2331,
- "ad": "Stettin",
- "ulke": "Poland",
- "d": 71,
+ "ad": "Syrskiy Rudnik",
+ "ulke": "Russia",
+ "d": 32,
  "k": "tahmin",
- "s": "Stettin",
+ "s": "Syrskiy Rudnik",
  "p": [
   [
    [
-    11323,
-    11404,
-    -11442,
-    -11441,
-    -11440,
-    11410,
-    11377,
-    11341
+    -10951,
+    -11037,
+    11107,
+    11108,
+    -11060
    ]
   ]
  ]

@@ -1,17 +1,17 @@
 {
  "indeks": 2150,
- "ad": "Camborne",
- "ulke": "United Kingdom",
- "d": 58,
+ "ad": "Paris",
+ "ulke": "France",
+ "d": 57,
  "k": "tahmin",
- "s": "Camborne",
+ "s": "Paris",
  "p": [
   [
    [
-    10737,
-    10738,
-    10739,
-    10921
+    -10256,
+    10472,
+    10473,
+    10474
    ]
   ]
  ]

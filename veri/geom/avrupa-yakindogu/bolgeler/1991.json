@@ -1,19 +1,18 @@
 {
  "indeks": 1991,
- "ad": "Karasubazar",
- "ulke": "Russia",
- "d": 30,
- "k": "ohm:2849500",
- "s": "Karasubazar",
+ "ad": "Bugojno",
+ "ulke": "Bosnia and Herzegovina",
+ "d": 17,
+ "k": "tahmin",
+ "s": "Bugojno",
  "p": [
   [
    [
-    9602,
-    -9710,
-    -9709,
-    -9708,
-    9607,
-    -9707
+    -9484,
+    -9398,
+    9625,
+    9626,
+    9627
    ]
   ]
  ]

@@ -1,19 +1,18 @@
 {
  "indeks": 3190,
- "ad": "Qingshizui",
- "ulke": "China",
- "d": 96,
+ "ad": "Pohang",
+ "ulke": "South Korea",
+ "d": 98,
  "k": "tahmin",
- "s": "Qingshizui",
+ "s": "Pohang",
  "p": [
   [
    [
-    -15012,
-    -14921,
-    -14982,
-    15063,
-    15064,
-    15065
+    -14645,
+    14789,
+    14790,
+    14791,
+    14792
    ]
   ]
  ]

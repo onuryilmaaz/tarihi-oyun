@@ -1,20 +1,19 @@
 {
  "indeks": 2358,
- "ad": "Almetyevsk urban agglomeration",
- "ulke": "Russia",
- "d": 33,
+ "ad": "Bydgoszcz",
+ "ulke": "Poland",
+ "d": 37,
  "k": "tahmin",
- "s": "Almetyevsk urban agglomeration",
+ "s": "Bydgoszcz",
  "p": [
   [
    [
-    -11535,
-    -11086,
-    -11335,
-    -11495,
-    11539,
-    11540,
-    11541
+    -11104,
+    -11049,
+    11198,
+    11199,
+    11200,
+    -11195
    ]
   ]
  ]

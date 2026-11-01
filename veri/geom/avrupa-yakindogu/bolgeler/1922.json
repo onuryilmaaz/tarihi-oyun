@@ -1,15 +1,17 @@
 {
  "indeks": 1922,
- "ad": "Sinop",
+ "ad": "İnebolu",
  "ulke": "Turkey",
  "d": 6,
  "k": "tahmin",
- "s": "Sinop",
+ "s": "İnebolu",
  "p": [
   [
    [
-    -9136,
-    9283
+    -9143,
+    -9148,
+    9301,
+    -9222
    ]
   ]
  ]

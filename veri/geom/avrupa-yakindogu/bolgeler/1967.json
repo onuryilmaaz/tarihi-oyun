@@ -1,26 +1,20 @@
 {
  "indeks": 1967,
- "ad": "Ancona",
- "ulke": "Italy",
- "d": 44,
- "k": "ohm:2888200",
- "s": "Ancona",
+ "ad": "Tyrnyauz urban settlement",
+ "ulke": "Georgia",
+ "d": 15,
+ "k": "tahmin",
+ "s": "Tyrnyauz urban settlement",
  "p": [
   [
    [
-    -9422,
-    -9349,
-    -9214,
-    -9268,
-    9497,
-    9498,
-    9499
-   ],
-   [
-    9500
-   ],
-   [
-    9501
+    -9318,
+    -9309,
+    -9464,
+    9505,
+    9506,
+    9507,
+    9508
    ]
   ]
  ]

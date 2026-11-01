@@ -1,19 +1,18 @@
 {
  "indeks": 2404,
- "ad": "Polatsak",
- "ulke": "Belarus",
- "d": 35,
+ "ad": "Barrow-in-Furness",
+ "ulke": "United Kingdom",
+ "d": 58,
  "k": "tahmin",
- "s": "Polatsak",
+ "s": "Barrow-in-Furness",
  "p": [
   [
    [
-    -11675,
-    -11657,
-    -11700,
-    11716,
-    11717,
-    11718
+    -11242,
+    -11280,
+    11360,
+    11361,
+    11362
    ]
   ]
  ]

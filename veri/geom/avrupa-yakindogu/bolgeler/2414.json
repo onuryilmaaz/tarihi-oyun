@@ -1,20 +1,18 @@
 {
  "indeks": 2414,
- "ad": "Kopenhag",
- "ulke": "Denmark",
- "d": 74,
+ "ad": "Alytus",
+ "ulke": "Lithuania",
+ "d": 35,
  "k": "tahmin",
- "s": "Kopenhag",
+ "s": "Alytus",
  "p": [
   [
    [
-    11641,
-    -11752
-   ]
-  ],
-  [
-   [
-    11752
+    -11270,
+    -11274,
+    -11327,
+    11403,
+    11404
    ]
   ]
  ]

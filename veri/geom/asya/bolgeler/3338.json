@@ -1,21 +1,17 @@
 {
  "indeks": 3338,
- "ad": "Hulunbuir",
- "ulke": "Mongolia",
- "d": 94,
+ "ad": "Chongjin",
+ "ulke": "North Korea",
+ "d": 98,
  "k": "tahmin",
- "s": "Hulunbuir",
+ "s": "Chongjin",
  "p": [
   [
    [
-    -15535,
-    -15483,
-    -15549,
-    15569,
-    15570,
-    1159,
-    15571,
-    15572
+    -15265,
+    -15139,
+    15282,
+    -15192
    ]
   ]
  ]

@@ -1,27 +1,20 @@
 {
  "indeks": 2651,
- "ad": "Pathein",
- "ulke": "Myanmar",
- "d": 107,
+ "ad": "Jabodetabek",
+ "ulke": "Indonesia",
+ "d": 111,
  "k": "tahmin",
- "s": "Pathein",
+ "s": "Jabodetabek",
  "p": [
   [
    [
-    12964,
-    12965,
-    12966,
-    12967
+    12630
    ]
   ],
   [
    [
-    12968
-   ]
-  ],
-  [
-   [
-    12969
+    12631,
+    12632
    ]
   ]
  ]

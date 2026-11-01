@@ -1,20 +1,18 @@
 {
  "indeks": 2374,
- "ad": "Kaliningrad",
+ "ad": "Ryazskoye settlement",
  "ulke": "Russia",
- "d": 37,
+ "d": 43,
  "k": "tahmin",
- "s": "Kaliningrad",
+ "s": "Ryazskoye settlement",
  "p": [
   [
    [
-    -11549,
-    -11511,
-    -11485,
-    11594,
-    11595,
-    11596,
-    11597
+    -11108,
+    -11040,
+    11248,
+    11249,
+    11250
    ]
   ]
  ]

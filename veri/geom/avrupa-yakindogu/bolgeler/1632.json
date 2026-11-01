@@ -1,18 +1,18 @@
 {
  "indeks": 1632,
- "ad": "La Línea de la Concepción",
+ "ad": "Málaga City",
  "ulke": "Spain",
- "d": 52,
- "k": "ohm:2849131",
- "s": "La Línea de la Concepción",
+ "d": 55,
+ "k": "tahmin",
+ "s": "Málaga City",
  "p": [
   [
    [
-    8105,
-    1820,
-    8106,
-    8107,
-    -8072
+    8113,
+    8114,
+    8115,
+    8116,
+    8117
    ]
   ]
  ]

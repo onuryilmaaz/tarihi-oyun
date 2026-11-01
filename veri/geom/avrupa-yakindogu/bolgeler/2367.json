@@ -1,19 +1,16 @@
 {
  "indeks": 2367,
- "ad": "Northallerton",
- "ulke": "United Kingdom",
- "d": 58,
+ "ad": "Rayevsky selsoviet",
+ "ulke": "Russia",
+ "d": 34,
  "k": "tahmin",
- "s": "Northallerton",
+ "s": "Rayevsky selsoviet",
  "p": [
   [
    [
-    -11552,
-    -11474,
-    -11478,
-    11576,
-    11577,
-    11578
+    -11091,
+    -10013,
+    11227
    ]
   ]
  ]

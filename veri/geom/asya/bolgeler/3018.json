@@ -1,14 +1,19 @@
 {
  "indeks": 3018,
- "ad": "Jeju",
- "ulke": "South Korea",
- "d": 98,
+ "ad": "Tangtou Town",
+ "ulke": "China",
+ "d": 97,
  "k": "tahmin",
- "s": "Jeju",
+ "s": "Tangtou Town",
  "p": [
   [
    [
-    14410
+    -14050,
+    -13998,
+    14122,
+    14123,
+    14124,
+    -14098
    ]
   ]
  ]

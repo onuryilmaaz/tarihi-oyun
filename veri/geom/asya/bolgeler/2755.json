@@ -1,19 +1,17 @@
 {
  "indeks": 2755,
- "ad": "Chiang Mai",
- "ulke": "Thailand",
- "d": 104,
+ "ad": "Wancheng Town",
+ "ulke": "China",
+ "d": 97,
  "k": "tahmin",
- "s": "Chiang Mai",
+ "s": "Wancheng Town",
  "p": [
   [
    [
-    -13276,
-    -13328,
-    -13346,
-    13390,
-    13391,
-    -13263
+    13078,
+    13079,
+    -13074,
+    13080
    ]
   ]
  ]

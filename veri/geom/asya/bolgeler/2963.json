@@ -1,18 +1,22 @@
 {
  "indeks": 2963,
- "ad": "Yingtan",
- "ulke": "China",
- "d": 97,
+ "ad": "Rangpur Sadar Upazila",
+ "ulke": "Bangladesh",
+ "d": 114,
  "k": "tahmin",
- "s": "Yingtan",
+ "s": "Rangpur Sadar Upazila",
  "p": [
   [
    [
-    -14170,
-    -14094,
-    14208,
-    14209,
-    14210
+    -13841,
+    -13854,
+    -13829,
+    13922,
+    1802,
+    13923,
+    13924,
+    13925,
+    13926
    ]
   ]
  ]

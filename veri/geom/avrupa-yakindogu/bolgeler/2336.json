@@ -1,19 +1,18 @@
 {
  "indeks": 2336,
- "ad": "Neubrandenburg",
- "ulke": "Germany",
- "d": 71,
+ "ad": "Zwolle",
+ "ulke": "Netherlands",
+ "d": 61,
  "k": "tahmin",
- "s": "Neubrandenburg",
+ "s": "Zwolle",
  "p": [
   [
    [
-    -11434,
-    -11406,
-    -11442,
-    11457,
-    11458,
-    11459
+    -11094,
+    -10998,
+    -11046,
+    11123,
+    11124
    ]
   ]
  ]

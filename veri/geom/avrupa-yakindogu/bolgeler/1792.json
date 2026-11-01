@@ -1,19 +1,19 @@
 {
  "indeks": 1792,
- "ad": "Corigliano Calabro",
- "ulke": "Italy",
- "d": 45,
- "k": "ohm:2751179",
- "s": "Corigliano Calabro",
+ "ad": "Tırhala",
+ "ulke": "Greece",
+ "d": 0,
+ "k": "tahmin",
+ "s": "Tırhala",
  "p": [
   [
    [
-    8818,
-    -8060,
-    -8401,
-    8819,
-    8820,
-    -8814
+    -8656,
+    -8681,
+    -8773,
+    8826,
+    8827,
+    8828
    ]
   ]
  ]

@@ -1,19 +1,17 @@
 {
  "indeks": 1758,
- "ad": "Darahini",
- "ulke": "Turkey",
- "d": 9,
+ "ad": "Lenkeran",
+ "ulke": "Azerbaijan",
+ "d": 13,
  "k": "tahmin",
- "s": "Darahini",
+ "s": "Lenkeran",
  "p": [
   [
    [
-    -8625,
-    -8424,
-    -8523,
-    -8681,
-    8690,
-    8691
+    -8530,
+    8697,
+    8698,
+    8699
    ]
   ]
  ]

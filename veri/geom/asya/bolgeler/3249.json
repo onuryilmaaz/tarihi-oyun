@@ -1,20 +1,19 @@
 {
  "indeks": 3249,
- "ad": "Tongchuan Town",
+ "ad": "Zhenchuan Town",
  "ulke": "China",
- "d": 94,
+ "d": 97,
  "k": "tahmin",
- "s": "Tongchuan Town",
+ "s": "Zhenchuan Town",
  "p": [
   [
    [
-    -15053,
-    -15196,
-    -15147,
-    -15233,
-    15256,
-    15257,
-    -15249
+    -14945,
+    -14858,
+    -14866,
+    -14971,
+    14994,
+    14995
    ]
   ]
  ]

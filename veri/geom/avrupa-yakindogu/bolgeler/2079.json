@@ -1,17 +1,23 @@
 {
  "indeks": 2079,
- "ad": "Yverdon-les-Bains",
- "ulke": "Switzerland",
- "d": 51,
- "k": "tahmin",
- "s": "Yverdon-les-Bains",
+ "ad": "Saray",
+ "ulke": "Russia",
+ "d": 32,
+ "k": "ohm:2849494",
+ "s": "Saray",
  "p": [
   [
    [
-    -10209,
-    -10174,
-    10353,
-    10354
+    -10175,
+    -9919,
+    -9614,
+    -9885,
+    10183,
+    10184,
+    10185
+   ],
+   [
+    10186
    ]
   ]
  ]

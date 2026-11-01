@@ -1,19 +1,18 @@
 {
  "indeks": 2034,
- "ad": "Kutina",
- "ulke": "Croatia",
- "d": 27,
- "k": "tahmin",
- "s": "Kutina",
+ "ad": "Rimnik Vâlcea",
+ "ulke": "Romania",
+ "d": 28,
+ "k": "ohm:2929115",
+ "s": "Rimnik Vâlcea",
  "p": [
   [
    [
-    -9898,
-    -9904,
-    -10006,
-    10057,
-    10058,
-    10059
+    -9710,
+    -9845,
+    9915,
+    9916,
+    -9859
    ]
   ]
  ]

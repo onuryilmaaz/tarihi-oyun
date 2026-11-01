@@ -134,14 +134,22 @@ export function gemiInsalariIlerlet(d: DunyaDurumu): void {
   }
 }
 
-/** Orduyu limana indirir (şehir noktası); kara geçişi yoksa gemide kalır. */
+/** TASK-0040: devletin ordusu bu liman şehrine çıkabilir mi (kendi, sahipsiz ya da savaştığı toprak). */
+export function cikarmaEngeli(d: DunyaDurumu, b: Baglam, devlet: number, sehir: number): string | null {
+  const s = d.sehirler[sehir];
+  if (!s || s.dugum < 0 || !b.ag) return "Bu limana kara bağlantısı yok.";
+  const sahip = d.birimler[b.ag.dugumler[s.dugum].b]?.sahip ?? -1;
+  if (sahip !== devlet && sahip !== -1 && !savasta(d, devlet, sahip)) return `${s.ad} kıyısına çıkılamaz: ${d.devletler[sahip].ad} ile savaşta değilsiniz.`;
+  return null;
+}
+
+/** Orduyu limana indirir (şehir noktası); kara geçişi yoksa gemide kalır (yeni hedef verilebilir). */
 function indir(d: DunyaDurumu, b: Baglam, f: Donanma): void {
   const o = f.yuk, hedef = f.cikarmaHedef;
   if (!o || hedef === null) return;
   const s = d.sehirler[hedef];
-  const sahip = s.dugum >= 0 && b.ag ? d.birimler[b.ag.dugumler[s.dugum].b]?.sahip ?? -1 : -1;
-  if (s.dugum < 0 || (sahip !== o.devlet && sahip !== -1 && !savasta(d, o.devlet, sahip))) {
-    olayEkle(d, { tur: "cikarma", devlet: o.devlet, metin: `${o.ad} ${s.ad} kıyısına çıkamadı (savaşta olmadığınız topraklar); gemide bekliyor.` });
+  if (cikarmaEngeli(d, b, o.devlet, hedef)) {
+    olayEkle(d, { tur: "cikarma", devlet: o.devlet, metin: `${o.ad} ${s.ad} kıyısına çıkamadı (savaşta olmadığınız topraklar); gemide bekliyor, yeni çıkarma hedefi verin.` });
     f.cikarmaHedef = null;
     return;
   }

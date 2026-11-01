@@ -1,18 +1,19 @@
 {
  "indeks": 2804,
- "ad": "Kharagpur",
- "ulke": "India",
- "d": 114,
+ "ad": "Chiang Mai",
+ "ulke": "Thailand",
+ "d": 104,
  "k": "tahmin",
- "s": "Kharagpur",
+ "s": "Chiang Mai",
  "p": [
   [
    [
-    -13371,
-    13625,
-    -13523,
-    13626,
-    13627
+    -13168,
+    -13220,
+    -13238,
+    13282,
+    13283,
+    -13155
    ]
   ]
  ]

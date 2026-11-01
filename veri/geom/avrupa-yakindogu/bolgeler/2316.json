@@ -1,19 +1,18 @@
 {
  "indeks": 2316,
- "ad": "Nottingham",
- "ulke": "United Kingdom",
- "d": 58,
+ "ad": "Yelets",
+ "ulke": "Russia",
+ "d": 32,
  "k": "tahmin",
- "s": "Nottingham",
+ "s": "Yelets",
  "p": [
   [
    [
-    -11353,
-    -11317,
-    11390,
-    11391,
-    11392,
-    11393
+    -10929,
+    -10952,
+    11059,
+    11060,
+    11061
    ]
   ]
  ]

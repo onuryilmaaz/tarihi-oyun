@@ -1,17 +1,20 @@
 {
  "indeks": 2309,
- "ad": "Pochepskoye Urban Settlement",
+ "ad": "Morşansk",
  "ulke": "Russia",
- "d": 35,
+ "d": 32,
  "k": "tahmin",
- "s": "Pochepskoye Urban Settlement",
+ "s": "Morşansk",
  "p": [
   [
    [
-    -11303,
-    -11181,
-    11370,
-    11371
+    11036,
+    -10950,
+    -10508,
+    -11017,
+    11037,
+    11038,
+    11039
    ]
   ]
  ]

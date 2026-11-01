@@ -1,19 +1,18 @@
 {
  "indeks": 2033,
- "ad": "Diyakova",
- "ulke": "Croatia",
+ "ad": "Caransebeș",
+ "ulke": "Romania",
  "d": 27,
  "k": "tahmin",
- "s": "Diyakova",
+ "s": "Caransebeș",
  "p": [
   [
    [
-    -9938,
-    -9908,
-    -10009,
-    10055,
-    10056,
-    -10004
+    -9872,
+    9912,
+    -9862,
+    9913,
+    9914
    ]
   ]
  ]

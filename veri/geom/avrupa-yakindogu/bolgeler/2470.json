@@ -1,24 +1,18 @@
 {
  "indeks": 2470,
- "ad": "Nyköping",
- "ulke": "Sweden",
- "d": 75,
+ "ad": "Volokolamsk settlement",
+ "ulke": "Russia",
+ "d": 39,
  "k": "tahmin",
- "s": "Nyköping",
+ "s": "Volokolamsk settlement",
  "p": [
   [
    [
-    11935,
-    -11942,
-    -11941,
-    -11940,
-    -11939,
-    11887
-   ]
-  ],
-  [
-   [
-    11942
+    -11437,
+    -11520,
+    11613,
+    11614,
+    11615
    ]
   ]
  ]

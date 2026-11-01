@@ -1,22 +1,18 @@
 {
  "indeks": 2728,
- "ad": "Zhangzhou",
- "ulke": "China",
- "d": 97,
+ "ad": "Madanapalle",
+ "ulke": "India",
+ "d": 118,
  "k": "tahmin",
- "s": "Zhangzhou",
+ "s": "Madanapalle",
  "p": [
   [
    [
-    -13209,
-    13281,
-    13282,
-    13283
-   ]
-  ],
-  [
-   [
-    13284
+    -12944,
+    12984,
+    12985,
+    12986,
+    -12982
    ]
   ]
  ]

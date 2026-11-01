@@ -1,50 +1,17 @@
 {
  "indeks": 2720,
- "ad": "Castle town of Kagoshima",
- "ulke": "Japan",
- "d": 99,
+ "ad": "Kampong Thom",
+ "ulke": "Cambodia",
+ "d": 102,
  "k": "tahmin",
- "s": "Castle town of Kagoshima",
+ "s": "Kampong Thom",
  "p": [
   [
    [
-    13239
-   ]
-  ],
-  [
-   [
-    13240
-   ]
-  ],
-  [
-   [
-    13241
-   ]
-  ],
-  [
-   [
-    13244
-   ]
-  ],
-  [
-   [
-    13245,
-    13246
-   ]
-  ],
-  [
-   [
-    13247
-   ]
-  ],
-  [
-   [
-    13250
-   ]
-  ],
-  [
-   [
-    13251
+    -12894,
+    -12927,
+    12954,
+    -12950
    ]
   ]
  ]

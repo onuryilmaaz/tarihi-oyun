@@ -1,19 +1,18 @@
 {
  "indeks": 2153,
- "ad": "Ingolstadt",
- "ulke": "Germany",
- "d": 67,
+ "ad": "Rimavská Sobota",
+ "ulke": "Slovakia",
+ "d": 27,
  "k": "tahmin",
- "s": "Ingolstadt",
+ "s": "Rimavská Sobota",
  "p": [
   [
    [
-    10613,
-    -10754,
-    -10753,
-    -10752,
-    10622,
-    10562
+    10487,
+    -10377,
+    10488,
+    10489,
+    -10430
    ]
   ]
  ]

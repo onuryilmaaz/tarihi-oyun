@@ -1,16 +1,18 @@
 {
  "indeks": 2760,
- "ad": "South Mumbai",
+ "ad": "Chirala",
  "ulke": "India",
- "d": 117,
+ "d": 118,
  "k": "tahmin",
- "s": "South Mumbai",
+ "s": "Chirala",
  "p": [
   [
    [
-    13363,
-    -13411,
-    -13410
+    -13048,
+    13096,
+    -13020,
+    13097,
+    13098
    ]
   ]
  ]

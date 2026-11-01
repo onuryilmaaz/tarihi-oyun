@@ -1,17 +1,20 @@
 {
  "indeks": 2124,
- "ad": "Viyana",
- "ulke": "Austria",
- "d": 65,
- "k": "tahmin",
- "s": "Viyana",
+ "ad": "Greater Donetsk",
+ "ulke": "Ukraine",
+ "d": 32,
+ "k": "ohm:2849500",
+ "s": "Greater Donetsk",
  "p": [
   [
    [
-    -10565,
-    -10415,
-    10566,
-    10567
+    -10161,
+    -10182,
+    -10170,
+    10353,
+    10354,
+    10355,
+    10356
    ]
   ]
  ]

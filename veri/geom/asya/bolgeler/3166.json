@@ -1,18 +1,19 @@
 {
  "indeks": 3166,
- "ad": "Jinan",
- "ulke": "China",
- "d": 97,
+ "ad": "Türbet Haydariye",
+ "ulke": "Iran",
+ "d": 90,
  "k": "tahmin",
- "s": "Jinan",
+ "s": "Türbet Haydariye",
  "p": [
   [
    [
-    -14870,
-    -14949,
-    14982,
-    14983,
-    -14973
+    -14662,
+    -14544,
+    -14653,
+    14717,
+    14718,
+    14719
    ]
   ]
  ]

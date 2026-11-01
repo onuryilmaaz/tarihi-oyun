@@ -1,17 +1,18 @@
 {
  "indeks": 2476,
- "ad": "Dobryanskoye Urban Settlement",
+ "ad": "Kolçugino",
  "ulke": "Russia",
  "d": 39,
  "k": "tahmin",
- "s": "Dobryanskoye Urban Settlement",
+ "s": "Kolçugino",
  "p": [
   [
    [
-    -11884,
-    -11869,
-    11969,
-    -11932
+    -11592,
+    -11577,
+    11632,
+    11633,
+    11634
    ]
   ]
  ]

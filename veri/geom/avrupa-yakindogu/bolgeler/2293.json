@@ -1,18 +1,19 @@
 {
  "indeks": 2293,
- "ad": "Brandenburg an der Havel",
- "ulke": "Germany",
- "d": 69,
+ "ad": "Mazır",
+ "ulke": "Belarus",
+ "d": 35,
  "k": "tahmin",
- "s": "Brandenburg an der Havel",
+ "s": "Mazır",
  "p": [
   [
    [
-    11277,
-    -11321,
-    -11320,
-    -11319,
-    11251
+    -10861,
+    -10924,
+    10971,
+    10972,
+    10973,
+    10974
    ]
   ]
  ]

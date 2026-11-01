@@ -1,22 +1,19 @@
 {
  "indeks": 2879,
- "ad": "Sylhet Sadar Upazila",
- "ulke": "Bangladesh",
- "d": 114,
+ "ad": "Jabalpur",
+ "ulke": "India",
+ "d": 116,
  "k": "tahmin",
- "s": "Sylhet Sadar Upazila",
+ "s": "Jabalpur",
  "p": [
   [
    [
-    -13871,
-    13919,
-    1789,
-    13920,
-    -13894,
-    13921,
-    1792,
-    13922,
-    13923
+    -13521,
+    -13503,
+    -13560,
+    13630,
+    13631,
+    -13623
    ]
   ]
  ]

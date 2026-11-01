@@ -1,19 +1,18 @@
 {
  "indeks": 2032,
- "ad": "Padova",
- "ulke": "Italy",
- "d": 22,
- "k": "ohm:2800700",
- "s": "Padova",
+ "ad": "Baçka Palanka",
+ "ulke": "Republic of Serbia",
+ "d": 27,
+ "k": "tahmin",
+ "s": "Baçka Palanka",
  "p": [
   [
    [
-    10024,
-    -10053,
-    -10052,
-    -10051,
-    9788,
-    9878
+    -9802,
+    -9805,
+    9909,
+    9910,
+    9911
    ]
   ]
  ]

@@ -1,20 +1,18 @@
 {
  "indeks": 2334,
- "ad": "Krychaw",
- "ulke": "Belarus",
- "d": 35,
+ "ad": "Birmingham",
+ "ulke": "United Kingdom",
+ "d": 58,
  "k": "tahmin",
- "s": "Krychaw",
+ "s": "Birmingham",
  "p": [
   [
    [
-    -11382,
-    -11301,
-    -11305,
-    11450,
-    11451,
-    11452,
-    11453
+    -10995,
+    -11072,
+    11119,
+    11120,
+    -11110
    ]
   ]
  ]

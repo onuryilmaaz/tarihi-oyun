@@ -1,19 +1,21 @@
 {
  "indeks": 2932,
- "ad": "Jaisalmer",
- "ulke": "India",
- "d": 119,
+ "ad": "Mymensingh Sadar Upazila",
+ "ulke": "Bangladesh",
+ "d": 114,
  "k": "tahmin",
- "s": "Jaisalmer",
+ "s": "Mymensingh Sadar Upazila",
  "p": [
   [
    [
-    -14086,
-    -14015,
-    -13971,
-    14111,
-    14112,
-    14113
+    13825,
+    -13668,
+    -13764,
+    -13816,
+    13826,
+    1800,
+    13827,
+    13828
    ]
   ]
  ]

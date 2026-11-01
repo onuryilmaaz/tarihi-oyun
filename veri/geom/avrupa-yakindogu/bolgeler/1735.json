@@ -1,19 +1,19 @@
 {
  "indeks": 1735,
- "ad": "Lefkada",
- "ulke": "Greece",
- "d": 22,
+ "ad": "Salihli",
+ "ulke": "Turkey",
+ "d": 0,
  "k": "tahmin",
- "s": "Lefkada",
+ "s": "Salihli",
  "p": [
   [
    [
-    8600
-   ]
-  ],
-  [
-   [
-    8605
+    -8517,
+    -8408,
+    8611,
+    8612,
+    8613,
+    -8558
    ]
   ]
  ]

@@ -1,21 +1,17 @@
 {
  "indeks": 3178,
- "ad": "Baýramaly",
- "ulke": "Turkmenistan",
- "d": 90,
+ "ad": "Gabasumdo",
+ "ulke": "China",
+ "d": 96,
  "k": "tahmin",
- "s": "Baýramaly",
+ "s": "Gabasumdo",
  "p": [
   [
    [
-    15019,
-    -14915,
-    -14859,
-    -14919,
-    15020,
-    15021,
-    15022,
-    15023
+    -14504,
+    -14666,
+    14760,
+    14761
    ]
   ]
  ]

@@ -1,19 +1,17 @@
 {
  "indeks": 3347,
- "ad": "Khromtau",
- "ulke": "Kazakhstan",
- "d": 91,
+ "ad": "Chifeng",
+ "ulke": "China",
+ "d": 94,
  "k": "tahmin",
- "s": "Khromtau",
+ "s": "Chifeng",
  "p": [
   [
    [
-    -15515,
-    15595,
-    15596,
-    -10101,
-    15597,
-    -15591
+    15289,
+    -15306,
+    15298,
+    15249
    ]
   ]
  ]

@@ -1,17 +1,19 @@
 {
  "indeks": 3284,
- "ad": "Taşkent",
- "ulke": "Uzbekistan",
- "d": 90,
+ "ad": "Tientsin",
+ "ulke": "China",
+ "d": 97,
  "k": "tahmin",
- "s": "Taşkent",
+ "s": "Tientsin",
  "p": [
   [
    [
-    -15360,
-    -15279,
-    -15292,
-    15371
+    -15052,
+    -15020,
+    15104,
+    15105,
+    15106,
+    15107
    ]
   ]
  ]

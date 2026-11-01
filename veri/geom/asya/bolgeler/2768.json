@@ -1,20 +1,18 @@
 {
  "indeks": 2768,
- "ad": "Piang Luang",
- "ulke": "Thailand",
- "d": 104,
+ "ad": "Myawaddy",
+ "ulke": "Myanmar",
+ "d": 105,
  "k": "tahmin",
- "s": "Piang Luang",
+ "s": "Myawaddy",
  "p": [
   [
    [
-    -13264,
-    -13392,
-    13450,
-    13451,
-    13452,
-    13453,
-    -13435
+    -12973,
+    -13067,
+    13128,
+    13129,
+    13130
    ]
   ]
  ]

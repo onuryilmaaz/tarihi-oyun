@@ -1,20 +1,17 @@
 {
  "indeks": 2272,
- "ad": "Enschede",
- "ulke": "Netherlands",
- "d": 61,
+ "ad": "Swansea",
+ "ulke": "United Kingdom",
+ "d": 58,
  "k": "tahmin",
- "s": "Enschede",
+ "s": "Swansea",
  "p": [
   [
    [
-    11227,
-    11228,
-    11229,
-    11230,
-    11231,
-    11232,
-    11233
+    10905,
+    10906,
+    10907,
+    10908
    ]
   ]
  ]

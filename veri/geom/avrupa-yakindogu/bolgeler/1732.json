@@ -1,22 +1,25 @@
 {
  "indeks": 1732,
- "ad": "Palma de Mallorca",
- "ulke": "Spain",
+ "ad": "Iglesias",
+ "ulke": "Italy",
  "d": 53,
- "k": "ohm:2751179",
- "s": "Palma de Mallorca",
+ "k": "tahmin",
+ "s": "Iglesias",
  "p": [
   [
    [
-    8576,
-    8685,
-    8578,
-    8724
+    8585
    ]
   ],
   [
    [
-    8579
+    8586
+   ]
+  ],
+  [
+   [
+    8587,
+    8588
    ]
   ]
  ]

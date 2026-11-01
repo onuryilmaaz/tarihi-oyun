@@ -1,20 +1,18 @@
 {
  "indeks": 2156,
- "ad": "Nové Mesto nad Váhom",
- "ulke": "Slovakia",
- "d": 27,
+ "ad": "Pidhorodnie",
+ "ulke": "Ukraine",
+ "d": 30,
  "k": "tahmin",
- "s": "Nové Mesto nad Váhom",
+ "s": "Pidhorodnie",
  "p": [
   [
    [
-    -10607,
-    -10660,
-    -10665,
-    10772,
-    10773,
-    10774,
-    10775
+    -10310,
+    -10162,
+    -10357,
+    10495,
+    10496
    ]
   ]
  ]

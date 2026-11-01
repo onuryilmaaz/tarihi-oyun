@@ -1,18 +1,19 @@
 {
  "indeks": 3083,
- "ad": "Zhoukou",
+ "ad": "Qushan Town",
  "ulke": "China",
  "d": 97,
  "k": "tahmin",
- "s": "Zhoukou",
+ "s": "Qushan Town",
  "p": [
   [
    [
-    -14618,
-    -14548,
-    14659,
-    14660,
-    14661
+    14356
+   ]
+  ],
+  [
+   [
+    14357
    ]
   ]
  ]

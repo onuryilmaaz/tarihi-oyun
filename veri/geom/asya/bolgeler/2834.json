@@ -1,18 +1,21 @@
 {
  "indeks": 2834,
- "ad": "Tianpeng Town",
- "ulke": "Vietnam",
- "d": 97,
+ "ad": "Balangir",
+ "ulke": "India",
+ "d": 120,
  "k": "tahmin",
- "s": "Tianpeng Town",
+ "s": "Balangir",
  "p": [
   [
    [
-    -13741,
-    -13584,
-    -13686,
-    13753,
-    13754
+    13426,
+    -13348,
+    -13060,
+    -13128,
+    13427,
+    13428,
+    13429,
+    6437
    ]
   ]
  ]

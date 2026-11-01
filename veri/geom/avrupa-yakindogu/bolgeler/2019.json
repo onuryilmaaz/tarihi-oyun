@@ -1,19 +1,20 @@
 {
  "indeks": 2019,
- "ad": "Limoges",
+ "ad": "Clermont-Ferrand",
  "ulke": "France",
  "d": 57,
  "k": "tahmin",
- "s": "Limoges",
+ "s": "Clermont-Ferrand",
  "p": [
   [
    [
-    -9815,
-    -9485,
-    -9946,
-    9964,
-    9965,
-    9966
+    -9497,
+    -9469,
+    -9414,
+    9845,
+    9846,
+    9847,
+    9848
    ]
   ]
  ]

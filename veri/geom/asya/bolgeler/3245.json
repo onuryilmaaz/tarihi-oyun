@@ -1,17 +1,18 @@
 {
  "indeks": 3245,
- "ad": "Tanchon",
- "ulke": "North Korea",
- "d": 98,
+ "ad": "Haizitan Town",
+ "ulke": "China",
+ "d": 97,
  "k": "tahmin",
- "s": "Tanchon",
+ "s": "Haizitan Town",
  "p": [
   [
    [
-    -15241,
-    15243,
-    15244,
-    15245
+    -14888,
+    -14855,
+    -14968,
+    14974,
+    14975
    ]
   ]
  ]

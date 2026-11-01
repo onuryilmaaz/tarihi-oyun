@@ -1,19 +1,18 @@
 {
  "indeks": 2094,
- "ad": "Orléans",
- "ulke": "France",
- "d": 57,
+ "ad": "İstolni Belgrad",
+ "ulke": "Hungary",
+ "d": 27,
  "k": "tahmin",
- "s": "Orléans",
+ "s": "İstolni Belgrad",
  "p": [
   [
    [
-    10416,
-    -10206,
-    -9965,
-    -9945,
-    -10382,
-    10417
+    -10192,
+    -10100,
+    10232,
+    10233,
+    10234
    ]
   ]
  ]

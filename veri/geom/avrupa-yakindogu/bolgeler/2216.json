@@ -1,18 +1,17 @@
 {
  "indeks": 2216,
- "ad": "Yeovil",
- "ulke": "United Kingdom",
- "d": 58,
+ "ad": "İzyaslav",
+ "ulke": "Ukraine",
+ "d": 36,
  "k": "tahmin",
- "s": "Yeovil",
+ "s": "İzyaslav",
  "p": [
   [
    [
-    -10924,
-    11023,
-    11024,
-    11025,
-    11026
+    -10635,
+    10717,
+    10718,
+    -10707
    ]
   ]
  ]

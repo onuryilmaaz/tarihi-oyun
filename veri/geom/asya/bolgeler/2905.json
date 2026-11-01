@@ -1,19 +1,18 @@
 {
  "indeks": 2905,
- "ad": "Jaunpur",
- "ulke": "India",
- "d": 113,
+ "ad": "Pabna Sadar Upazila",
+ "ulke": "Bangladesh",
+ "d": 114,
  "k": "tahmin",
- "s": "Jaunpur",
+ "s": "Pabna Sadar Upazila",
  "p": [
   [
    [
-    14007,
-    -13886,
-    -13817,
-    -13919,
-    14008,
-    14009
+    -13715,
+    -13663,
+    -13670,
+    13731,
+    13732
    ]
   ]
  ]

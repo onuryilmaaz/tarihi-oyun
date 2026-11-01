@@ -1,18 +1,19 @@
 {
  "indeks": 1898,
- "ad": "Edirne",
- "ulke": "Greece",
+ "ad": "Sancaklar",
+ "ulke": "Bulgaria",
  "d": 0,
  "k": "tahmin",
- "s": "Edirne",
+ "s": "Sancaklar",
  "p": [
   [
    [
-    -9178,
-    -9061,
-    9187,
-    9188,
-    9189
+    -9138,
+    -8833,
+    -9065,
+    9203,
+    9204,
+    9205
    ]
   ]
  ]

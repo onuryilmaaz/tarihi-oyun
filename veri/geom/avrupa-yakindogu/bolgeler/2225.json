@@ -1,21 +1,18 @@
 {
  "indeks": 2225,
- "ad": "Ashford",
- "ulke": "United Kingdom",
- "d": 58,
+ "ad": "Tournai",
+ "ulke": "France",
+ "d": 61,
  "k": "tahmin",
- "s": "Ashford",
+ "s": "Tournai",
  "p": [
   [
    [
-    -11031,
-    11066,
-    11067
-   ]
-  ],
-  [
-   [
-    11068
+    -10680,
+    -10478,
+    -10738,
+    10744,
+    10745
    ]
   ]
  ]

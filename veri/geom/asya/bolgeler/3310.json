@@ -1,19 +1,18 @@
 {
  "indeks": 3310,
- "ad": "Korgas",
- "ulke": "Kazakhstan",
- "d": 92,
+ "ad": "Yutian Town",
+ "ulke": "China",
+ "d": 97,
  "k": "tahmin",
- "s": "Korgas",
+ "s": "Yutian Town",
  "p": [
   [
    [
-    -15411,
-    -15455,
-    15474,
-    15475,
-    15476,
-    15477
+    -15107,
+    -15111,
+    -15169,
+    15189,
+    -15162
    ]
   ]
  ]

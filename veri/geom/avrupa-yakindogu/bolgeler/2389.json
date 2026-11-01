@@ -1,18 +1,19 @@
 {
  "indeks": 2389,
- "ad": "Liepieĺ",
- "ulke": "Belarus",
- "d": 35,
+ "ad": "Chishminsky possoviet",
+ "ulke": "Russia",
+ "d": 34,
  "k": "tahmin",
- "s": "Liepieĺ",
+ "s": "Chishminsky possoviet",
  "p": [
   [
    [
-    -11564,
-    -11601,
-    11655,
-    11656,
-    11657
+    -11092,
+    -11228,
+    11303,
+    11304,
+    11305,
+    11306
    ]
   ]
  ]

@@ -1,18 +1,20 @@
 {
  "indeks": 2856,
- "ad": "Pabna Sadar Upazila",
- "ulke": "Bangladesh",
- "d": 114,
+ "ad": "Sundergarh",
+ "ulke": "India",
+ "d": 120,
  "k": "tahmin",
- "s": "Pabna Sadar Upazila",
+ "s": "Sundergarh",
  "p": [
   [
    [
-    -13823,
-    -13771,
-    -13778,
-    13839,
-    13840
+    -13429,
+    -13485,
+    13525,
+    13526,
+    13527,
+    6435,
+    13528
    ]
   ]
  ]

@@ -1,19 +1,20 @@
 {
  "indeks": 3253,
- "ad": "Qinhuangdao",
+ "ad": "Shijiazhuang",
  "ulke": "China",
  "d": 97,
  "k": "tahmin",
- "s": "Qinhuangdao",
+ "s": "Shijiazhuang",
  "p": [
   [
    [
-    -15216,
-    15269,
-    15270,
-    15271,
-    15272,
-    15273
+    -14942,
+    -14894,
+    -14938,
+    -14963,
+    15002,
+    15003,
+    15004
    ]
   ]
  ]

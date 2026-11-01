@@ -1,18 +1,17 @@
 {
  "indeks": 2205,
- "ad": "Coburg",
- "ulke": "Germany",
- "d": 67,
+ "ad": "Exeter",
+ "ulke": "United Kingdom",
+ "d": 58,
  "k": "tahmin",
- "s": "Coburg",
+ "s": "Exeter",
  "p": [
   [
    [
-    -10899,
-    -10913,
-    10985,
-    10986,
-    10987
+    10675,
+    10676,
+    10677,
+    10678
    ]
   ]
  ]

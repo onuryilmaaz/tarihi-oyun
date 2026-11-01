@@ -134,6 +134,28 @@ describe("donanma ve deniz (8a)", () => {
     expect(d.gunluk.some((x) => /kıyısına çıktı/.test(x.metin))).toBe(true);
   });
 
+  it("çıkarma: savaşta olmadığı limana emir verilemez; yolda barış olursa ordu gemide kalır ve yeni hedef alabilir (TASK-0040)", () => {
+    const d = yeni();
+    const o = d.ordular[0], f = fa(d);
+    d.donanmalar = d.donanmalar.filter((x) => x.devlet === A);
+    f.kalyon = 6;
+    expect(emirVer(d, { tur: "cikarma", donanma: f.id, ordu: o.id, sehir: 1 }, B)).toMatchObject({ gecerli: false, neden: expect.stringMatching(/savaşta değilsiniz/) });
+    savas(d);
+    expect(emirVer(d, { tur: "cikarma", donanma: f.id, ordu: o.id, sehir: 1 }, B).gecerli).toBe(true);
+    emirleriUygula(d, B);
+    d.savaslar = []; // yolda barış
+    gun(d, DENGE.GEMI.kalyon.hizGun + 1);
+    expect(f.yuk?.id).toBe(o.id);
+    expect(f.cikarmaHedef).toBeNull();
+    // Gemideki ordu kendi limanına geri gönderilir ve iner
+    expect(emirVer(d, { tur: "cikarma", donanma: f.id, ordu: o.id, sehir: 0 }, B).gecerli).toBe(true);
+    emirleriUygula(d, B);
+    gun(d, DENGE.GEMI.kalyon.hizGun + 1);
+    expect(f.yuk).toBeNull();
+    expect(d.ordular[0]).toMatchObject({ id: o.id, dugum: 0 });
+    expect(degismezler(d)).toEqual([]);
+  });
+
   it("kayıt/yükleme sonucu değiştirmez", () => {
     const d = yeni();
     savas(d);

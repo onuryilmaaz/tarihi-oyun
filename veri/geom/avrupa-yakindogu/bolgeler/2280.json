@@ -1,20 +1,17 @@
 {
  "indeks": 2280,
- "ad": "Zasechnoe",
- "ulke": "Russia",
- "d": 32,
+ "ad": "Waterford",
+ "ulke": "Ireland",
+ "d": 60,
  "k": "tahmin",
- "s": "Zasechnoe",
+ "s": "Waterford",
  "p": [
   [
    [
-    -10731,
-    -10921,
-    -11084,
-    11263,
-    11264,
-    11265,
-    11266
+    -10585,
+    10930,
+    10931,
+    10932
    ]
   ]
  ]

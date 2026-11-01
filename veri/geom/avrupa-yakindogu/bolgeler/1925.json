@@ -1,18 +1,19 @@
 {
  "indeks": 1925,
- "ad": "Derbent",
- "ulke": "Russia",
- "d": 14,
+ "ad": "Tshinvali",
+ "ulke": "Georgia",
+ "d": 12,
  "k": "tahmin",
- "s": "Derbent",
+ "s": "Tshinvali",
  "p": [
   [
    [
-    -9234,
-    -9198,
-    -9150,
-    9292,
-    9293
+    9306,
+    -9211,
+    -9214,
+    -9252,
+    9307,
+    9308
    ]
   ]
  ]

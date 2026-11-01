@@ -1,19 +1,19 @@
 {
  "indeks": 2701,
- "ad": "Nakhon Sawan",
- "ulke": "Thailand",
- "d": 105,
+ "ad": "Kien Giang",
+ "ulke": "Vietnam",
+ "d": 102,
  "k": "tahmin",
- "s": "Nakhon Sawan",
+ "s": "Kien Giang",
  "p": [
   [
    [
-    -13080,
-    -13127,
-    13171,
-    13172,
-    13173,
-    13174
+    12862,
+    -12772,
+    -12777,
+    12863,
+    12864,
+    -12836
    ]
   ]
  ]

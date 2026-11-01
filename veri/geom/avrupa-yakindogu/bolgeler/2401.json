@@ -1,19 +1,17 @@
 {
  "indeks": 2401,
- "ad": "Mojaysk",
- "ulke": "Russia",
- "d": 39,
+ "ad": "Belfast",
+ "ulke": "United Kingdom",
+ "d": 60,
  "k": "tahmin",
- "s": "Mojaysk",
+ "s": "Belfast",
  "p": [
   [
    [
-    -11628,
-    -11583,
-    -11661,
-    11705,
-    11706,
-    11707
+    11346,
+    -11345,
+    11347,
+    11348
    ]
   ]
  ]

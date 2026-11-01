@@ -1,19 +1,17 @@
 {
  "indeks": 2248,
- "ad": "Lgov",
- "ulke": "Russia",
- "d": 35,
+ "ad": "Bideford",
+ "ulke": "United Kingdom",
+ "d": 58,
  "k": "tahmin",
- "s": "Lgov",
+ "s": "Bideford",
  "p": [
   [
    [
-    -11064,
-    -10977,
-    11146,
-    11147,
-    11148,
-    11149
+    -10549,
+    10829,
+    -10679,
+    10830
    ]
   ]
  ]

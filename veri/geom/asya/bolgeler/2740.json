@@ -1,18 +1,19 @@
 {
  "indeks": 2740,
- "ad": "Thakhek",
- "ulke": "Laos",
- "d": 103,
+ "ad": "Gadag-Betageri",
+ "ulke": "India",
+ "d": 118,
  "k": "tahmin",
- "s": "Thakhek",
+ "s": "Gadag-Betageri",
  "p": [
   [
    [
-    -13316,
-    -13258,
-    -13278,
-    13328,
-    13329
+    -13004,
+    -12964,
+    13028,
+    13029,
+    13030,
+    13031
    ]
   ]
  ]

@@ -1,17 +1,18 @@
 {
  "indeks": 2232,
- "ad": "Bideford",
- "ulke": "United Kingdom",
- "d": 58,
+ "ad": "Koblenz",
+ "ulke": "Germany",
+ "d": 70,
  "k": "tahmin",
- "s": "Bideford",
+ "s": "Koblenz",
  "p": [
   [
    [
-    -10739,
-    11090,
-    -10926,
-    11091
+    -10698,
+    -10659,
+    -10728,
+    10769,
+    10770
    ]
   ]
  ]

@@ -1,18 +1,19 @@
 {
  "indeks": 2846,
- "ad": "Lianzhu Town",
- "ulke": "China",
+ "ad": "Mengla Town",
+ "ulke": "Laos",
  "d": 97,
  "k": "tahmin",
- "s": "Lianzhu Town",
+ "s": "Mengla Town",
  "p": [
   [
    [
-    -13719,
-    -13711,
-    13803,
-    13804,
-    13805
+    -13375,
+    -13386,
+    -13474,
+    13485,
+    13486,
+    13487
    ]
   ]
  ]

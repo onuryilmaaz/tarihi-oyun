@@ -1,20 +1,18 @@
 {
  "indeks": 2118,
- "ad": "Greater Donetsk",
- "ulke": "Ukraine",
- "d": 32,
- "k": "ohm:2849500",
- "s": "Greater Donetsk",
+ "ad": "Karolvar",
+ "ulke": "Romania",
+ "d": 27,
+ "k": "tahmin",
+ "s": "Karolvar",
  "p": [
   [
    [
-    -10275,
-    -10288,
-    -9562,
-    10549,
-    10550,
-    10551,
-    10552
+    -10321,
+    -10214,
+    -10244,
+    10330,
+    10331
    ]
   ]
  ]

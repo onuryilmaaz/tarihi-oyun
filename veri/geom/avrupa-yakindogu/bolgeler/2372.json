@@ -1,17 +1,18 @@
 {
  "indeks": 2372,
- "ad": "Danzig",
- "ulke": "Poland",
- "d": 37,
+ "ad": "Marjina Horka",
+ "ulke": "Belarus",
+ "d": 35,
  "k": "tahmin",
- "s": "Danzig",
+ "s": "Marjina Horka",
  "p": [
   [
    [
-    -11589,
-    -11480,
-    -11551,
-    11590
+    -11174,
+    -11178,
+    11242,
+    11243,
+    -11224
    ]
   ]
  ]

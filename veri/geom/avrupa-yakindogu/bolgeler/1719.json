@@ -1,18 +1,20 @@
 {
  "indeks": 1719,
- "ad": "Meyyafarikin",
- "ulke": "Turkey",
- "d": 9,
+ "ad": "Erdebil",
+ "ulke": "Iran",
+ "d": 10,
  "k": "tahmin",
- "s": "Meyyafarikin",
+ "s": "Erdebil",
  "p": [
   [
    [
-    -8423,
-    -8294,
-    -8517,
-    8521,
-    8522
+    -8525,
+    -8281,
+    -8404,
+    8528,
+    8529,
+    8530,
+    8531
    ]
   ]
  ]

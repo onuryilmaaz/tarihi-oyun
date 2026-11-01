@@ -215,7 +215,8 @@ async function baslat() {
     $("donanmaPaneli").hidden = !f;
     if (!f) return;
     const kontrol = (b: number) => { const k = ozet.denizBolgeleri[b].kontrol; return k === null ? "" : ` (${k === ozet.oyuncu.indeks ? "sizde" : h.paket.devletler[k].ad})`; };
-    const limanlar = ozet.limanlar.flatMap((b, i) => (b >= 0 ? [i] : []));
+    const limanlar = f.hedefLimanlar; // TASK-0040: yalnızca çıkılabilecek limanlar (kendi, sahipsiz, savaştığınız)
+    const hedefSecimi = `<select id="cikarmaSehir">${limanlar.map((i) => `<option value="${i}">${kacis(senaryo.sehirler[i].ad)} (${kacis(bolgeAdi(ozet.limanlar[i]))})</option>`).join("")}</select>`;
     $("donanmaPaneli").innerHTML = `<b>${kacis(f.ad)}</b>
       <span>${gemiMetni(f.kadirga, f.kalyon)} · moral ${Math.round(f.moral / 10)} · taşıma ${f.kapasite.toLocaleString("tr-TR")} asker</span>
       <span>Konum: ${kacis(bolgeAdi(f.bolge))}${kontrol(f.bolge)}${f.rota.length ? ` · yolda: ${f.rota.map((b) => kacis(bolgeAdi(b))).join(" → ")} (${f.kalanGun + (f.rota.length - 1) * (f.kalyon ? DENGE.GEMI.kalyon.hizGun : DENGE.GEMI.kadirga.hizGun)} gün)` : ""}</span>
@@ -223,8 +224,11 @@ async function baslat() {
       ${f.emirBekliyor ? '<span class="not">Emir bekliyor; bir sonraki tur uygulanır.</span>' : `
       <label>Yelken aç: <select id="donanmaBolge">${ozet.denizBolgeleri.map((b, i) => i === f.bolge ? "" : `<option value="${i}">${kacis(b.ad)}${kontrol(i)}</option>`).join("")}</select></label>
       <button id="donanmaYelken">Yelken aç</button>
-      ${f.yuk ? "" : f.binebilir.length ? `<label>Çıkarma: <select id="cikarmaOrdu">${f.binebilir.map((o) => `<option value="${o.id}">${kacis(o.ad)} (${o.asker.toLocaleString("tr-TR")})</option>`).join("")}</select>
-        → <select id="cikarmaSehir">${limanlar.map((i) => `<option value="${i}">${kacis(senaryo.sehirler[i].ad)} (${kacis(bolgeAdi(ozet.limanlar[i]))})</option>`).join("")}</select></label>
+      ${!limanlar.length ? '<span class="not">Çıkarma yapılabilecek liman yok: yalnızca kendi, sahipsiz ya da savaştığınız devletin limanına çıkılır.</span>'
+        : f.yuk ? (f.cikarmaHedef === null && !f.rota.length ? `<label>Yeni çıkarma hedefi: <input type="hidden" id="cikarmaOrdu" value="${f.yuk.id}">${hedefSecimi}</label>
+        <button id="cikarmaBtn">Çıkarma yap</button>` : "")
+        : f.binebilir.length ? `<label>Çıkarma: <select id="cikarmaOrdu">${f.binebilir.map((o) => `<option value="${o.id}">${kacis(o.ad)} (${o.asker.toLocaleString("tr-TR")})</option>`).join("")}</select>
+        → ${hedefSecimi}</label>
         <button id="cikarmaBtn">Çıkarma yap</button>` : '<span class="not">Çıkarma için bir ordunuzu bu denizdeki kendi limanınıza götürün.</span>'}`}`;
   };
   const donanmaSec = (id: number | null) => { seciliDonanma = id; if (id !== null) sekmeAc("deniz"); donanmaArayuzu(); };
@@ -1109,7 +1113,7 @@ async function baslat() {
       const bolge = Number($<HTMLSelectElement>("donanmaBolge").value);
       await emirGonder({ tur: "donanmaHedef", donanma: seciliDonanma, bolge }, `Donanma ${ozet.denizBolgeleri[bolge].ad} yönüne yelken açacak (bir sonraki tur).`);
     } else if (id === "cikarmaBtn") {
-      const ordu = Number($<HTMLSelectElement>("cikarmaOrdu").value), sehir = Number($<HTMLSelectElement>("cikarmaSehir").value);
+      const ordu = Number($<HTMLInputElement>("cikarmaOrdu").value), sehir = Number($<HTMLSelectElement>("cikarmaSehir").value);
       await emirGonder({ tur: "cikarma", donanma: seciliDonanma, ordu, sehir }, `Çıkarma emri verildi: hedef ${senaryo.sehirler[sehir].ad}.`);
     }
   });

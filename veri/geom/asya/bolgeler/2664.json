@@ -1,17 +1,18 @@
 {
  "indeks": 2664,
- "ad": "Kakinada",
- "ulke": "India",
- "d": 118,
+ "ad": "Malakka",
+ "ulke": "Malaysia",
+ "d": 109,
  "k": "tahmin",
- "s": "Kakinada",
+ "s": "Malakka",
  "p": [
   [
    [
-    13035,
-    13036,
-    13037,
-    13038
+    12682,
+    12690,
+    12691,
+    12684,
+    -12680
    ]
   ]
  ]

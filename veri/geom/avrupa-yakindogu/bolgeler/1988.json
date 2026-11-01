@@ -1,19 +1,17 @@
 {
  "indeks": 1988,
- "ad": "Bobovac",
- "ulke": "Bosnia and Herzegovina",
- "d": 17,
- "k": "tahmin",
- "s": "Bobovac",
+ "ad": "Kerç",
+ "ulke": "Russia",
+ "d": 23,
+ "k": "ohm:2849500",
+ "s": "Kerç",
  "p": [
   [
    [
-    -9687,
-    -9387,
-    -9442,
-    -9569,
-    9689,
-    9690
+    9533,
+    9610,
+    -9607,
+    9609
    ]
   ]
  ]

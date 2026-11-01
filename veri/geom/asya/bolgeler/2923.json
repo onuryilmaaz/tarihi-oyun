@@ -1,22 +1,19 @@
 {
  "indeks": 2923,
- "ad": "Panchagarh Sadar Upazila",
- "ulke": "Bangladesh",
- "d": 114,
+ "ad": "Hezhou",
+ "ulke": "China",
+ "d": 97,
  "k": "tahmin",
- "s": "Panchagarh Sadar Upazila",
+ "s": "Hezhou",
  "p": [
   [
    [
-    -13973,
-    -13950,
-    -14035,
-    14077,
-    14078,
-    715,
-    1240,
-    1236,
-    -14040
+    -13700,
+    -13747,
+    13789,
+    13790,
+    13791,
+    -13740
    ]
   ]
  ]

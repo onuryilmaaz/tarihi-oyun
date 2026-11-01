@@ -1,19 +1,19 @@
 {
  "indeks": 2465,
- "ad": "Kostroma",
- "ulke": "Russia",
- "d": 39,
+ "ad": "Daugavpils",
+ "ulke": "Belarus",
+ "d": 38,
  "k": "tahmin",
- "s": "Kostroma",
+ "s": "Daugavpils",
  "p": [
   [
    [
-    -11915,
-    -11861,
-    -11742,
-    -11894,
-    11924,
-    11925
+    -11529,
+    -11484,
+    -11557,
+    11595,
+    11596,
+    11597
    ]
   ]
  ]

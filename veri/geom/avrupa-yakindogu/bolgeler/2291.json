@@ -1,24 +1,18 @@
 {
  "indeks": 2291,
- "ad": "Urban settlement Uchaly",
- "ulke": "Russia",
- "d": 34,
+ "ad": "Krotoszyn",
+ "ulke": "Poland",
+ "d": 36,
  "k": "tahmin",
- "s": "Urban settlement Uchaly",
+ "s": "Krotoszyn",
  "p": [
   [
    [
-    11275,
-    11276,
-    11311,
-    11312,
-    -11268,
-    11313,
-    11314,
-    -10105,
-    11308,
-    11309,
-    11310
+    -10886,
+    -10902,
+    10963,
+    10964,
+    10965
    ]
   ]
  ]

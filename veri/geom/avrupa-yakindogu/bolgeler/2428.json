@@ -1,18 +1,15 @@
 {
  "indeks": 2428,
- "ad": "Kolçugino",
- "ulke": "Russia",
- "d": 39,
+ "ad": "Nakskov",
+ "ulke": "Denmark",
+ "d": 74,
  "k": "tahmin",
- "s": "Kolçugino",
+ "s": "Nakskov",
  "p": [
   [
    [
-    -11754,
-    -11739,
-    11794,
-    11795,
-    11796
+    11447,
+    11448
    ]
   ]
  ]

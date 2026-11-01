@@ -1,17 +1,16 @@
 {
  "indeks": 2491,
- "ad": "Tihvin",
- "ulke": "Russia",
- "d": 40,
+ "ad": "Ventspils",
+ "ulke": "Latvia",
+ "d": 38,
  "k": "tahmin",
- "s": "Tihvin",
+ "s": "Ventspils",
  "p": [
   [
    [
-    -12018,
-    -11958,
-    -11985,
-    12037
+    11623,
+    -11738,
+    11704
    ]
   ]
  ]

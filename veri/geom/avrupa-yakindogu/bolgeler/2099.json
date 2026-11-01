@@ -1,17 +1,18 @@
 {
  "indeks": 2099,
- "ad": "Bruck an der Mur",
- "ulke": "Austria",
- "d": 65,
+ "ad": "Saumur",
+ "ulke": "France",
+ "d": 57,
  "k": "tahmin",
- "s": "Bruck an der Mur",
+ "s": "Saumur",
  "p": [
   [
    [
-    -10377,
-    -10416,
-    10435,
-    10436
+    -10054,
+    -10114,
+    10248,
+    10249,
+    -10042
    ]
   ]
  ]

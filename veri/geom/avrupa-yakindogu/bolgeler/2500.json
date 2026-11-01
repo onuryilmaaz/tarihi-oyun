@@ -1,19 +1,21 @@
 {
  "indeks": 2500,
- "ad": "Murinsky urban settlement",
+ "ad": "Zakamsk",
  "ulke": "Russia",
- "d": 40,
+ "d": 39,
  "k": "tahmin",
- "s": "Murinsky urban settlement",
+ "s": "Zakamsk",
  "p": [
   [
    [
-    12123,
-    -12010,
-    -12020,
-    12124,
-    12125,
-    12126
+    -11725,
+    11769,
+    11770,
+    11771,
+    -11753,
+    11772,
+    11773,
+    -11767
    ]
   ]
  ]

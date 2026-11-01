@@ -1,18 +1,19 @@
 {
  "indeks": 2467,
- "ad": "Rıbinsk",
- "ulke": "Russia",
- "d": 39,
+ "ad": "Kristianstad",
+ "ulke": "Sweden",
+ "d": 75,
  "k": "tahmin",
- "s": "Rıbinsk",
+ "s": "Kristianstad",
  "p": [
   [
    [
-    -11905,
-    -11917,
-    11929,
-    11930,
-    -11912
+    -11493,
+    11601,
+    11602,
+    11603,
+    11604,
+    -11599
    ]
   ]
  ]

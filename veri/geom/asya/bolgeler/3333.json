@@ -1,20 +1,17 @@
 {
  "indeks": 3333,
- "ad": "Jezkazgan",
- "ulke": "Kazakhstan",
- "d": 91,
+ "ad": "Taşkent",
+ "ulke": "Uzbekistan",
+ "d": 90,
  "k": "tahmin",
- "s": "Jezkazgan",
+ "s": "Taşkent",
  "p": [
   [
    [
-    -15502,
-    -15485,
-    -15451,
-    -15471,
-    -15552,
-    15557,
-    -15512
+    -15256,
+    -15174,
+    -15189,
+    15268
    ]
   ]
  ]

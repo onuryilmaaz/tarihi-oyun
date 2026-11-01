@@ -1,19 +1,22 @@
 {
  "indeks": 2777,
- "ad": "Luang Prabang",
- "ulke": "Laos",
- "d": 103,
+ "ad": "Zhangzhou",
+ "ulke": "China",
+ "d": 97,
  "k": "tahmin",
- "s": "Luang Prabang",
+ "s": "Zhangzhou",
  "p": [
   [
    [
-    -13406,
-    -13409,
-    -13429,
-    13492,
-    13493,
-    -13482
+    -13101,
+    13173,
+    13174,
+    13175
+   ]
+  ],
+  [
+   [
+    13176
    ]
   ]
  ]

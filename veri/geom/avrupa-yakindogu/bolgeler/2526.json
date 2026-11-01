@@ -1,18 +1,19 @@
 {
  "indeks": 2526,
- "ad": "Rovaniemi",
- "ulke": "Finland",
- "d": 75,
+ "ad": "Novgorod",
+ "ulke": "Russia",
+ "d": 40,
  "k": "tahmin",
- "s": "Rovaniemi",
+ "s": "Novgorod",
  "p": [
   [
    [
-    -12358,
-    12386,
-    -12330,
-    12387,
-    12388
+    -11744,
+    -11791,
+    -11849,
+    11859,
+    11860,
+    11861
    ]
   ]
  ]

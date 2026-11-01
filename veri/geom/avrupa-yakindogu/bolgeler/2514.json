@@ -1,20 +1,19 @@
 {
  "indeks": 2514,
- "ad": "Kondopozhskoye urban settlement",
+ "ad": "Kostroma",
  "ulke": "Russia",
- "d": 40,
+ "d": 39,
  "k": "tahmin",
- "s": "Kondopozhskoye urban settlement",
+ "s": "Kostroma",
  "p": [
   [
    [
-    -12185,
-    -12178,
-    -11983,
-    -12114,
-    12223,
-    12224,
-    12225
+    -11804,
+    -11750,
+    -11580,
+    -11783,
+    11813,
+    11814
    ]
   ]
  ]

@@ -1,19 +1,18 @@
 {
  "indeks": 3295,
- "ad": "Hejing Town",
- "ulke": "China",
- "d": 92,
+ "ad": "Semerkant",
+ "ulke": "Uzbekistan",
+ "d": 90,
  "k": "tahmin",
- "s": "Hejing Town",
+ "s": "Semerkant",
  "p": [
   [
    [
-    -15304,
-    -15264,
-    -15364,
-    15403,
-    15404,
-    15405
+    -15032,
+    -15023,
+    -15048,
+    15140,
+    15141
    ]
   ]
  ]

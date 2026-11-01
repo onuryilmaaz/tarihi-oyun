@@ -1,19 +1,17 @@
 {
  "indeks": 1947,
- "ad": "Perugia",
- "ulke": "Italy",
- "d": 44,
- "k": "ohm:2888200",
- "s": "Perugia",
+ "ad": "Ventimiglia",
+ "ulke": "France",
+ "d": 23,
+ "k": "tahmin",
+ "s": "Ventimiglia",
  "p": [
   [
    [
-    -8918,
-    -9350,
-    9421,
-    9422,
-    9423,
-    -9258
+    -9181,
+    9428,
+    9429,
+    9430
    ]
   ]
  ]

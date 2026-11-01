@@ -1,17 +1,18 @@
 {
  "indeks": 3150,
- "ad": "Lanzhou",
- "ulke": "China",
- "d": 97,
+ "ad": "Kabil",
+ "ulke": "Afghanistan",
+ "d": 90,
  "k": "tahmin",
- "s": "Lanzhou",
+ "s": "Kabil",
  "p": [
   [
    [
-    -14856,
-    -14815,
-    14922,
-    14923
+    -14366,
+    -14495,
+    -14615,
+    14639,
+    14640
    ]
   ]
  ]

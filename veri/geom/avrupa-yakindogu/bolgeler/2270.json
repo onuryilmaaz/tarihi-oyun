@@ -1,17 +1,19 @@
 {
  "indeks": 2270,
- "ad": "Ipswich",
- "ulke": "United Kingdom",
- "d": 58,
+ "ad": "Wieluń",
+ "ulke": "Poland",
+ "d": 36,
  "k": "tahmin",
- "s": "Ipswich",
+ "s": "Wieluń",
  "p": [
   [
    [
-    -11187,
-    11219,
-    11220,
-    11221
+    -10885,
+    -10778,
+    -10848,
+    10899,
+    10900,
+    10901
    ]
   ]
  ]

@@ -1,19 +1,18 @@
 {
  "indeks": 2321,
- "ad": "Piła",
- "ulke": "Poland",
- "d": 36,
+ "ad": "Brandenburg an der Havel",
+ "ulke": "Germany",
+ "d": 69,
  "k": "tahmin",
- "s": "Piła",
+ "s": "Brandenburg an der Havel",
  "p": [
   [
    [
-    -11377,
-    -11344,
-    11407,
-    11408,
-    11409,
-    11410
+    11030,
+    -11079,
+    -11078,
+    -11077,
+    11001
    ]
   ]
  ]

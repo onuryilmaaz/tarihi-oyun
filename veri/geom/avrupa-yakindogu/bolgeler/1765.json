@@ -1,19 +1,17 @@
 {
  "indeks": 1765,
- "ad": "Çaldıran",
- "ulke": "Iran",
- "d": 10,
- "k": "tahmin",
- "s": "Çaldıran",
+ "ad": "Alcázar de San Juan",
+ "ulke": "Spain",
+ "d": 52,
+ "k": "ohm:2849131",
+ "s": "Alcázar de San Juan",
  "p": [
   [
    [
-    -8565,
-    -8633,
-    8718,
-    8719,
-    8720,
-    -8715
+    -8688,
+    -8670,
+    8726,
+    8727
    ]
   ]
  ]

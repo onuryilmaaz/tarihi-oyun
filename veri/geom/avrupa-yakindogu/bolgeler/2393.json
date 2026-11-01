@@ -1,17 +1,19 @@
 {
  "indeks": 2393,
- "ad": "Newcastle upon Tyne",
- "ulke": "United Kingdom",
- "d": 58,
+ "ad": "Olsztyn",
+ "ulke": "Poland",
+ "d": 37,
  "k": "tahmin",
- "s": "Newcastle upon Tyne",
+ "s": "Olsztyn",
  "p": [
   [
    [
-    -11636,
-    -11578,
-    11666,
-    11667
+    -11203,
+    -11207,
+    -11295,
+    11322,
+    11323,
+    -11266
    ]
   ]
  ]

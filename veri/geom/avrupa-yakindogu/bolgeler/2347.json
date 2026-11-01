@@ -1,19 +1,20 @@
 {
  "indeks": 2347,
- "ad": "Chishminsky possoviet",
+ "ad": "Mtsensk",
  "ulke": "Russia",
- "d": 34,
+ "d": 35,
  "k": "tahmin",
- "s": "Chishminsky possoviet",
+ "s": "Mtsensk",
  "p": [
   [
    [
-    -11334,
-    -11432,
-    11491,
-    11492,
-    11493,
-    11494
+    -10892,
+    -10930,
+    -11062,
+    11157,
+    11158,
+    11159,
+    -11155
    ]
   ]
  ]

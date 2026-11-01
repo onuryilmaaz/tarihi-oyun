@@ -1,19 +1,18 @@
 {
  "indeks": 2419,
- "ad": "Kristianstad",
- "ulke": "Sweden",
- "d": 75,
+ "ad": "Ryazan",
+ "ulke": "Russia",
+ "d": 43,
  "k": "tahmin",
- "s": "Kristianstad",
+ "s": "Ryazan",
  "p": [
   [
    [
-    -11695,
-    11763,
-    11764,
-    11765,
-    11766,
-    -11761
+    -11275,
+    -11250,
+    11415,
+    11416,
+    11417
    ]
   ]
  ]

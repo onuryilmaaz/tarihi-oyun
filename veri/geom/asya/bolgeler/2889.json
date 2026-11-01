@@ -1,19 +1,19 @@
 {
  "indeks": 2889,
- "ad": "Kunming",
- "ulke": "China",
- "d": 97,
+ "ad": "Dighinala Upazila",
+ "ulke": "Bangladesh",
+ "d": 114,
  "k": "tahmin",
- "s": "Kunming",
+ "s": "Dighinala Upazila",
  "p": [
   [
    [
-    -13925,
-    -13821,
-    -13930,
-    13951,
-    13952,
-    13953
+    -13573,
+    13675,
+    1271,
+    1789,
+    13676,
+    -13586
    ]
   ]
  ]

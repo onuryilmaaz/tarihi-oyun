@@ -1,19 +1,22 @@
 {
  "indeks": 2656,
- "ad": "Coimbatore",
- "ulke": "India",
- "d": 118,
+ "ad": "Trowulan",
+ "ulke": "Indonesia",
+ "d": 111,
  "k": "tahmin",
- "s": "Coimbatore",
+ "s": "Trowulan",
  "p": [
   [
    [
-    -12958,
-    -12961,
-    -12964,
-    12997,
-    12998,
-    -12980
+    12649,
+    12650,
+    12651,
+    -12648
+   ]
+  ],
+  [
+   [
+    12652
    ]
   ]
  ]

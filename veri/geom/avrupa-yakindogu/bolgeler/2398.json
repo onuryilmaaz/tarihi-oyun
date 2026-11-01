@@ -1,18 +1,19 @@
 {
  "indeks": 2398,
- "ad": "Vitebsk",
- "ulke": "Belarus",
- "d": 35,
+ "ad": "Nurlat urban settlement",
+ "ulke": "Russia",
+ "d": 33,
  "k": "tahmin",
- "s": "Vitebsk",
+ "s": "Nurlat urban settlement",
  "p": [
   [
    [
-    -11656,
-    -11600,
-    -11604,
-    11698,
-    11699
+    -10826,
+    11335,
+    11336,
+    11337,
+    11338,
+    11339
    ]
   ]
  ]

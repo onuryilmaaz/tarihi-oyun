@@ -1,15 +1,17 @@
 {
  "indeks": 1767,
- "ad": "Ibiza",
- "ulke": "Spain",
- "d": 53,
- "k": "ohm:2751179",
- "s": "Ibiza",
+ "ad": "Dikili",
+ "ulke": "Turkey",
+ "d": 0,
+ "k": "tahmin",
+ "s": "Dikili",
  "p": [
   [
    [
-    8505,
-    8723
+    8559,
+    -8737,
+    -8736,
+    -8735
    ]
   ]
  ]

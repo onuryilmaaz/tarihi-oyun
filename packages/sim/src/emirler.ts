@@ -14,7 +14,7 @@ import { bekleyenVerasetiCoz, tahtaCikar } from "./hanedan";
 import { iskanBedeli, nufusCikar } from "./nufus";
 import { ambargoVar } from "./ticaret";
 import { GOREV_TURLERI, gorevEngeli, type GorevTuru } from "./casusluk";
-import { bolgeGunu, denizYolu, GEMI_TURLERI, kapasite, type GemiTuru } from "./deniz";
+import { bolgeGunu, cikarmaEngeli, denizYolu, GEMI_TURLERI, kapasite, type GemiTuru } from "./deniz";
 import {
   diplomasiOnHesap, etkiEkle, hediyePuani, ittifakBoz, ittifakDegerlendir, ittifakKur, muttefik, muttefikleri, savasIlaniSonuclari,
   saldirmazlikDegerlendir, saldirmazlikKur, saldirmazlikVar, ticaretAnlasmasiBoz, ticaretAnlasmasiKur, ticaretAnlasmasiVar, ticaretDegerlendir,
@@ -259,15 +259,23 @@ export function emirDogrula(d: DunyaDurumu, e: Emir, b: Baglam = BOS_BAGLAM, kuy
       return { gecerli: true };
     }
     case "cikarma": {
-      const f = d.donanmalar.find((x) => x.id === e.donanma), o = orduBul(d, e.ordu), s = d.sehirler[e.sehir];
+      const f = d.donanmalar.find((x) => x.id === e.donanma);
+      // TASK-0040: gemideki ordu (inemedi ya da hedefsiz) yeni hedefe gönderilebilir
+      const gemide = f?.yuk && f.yuk.id === e.ordu ? f.yuk : null;
+      const o = gemide ?? orduBul(d, e.ordu), s = d.sehirler[e.sehir];
       if (!f || !o || !s || o.devlet !== f.devlet) return { gecerli: false, neden: "Kendi donanmanızı, ordunuzu ve hedef limanı seçin." };
-      if (f.yuk || f.rota.length) return { gecerli: false, neden: "Donanma boş ve demirli olmalı." };
-      if (o.rota.length || o.muharebe !== null || o.cekiliyor || orduKusatmasi(d, o.id)) return { gecerli: false, neden: "Ordu beklemede olmalı (yürüyüş, muharebe ve kuşatma dışında)." };
-      const liman = d.sehirler.findIndex((c, i) => d.deniz.limanlar[i] === f.bolge && c.kontrol === o.devlet && sehirMenzilinde(d, b, o, i));
-      if (liman < 0) return { gecerli: false, neden: "Ordu, donanmanın bulunduğu denizdeki kendi limanınızda olmalı." };
-      if (o.asker > kapasite(f)) return { gecerli: false, neden: `Taşıma kapasitesi yetersiz: ${kapasite(f)} asker taşınabilir.` };
+      if ((f.yuk && !gemide) || f.rota.length) return { gecerli: false, neden: gemide ? "Donanma demirli olmalı." : "Donanma boş ve demirli olmalı." };
+      let liman = -1;
+      if (!gemide) {
+        if (o.rota.length || o.muharebe !== null || o.cekiliyor || orduKusatmasi(d, o.id)) return { gecerli: false, neden: "Ordu beklemede olmalı (yürüyüş, muharebe ve kuşatma dışında)." };
+        liman = d.sehirler.findIndex((c, i) => d.deniz.limanlar[i] === f.bolge && c.kontrol === o.devlet && sehirMenzilinde(d, b, o, i));
+        if (liman < 0) return { gecerli: false, neden: "Ordu, donanmanın bulunduğu denizdeki kendi limanınızda olmalı." };
+        if (o.asker > kapasite(f)) return { gecerli: false, neden: `Taşıma kapasitesi yetersiz: ${kapasite(f)} asker taşınabilir.` };
+      }
       const hb = d.deniz.limanlar[e.sehir] ?? -1;
       if (hb < 0 || e.sehir === liman) return { gecerli: false, neden: "Hedef başka bir liman şehri olmalı." };
+      const engel = cikarmaEngeli(d, b, o.devlet, e.sehir);
+      if (engel) return { gecerli: false, neden: engel };
       if (denizYolu(d, f.bolge, hb) === null) return { gecerli: false, neden: "Hedef limana deniz yolu yok." };
       if (!kuyrukHaric && d.emirKuyrugu.some((x) => ("donanma" in x && x.donanma === e.donanma) || ("ordu" in x && x.ordu === e.ordu))) return { gecerli: false, neden: "Bu donanma ya da ordu için bekleyen emir var." };
       return { gecerli: true };
@@ -761,7 +769,7 @@ export function emirUygula(d: DunyaDurumu, e: Emir, b: Baglam = BOS_BAGLAM): voi
       break;
     }
     case "cikarma": {
-      const f = d.donanmalar.find((x) => x.id === e.donanma)!, o = orduBul(d, e.ordu)!;
+      const f = d.donanmalar.find((x) => x.id === e.donanma)!, o = f.yuk?.id === e.ordu ? f.yuk : orduBul(d, e.ordu)!;
       d.ordular = d.ordular.filter((x) => x !== o);
       f.yuk = o; f.cikarmaHedef = e.sehir;
       f.rota = denizYolu(d, f.bolge, d.deniz.limanlar[e.sehir])!;

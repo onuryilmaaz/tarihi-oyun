@@ -1,17 +1,19 @@
 {
  "indeks": 3065,
- "ad": "Dahekan Town",
- "ulke": "China",
- "d": 97,
+ "ad": "Multan",
+ "ulke": "Pakistan",
+ "d": 122,
  "k": "tahmin",
- "s": "Dahekan Town",
+ "s": "Multan",
  "p": [
   [
    [
-    -14539,
-    -14507,
-    14596,
-    14597
+    -14251,
+    -14175,
+    -14263,
+    14295,
+    14296,
+    14297
    ]
   ]
  ]

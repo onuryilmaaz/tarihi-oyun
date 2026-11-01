@@ -1,18 +1,19 @@
 {
  "indeks": 2297,
- "ad": "Priyutovsky possoviet",
- "ulke": "Russia",
- "d": 34,
- "k": "ohm:2849493",
- "s": "Priyutovsky possoviet",
+ "ad": "Cottbus",
+ "ulke": "Germany",
+ "d": 69,
+ "k": "tahmin",
+ "s": "Cottbus",
  "p": [
   [
    [
-    -11085,
-    -10108,
-    11332,
-    11333,
-    11334
+    -10869,
+    -10899,
+    -10961,
+    10986,
+    10987,
+    10988
    ]
   ]
  ]

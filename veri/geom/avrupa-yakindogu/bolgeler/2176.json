@@ -1,20 +1,20 @@
 {
  "indeks": 2176,
- "ad": "Olomouc",
- "ulke": "Czech Republic",
- "d": 66,
- "k": "ohm:2830504",
- "s": "Olomouc",
+ "ad": "Schwäbisch Hall",
+ "ulke": "Germany",
+ "d": 72,
+ "k": "tahmin",
+ "s": "Schwäbisch Hall",
  "p": [
   [
    [
-    -10825,
-    -10775,
-    10868,
-    10869,
-    10870,
-    10871,
-    10872
+    -10503,
+    -10423,
+    10586,
+    10587,
+    10588,
+    10589,
+    10590
    ]
   ]
  ]

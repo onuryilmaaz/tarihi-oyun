@@ -1,19 +1,22 @@
 {
  "indeks": 2928,
- "ad": "Nagu Town",
- "ulke": "China",
- "d": 97,
+ "ad": "Sylhet Sadar Upazila",
+ "ulke": "Bangladesh",
+ "d": 114,
  "k": "tahmin",
- "s": "Nagu Town",
+ "s": "Sylhet Sadar Upazila",
  "p": [
   [
    [
-    -14038,
-    -13953,
-    -14012,
-    14095,
-    14096,
-    14097
+    -13763,
+    13811,
+    1795,
+    13812,
+    -13786,
+    13813,
+    1798,
+    13814,
+    13815
    ]
   ]
  ]

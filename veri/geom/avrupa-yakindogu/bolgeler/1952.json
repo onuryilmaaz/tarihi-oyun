@@ -1,17 +1,19 @@
 {
  "indeks": 1952,
- "ad": "Makhachkala agglomeration",
+ "ad": "Dagomys",
  "ulke": "Russia",
- "d": 14,
- "k": "tahmin",
- "s": "Makhachkala agglomeration",
+ "d": 15,
+ "k": "ohm:2965979",
+ "s": "Dagomys",
  "p": [
   [
    [
-    -9235,
-    -9294,
-    9437,
-    9438
+    9444,
+    -9374,
+    9445,
+    9446,
+    9447,
+    9448
    ]
   ]
  ]

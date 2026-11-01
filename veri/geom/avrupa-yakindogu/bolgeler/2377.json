@@ -1,18 +1,19 @@
 {
  "indeks": 2377,
- "ad": "Kasimov",
- "ulke": "Russia",
- "d": 43,
+ "ad": "Neubrandenburg",
+ "ulke": "Germany",
+ "d": 71,
  "k": "tahmin",
- "s": "Kasimov",
+ "s": "Neubrandenburg",
  "p": [
   [
    [
-    -11592,
-    -11455,
-    -11288,
-    11604,
-    11605
+    -11229,
+    -11193,
+    -11234,
+    11262,
+    11263,
+    11264
    ]
   ]
  ]

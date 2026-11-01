@@ -1,19 +1,18 @@
 {
  "indeks": 3034,
- "ad": "Qushan Town",
+ "ad": "Anchang Town",
  "ulke": "China",
  "d": 97,
  "k": "tahmin",
- "s": "Qushan Town",
+ "s": "Anchang Town",
  "p": [
   [
    [
-    14464
-   ]
-  ],
-  [
-   [
-    14465
+    14160,
+    -14182,
+    -14181,
+    14124,
+    14098
    ]
   ]
  ]

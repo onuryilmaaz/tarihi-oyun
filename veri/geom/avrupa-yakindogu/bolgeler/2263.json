@@ -1,20 +1,17 @@
 {
  "indeks": 2263,
- "ad": "Novaya Usman",
- "ulke": "Russia",
- "d": 32,
+ "ad": "Brugge",
+ "ulke": "Belgium",
+ "d": 61,
  "k": "tahmin",
- "s": "Novaya Usman",
+ "s": "Brugge",
  "p": [
   [
    [
-    -10975,
-    -10979,
-    -10733,
-    11195,
-    11196,
-    11197,
-    -11183
+    10808,
+    -10875,
+    10866,
+    10745
    ]
   ]
  ]

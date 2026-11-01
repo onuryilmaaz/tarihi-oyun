@@ -1,17 +1,19 @@
 {
  "indeks": 2071,
- "ad": "Mariupol",
- "ulke": "Ukraine",
- "d": 30,
- "k": "ohm:2849500",
- "s": "Mariupol",
+ "ad": "Varsedin",
+ "ulke": "Croatia",
+ "d": 27,
+ "k": "tahmin",
+ "s": "Varsedin",
  "p": [
   [
    [
-    10286,
-    -9563,
-    10287,
-    -10274
+    -10026,
+    -9965,
+    -10060,
+    10150,
+    10151,
+    10152
    ]
   ]
  ]

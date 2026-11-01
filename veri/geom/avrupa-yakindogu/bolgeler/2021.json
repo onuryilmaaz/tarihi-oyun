@@ -1,17 +1,19 @@
 {
  "indeks": 2021,
- "ad": "Vršac",
- "ulke": "Romania",
- "d": 27,
+ "ad": "Alessandria",
+ "ulke": "Italy",
+ "d": 46,
  "k": "tahmin",
- "s": "Vršac",
+ "s": "Alessandria",
  "p": [
   [
    [
-    9828,
-    -9971,
-    -9970,
-    -9969
+    9522,
+    9716,
+    -9857,
+    -9856,
+    -9855,
+    9655
    ]
   ]
  ]

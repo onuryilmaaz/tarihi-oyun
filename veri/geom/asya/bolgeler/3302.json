@@ -1,18 +1,19 @@
 {
  "indeks": 3302,
- "ad": "Korday",
- "ulke": "Kyrgyzstan",
- "d": 92,
+ "ad": "Qinhuangdao",
+ "ulke": "China",
+ "d": 97,
  "k": "tahmin",
- "s": "Korday",
+ "s": "Qinhuangdao",
  "p": [
   [
    [
-    -15389,
-    -15348,
-    -15352,
-    -15445,
-    15447
+    -15110,
+    15164,
+    15165,
+    15166,
+    15167,
+    15168
    ]
   ]
  ]

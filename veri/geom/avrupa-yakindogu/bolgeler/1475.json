@@ -1,17 +1,16 @@
 {
  "indeks": 1475,
- "ad": "Kudüs",
- "ulke": "West Bank",
+ "ad": "Bingazi",
+ "ulke": "Libya",
  "d": 11,
  "k": "ohm:2960096",
- "s": "Kudüs",
+ "s": "Bingazi",
  "p": [
   [
    [
-    -7508,
-    -7416,
-    7572,
-    7573
+    -7093,
+    -7576,
+    7589
    ]
   ]
  ]

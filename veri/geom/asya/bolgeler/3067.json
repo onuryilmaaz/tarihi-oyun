@@ -1,20 +1,14 @@
 {
  "indeks": 3067,
- "ad": "Nanyang",
- "ulke": "China",
- "d": 97,
+ "ad": "Jeju",
+ "ulke": "South Korea",
+ "d": 98,
  "k": "tahmin",
- "s": "Nanyang",
+ "s": "Jeju",
  "p": [
   [
    [
-    -14543,
-    -14513,
-    -14535,
-    14602,
-    14603,
-    14604,
-    14605
+    14302
    ]
   ]
  ]

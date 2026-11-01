@@ -1,17 +1,20 @@
 {
  "indeks": 2706,
- "ad": "Wancheng Town",
- "ulke": "China",
- "d": 97,
+ "ad": "Phnom Penh",
+ "ulke": "Vietnam",
+ "d": 102,
  "k": "tahmin",
- "s": "Wancheng Town",
+ "s": "Phnom Penh",
  "p": [
   [
    [
-    13186,
-    13187,
-    -13182,
-    13188
+    -12837,
+    -12865,
+    12891,
+    12892,
+    12893,
+    12894,
+    12895
    ]
   ]
  ]

@@ -1,19 +1,17 @@
 {
  "indeks": 2678,
- "ad": "Hindupur",
- "ulke": "India",
- "d": 118,
+ "ad": "Kuala Terengganu",
+ "ulke": "Malaysia",
+ "d": 109,
  "k": "tahmin",
- "s": "Hindupur",
+ "s": "Kuala Terengganu",
  "p": [
   [
    [
-    -13070,
-    -13041,
-    -13053,
-    13089,
-    13090,
-    13091
+    -12739,
+    12754,
+    12755,
+    12756
    ]
   ]
  ]

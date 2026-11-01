@@ -1,17 +1,19 @@
 {
  "indeks": 2452,
- "ad": "Elgin",
- "ulke": "United Kingdom",
- "d": 59,
+ "ad": "Polatsak",
+ "ulke": "Belarus",
+ "d": 35,
  "k": "tahmin",
- "s": "Elgin",
+ "s": "Polatsak",
  "p": [
   [
    [
-    -11800,
-    -11871,
-    11885,
-    -9747
+    -11483,
+    -11471,
+    -11498,
+    11554,
+    11555,
+    11556
    ]
   ]
  ]

@@ -83,7 +83,7 @@ export interface Ozet {
   denizBolgeleri: { ad: string; kontrol: number | null; komsu: number[] }[];
   limanlar: number[]; // şehir → bölge (−1: liman değil)
   donanmalar: { id: number; ad: string; bolge: number; kadirga: number; kalyon: number; moral: number; rota: number[]; kalanGun: number;
-    kapasite: number; yuk: { ad: string; asker: number } | null; cikarmaHedef: number | null; emirBekliyor: boolean;
+    kapasite: number; yuk: { id: number; ad: string; asker: number } | null; cikarmaHedef: number | null; emirBekliyor: boolean; hedefLimanlar: number[]; // TASK-0040: çıkılabilir limanlar
     binebilir: { id: number; ad: string; asker: number }[] }[];
   yabanciDonanmalar: { id: number; ad: string; devlet: number; bolge: number; yaklasikGemi: number }[];
   ticaret: ({ taban: number; gelir: number; yuzde: number; nedenler: string[] } | null)[]; // kendi liman şehirleri (8b)

@@ -1,24 +1,19 @@
 {
  "indeks": 2223,
- "ad": "Christchurch",
- "ulke": "United Kingdom",
- "d": 58,
+ "ad": "Coburg",
+ "ulke": "Germany",
+ "d": 67,
  "k": "tahmin",
- "s": "Christchurch",
+ "s": "Coburg",
  "p": [
   [
    [
-    11027,
-    11062
-   ]
-  ],
-  [
-   [
-    11059,
-    -11034,
-    11060,
-    11061,
-    -11025
+    -10683,
+    -10619,
+    -10666,
+    10738,
+    10739,
+    10740
    ]
   ]
  ]

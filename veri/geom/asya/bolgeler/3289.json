@@ -1,17 +1,20 @@
 {
  "indeks": 3289,
- "ad": "Kangbao Town",
+ "ad": "Jartai Town",
  "ulke": "China",
- "d": 97,
+ "d": 94,
  "k": "tahmin",
- "s": "Kangbao Town",
+ "s": "Jartai Town",
  "p": [
   [
    [
-    -15338,
-    -15311,
-    -15380,
-    15387
+    -15064,
+    -14966,
+    -15026,
+    15119,
+    15120,
+    15121,
+    15122
    ]
   ]
  ]

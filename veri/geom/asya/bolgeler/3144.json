@@ -1,17 +1,19 @@
 {
  "indeks": 3144,
- "ad": "Sanju Town",
- "ulke": "China",
- "d": 92,
+ "ad": "Srinagar",
+ "ulke": "India",
+ "d": 121,
  "k": "tahmin",
- "s": "Sanju Town",
+ "s": "Srinagar",
  "p": [
   [
    [
-    -14589,
-    -14861,
-    14906,
-    -14905
+    -14537,
+    -14521,
+    14615,
+    698,
+    14616,
+    14617
    ]
   ]
  ]

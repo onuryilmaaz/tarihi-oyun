@@ -1,18 +1,19 @@
 {
  "indeks": 2341,
- "ad": "Leeds",
- "ulke": "United Kingdom",
- "d": 58,
+ "ad": "Cloppenburg",
+ "ulke": "Germany",
+ "d": 72,
  "k": "tahmin",
- "s": "Leeds",
+ "s": "Cloppenburg",
  "p": [
   [
    [
-    -11447,
-    -11393,
-    11472,
-    11473,
-    11474
+    -11073,
+    -11029,
+    -11101,
+    11138,
+    11139,
+    11140
    ]
   ]
  ]

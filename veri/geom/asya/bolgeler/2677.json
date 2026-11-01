@@ -1,18 +1,23 @@
 {
  "indeks": 2677,
- "ad": "Banlung",
- "ulke": "Cambodia",
- "d": 102,
+ "ad": "Bukit Mertarajam",
+ "ulke": "Malaysia",
+ "d": 109,
  "k": "tahmin",
- "s": "Banlung",
+ "s": "Bukit Mertarajam",
  "p": [
   [
    [
-    13086,
-    -13033,
-    -13050,
-    13087,
-    13088
+    12749
+   ]
+  ],
+  [
+   [
+    12750,
+    -12675,
+    12751,
+    12752,
+    12753
    ]
   ]
  ]

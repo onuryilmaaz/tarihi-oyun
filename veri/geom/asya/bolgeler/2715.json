@@ -1,18 +1,17 @@
 {
  "indeks": 2715,
- "ad": "Lufeng",
- "ulke": "China",
- "d": 97,
+ "ad": "Kanchipuram",
+ "ulke": "India",
+ "d": 118,
  "k": "tahmin",
- "s": "Lufeng",
+ "s": "Kanchipuram",
  "p": [
   [
    [
-    13219,
-    13220,
-    -13190,
-    13221,
-    13222
+    12920,
+    -12937,
+    -12936,
+    -12935
    ]
   ]
  ]

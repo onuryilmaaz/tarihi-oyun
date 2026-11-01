@@ -1,20 +1,19 @@
 {
  "indeks": 2504,
- "ad": "Borlänge",
+ "ad": "Northeast Göteborg",
  "ulke": "Sweden",
  "d": 75,
  "k": "tahmin",
- "s": "Borlänge",
+ "s": "Northeast Göteborg",
  "p": [
   [
    [
-    -12015,
-    -12033,
-    -12135,
-    12167,
-    12168,
-    12169,
-    12170
+    11708,
+    -11789,
+    -11788,
+    -11787,
+    -11786,
+    11736
    ]
   ]
  ]

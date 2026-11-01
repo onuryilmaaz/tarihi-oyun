@@ -1,20 +1,17 @@
 {
  "indeks": 2236,
- "ad": "Częstochowa",
- "ulke": "Poland",
- "d": 66,
+ "ad": "Berezan",
+ "ulke": "Ukraine",
+ "d": 35,
  "k": "tahmin",
- "s": "Częstochowa",
+ "s": "Berezan",
  "p": [
   [
    [
-    -11041,
-    -11016,
-    -10950,
-    11105,
-    11106,
-    11107,
-    11108
+    10790,
+    10791,
+    10792,
+    -10787
    ]
   ]
  ]

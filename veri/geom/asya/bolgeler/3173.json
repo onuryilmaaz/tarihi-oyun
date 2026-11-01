@@ -1,19 +1,16 @@
 {
  "indeks": 3173,
- "ad": "Tirmiz",
- "ulke": "Afghanistan",
- "d": 90,
+ "ad": "Yantai",
+ "ulke": "China",
+ "d": 97,
  "k": "tahmin",
- "s": "Tirmiz",
+ "s": "Yantai",
  "p": [
   [
    [
-    -14917,
-    -14874,
-    -14958,
-    15004,
-    15005,
-    15006
+    14742,
+    14743,
+    14744
    ]
   ]
  ]
