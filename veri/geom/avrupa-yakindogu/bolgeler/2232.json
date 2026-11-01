@@ -1,18 +1,24 @@
 {
  "indeks": 2232,
- "ad": "Koblenz",
- "ulke": "Germany",
- "d": 70,
+ "ad": "Brighton/Worthing/Littlehampton",
+ "ulke": "United Kingdom",
+ "d": 58,
  "k": "tahmin",
- "s": "Koblenz",
+ "s": "Brighton/Worthing/Littlehampton",
  "p": [
   [
    [
-    -10698,
-    -10659,
-    -10728,
-    10769,
-    10770
+    10755,
+    10760
+   ]
+  ],
+  [
+   [
+    10750,
+    -10760,
+    -10759,
+    -10758,
+    -10757
    ]
   ]
  ]

@@ -1,18 +1,20 @@
 {
  "indeks": 2562,
- "ad": "Hudiksvall",
- "ulke": "Sweden",
- "d": 75,
+ "ad": "Kondopozhskoye urban settlement",
+ "ulke": "Russia",
+ "d": 40,
  "k": "tahmin",
- "s": "Hudiksvall",
+ "s": "Kondopozhskoye urban settlement",
  "p": [
   [
    [
-    -12058,
-    -12073,
-    12109,
-    12110,
-    12111
+    -12050,
+    -12043,
+    -11859,
+    -11988,
+    12064,
+    12065,
+    12066
    ]
   ]
  ]

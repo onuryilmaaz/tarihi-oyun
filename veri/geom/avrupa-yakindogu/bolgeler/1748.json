@@ -1,20 +1,14 @@
 {
  "indeks": 1748,
- "ad": "Albacete City",
- "ulke": "Spain",
- "d": 52,
- "k": "ohm:2849131",
- "s": "Albacete City",
+ "ad": "Korfu",
+ "ulke": "Albania",
+ "d": 22,
+ "k": "tahmin",
+ "s": "Korfu",
  "p": [
   [
    [
-    -8316,
-    -8540,
-    8666,
-    8667,
-    8668,
-    8669,
-    8670
+    8668
    ]
   ]
  ]

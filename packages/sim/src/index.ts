@@ -34,3 +34,4 @@ export * from "./birim";
 export * from "./elci";
 export * from "./sehir";
 export * from "./sancaklar";
+export * from "./askeri-yonetim";

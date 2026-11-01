@@ -161,6 +161,23 @@ function devletiBol(T, k, sehirler, yukseklik, nehirler, { sehirKipi = false } =
       }
     }
   });
+  // TASK-0041: kaynak poligonları birbirine tam değmez (birden çok kaynak; aralarında ince boşluk). Izgarada komşu
+  // hücreleri farklı parçaya düşen poligonlar tek kara parçası sayılır; yoksa her kırıntı ayrı "ada" gibi bölünür ve
+  // kaynağın kıvrımlı sınırı oyun sınırına taşınır. Boğaz gibi gerçek dar sular da birleşir; karşı yakaya taşan kopuk
+  // parça birim-birlestir.mjs'de komşu şehre verilir.
+  const parcaKok = T.map((_, pi) => pi);
+  const kokBul = (x) => (parcaKok[x] === x ? x : (parcaKok[x] = kokBul(parcaKok[x])));
+  for (let c = 0; c < N; c++) {
+    if (!ic[c]) continue;
+    const i = c % W;
+    for (const n of [i + 1 < W ? c + 1 : -1, c + W < N ? c + W : -1, i + 1 < W && c + W + 1 < N ? c + W + 1 : -1, i > 0 && c + W - 1 < N ? c + W - 1 : -1]) {
+      if (n < 0 || !ic[n] || ic[n] === ic[c]) continue;
+      const a = kokBul(ic[c] - 1), b = kokBul(ic[n] - 1);
+      if (a !== b) parcaKok[Math.max(a, b)] = Math.min(a, b);
+    }
+  }
+  const parcaBileseni = (pi) => kokBul(pi) + 1; // T poligonu → kara parçası kimliği
+  for (let c = 0; c < N; c++) if (ic[c]) ic[c] = parcaBileseni(ic[c] - 1);
 
   // --- Maliyet: yükseklik ve nehir hücreleri
   const z = new Float32Array(N), nehir = new Uint8Array(N);
@@ -409,7 +426,7 @@ function devletiBol(T, k, sehirler, yukseklik, nehirler, { sehirKipi = false } =
     // Bölge yalnızca kendi hücrelerinin bulunduğu kara parçalarıyla (ve hiç bölgesi olmayan adalarla) kesişir;
     // böylece dar bir boğazın karşı kıyısındaki, hücreye düşmeyen ince kıyı şeridi bu bölgeye geçmez
     const parcalar = parcaEtiket.get(e) ?? new Set();
-    const izinli = T.filter((_, pi) => parcalar.has(pi + 1) || !etiketliParca.has(pi + 1));
+    const izinli = T.filter((_, pi) => parcalar.has(parcaBileseni(pi)) || !etiketliParca.has(parcaBileseni(pi)));
     const mp = izinli.length && ham.length ? polygonClipping.intersection(izinli, ham) : [];
     if (!mp.length) continue;
     const ornek = [];
@@ -419,7 +436,7 @@ function devletiBol(T, k, sehirler, yukseklik, nehirler, { sehirKipi = false } =
   // Boşluklar (kara parçasının hiçbir bölgeye düşmeyen ince kıyı şeritleri): aynı kara parçasındaki en yakın bölgeye
   // Kara parçası başına küçük fark işlemleri (tek büyük işlem polygon-clipping'de sayısal hataya düşebiliyor)
   T.forEach((P, pi) => {
-    const adaylar = sonuc.filter((b) => b.parcalar.has(pi + 1));
+    const adaylar = sonuc.filter((b) => b.parcalar.has(parcaBileseni(pi)));
     if (!adaylar.length) return;
     let bosluk;
     try { bosluk = polygonClipping.difference([P], ...adaylar.map((b) => b.mp)); } catch { return; }

@@ -1,20 +1,20 @@
 {
  "indeks": 1788,
- "ad": "Hankendi",
- "ulke": "Azerbaijan",
- "d": 10,
+ "ad": "Erzincan",
+ "ulke": "Turkey",
+ "d": 9,
  "k": "tahmin",
- "s": "Hankendi",
+ "s": "Erzincan",
  "p": [
   [
    [
-    8806,
-    -8761,
-    -8641,
-    -8744,
-    8807,
+    -8643,
+    -8700,
     8808,
-    8809
+    8809,
+    8810,
+    8811,
+    -8761
    ]
   ]
  ]

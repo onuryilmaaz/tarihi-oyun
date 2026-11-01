@@ -1,5 +1,16 @@
 # CHANGELOG
 
+## 2026-11-01 — TASK-0041: Age of History karşılaştırması (Codex)
+
+- II, III ve Definitive Edition için resmî kaynaklar güncel kodla karşılaştırıldı; 15 eksik/sınırlı alan,
+  4 ek iç iyileştirme alanı ve bilinçli kapsam farkları belgelendi.
+- Rapor: `docs/qa/AGE-OF-HISTORY-KARSILASTIRMA.md`. Üretim kodu veya oyun kuralı değişmedi; öneriler onaylı değil.
+
+## 2026-11-01 — TASK-0041: harita geometrisi temizliği (Claude)
+
+- Bölgelerin içindeki 415 küçük delik (çizgi kırıntısı) kapandı. Karaya kapalı kopuk devlet parçaları başlangıçta komşuya
+  geçer (9 şehir); kıyılı deniz aşırı topraklar kalır. Gelibolu'nun karşı yaka parçası düzeldi.
+
 ## 2026-11-01 — TASK-0040: şehirsiz toprak kırıntıları ve çıkarma düzeltmeleri (Claude)
 
 - Başkentsiz/şehirsiz devletler de şehir merkezli bölüşüme girdi (HRE torbası, İrlanda, Çerkes, Cürçen); şehirsiz bölge

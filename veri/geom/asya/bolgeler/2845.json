@@ -1,17 +1,19 @@
 {
  "indeks": 2845,
- "ad": "Debagarh",
- "ulke": "India",
- "d": 120,
+ "ad": "Mengla Town",
+ "ulke": "Laos",
+ "d": 97,
  "k": "tahmin",
- "s": "Debagarh",
+ "s": "Mengla Town",
  "p": [
   [
    [
-    -13428,
-    -13127,
-    13483,
-    13484
+    -13331,
+    -13342,
+    -13442,
+    13448,
+    13449,
+    13450
    ]
   ]
  ]

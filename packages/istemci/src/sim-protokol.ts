@@ -42,6 +42,10 @@ export interface OrduOzeti {
   maas: number;
   maasAksiyor: boolean;
   bolunebilir: boolean;
+  terhisUygun: boolean;
+  terhisNedeni: string | null;
+  takviye: { hedef: number; aylikButce: number; bekleyenAsker: number; sehir: string | null } | null;
+  duzenlemeBekliyor: boolean;
   birlesebilir: number[];
   kusatma: number | null;
   kusatilabilir: number[];

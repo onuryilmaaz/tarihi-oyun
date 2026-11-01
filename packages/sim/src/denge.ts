@@ -148,6 +148,9 @@ export const DENGE = {
   YZ_ASKER_ARAZI_BASINA: 300, // barışta hedef ordu büyüklüğü (arazi başına)
   YZ_TEHDIT_ASKER_CARPANI: 2, // tehdit altında hedef ordu bu kat
   YZ_MAAS_NET_YUZDE: 50, // yeni askerin maaşı aylık fazlanın en çok bu yüzdesi
+  YZ_BUTCE_MAAS_YUZDE: 80, // TASK-0043: barışta sürdürülebilir maaş / gelir hedefi [TASLAK]
+  YZ_TERHIS_EN_COK_YUZDE: 25, // bir aylık kararda mevcut askerin en çok bu kadarı [TASLAK]
+  TAKVIYE_EN_COK_ASKER: 1000000, // hedef sayısının hesap sınırı [TASLAK]
   YZ_TOPLAMA_EN_AZ: 500,
   YZ_DUSMANCA_ESIK: -40, // bu ilişkideki büyük komşu tehdit sayılır
   YZ_OKCU_OLASILIK: 6, // TASK-0021 (3/4): tehdit yokken /10 ihtimalle piyade yerine ucuz okçu toplanır

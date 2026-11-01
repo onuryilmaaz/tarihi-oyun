@@ -6,6 +6,7 @@ import { HAREKET, rotaBul, type HareketAgi } from "./hareket";
 import { savasta, sayiMetni } from "./savas";
 import type { Baglam } from "./emirler";
 import { BIRIM_TURLERI, kompozisyonCikar, kompozisyonHizi, kompozisyonTopla, kompozisyonOransalAl, toplamaMaliyetiYuzde, aylikMaasYuzde, tekTurKompozisyon, type BirimTuru, type Kompozisyon } from "./birim";
+import { sehirMenzilinde } from "./kusatma";
 
 // yuzde: teknoloji indirimi (Asker Kayıt Defterleri, 5c); varsayılan indirimsiz. birim: TASK-0019, varsayılan piyade
 // (piyadenin maliyetYuzde'si 100 olduğu için eski çağrılar aynı sonucu verir).
@@ -46,6 +47,11 @@ export function toplamalariIlerlet(d: DunyaDurumu, b: Baglam): void {
   d.askerToplamalar = d.askerToplamalar.filter((t) => {
     const s = d.sehirler[t.sehir];
     const n = b.ag?.dugumler[s.dugum];
+    const takviyeHedefi = t.takviye === undefined ? undefined : d.ordular.find((o) => o.id === t.takviye && o.devlet === t.devlet);
+    // Hedef hareket/kuşatma/muharebedeyse toplama bekler. Ordu yok olmuşsa askerler şehirde normal ordu olur.
+    if (takviyeHedefi && (takviyeHedefi.dugum !== s.dugum || takviyeHedefi.rota.length || takviyeHedefi.cekiliyor
+      || takviyeHedefi.muharebe !== null || d.kusatmalar.some((k) => k.ordular.includes(takviyeHedefi.id))
+      || !sehirMenzilinde(d, b, takviyeHedefi, t.sehir))) return true;
     // Şehir veya çevresi işgal altındaysa toplama bekler; para/insan gücü yeniden alınmaz.
     if (s.istikrar.ayaklanma || !n || s.devlet !== t.devlet || s.kontrol !== t.devlet || d.birimler[n.b]?.kontrol !== t.devlet) return true;
     t.kalanGun = Math.max(0, t.kalanGun - 1);
@@ -54,7 +60,7 @@ export function toplamalariIlerlet(d: DunyaDurumu, b: Baglam): void {
     const kompozisyon = tekTurKompozisyon(t.birim, t.asker);
     // Şehirde bekleyen kendi ordusu varsa yeni askerler ona katılır (yürüyüş, muharebe, geri çekilme ve kuşatma dışında)
     // Toplanma şehrinin kendi parçası orada bekleyen orduya katılır; uzaktaki parçalar yürüyüp varınca katılır
-    const bekleyen = t.toplanma === undefined || t.toplanma === t.sehir ? toplanmaOrdusu(d, t.devlet, s.dugum) : undefined;
+    const bekleyen = takviyeHedefi ?? (t.toplanma === undefined || t.toplanma === t.sehir ? toplanmaOrdusu(d, t.devlet, s.dugum) : undefined);
     if (bekleyen) {
       bekleyen.moral = Math.floor((bekleyen.moral * bekleyen.asker + DENGE.MORAL_EN_YUKSEK * t.asker) / (bekleyen.asker + t.asker));
       bekleyen.kompozisyon = kompozisyonTopla(bekleyen.kompozisyon, kompozisyon);

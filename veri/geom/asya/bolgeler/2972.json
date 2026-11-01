@@ -1,22 +1,23 @@
 {
  "indeks": 2972,
- "ad": "Panchagarh Sadar Upazila",
- "ulke": "Bangladesh",
- "d": 114,
+ "ad": "Goalpara",
+ "ulke": "India",
+ "d": 124,
  "k": "tahmin",
- "s": "Panchagarh Sadar Upazila",
+ "s": "Goalpara",
  "p": [
   [
    [
-    -13865,
-    -13842,
-    -13927,
-    13969,
-    13970,
-    715,
-    1246,
-    1242,
-    -13932
+    -13879,
+    13927,
+    1807,
+    13928,
+    -13919,
+    13929,
+    -748,
+    742,
+    739,
+    13930
    ]
   ]
  ]

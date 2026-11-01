@@ -1,18 +1,18 @@
 {
  "indeks": 1718,
- "ad": "Meyyafarikin",
- "ulke": "Turkey",
- "d": 9,
+ "ad": "Tebriz",
+ "ulke": "Iran",
+ "d": 10,
  "k": "tahmin",
- "s": "Meyyafarikin",
+ "s": "Tebriz",
  "p": [
   [
    [
-    -8428,
-    -8299,
-    -8522,
-    8526,
-    8527
+    -8372,
+    -8376,
+    8543,
+    8544,
+    -8405
    ]
   ]
  ]

@@ -108,7 +108,9 @@ function birlestir(harita, esik, haric) {
   B.forEach((b, i) => {
     if (birimParcalari[i].length < 2 || haric.has(i)) return;
     const c = b.s ? sehirNoktasi.get(b.s) : undefined;
-    const sehirParcasi = c ? birimParcalari[i].find((pi) => icinde(halka(parcalar[pi].p[0]), c.x, c.y)) : undefined;
+    // Kıyıdaki şehir noktası hiçbir parçaya düşmeyebilir: o zaman en büyük parça şehrin parçasıdır
+    const sehirParcasi = c ? birimParcalari[i].find((pi) => icinde(halka(parcalar[pi].p[0]), c.x, c.y))
+      ?? birimParcalari[i].reduce((a, pi) => (parcalar[pi].alan > parcalar[a].alan ? pi : a)) : undefined;
     const sirali = [...birimParcalari[i]].sort((x, y) => (y === sehirParcasi) - (x === sehirParcasi) || parcalar[y].alan - parcalar[x].alan);
     for (const pi of sirali.slice(1)) {
       if (sehirParcasi !== undefined) {

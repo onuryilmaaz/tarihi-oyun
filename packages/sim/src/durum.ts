@@ -177,6 +177,7 @@ export interface OrduDurumu {
   cekiliyor: boolean; // yenilgi sonrası geri çekilme yürüyüşü
   muharebe: number | null; // katıldığı muharebe kimliği
   toplanma?: number; // TASK-0036: varınca bu şehirde bekleyen kendi ordusuyla birleşir
+  takviye?: { hedef: Kompozisyon; aylikButce: number; sonAy: number }; // TASK-0043: hedef tür sayıları, aylık tavan
 }
 
 export interface OlayKaydi {
@@ -201,6 +202,7 @@ export interface AskerToplama {
   kalanGun: number;
   bedel: number; // iptalde tam iade edilen tutar (sonradan teknolojiyle oran değişse de sabit kalır)
   toplanma?: number; // TASK-0036: hazır olunca bu şehre yürür ve oradaki orduya katılır
+  takviye?: number; // TASK-0043: tamamlanınca katılacağı ordu; yok olduysa normal ordu olur
 }
 
 export interface DunyaDurumu {
@@ -317,7 +319,7 @@ export interface SenaryoVerisi {
 // 5: kuşatma, gerçek işgal ve barış (TASK-0007/4c); şema 3–4 için eklemeli dönüşüm var.
 // Şema geçmişi: 6 şehir yatırımları (5b), 7 teknoloji (5c), 8 diplomasi (6a), 9 AI ekonomi (6b), 10 AI savaş/barış (6c),
 // 11 hükümdar ve veraset (7a), 12 nüfus grupları ve iskân (7b), 13 istikrar (7c), 14 yerel yönetim (7d)
-export const SEMA_SURUMU = 29; // geliştirme sürümü; eski kayıtlar taşınmaz (DEC-0075). 29: sancak/eyalet (TASK-0029)
+export const SEMA_SURUMU = 30; // TASK-0043: ordu takviyesi; eski kayıtlar taşınmaz (DEC-0075).
 // 19 vergi oranı ve hazine geçmişi (TASK-0017), 18 arazi verimi (9b), 15 donanma ve deniz (8a), 16 ticaret ve ambargo (8b), 17 casusluk (8c)
 
 export function baslangicDurumu(s: SenaryoVerisi, secenek: { tohum: number; oyuncu?: string }): DunyaDurumu {
@@ -491,7 +493,8 @@ export function degismezler(d: DunyaDurumu): string[] {
     for (const t of d.askerToplamalar) {
       if (!t || !tam(t.sehir) || !d.sehirler[t.sehir] || !tam(t.devlet) || !d.devletler[t.devlet]
         || !tam(t.asker) || t.asker <= 0 || !tam(t.kalanGun) || t.kalanGun < 0 || !tam(t.id) || !tam(t.bedel) || t.bedel < 0
-        || !BIRIM_TURLERI.includes(t.birim) || (t.toplanma !== undefined && (!tam(t.toplanma) || !d.sehirler[t.toplanma]))) h.push("asker toplama geçersiz");
+        || !BIRIM_TURLERI.includes(t.birim) || (t.toplanma !== undefined && (!tam(t.toplanma) || !d.sehirler[t.toplanma]))
+        || (t.takviye !== undefined && (!tam(t.takviye) || t.takviye < 1 || t.takviye >= d.sonrakiOrduId || t.toplanma !== undefined))) h.push("asker toplama geçersiz");
       else if (toplamaIdler.has(t.id)) h.push(`asker toplama kimliği tekrar ediyor: ${t.id}`);
       else toplamaIdler.add(t.id);
     }
@@ -509,6 +512,9 @@ export function degismezler(d: DunyaDurumu): string[] {
     if (![o.x, o.y, o.dugum, o.hiz, o.ilerleme].every(tam) || o.hiz <= 0) h.push(`ordu ${i} konum/hız tam sayı değil`);
     if (o.rota.some((a) => ![a.x, a.y, a.d, a.m].every(tam) || a.m <= 0)) h.push(`ordu ${i} rotası geçersiz`);
     if (o.toplanma !== undefined && (!tam(o.toplanma) || !d.sehirler[o.toplanma])) h.push(`ordu ${i} toplanma yeri geçersiz`); // TASK-0036
+    if (o.takviye && (!o.takviye.hedef || !BIRIM_TURLERI.every((t) => tam(o.takviye!.hedef[t]) && o.takviye!.hedef[t] >= 0)
+      || kompozisyonToplami(o.takviye.hedef) <= 0 || kompozisyonToplami(o.takviye.hedef) > DENGE.TAKVIYE_EN_COK_ASKER
+      || !tam(o.takviye.aylikButce) || o.takviye.aylikButce < 1 || !tam(o.takviye.sonAy))) h.push(`ordu ${i} takviye ayarı geçersiz`);
     if (o.rota.length && o.ilerleme >= o.rota[0].m) h.push(`ordu ${i} ilerlemesi adımı aşıyor`);
     if (!tam(o.moral) || o.moral < 0 || o.moral > DENGE.MORAL_EN_YUKSEK) h.push(`ordu ${i} morali geçersiz`);
     if (o.muharebe !== null && !d.muharebeler.some((m) => m.id === o.muharebe)) h.push(`ordu ${i} olmayan bir muharebede`);

@@ -12,7 +12,10 @@ import { agUret, etopoOku } from "./ag-uret.mjs";
 import { bolgeleriUret } from "./bolge-uret.mjs";
 import { sehirleriSec } from "./sehir-sec.mjs";
 import { birimleriBirlestir } from "./birim-birlestir.mjs";
+import { devletleriButunle, kucukDelikleriKapat } from "./devlet-butunle.mjs";
 import { denizAlanlariUret } from "./deniz-alan-uret.mjs";
+import { kiyiGeometrisiniTamamla } from "./geometri-kiyi.mjs";
+import { geometriyiDenetle } from "./geometri-kontrol.mjs";
 
 const kok = new URL("../", import.meta.url);
 const kaynak = new URL("prototypes/harita-gorsel-02/public/veri/", kok);
@@ -33,7 +36,15 @@ const { harita: bolgeli, rapor: bolgeRaporu } = bolgeleriUret(sehirli, etopo, { 
 const { harita: birlesik, rapor: birlesimRaporu } = birimleriBirlestir(bolgeli);
 // TASK-0023: deniz bölgelerinin seçilebilir alanları karadan türetilir (deniz-alan-uret.mjs)
 const { alanlar: denizAlanlari, sinirlar: denizSinirlari } = denizAlanlariUret(birlesik, JSON.parse(fs.readFileSync(new URL("deniz.json", hedef), "utf8")));
-const harita = { ...birlesik, denizAlanlari, denizSinirlari };
+let harita = { ...birlesik, denizAlanlari, denizSinirlari };
+// TASK-0041: başlangıçta karaya kapalı kopuk devlet parçası olmaz (devlet-butunle.mjs)
+const { rapor: butunlemeRaporu } = devletleriButunle(harita);
+console.log("devlet bütünleme:", JSON.stringify(butunlemeRaporu));
+console.log("kapanan küçük delik:", kucukDelikleriKapat(harita).kapanan);
+// TASK-0042: şehir noktaları korunur; kıyı yerel Natural Earth kaynağından tamamlanır.
+const kiyi = kiyiGeometrisiniTamamla(harita, JSON.parse(fs.readFileSync(new URL("prototypes/harita-gorsel-02/veri-ham/ne_10m_admin_0_countries.geojson", kok), "utf8")));
+harita = kiyi.harita;
+console.log("şehir kıyı düzeltmeleri:", kiyi.rapor.map((r) => r.sehir));
 const haritaMetni = JSON.stringify(harita);
 const { ag, rapor, dugumBul } = agUret(harita, new URL("veri-ham/etopo2022-0.2deg.csv", kok));
 const surum = crypto.createHash("sha256").update(haritaMetni).update(JSON.stringify(ag)).digest("hex").slice(0, 10);
@@ -76,6 +87,10 @@ const birimBul = (x, y) => {
   });
   return en;
 };
+const sehirBirimi = (s) => {
+  const i = harita.birimler.findIndex((b) => b.s === s.ad);
+  return i >= 0 ? i : birimBul(s.x, s.y);
+};
 
 const devletler = harita.devletler.map((d) => ({ id: d.id, ad: d.ad }));
 // TASK-0025 şehir bilgileri [TASLAK]: nüfus (tahmin tablosu yoksa günümüz nüfusundan), gelişmişlik, tür, gelir kaynağı
@@ -116,20 +131,20 @@ const senaryo = {
   sehirler: harita.sehirler.map((s) => ({
     ad: s.ad,
     devlet: harita.devletler[s.d].id,
-    birim: (() => { const i = harita.birimler.findIndex((b) => b.s === s.ad); return i >= 0 ? i : birimBul(s.x, s.y); })(),
+    birim: sehirBirimi(s),
     baskent: s.b === 1,
     nufus: nufusTahmini(s), // 1453 tahmini (sehir-nufus.json, 9b); yoksa günümüz nüfusundan (TASK-0025) ya da eski test değeri
     ...sehirBilgisi(s, nufusTahmini(s)),
     ...(s.qid ? { qid: s.qid } : {}),
     ...(s.modernAd ? { modernAd: s.modernAd } : {}), // TASK-0034
-    dugum: dugumBul(s.x, millerLat(s.y)), // hareket ağındaki düğüm (ordu konuşlanması, geri çekilme hedefi)
+    dugum: dugumBul(s.x, millerLat(s.y), sehirBirimi(s)), // şehir kendi toprağının düğümüne bağlanır
     x: Math.round(s.x * 10000),
     y: Math.round(s.y * 10000),
   })),
   // DEC-0025/4: yalnızca oyuncu devlete 2 test ordusu [TASLAK — asker sayıları test değeri]
   ordular: [["Rumeli Ordusu", "Edirne", 20000], ["Anadolu Ordusu", "Bursa", 12000]].map(([ad, sehirAd, asker]) => {
     const s = harita.sehirler.find((c) => c.ad === sehirAd);
-    const dugum = dugumBul(s.x, millerLat(s.y));
+    const dugum = dugumBul(s.x, millerLat(s.y), sehirBirimi(s));
     if (dugum < 0) throw new Error(`ordu düğümü bulunamadı: ${sehirAd}`);
     return { ad, devlet: harita.devletler[s.d].id, asker, dugum, x: Math.round(s.x * 10000), y: Math.round(s.y * 10000) };
   }),
@@ -144,7 +159,6 @@ const senaryo = {
   deniz: (({ bolgeler, limanlar, bogazlar, donanmalar }) => ({ bolgeler, limanlar, bogazlar, donanmalar }))(JSON.parse(fs.readFileSync(new URL("deniz.json", hedef), "utf8"))),
 };
 
-fs.writeFileSync(new URL("harita.json", hedef), haritaMetni);
 // TASK-0029: Osmanlı sancakları — her Osmanlı şehri kendi kıtasındaki en yakın sancak merkezine bağlanır (sancaklar.json)
 {
   const v = JSON.parse(fs.readFileSync(new URL("sancaklar.json", hedef), "utf8"));
@@ -264,6 +278,9 @@ fs.writeFileSync(new URL("harita.json", hedef), haritaMetni);
   });
   console.log("limanlar:", { elle: elle.size, yeni });
 }
+const geometriKontrolu = geometriyiDenetle(harita, senaryo);
+if (geometriKontrolu.hatalar.length) throw new Error(`Geometri doğrulaması: ${geometriKontrolu.hatalar.join("; ")}`);
+fs.writeFileSync(new URL("harita.json", hedef), haritaMetni);
 fs.writeFileSync(new URL("senaryo.json", hedef), JSON.stringify(senaryo));
 fs.copyFileSync(new URL("wikidata-1453.json", kaynak), new URL("wikidata.json", hedef));
 const birimsiz = senaryo.sehirler.filter((s) => s.birim < 0).map((s) => s.ad);

@@ -1,17 +1,18 @@
 {
  "indeks": 2758,
- "ad": "Yasothon",
- "ulke": "Thailand",
- "d": 105,
+ "ad": "Belgaum",
+ "ulke": "India",
+ "d": 118,
  "k": "tahmin",
- "s": "Yasothon",
+ "s": "Belgaum",
  "p": [
   [
    [
-    -13026,
-    -13035,
-    13090,
-    13091
+    -12659,
+    -12964,
+    -12991,
+    13055,
+    13056
    ]
   ]
  ]

@@ -1,19 +1,18 @@
 {
  "indeks": 1651,
- "ad": "Piranşehr",
- "ulke": "Iran",
- "d": 10,
- "k": "tahmin",
- "s": "Piranşehr",
+ "ad": "Vibo Valentia",
+ "ulke": "Italy",
+ "d": 45,
+ "k": "ohm:2751179",
+ "s": "Vibo Valentia",
  "p": [
   [
    [
-    -8064,
-    -8083,
-    -8165,
-    8188,
-    8189,
-    8190
+    8088,
+    8198,
+    8199,
+    8200,
+    8201
    ]
   ]
  ]

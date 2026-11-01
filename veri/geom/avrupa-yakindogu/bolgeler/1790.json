@@ -1,19 +1,19 @@
 {
  "indeks": 1790,
- "ad": "Potenza",
- "ulke": "Italy",
- "d": 45,
+ "ad": "Barrio Arroyo",
+ "ulke": "Spain",
+ "d": 52,
  "k": "ohm:2751179",
- "s": "Potenza",
+ "s": "Barrio Arroyo",
  "p": [
   [
    [
+    -8665,
+    -8707,
+    -8792,
+    8816,
     8817,
-    8818,
-    8819,
-    8820,
-    8821,
-    8822
+    8818
    ]
   ]
  ]

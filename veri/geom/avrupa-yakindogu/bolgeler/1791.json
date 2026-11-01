@@ -1,19 +1,19 @@
 {
  "indeks": 1791,
- "ad": "Corigliano Calabro",
+ "ad": "Potenza",
  "ulke": "Italy",
  "d": 45,
  "k": "ohm:2751179",
- "s": "Corigliano Calabro",
+ "s": "Potenza",
  "p": [
   [
    [
     8823,
-    -8073,
-    -8406,
     8824,
     8825,
-    -8819
+    8826,
+    8827,
+    8828
    ]
   ]
  ]

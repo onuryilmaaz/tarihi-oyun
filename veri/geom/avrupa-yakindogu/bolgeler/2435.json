@@ -1,18 +1,19 @@
 {
  "indeks": 2435,
- "ad": "Liepieĺ",
- "ulke": "Belarus",
+ "ad": "Kaunas",
+ "ulke": "Lithuania",
  "d": 35,
  "k": "tahmin",
- "s": "Liepieĺ",
+ "s": "Kaunas",
  "p": [
   [
    [
+    11453,
     -11388,
-    -11425,
-    11469,
-    11470,
-    11471
+    -11417,
+    11454,
+    11455,
+    -11449
    ]
   ]
  ]

@@ -1,17 +1,14 @@
 {
  "indeks": 1682,
- "ad": "Mardin",
- "ulke": "Turkey",
- "d": 9,
+ "ad": "Lefkada",
+ "ulke": "Greece",
+ "d": 22,
  "k": "tahmin",
- "s": "Mardin",
+ "s": "Lefkada",
  "p": [
   [
    [
-    -8057,
-    -8296,
-    8333,
-    -8232
+    8355
    ]
   ]
  ]

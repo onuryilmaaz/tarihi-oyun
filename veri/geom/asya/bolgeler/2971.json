@@ -1,20 +1,22 @@
 {
  "indeks": 2971,
- "ad": "Kanpur",
- "ulke": "India",
- "d": 113,
+ "ad": "Panchagarh Sadar Upazila",
+ "ulke": "Bangladesh",
+ "d": 114,
  "k": "tahmin",
- "s": "Kanpur",
+ "s": "Panchagarh Sadar Upazila",
  "p": [
   [
    [
-    -13804,
-    -13779,
-    -13900,
-    13966,
-    13967,
-    13968,
-    -13896
+    -13831,
+    -13808,
+    -13881,
+    13925,
+    13926,
+    715,
+    1246,
+    1242,
+    -13886
    ]
   ]
  ]

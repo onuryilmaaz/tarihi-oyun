@@ -1,20 +1,19 @@
 {
  "indeks": 1796,
- "ad": "Talavera de la Reina",
- "ulke": "Spain",
- "d": 52,
- "k": "ohm:2849131",
- "s": "Talavera de la Reina",
+ "ad": "Bayezid",
+ "ulke": "Turkey",
+ "d": 10,
+ "k": "tahmin",
+ "s": "Bayezid",
  "p": [
   [
    [
-    -8702,
-    -8579,
-    -8690,
-    8843,
-    8844,
-    8845,
-    -8794
+    -8724,
+    -8729,
+    8847,
+    8848,
+    8849,
+    8850
    ]
   ]
  ]

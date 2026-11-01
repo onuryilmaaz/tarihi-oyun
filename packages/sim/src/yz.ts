@@ -17,6 +17,7 @@ import { barisKararlari, savasKarari } from "./yz-savas";
 import { diplomatikTeklifKarari } from "./yz-diplomasi";
 import { aylikMaasYuzde, toplamaMaliyetiYuzde, type BirimTuru } from "./birim";
 import { yapiSeviyeGeliri } from "./yatirim";
+import { yzButceToparla } from "./askeri-yonetim";
 
 /** Tehdit nedeni (herkesin bildiği bilgilerden) ya da null. */
 export function tehditNedeni(d: DunyaDurumu, on: DiplomasiOnHesap, devlet: number): string | null {
@@ -31,6 +32,7 @@ export function tehditNedeni(d: DunyaDurumu, on: DiplomasiOnHesap, devlet: numbe
 
 /** Bir AI devletinin aylık kararı: yedeği koru, kalanı tehdide göre asker, araştırma ve yatırıma ayır. */
 export function devletKarari(d: DunyaDurumu, b: Baglam, on: DiplomasiOnHesap, devlet: number, gelirler = prototipGelirleri(d)): void {
+  yzButceToparla(d, b, devlet, gelirler[devlet]);
   // Bütçeden yalnızca maaş, net ve asker sayısı gerekir; gelirler günde bir kez hesaplanır (1300 şehirde belirgin hızlı)
   const aylikMaas = devletMaasi(d, devlet);
   const butce = { aylikMaas, aylikNet: gelirler[devlet] - aylikMaas, askerSayisi: toplamAskerSayisi(d, devlet) };

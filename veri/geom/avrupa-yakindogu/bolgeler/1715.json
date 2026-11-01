@@ -1,18 +1,17 @@
 {
  "indeks": 1715,
- "ad": "Siirt",
- "ulke": "Turkey",
- "d": 9,
- "k": "tahmin",
- "s": "Siirt",
+ "ad": "Aiyion",
+ "ulke": "Greece",
+ "d": 2,
+ "k": "tahmin-elle",
+ "s": "Aiyion",
  "p": [
   [
    [
-    -8298,
-    -8302,
-    8519,
-    8520,
-    8521
+    8392,
+    -8534,
+    8265,
+    7976
    ]
   ]
  ]

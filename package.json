@@ -12,7 +12,10 @@
     "build": "npm run build -w @tarihi/istemci",
     "senaryo": "node araclar/senaryo-uret.mjs",
     "harita:ayristir": "node araclar/harita-ayristir.mjs",
-    "harita:derle": "node araclar/harita-derle.mjs"
+    "harita:derle": "node araclar/harita-derle.mjs",
+    "geometri:kontrol": "node araclar/geometri-kontrol.mjs",
+    "geometri:test": "node --test araclar/test/*.test.mjs",
+    "geometri:duzelt": "node araclar/geometri-uygula.mjs"
   },
   "devDependencies": {
     "polygon-clipping": "^0.15.7",

@@ -1,19 +1,20 @@
 {
  "indeks": 1747,
- "ad": "Cihanbeyli",
- "ulke": "Turkey",
- "d": 5,
- "k": "tahmin",
- "s": "Cihanbeyli",
+ "ad": "Albacete City",
+ "ulke": "Spain",
+ "d": 52,
+ "k": "ohm:2849131",
+ "s": "Albacete City",
  "p": [
   [
    [
-    -8615,
-    -8396,
-    -8565,
+    -8349,
+    -8561,
     8663,
     8664,
-    8665
+    8665,
+    8666,
+    8667
    ]
   ]
  ]

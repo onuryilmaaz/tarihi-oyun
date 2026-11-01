@@ -1,5 +1,29 @@
 # DECISIONS — Karar Kayıtları
 
+## DEC-0086 — Geometri ve karşılaştırma önerilerini uygulamaya başlama
+
+- **Tarih:** 2026-11-01
+- **Seçilen karar:** TASK-0042 ile geometri ve TASK-0041'deki iyileştirmeler küçük teslimlerle uygulanır;
+  önce geometri ve hareket düğümü tutarlılığı, sonra TASK-0043 askerî yönetim, ardından diplomasi/ekonomi
+  ve diğer rapor başlıkları. Bilinçli kapsam dışı maddeler kapsam dışı kalır. Şehir koordinatları korunur,
+  kıyı mevcut Natural Earth verisinden düzeltilir. Commit/push/yayın onayı verilmedi.
+- **Onay kaydı:** “tamam buradaki önerini ve önceki sorumda bulduklarını raporladıklarını yapmaya başla”;
+  ek seçim: “Kıyıyı düzelt, şehir konumu korunsun”.
+- **Etkilenen modüller:** Geometri/senaryo, ordu ve AI, sonraki teslimlerde diplomasi ve diğer rapor modülleri.
+- **Durum:** GEÇERLİ.
+
+## DEC-0085 — Age of History araştırması ve mevcut oyunun eksik analizi
+
+- **Tarih:** 2026-11-01
+- **Konu:** TASK-0041; MASTER_SPEC §1.1 ve mevcut kapsamla karşılaştırma.
+- **Seçilen karar:** Age of History II, III ve ayrı etiketlenen Definitive Edition resmî kaynaklarla incelenir;
+  güncel kodda eksik/sınırlı olan özellikler ve bilinçli kapsam farkları raporlanır. Bu talimat yeni mekanik
+  uygulama, aşama geçişi, commit/push veya yayın onayı değildir. Öncelik sırası yalnızca öneridir.
+- **Gerekçe:** Kullanıcının eksiklerin araştırılarak listelenmesi talebi.
+- **Etkilenen belgeler:** TASK-0041, docs/qa/AGE-OF-HISTORY-KARSILASTIRMA.md, CHANGELOG, DEVIR-TESLIM.
+- **Onay kaydı:** Kullanıcı: “age of history oyununu araştırmanı ve bizdeki eksikleri bulup listelemeni istiyorum”.
+- **Durum:** GEÇERLİ — yalnızca araştırma kapsamı.
+
 Bu dosya onaylı ürün kararlarının tek kaydıdır. Her kayıt: ID, tarih,
 konu, alternatifler, seçilen karar, gerekçe, etkilenen modüller ve onay
 kaydı içerir. Kayıtlar silinmez; değişen karar yeni kayıtla geçersiz
@@ -831,6 +855,16 @@ Kaynak belge: `MASTER_SPEC.md` (v1.3). Orijinal keşif çıktısı:
   ayrıca planlanacak. Her alt teslim ayrı test/onay/commit adımı olarak ilerler.
 - **Onay kaydı:** Kullanıcı: "Ayrı, sonraki büyük görev olsun" / "Dağılır" / "Yalnızca barışta 'vasal yap' seçeneği" /
   "İkisi birden, aynı kartta" (2026-10-30).
+- **Durum:** GEÇERLİ
+
+## DEC-0085 — TASK-0041: başlangıçta karaya kapalı kopuk devlet parçası yok; küçük delikler kapanır
+
+- **Tarih:** 2026-11-01
+- **Seçilen karar:** Başkentin kümesinden kopuk ve denize kıyısı olmayan devlet parçaları en uzun sınırlı komşuya geçer;
+  kıyılı deniz aşırı topraklar ve adalar kalır. Bölgelerin içindeki < 50 km² delikler kapanır. Gerçekçilikten çok
+  oynanabilirlik. [TASLAK]
+- **Onay kaydı:** Kullanıcı: "çok fazla gerçekçi olmasına gerek yok. oyun oynanabilir olsun. birbirden kopuk devlet
+  parçaları başlangıçta olmasın" (2026-11-01).
 - **Durum:** GEÇERLİ
 
 ## DEC-0084 — TASK-0039: insan gücü havuzu yenilenir

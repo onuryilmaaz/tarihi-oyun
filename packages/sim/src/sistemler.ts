@@ -29,6 +29,7 @@ import { hukumdarlariIlerlet } from "./hanedan";
 import { iskanlariIlerlet, nufusArtisi, savasGocu } from "./nufus";
 import { bagliSehirleriEsitle, sehirBirlesmeleriIlerlet, sehirToprakEsitle } from "./sehir";
 import { sancakBakimi } from "./sancaklar";
+import { otomatikTakviyeler } from "./askeri-yonetim";
 
 export type Siklik = "gunluk" | "aylik" | "yillik";
 
@@ -107,6 +108,7 @@ export const SISTEMLER: Sistem[] = [
   },
   { id: "ordu-maasi", siklik: "aylik", calistir: (d) => maaslariOde(d) },
   { id: "insan-gucu", siklik: "aylik", calistir: (d) => insanGucuYenile(d) }, // TASK-0039
+  { id: "ordu-takviye", siklik: "aylik", calistir: otomatikTakviyeler }, // TASK-0043: maaş ve havuz yenilendikten sonra
   { id: "vasal-vergi", siklik: "aylik", calistir: (d) => vasalVergisiAl(d, prototipGelirleri(d)) }, // TASK-0018 (2/3)
   {
     // TASK-0017: bütçe panelindeki hazine geçmişi; gelir ve maaş bu ay uygulandıktan sonraki net fark

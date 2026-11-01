@@ -1,17 +1,18 @@
 {
  "indeks": 1813,
- "ad": "Tarancón",
- "ulke": "Spain",
- "d": 52,
- "k": "ohm:2849131",
- "s": "Tarancón",
+ "ad": "Pombal",
+ "ulke": "Portugal",
+ "d": 54,
+ "k": "tahmin",
+ "s": "Pombal",
  "p": [
   [
    [
-    -8727,
-    8893,
-    8894,
-    -8869
+    -7940,
+    -8773,
+    8901,
+    8902,
+    8903
    ]
   ]
  ]

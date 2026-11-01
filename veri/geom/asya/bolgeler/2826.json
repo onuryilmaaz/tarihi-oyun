@@ -1,19 +1,17 @@
 {
  "indeks": 2826,
- "ad": "Luang Prabang",
- "ulke": "Laos",
- "d": 103,
+ "ad": "Palitana",
+ "ulke": "India",
+ "d": 115,
  "k": "tahmin",
- "s": "Luang Prabang",
+ "s": "Palitana",
  "p": [
   [
    [
-    -13298,
-    -13301,
-    -13321,
-    13384,
-    13385,
-    -13374
+    13342,
+    13343,
+    -12950,
+    -12688
    ]
   ]
  ]

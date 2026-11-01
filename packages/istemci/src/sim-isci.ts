@@ -13,6 +13,7 @@ import {
   hukumdarYasi, VERASET_ADLARI, yerelYonetimAyarla, sehirAdiDegistir, birlesmeAdaylari, sehirliBirimler,
   sancakOzetleri, sancakYonetimiAyarla, sehirSancaklari, idariTerim, yapiSeviyeGeliri, gelismislikYuzde, bolgeKontrolu, gorunurDonanmalar, kapasite, cikarmaEngeli, denizYolu, sehirMenzilinde, sehirTicareti, type Hukumdar,
   ALAN_ADLARI, TEKNOLOJILER, teknolojiBul, biliyor, toplamaBedelYuzde, toplamaSuresi, etkiCarpani,
+  takviyeSehri, kompozisyonToplami,
 } from "@tarihi/sim";
 import type { Istek, Ozet, Yanit } from "./sim-protokol";
 
@@ -185,6 +186,12 @@ function ozet(durum: DunyaDurumu): Ozet {
         moral: o.moral, tutum: o.tutum, muharebede: o.muharebe !== null, cekiliyor: o.cekiliyor,
         ikmal: ikmal.deger, ikmalNedeni: ikmal.neden, maas: kompozisyonMaasi(o.kompozisyon), maasAksiyor: durum.devletler[o.devlet].hazine < 0,
         bolunebilir: emirDogrula(durum, { tur: "orduBol", ordu: o.id, asker: 1 }, baglam).gecerli,
+        terhisUygun: emirDogrula(durum, { tur: "orduTerhis", ordu: o.id, asker: 1 }, baglam).gecerli,
+        terhisNedeni: (() => { const r = emirDogrula(durum, { tur: "orduTerhis", ordu: o.id, asker: 1 }, baglam); return r.gecerli ? null : r.neden; })(),
+        duzenlemeBekliyor: durum.emirKuyrugu.some((e) => "ordu" in e && e.ordu === o.id && (e.tur === "orduTerhis" || e.tur === "orduTakviye")),
+        takviye: o.takviye ? { hedef: kompozisyonToplami(o.takviye.hedef), aylikButce: o.takviye.aylikButce,
+          bekleyenAsker: durum.askerToplamalar.filter((t) => t.takviye === o.id).reduce((s, t) => s + t.asker, 0),
+          sehir: durum.sehirler[takviyeSehri(durum, baglam, o)]?.ad ?? null } : null,
         birlesebilir: durum.ordular.filter((a) => a.id !== o.id && emirDogrula(durum,
           { tur: "orduBirlestir", ordu: o.id, diger: a.id }, baglam).gecerli).map((a) => a.id),
         kusatma: orduKusatmasi(durum, o.id)?.sehir ?? null,

@@ -1,18 +1,19 @@
 {
  "indeks": 2956,
- "ad": "Ganzhou",
- "ulke": "China",
- "d": 97,
+ "ad": "Mirpur Khas",
+ "ulke": "Pakistan",
+ "d": 123,
  "k": "tahmin",
- "s": "Ganzhou",
+ "s": "Mirpur Khas",
  "p": [
   [
    [
-    -13855,
-    -13769,
-    -13876,
-    13904,
-    13905
+    -13278,
+    -13645,
+    -13760,
+    -13830,
+    13860,
+    13861
    ]
   ]
  ]

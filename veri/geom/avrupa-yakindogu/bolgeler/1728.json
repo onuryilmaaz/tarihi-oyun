@@ -1,18 +1,20 @@
 {
  "indeks": 1728,
- "ad": "Merend",
- "ulke": "Iran",
- "d": 10,
+ "ad": "Montemor-o-Novo",
+ "ulke": "Portugal",
+ "d": 54,
  "k": "tahmin",
- "s": "Merend",
+ "s": "Montemor-o-Novo",
  "p": [
   [
    [
-    -8384,
-    -8524,
-    8572,
-    8573,
-    8574
+    7957,
+    -8518,
+    -8213,
+    8578,
+    8579,
+    -7938,
+    7959
    ]
   ]
  ]

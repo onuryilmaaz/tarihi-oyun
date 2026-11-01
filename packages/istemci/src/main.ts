@@ -916,6 +916,17 @@ async function baslat() {
       <p class="not">${TUTUMLAR.find(([t]) => t === tutum)![2]}.${bekleyenTutum.has(o.id) ? " (Bir sonraki turda geçerli.)" : ""}</p>
       <p class="not">İkmal ${yuzde(o.ikmal)} · ${kacis(o.ikmalNedeni)}</p>
       <p class="not">Aylık maaş payı: yaklaşık ${o.maas.toLocaleString("tr-TR")}.${o.maasAksiyor ? ` Maaş aksıyor: günde ${DENGE.MAAS_AKSAMASI_MORAL / 10} puan moral kaybı.` : ""}</p>
+      <details class="ordu-duzenle"><summary>Terhis ve otomatik takviye</summary>
+        <p class="not">${o.duzenlemeBekliyor ? "Düzenleme emri bekliyor; bir sonraki turda uygulanır." : o.terhisNedeni ? kacis(o.terhisNedeni) : "Terhis, yurtta beklerken yapılır. Şehirde terhis edilenler havuzun boş kapasitesine döner; geçmiş toplama bedeli iade edilmez."}</p>
+        <label for="terhisAsker">Terhis edilecek asker <input id="terhisAsker" type="number" min="1" max="${o.asker}" value="${Math.max(1, Math.floor(o.asker / 4))}" /></label>
+        <button id="orduTerhis" ${o.terhisUygun && !mesgul ? "" : "disabled"}>Asker terhis et</button>
+        <p class="not">${o.takviye ? `Takviye açık: hedef ${o.takviye.hedef.toLocaleString("tr-TR")}, ayda en çok ${o.takviye.aylikButce.toLocaleString("tr-TR")}. ${o.takviye.bekleyenAsker} asker hazırlanıyor.${o.takviye.sehir ? ` ${kacis(o.takviye.sehir)} şehrinde takviye alabilir.` : " Kendi şehrinde beklediğinde devam eder."}` : "Takviye kapalı. Ay başında kendi şehrinde bekleyen orduya mevcut süre ve bedelle asker toplanır."}</p>
+        <label for="takviyeHedef">Hedef asker <input id="takviyeHedef" type="number" min="${o.asker}" max="${DENGE.TAKVIYE_EN_COK_ASKER}" value="${o.takviye?.hedef ?? o.asker}" /></label>
+        <label for="takviyeButce">Aylık toplama bütçesi <input id="takviyeButce" type="number" min="1" value="${o.takviye?.aylikButce ?? 100}" /></label>
+        <button id="orduTakviyeAc" ${o.duzenlemeBekliyor || mesgul ? "disabled" : ""}>${o.takviye ? "Takviyeyi güncelle" : "Takviyeyi aç"}</button>
+        ${o.takviye ? `<button id="orduTakviyeKapat" ${o.duzenlemeBekliyor || mesgul ? "disabled" : ""}>Takviyeyi kapat</button>` : ""}
+        <p class="not">Mevcut birlik oranları korunur. Hazine ve insan gücü yettiği kadar toplanır. Terhis, bölme ve birleştirme otomatik takviyeyi kapatır; tamamlanmamış otomatik toplama iade edilir.</p>
+      </details>
       <div class="satir"><button id="orduOdak">Haritada göster</button>${(o.yuruyor || p) && !o.muharebede && !o.cekiliyor ? '<button id="orduDur">Durdur</button>' : ""}</div>
       <div class="ordu-duzenle" ${o.kusatma !== null ? "hidden" : ""}>
         <label for="bolAsker">Ayrılacak asker <input id="bolAsker" type="number" min="1" max="${o.asker - 1}" value="${Math.max(1, Math.floor(o.asker / 2))}" /></label>
@@ -932,6 +943,16 @@ async function baslat() {
         : '<p class="not">Birleştirmek için bu ordu seçiliyken diğer ordunun haritadaki işaretine sağ tıklayın; varınca birleştirebilirsiniz.</p>'}
       </div>`;
     $("orduBol").onclick = () => emirGonder({ tur: "orduBol", ordu: o.id, asker: $<HTMLInputElement>("bolAsker").valueAsNumber }, "Bölme emri verildi; bir sonraki turda uygulanır.");
+    $("orduTerhis").onclick = async () => {
+      const asker = $<HTMLInputElement>("terhisAsker").valueAsNumber;
+      if (!Number.isSafeInteger(asker) || asker < 1 || asker > o.asker) { bildir("Mevcut asker sayısı içinde pozitif tam sayı girin.", "uyari"); return; }
+      if (await onayIste("Asker terhis et", `${o.ad}: ${asker.toLocaleString("tr-TR")} asker terhis edilecek. Otomatik takviye kapatılır. Terhis edilen askerlerin geçmiş toplama bedeli iade edilmez.`, "Terhis et"))
+        await emirGonder({ tur: "orduTerhis", ordu: o.id, asker }, "Terhis emri verildi; bir sonraki turda uygulanır.");
+    };
+    $("orduTakviyeAc").onclick = () => emirGonder({ tur: "orduTakviye", ordu: o.id, acik: true,
+      hedef: $<HTMLInputElement>("takviyeHedef").valueAsNumber, aylikButce: $<HTMLInputElement>("takviyeButce").valueAsNumber }, "Takviye ayarı emri verildi; bir sonraki turda uygulanır.");
+    const kapat = document.getElementById("orduTakviyeKapat");
+    if (kapat) kapat.onclick = () => emirGonder({ tur: "orduTakviye", ordu: o.id, acik: false, hedef: 0, aylikButce: 0 }, "Takviyeyi kapatma emri verildi; bir sonraki turda uygulanır.");
     const birlestirListesi = document.getElementById("birlestirListesi");
     if (birlestirListesi) birlestirListesi.addEventListener("click", (e) => {
       const b = (e.target as HTMLElement).closest<HTMLElement>("[data-birlestir-sec]");

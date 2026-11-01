@@ -1,20 +1,22 @@
 {
  "indeks": 2962,
- "ad": "Sircan",
- "ulke": "Iran",
- "d": 90,
+ "ad": "Rangpur Sadar Upazila",
+ "ulke": "Bangladesh",
+ "d": 114,
  "k": "tahmin",
- "s": "Sircan",
+ "s": "Rangpur Sadar Upazila",
  "p": [
   [
    [
-    13917,
-    -7342,
-    13918,
-    -13728,
-    13919,
-    13920,
-    13921
+    -13807,
+    -13820,
+    -13795,
+    13876,
+    1805,
+    13877,
+    13878,
+    13879,
+    13880
    ]
   ]
  ]

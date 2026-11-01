@@ -1,17 +1,17 @@
 {
  "indeks": 2661,
- "ad": "Pekalongan",
+ "ad": "Cirebon",
  "ulke": "Indonesia",
  "d": 111,
  "k": "tahmin",
- "s": "Pekalongan",
+ "s": "Cirebon",
  "p": [
   [
    [
-    -12640,
-    -12646,
-    12675,
-    12676
+    -12606,
+    -12634,
+    12634,
+    -12601
    ]
   ]
  ]

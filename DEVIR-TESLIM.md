@@ -10,10 +10,20 @@ Bağlayıcı kurallar: `AGENTS.md`, `MASTER_SPEC.md`, `DECISIONS.md`.
 
 ## 0. En son — BURADAN BAŞLA
 
-- **TASK-0040 (şehirsiz kırıntılar + çıkarma düzeltmesi) uygulandı, COMMIT EDİLMEDİ (2026-11-01).** TASK-0039
-  commit+push edildi (`464d2451`). Senaryo yeniden üretildi (2.208 şehir), `veri/geom` yeniden ayrıldı.
-  Bekleyen karar: hazinesi eksi küçük AI'lar (Oyrat, Büyük Orda, Tibet…) — maaş gelirden büyük, terhis mekaniği yok;
-  kullanıcıya "terhis" önerildi.
+- **TASK-0041 / DEC-0085 — Age of History karşılaştırması (2026-11-01, Codex):** Kullanıcı araştırma ve eksik
+  listesi istedi. II/III/Definitive Edition resmî kaynakları güncel kodla karşılaştırıldı; rapor
+  `docs/qa/AGE-OF-HISTORY-KARSILASTIRMA.md`. 15 eksik/sınırlı alan + AI diplomasisi/deniz stratejisi/bütçe/
+  bildirim iyileştirmeleri. Üretim kodu değişmedi; mekanikler/öncelikler henüz onaylı değil. Typecheck/build ve
+  diff kontrolü geçti. `npm test`: 272/273 geçti; 10 yıllık kampanya testi 120 sn sınırını aştı (131,4 sn).
+  Aynı anda dışarıdan başlatılmış senaryo üretimi çalışıyordu; nedensellik doğrulanmadı, süreçlere dokunulmadı.
+  Araştırma belgeleri commit edilmedi; commit/push onayı yok. Devralırken HEAD `e0125683` idi: TASK-0040
+  aşağıdaki eski notun aksine commit edilmiş. Önceden değişmiş `araclar/bolge-uret.mjs`, `araclar/senaryo-uret.mjs`
+  ve yeni `araclar/devlet-butunle.mjs` korundu; bu araştırmanın parçası değil. Kullanıcının başka bir sonraki
+  işi seçmesi beklenir; bu rapor yeni aşama veya üretim kodu yetkisi vermez.
+
+- **TASK-0041 (harita geometrisi temizliği, DEC-0085) uygulandı, COMMIT EDİLMEDİ (2026-11-01).** TASK-0040
+  commit+push edildi (`e0125683`). Senaryo yeniden üretildi, `veri/geom` yeniden ayrıldı. Terhis önerisi kullanıcı
+  tarafından reddedildi ("kalsın"); küçük AI'ların eksi hazinesi açık konu.
 
 - **TASK-0035 (AI harcıyor, teknoloji ×2, DEC-0080) ve TASK-0036 (tek emirle ordu kurma, DEC-0081) commit+push
   edildi (`00c3bdce`, 2026-10-31); kullanıcı testi bekliyor. Üsküdar Kocaeli sancağına elle bağlandı.**

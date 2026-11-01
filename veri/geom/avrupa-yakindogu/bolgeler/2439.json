@@ -1,17 +1,18 @@
 {
  "indeks": 2439,
- "ad": "Newcastle upon Tyne",
- "ulke": "United Kingdom",
- "d": 58,
+ "ad": "Lıskovo",
+ "ulke": "Russia",
+ "d": 39,
  "k": "tahmin",
- "s": "Newcastle upon Tyne",
+ "s": "Lıskovo",
  "p": [
   [
    [
-    -11444,
-    -11401,
-    11480,
-    11481
+    -11422,
+    -11000,
+    -11395,
+    11465,
+    11466
    ]
   ]
  ]

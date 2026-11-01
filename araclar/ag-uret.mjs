@@ -172,12 +172,15 @@ export function agUret(harita, etopoDosyasi) {
   }
 
   // 4) Boğaz geçitleri
-  const enYakinDugum = (lon, lat) => {
+  const enYakinDugum = (lon, lat, birim = -1) => {
     const x = lon, y = millerY(lat);
-    const ic = dugumler.findIndex((n) => polyIcinde(n.poly, x, y));
+    // TASK-0042: şehir kendi toprağının düğümüne bağlanır; yakın yabancı/sahipsiz parça seçilemez.
+    const aday = (n) => birim < 0 || n.b === birim;
+    const ic = dugumler.findIndex((n) => aday(n) && polyIcinde(n.poly, x, y));
     if (ic >= 0) return ic;
     let en = -1, enD = Infinity;
     dugumler.forEach((n, i) => {
+      if (!aday(n)) return;
       for (const [px, py] of n.poly[0]) { const d = (px - x) ** 2 + (py - y) ** 2; if (d < enD) { enD = d; en = i; } }
     });
     return enD < 0.5 ** 2 ? en : -1;

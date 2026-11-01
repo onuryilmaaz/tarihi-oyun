@@ -1,19 +1,18 @@
 {
  "indeks": 2410,
- "ad": "Maladzyechna",
- "ulke": "Belarus",
- "d": 35,
+ "ad": "Dungannon",
+ "ulke": "United Kingdom",
+ "d": 60,
  "k": "tahmin",
- "s": "Maladzyechna",
+ "s": "Dungannon",
  "p": [
   [
    [
-    -11325,
-    -11226,
-    -11335,
-    -11389,
-    11396,
-    11397
+    -9171,
+    -11224,
+    -11331,
+    -11341,
+    11376
    ]
   ]
  ]

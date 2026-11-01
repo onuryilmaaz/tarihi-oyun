@@ -1,18 +1,18 @@
 {
  "indeks": 2033,
- "ad": "Caransebeș",
+ "ad": "Rimnik Vâlcea",
  "ulke": "Romania",
- "d": 27,
- "k": "tahmin",
- "s": "Caransebeș",
+ "d": 28,
+ "k": "ohm:2929115",
+ "s": "Rimnik Vâlcea",
  "p": [
   [
    [
-    -9872,
-    9912,
-    -9862,
-    9913,
-    9914
+    -9715,
+    -9836,
+    9888,
+    9889,
+    -9850
    ]
   ]
  ]

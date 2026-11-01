@@ -1,18 +1,17 @@
 {
  "indeks": 2660,
- "ad": "Ipoh",
- "ulke": "Malaysia",
- "d": 109,
+ "ad": "Pekalongan",
+ "ulke": "Indonesia",
+ "d": 111,
  "k": "tahmin",
- "s": "Ipoh",
+ "s": "Pekalongan",
  "p": [
   [
    [
-    12670,
-    12671,
-    12672,
-    12673,
-    12674
+    -12605,
+    -12611,
+    12632,
+    12633
    ]
   ]
  ]

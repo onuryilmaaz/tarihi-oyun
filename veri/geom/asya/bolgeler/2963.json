@@ -1,22 +1,19 @@
 {
  "indeks": 2963,
- "ad": "Rangpur Sadar Upazila",
- "ulke": "Bangladesh",
- "d": 114,
+ "ad": "Guzhou",
+ "ulke": "China",
+ "d": 97,
  "k": "tahmin",
- "s": "Rangpur Sadar Upazila",
+ "s": "Guzhou",
  "p": [
   [
    [
-    -13841,
-    -13854,
-    -13829,
-    13922,
-    1802,
-    13923,
-    13924,
-    13925,
-    13926
+    -13867,
+    -13753,
+    -13708,
+    -13817,
+    13881,
+    13882
    ]
   ]
  ]
