@@ -243,7 +243,7 @@ function isle(i: Istek): Yanit {
   switch (i.tip) {
     case "gelistirmeOnizle": { // TASK-0038: onay penceresi için plan özeti; dünyayı değiştirmez
       if (!d) return { id: i.id, tamam: false, hata: "Oyun başlatılmadı." };
-      const p = topluGelistirmePlani(d, i.ustSinir);
+      const p = topluGelistirmePlani(d, i.ustSinir, false, i.sur);
       return { id: i.id, tamam: true, ozet: ozet(d), gelistirme: p.gecerli ? { sehir: p.emirler.length, bedel: p.bedel, dolu: p.dolu, kalan: p.kalan } : { neden: p.neden } };
     }
     case "barisOnizle": {

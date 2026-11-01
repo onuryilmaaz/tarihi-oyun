@@ -52,7 +52,7 @@ export type Emir =
   // TASK-0036: tek emirle ordu kur; emirVer bunu yakın şehirlere bölünmüş askerTopla emirlerine açar (kuyruğa girmez)
   | { tur: "orduKur"; sehir: number; asker: number; birim?: BirimTuru }
   // TASK-0038: bütün şehirlerde birer seviye tarla/pazar; emirVer bunu insaat emirlerine açar (kuyruğa girmez)
-  | { tur: "topluGelistir"; ustSinir: number }
+  | { tur: "topluGelistir"; ustSinir: number; sur?: boolean } // sur: bütün surları bir seviye (başkent, sonra kalabalık)
   | { tur: "toplamaIptal"; id: number; devlet?: number } // TASK-0017: bedel ve insan gücü tam iade edilir
   | { tur: "orduBol"; ordu: number; asker: number }
   | { tur: "orduBirlestir"; ordu: number; diger: number }
@@ -374,7 +374,7 @@ export function emirDogrula(d: DunyaDurumu, e: Emir, b: Baglam = BOS_BAGLAM, kuy
       return { gecerli: true };
     }
     case "topluGelistir": {
-      const p = topluGelistirmePlani(d, e.ustSinir, kuyrukHaric);
+      const p = topluGelistirmePlani(d, e.ustSinir, kuyrukHaric, e.sur);
       return p.gecerli ? { gecerli: true } : p;
     }
     case "orduKur": {
@@ -496,7 +496,7 @@ export function emirVer(d: DunyaDurumu, e: Emir, b: Baglam = BOS_BAGLAM): Dogrul
     return { gecerli: false, neden: "Yalnızca kendi devletiniz ve ordularınız adına emir verebilirsiniz." };
   }
   if (e.tur === "topluGelistir") { // TASK-0038: kuyruğa ayrı ayrı insaat olarak girer (bedel, bekleyen inşaat, iptal onlardan işler)
-    const p = topluGelistirmePlani(d, e.ustSinir);
+    const p = topluGelistirmePlani(d, e.ustSinir, false, e.sur);
     if (!p.gecerli) return p;
     d.emirKuyrugu.push(...p.emirler);
     return { gecerli: true };
@@ -624,7 +624,7 @@ export function emirUygula(d: DunyaDurumu, e: Emir, b: Baglam = BOS_BAGLAM): voi
       break;
     }
     case "topluGelistir": {
-      const p = topluGelistirmePlani(d, e.ustSinir, true);
+      const p = topluGelistirmePlani(d, e.ustSinir, true, e.sur);
       if (p.gecerli) for (const x of p.emirler) emirUygula(d, x, b);
       break;
     }
@@ -868,20 +868,21 @@ export function emirUygula(d: DunyaDurumu, e: Emir, b: Baglam = BOS_BAGLAM): voi
 
 /** TASK-0038: oyuncunun inşaatı olmayan her şehrinde bir seviye tarla ya da pazar (bedel başına en çok geliri getiren).
  *  En yüksek seviyedeki (dolu) şehirler atlanır. En kârlılar önce; toplam bedel üst sınırı ve kullanılabilir hazineyi aşmaz. */
-export function topluGelistirmePlani(d: DunyaDurumu, ustSinir: number, kuyrukHaric = false):
+export function topluGelistirmePlani(d: DunyaDurumu, ustSinir: number, kuyrukHaric = false, sur = false):
   { gecerli: true; emirler: Extract<Emir, { tur: "insaat" }>[]; bedel: number; dolu: number; kalan: number } | { gecerli: false; neden: string } {
   if (!Number.isSafeInteger(ustSinir) || ustSinir <= 0) return { gecerli: false, neden: "Üst sınır pozitif tam sayı olmalı." };
   const devlet = d.ayarlar.oyuncu;
   const para = kuyrukHaric ? d.devletler[devlet].hazine : kullanilabilirHazine(d, devlet);
-  const adaylar: { sehir: number; yapi: "tarla" | "pazar"; bedel: number; oran: number }[] = [];
+  const adaylar: { sehir: number; yapi: YapiTuru; bedel: number; oran: number }[] = [];
   let dolu = 0;
   d.sehirler.forEach((s, i) => {
     if (s.devlet !== devlet || s.kontrol !== devlet || !bagimsiz(s) || s.istikrar.ayaklanma || d.kusatmalar.some((k) => k.sehir === i) || sehirdeInsaatVar(d, i, kuyrukHaric)) return;
     let en: (typeof adaylar)[number] | null = null;
-    for (const yapi of ["tarla", "pazar"] as const) {
+    for (const yapi of sur ? (["sur"] as const) : (["tarla", "pazar"] as const)) {
       const bedel = insaatMaliyeti(d, s, yapi);
       if (bedel === null) continue;
-      const oran = Math.floor((yapiSeviyeGeliri(d, s, yapi) * 100000) / bedel);
+      // Sur gelir getirmez: başkent önce, sonra nüfusa göre
+      const oran = yapi === "sur" ? (d.devletler[devlet].baskent === i ? Number.MAX_SAFE_INTEGER : s.nufus) : Math.floor((yapiSeviyeGeliri(d, s, yapi) * 100000) / bedel);
       if (!en || oran > en.oran) en = { sehir: i, yapi, bedel, oran };
     }
     if (en) adaylar.push(en); else dolu++;
@@ -897,6 +898,6 @@ export function topluGelistirmePlani(d: DunyaDurumu, ustSinir: number, kuyrukHar
   }
   if (!emirler.length) return { gecerli: false, neden: adaylar.length
     ? `Bütçe yetmiyor: en ucuz yatırım ${Math.min(...adaylar.map((a) => a.bedel))}, kullanılabilir ${sinir}. Borçlanma yoktur.`
-    : "Geliştirilecek şehir yok: hepsinde inşaat sürüyor ya da tarla ve pazar en yüksek seviyede." };
+    : `Geliştirilecek şehir yok: hepsinde inşaat sürüyor ya da ${sur ? "sur" : "tarla ve pazar"} en yüksek seviyede.` };
   return { gecerli: true, emirler, bedel, dolu, kalan: adaylar.length - emirler.length };
 }

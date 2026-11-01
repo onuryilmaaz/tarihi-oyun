@@ -16,7 +16,7 @@ export type Istek = { id: number } & (
   | { tip: "kaydet" }
   | { tip: "rotaOnizle"; ordu: number; x: number; y: number; dugum: number }
   | { tip: "barisOnizle"; talep: BarisTalebi }
-  | { tip: "gelistirmeOnizle"; ustSinir: number } // TASK-0038
+  | { tip: "gelistirmeOnizle"; ustSinir: number; sur?: boolean } // TASK-0038
   | { tip: "testSimHatasi" } // geliştirici denemesi: tur ortasında hata gibi davranır (10b)
 );
 

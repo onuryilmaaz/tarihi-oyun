@@ -10,8 +10,9 @@ Bağlayıcı kurallar: `AGENTS.md`, `MASTER_SPEC.md`, `DECISIONS.md`.
 
 ## 0. En son — BURADAN BAŞLA
 
-- **TASK-0038 (tüm şehirleri geliştir, DEC-0083) uygulandı, COMMIT EDİLMEDİ, kullanıcı testi bekliyor (2026-11-01).**
-  TASK-0037 commit+push edildi (`03e2f61a`).
+- **TASK-0038 (tüm şehirleri geliştir, DEC-0083) commit+push edildi (`75291069`); "Tüm surları güçlendir" eki
+  COMMIT EDİLMEDİ (2026-11-01).** Açık soru: insan gücü havuzu yenilenmiyor (nüfusun %5'i, bir kez) — kullanıcıya
+  yenilenme önerildi.
 
 - **TASK-0035 (AI harcıyor, teknoloji ×2, DEC-0080) ve TASK-0036 (tek emirle ordu kurma, DEC-0081) commit+push
   edildi (`00c3bdce`, 2026-10-31); kullanıcı testi bekliyor. Üsküdar Kocaeli sancağına elle bağlandı.**

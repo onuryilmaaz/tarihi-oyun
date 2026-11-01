@@ -37,4 +37,16 @@ describe("tüm şehirleri geliştir (TASK-0038)", () => {
     expect(kullanilabilirHazine(d, 0)).toBe(1);
     expect(topluGelistirmePlani(d, 0).gecerli).toBe(false);
   });
+
+  it("surlar: başkent önce, sonra kalabalık şehir; tam surlu şehir atlanır", () => {
+    const d = yeniDurum();
+    d.devletler[0].hazine = 100000;
+    const benim = d.sehirler.flatMap((s, i) => (s.devlet === 0 ? [i] : []));
+    const baskent = d.devletler[0].baskent!;
+    const p = topluGelistirmePlani(d, 100000, false, true);
+    expect(p.gecerli && p.emirler.map((e) => e.yapi)).toEqual(benim.filter((i) => d.sehirler[i].sur < DENGE.YAPI_EN_YUKSEK.sur).map(() => "sur"));
+    expect(p.gecerli && p.emirler[0].sehir).toBe(baskent);
+    for (const i of benim) d.sehirler[i].sur = DENGE.YAPI_EN_YUKSEK.sur;
+    expect(topluGelistirmePlani(d, 100000, false, true)).toMatchObject({ gecerli: false, neden: expect.stringMatching(/sur en yüksek/) });
+  });
 });

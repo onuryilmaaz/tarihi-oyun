@@ -515,17 +515,19 @@ async function baslat() {
   gelistirSinirGuncelle = () => {
     const k = $<HTMLInputElement>("gelistirSinir");
     if (!gelistirSinirElle) k.value = String(Math.max(0, Math.floor(ozet.kullanilabilirHazine / 2)));
-    $<HTMLButtonElement>("gelistirBtn").disabled = mesgul;
+    $<HTMLButtonElement>("gelistirBtn").disabled = $<HTMLButtonElement>("surGelistirBtn").disabled = mesgul;
   };
-  $("gelistirBtn").onclick = async () => {
+  const topluGelistir = async (sur: boolean) => {
     const ustSinir = $<HTMLInputElement>("gelistirSinir").valueAsNumber;
     if (!Number.isSafeInteger(ustSinir) || ustSinir <= 0) { bildir("Harcanacak tutar pozitif tam sayı olmalı.", "uyari"); return; }
-    const g = (await sim.gonder({ tip: "gelistirmeOnizle", ustSinir })).gelistirme!;
+    const g = (await sim.gonder({ tip: "gelistirmeOnizle", ustSinir, sur })).gelistirme!;
     if ("neden" in g) { bildir(g.neden, "uyari"); return; }
     const ek = [g.dolu ? `${g.dolu} şehir dolu olduğu için atlanıyor.` : "", g.kalan ? `${g.kalan} şehir bu tutara sığmadı.` : ""].filter(Boolean).join(" ");
-    if (!await onayIste("Tüm şehirleri geliştir", `${g.sehir} şehirde birer seviye tarla/pazar inşaatı başlasın mı? Toplam bedel ${g.bedel.toLocaleString("tr-TR")}; tur başında hazineden düşülür. ${ek}`, "Geliştir")) return;
-    if (await emirGonder({ tur: "topluGelistir", ustSinir }, `${g.sehir} şehirde inşaat emri verildi; bir sonraki turda başlar.`)) gelistirSinirElle = false;
+    if (!await onayIste(sur ? "Tüm surları güçlendir" : "Tüm şehirleri geliştir", `${g.sehir} şehirde birer seviye ${sur ? "sur" : "tarla/pazar"} inşaatı başlasın mı? Toplam bedel ${g.bedel.toLocaleString("tr-TR")}; tur başında hazineden düşülür. ${ek}`, sur ? "Güçlendir" : "Geliştir")) return;
+    if (await emirGonder({ tur: "topluGelistir", ustSinir, sur }, `${g.sehir} şehirde inşaat emri verildi; bir sonraki turda başlar.`)) gelistirSinirElle = false;
   };
+  $("gelistirBtn").onclick = () => topluGelistir(false);
+  $("surGelistirBtn").onclick = () => topluGelistir(true);
   $("insaatListesi").addEventListener("click", (e) => {
     const b = (e.target as HTMLElement).closest<HTMLElement>("[data-sehir-sec]");
     if (b) gorunum.secVeGit({ tur: "sehir", id: Number(b.dataset.sehirSec) });
