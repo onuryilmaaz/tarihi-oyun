@@ -16,6 +16,7 @@ export type Istek = { id: number } & (
   | { tip: "kaydet" }
   | { tip: "rotaOnizle"; ordu: number; x: number; y: number; dugum: number }
   | { tip: "barisOnizle"; talep: BarisTalebi }
+  | { tip: "gelistirmeOnizle"; ustSinir: number } // TASK-0038
   | { tip: "testSimHatasi" } // geliştirici denemesi: tur ortasında hata gibi davranır (10b)
 );
 
@@ -127,7 +128,7 @@ export interface Ozet {
 }
 
 export type Yanit =
-  | { id: number; tamam: true; ozet: Ozet; sonuc?: TurSonucu; sureMs?: number; metin?: string; dogrulama?: Dogrulama; rota?: RotaOnizleme; baris?: { puan: number; skor: number; dogrulama: Dogrulama; devir: BarisDevirOzeti | null } }
+  | { id: number; tamam: true; ozet: Ozet; sonuc?: TurSonucu; sureMs?: number; metin?: string; dogrulama?: Dogrulama; rota?: RotaOnizleme; baris?: { puan: number; skor: number; dogrulama: Dogrulama; devir: BarisDevirOzeti | null }; gelistirme?: { sehir: number; bedel: number; dolu: number; kalan: number } | { neden: string } }
   | { id: number; tamam: false; hata: string; yigin?: string; bozuk?: boolean };
 
 type IstekGovdesi = Istek extends infer T ? (T extends { id: number } ? Omit<T, "id"> : never) : never;

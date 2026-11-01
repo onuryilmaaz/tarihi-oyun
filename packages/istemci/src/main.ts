@@ -292,7 +292,9 @@ async function baslat() {
     ozet = r.ozet; arayuzuGuncelle(); gorunum.istek();
     if (r.dogrulama && !r.dogrulama.gecerli) bildir(r.dogrulama.neden, "uyari");
   });
+  let gelistirSinirGuncelle = () => {}; // TASK-0038: aşağıda tanımlanır
   const arayuzuGuncelle = () => {
+    gelistirSinirGuncelle();
     if (seciliOrdu !== null && !ozet.ordular.some((o) => o.id === seciliOrdu)) seciliOrdu = null;
     $("oyuncu").innerHTML = `${gorunum.devletRenkKutusu(ozet.oyuncu.indeks)}<span>${kacis(ozet.oyuncu.ad)}</span>`;
     $("hazine").textContent = ozet.oyuncu.hazine.toLocaleString("tr-TR");
@@ -506,6 +508,23 @@ async function baslat() {
   $("yatirimAc").onclick = () => {
     const v = $<HTMLSelectElement>("yatirimSehir").value;
     if (v !== "") gorunum.secVeGit({ tur: "sehir", id: Number(v) });
+  };
+  // TASK-0038: tutar kutusu oyuncu değiştirmedikçe kullanılabilir hazinenin yarısını izler
+  let gelistirSinirElle = false;
+  $("gelistirSinir").oninput = () => { gelistirSinirElle = true; };
+  gelistirSinirGuncelle = () => {
+    const k = $<HTMLInputElement>("gelistirSinir");
+    if (!gelistirSinirElle) k.value = String(Math.max(0, Math.floor(ozet.kullanilabilirHazine / 2)));
+    $<HTMLButtonElement>("gelistirBtn").disabled = mesgul;
+  };
+  $("gelistirBtn").onclick = async () => {
+    const ustSinir = $<HTMLInputElement>("gelistirSinir").valueAsNumber;
+    if (!Number.isSafeInteger(ustSinir) || ustSinir <= 0) { bildir("Harcanacak tutar pozitif tam sayı olmalı.", "uyari"); return; }
+    const g = (await sim.gonder({ tip: "gelistirmeOnizle", ustSinir })).gelistirme!;
+    if ("neden" in g) { bildir(g.neden, "uyari"); return; }
+    const ek = [g.dolu ? `${g.dolu} şehir dolu olduğu için atlanıyor.` : "", g.kalan ? `${g.kalan} şehir bu tutara sığmadı.` : ""].filter(Boolean).join(" ");
+    if (!await onayIste("Tüm şehirleri geliştir", `${g.sehir} şehirde birer seviye tarla/pazar inşaatı başlasın mı? Toplam bedel ${g.bedel.toLocaleString("tr-TR")}; tur başında hazineden düşülür. ${ek}`, "Geliştir")) return;
+    if (await emirGonder({ tur: "topluGelistir", ustSinir }, `${g.sehir} şehirde inşaat emri verildi; bir sonraki turda başlar.`)) gelistirSinirElle = false;
   };
   $("insaatListesi").addEventListener("click", (e) => {
     const b = (e.target as HTMLElement).closest<HTMLElement>("[data-sehir-sec]");

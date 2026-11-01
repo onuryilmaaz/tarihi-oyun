@@ -3,7 +3,7 @@
 
 import {
   agHazirla, baslangicDurumu, durumOzeti, emirVer, gorunurYabanciOrdular, kalanYol, kaydet, orduKonumu, orduRotasi,
-  tarihMetni, turSuresiAyarla, turuIlerlet, yukle, TUR_SURESI_ADLARI, type Baglam, type BirimTuru, type DunyaDurumu,
+  tarihMetni, turSuresiAyarla, turuIlerlet, yukle, TUR_SURESI_ADLARI, topluGelistirmePlani, type Baglam, type BirimTuru, type DunyaDurumu,
   kompozisyonMaasi, devletMaasi, emirDogrula, ikmalDurumu, kullanilabilirHazine, kullanilabilirInsanGucu, DENGE,
   barisBedeli, barisDevirOzeti, barisDogrula, kusatmaGucu, orduKusatmasi, savasSkoru,
   butceOzeti, insaatMaliyeti, insaatSuresi, sehirYapiGeliri, yapiSeviyesi, yapiEnYuksek, YAPI_ADLARI, YAPI_TURLERI,
@@ -241,6 +241,11 @@ function isle(i: Istek): Yanit {
   if (i.tip === "yeniOyun" || i.tip === "yukle") bozuk = false;
   if (i.tip === "testSimHatasi") { bozuk = true; throw new Error("Test: simülasyon tur ortasında durdu (geliştirici denemesi)"); }
   switch (i.tip) {
+    case "gelistirmeOnizle": { // TASK-0038: onay penceresi için plan özeti; dünyayı değiştirmez
+      if (!d) return { id: i.id, tamam: false, hata: "Oyun başlatılmadı." };
+      const p = topluGelistirmePlani(d, i.ustSinir);
+      return { id: i.id, tamam: true, ozet: ozet(d), gelistirme: p.gecerli ? { sehir: p.emirler.length, bedel: p.bedel, dolu: p.dolu, kalan: p.kalan } : { neden: p.neden } };
+    }
     case "barisOnizle": {
       if (!d) return { id: i.id, tamam: false, hata: "Oyun başlatılmadı." };
       const s = d.savaslar.find((v) => v.id === i.talep.savas);

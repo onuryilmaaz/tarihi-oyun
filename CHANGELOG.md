@@ -1,5 +1,10 @@
 # CHANGELOG
 
+## 2026-11-01 — TASK-0038: tüm şehirleri tek düğmeyle geliştirme (Claude)
+
+- Şehir sekmesinde "Tüm şehirleri geliştir": her şehre bir seviye tarla/pazar, en kârlısı önce, üst sınırlı; onay
+  penceresinde özet.
+
 ## 2026-11-01 — TASK-0037: ordu kurma tek satır; zengin AI daha çok harcar (Claude)
 
 - Ordu kurma parçaları Ordu sekmesinde tek satır, tek İptal düğmesi.

@@ -9,7 +9,7 @@ import { toplamaMaliyeti } from "./ordu";
 import { DENGE } from "./denge";
 import { kusatmadanCikar, orduKusatmasi, sehirMenzilinde } from "./kusatma";
 import { barisDogrula, barisiUygula } from "./baris";
-import { YAPI_ADLARI, insaatMaliyeti, insaatSuresi, sehirdeInsaatVar, yapiSeviyesi, type YapiTuru } from "./yatirim";
+import { YAPI_ADLARI, insaatMaliyeti, insaatSuresi, sehirdeInsaatVar, yapiSeviyeGeliri, yapiSeviyesi, type YapiTuru } from "./yatirim";
 import { bekleyenVerasetiCoz, tahtaCikar } from "./hanedan";
 import { iskanBedeli, nufusCikar } from "./nufus";
 import { ambargoVar } from "./ticaret";
@@ -51,6 +51,8 @@ export type Emir =
   | { tur: "askerTopla"; sehir: number; asker: number; devlet?: number; birim?: BirimTuru; toplanma?: number } // TASK-0019: birim yoksa piyade
   // TASK-0036: tek emirle ordu kur; emirVer bunu yakın şehirlere bölünmüş askerTopla emirlerine açar (kuyruğa girmez)
   | { tur: "orduKur"; sehir: number; asker: number; birim?: BirimTuru }
+  // TASK-0038: bütün şehirlerde birer seviye tarla/pazar; emirVer bunu insaat emirlerine açar (kuyruğa girmez)
+  | { tur: "topluGelistir"; ustSinir: number }
   | { tur: "toplamaIptal"; id: number; devlet?: number } // TASK-0017: bedel ve insan gücü tam iade edilir
   | { tur: "orduBol"; ordu: number; asker: number }
   | { tur: "orduBirlestir"; ordu: number; diger: number }
@@ -371,6 +373,10 @@ export function emirDogrula(d: DunyaDurumu, e: Emir, b: Baglam = BOS_BAGLAM, kuy
       if (para < 0 || toplamaMaliyeti(e.asker, sehirToplamaYuzde(d, e.sehir, e.birim ?? "piyade"), e.birim ?? "piyade") > para) return { gecerli: false, neden: `Hazine yetersiz: ${para} kullanılabilir. Borçlanma yoktur.` };
       return { gecerli: true };
     }
+    case "topluGelistir": {
+      const p = topluGelistirmePlani(d, e.ustSinir, kuyrukHaric);
+      return p.gecerli ? { gecerli: true } : p;
+    }
     case "orduKur": {
       const p = orduKurPlani(d, e, b, kuyrukHaric);
       return p.gecerli ? { gecerli: true } : p;
@@ -488,6 +494,12 @@ export function emirVer(d: DunyaDurumu, e: Emir, b: Baglam = BOS_BAGLAM): Dogrul
     || ("donanma" in e && d.donanmalar.find((f) => f.id === e.donanma) && d.donanmalar.find((f) => f.id === e.donanma)!.devlet !== oyuncu)
     || ((e.tur === "gemiInsa" || e.tur === "casusluk") && e.devlet !== undefined && e.devlet !== oyuncu)) {
     return { gecerli: false, neden: "Yalnızca kendi devletiniz ve ordularınız adına emir verebilirsiniz." };
+  }
+  if (e.tur === "topluGelistir") { // TASK-0038: kuyruğa ayrı ayrı insaat olarak girer (bedel, bekleyen inşaat, iptal onlardan işler)
+    const p = topluGelistirmePlani(d, e.ustSinir);
+    if (!p.gecerli) return p;
+    d.emirKuyrugu.push(...p.emirler);
+    return { gecerli: true };
   }
   if (e.tur === "orduKur") { // kuyruğa ayrı ayrı askerTopla olarak girer: bedel, insan gücü ve iptal onlardan işler
     if (d.sehirler[e.sehir]?.devlet !== oyuncu) return { gecerli: false, neden: "Ordu yalnızca kendi şehrinizde kurulur." };
@@ -609,6 +621,11 @@ export function emirUygula(d: DunyaDurumu, e: Emir, b: Baglam = BOS_BAGLAM): voi
       d.askerToplamalar.push({ id: d.sonrakiToplamaId++, sehir: e.sehir, devlet: s.devlet, asker: e.asker, birim, kalanGun: sure, bedel,
         ...(e.toplanma !== undefined ? { toplanma: e.toplanma } : {}) });
       olayEkle(d, { tur: "asker-toplama", devlet: s.devlet, metin: `${s.ad}: ${e.asker} ${BIRIM_ADLARI[birim].toLowerCase()} toplanıyor (${sure} gün). Bedel: −${bedel}.` });
+      break;
+    }
+    case "topluGelistir": {
+      const p = topluGelistirmePlani(d, e.ustSinir, true);
+      if (p.gecerli) for (const x of p.emirler) emirUygula(d, x, b);
       break;
     }
     case "orduKur": {
@@ -847,4 +864,39 @@ export function emirUygula(d: DunyaDurumu, e: Emir, b: Baglam = BOS_BAGLAM): voi
       break;
     }
   }
+}
+
+/** TASK-0038: oyuncunun inşaatı olmayan her şehrinde bir seviye tarla ya da pazar (bedel başına en çok geliri getiren).
+ *  En yüksek seviyedeki (dolu) şehirler atlanır. En kârlılar önce; toplam bedel üst sınırı ve kullanılabilir hazineyi aşmaz. */
+export function topluGelistirmePlani(d: DunyaDurumu, ustSinir: number, kuyrukHaric = false):
+  { gecerli: true; emirler: Extract<Emir, { tur: "insaat" }>[]; bedel: number; dolu: number; kalan: number } | { gecerli: false; neden: string } {
+  if (!Number.isSafeInteger(ustSinir) || ustSinir <= 0) return { gecerli: false, neden: "Üst sınır pozitif tam sayı olmalı." };
+  const devlet = d.ayarlar.oyuncu;
+  const para = kuyrukHaric ? d.devletler[devlet].hazine : kullanilabilirHazine(d, devlet);
+  const adaylar: { sehir: number; yapi: "tarla" | "pazar"; bedel: number; oran: number }[] = [];
+  let dolu = 0;
+  d.sehirler.forEach((s, i) => {
+    if (s.devlet !== devlet || s.kontrol !== devlet || !bagimsiz(s) || s.istikrar.ayaklanma || d.kusatmalar.some((k) => k.sehir === i) || sehirdeInsaatVar(d, i, kuyrukHaric)) return;
+    let en: (typeof adaylar)[number] | null = null;
+    for (const yapi of ["tarla", "pazar"] as const) {
+      const bedel = insaatMaliyeti(d, s, yapi);
+      if (bedel === null) continue;
+      const oran = Math.floor((yapiSeviyeGeliri(d, s, yapi) * 100000) / bedel);
+      if (!en || oran > en.oran) en = { sehir: i, yapi, bedel, oran };
+    }
+    if (en) adaylar.push(en); else dolu++;
+  });
+  adaylar.sort((a, c) => c.oran - a.oran || a.sehir - c.sehir);
+  const sinir = Math.min(ustSinir, Math.max(0, para));
+  const emirler: Extract<Emir, { tur: "insaat" }>[] = [];
+  let bedel = 0;
+  for (const a of adaylar) {
+    if (bedel + a.bedel > sinir) continue; // pahalıyı atla, daha ucuzu sığabilir
+    emirler.push({ tur: "insaat", sehir: a.sehir, yapi: a.yapi });
+    bedel += a.bedel;
+  }
+  if (!emirler.length) return { gecerli: false, neden: adaylar.length
+    ? `Bütçe yetmiyor: en ucuz yatırım ${Math.min(...adaylar.map((a) => a.bedel))}, kullanılabilir ${sinir}. Borçlanma yoktur.`
+    : "Geliştirilecek şehir yok: hepsinde inşaat sürüyor ya da tarla ve pazar en yüksek seviyede." };
+  return { gecerli: true, emirler, bedel, dolu, kalan: adaylar.length - emirler.length };
 }

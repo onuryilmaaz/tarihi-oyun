@@ -833,6 +833,14 @@ Kaynak belge: `MASTER_SPEC.md` (v1.3). Orijinal keşif çıktısı:
   "İkisi birden, aynı kartta" (2026-10-30).
 - **Durum:** GEÇERLİ
 
+## DEC-0083 — TASK-0038: tüm şehirleri tek düğmeyle geliştirme
+
+- **Tarih:** 2026-11-01
+- **Seçilen karar:** Tek düğmeyle inşaatı olmayan her şehre bir seviye tarla/pazar (en kârlı önce); dolu şehirler
+  atlanır; harcama oyuncunun üst sınırıyla (varsayılan kullanılabilir hazinenin yarısı) sınırlı; sur dahil değil. [TASLAK]
+- **Onay kaydı:** Kullanıcı: "1- evet 2- uygun 3- her şehire bir seviye full olanları yapmaya gerek olmayacak" (2026-11-01).
+- **Durum:** GEÇERLİ
+
 ## DEC-0082 — TASK-0037: ordu kurma tek satır; zengin AI eşiği 12 ay, çoklu iş
 
 - **Tarih:** 2026-11-01
