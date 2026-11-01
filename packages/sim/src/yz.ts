@@ -112,7 +112,7 @@ export function devletKarari(d: DunyaDurumu, b: Baglam, on: DiplomasiOnHesap, de
         const bedel = insaatMaliyeti(d, d.sehirler[i], yapi);
         if (bedel === null || bedel > para()) continue;
         const gelir = yapiSeviyeGeliri(d, d.sehirler[i], yapi); // TASK-0032: gerçek (nüfusa ölçekli) getiri
-        if (gelir * DENGE.YZ_YATIRIM_GERI_DONUS_AY < bedel) continue; // kendini geç ödeyen yatırım yapılmaz
+        if (gelir * (zengin ? DENGE.YZ_ZENGIN_GERI_DONUS_AY : DENGE.YZ_YATIRIM_GERI_DONUS_AY) < bedel) continue; // kendini geç ödeyen yatırım yapılmaz
         const oran = Math.floor((gelir * 100000) / bedel);
         if (!en || oran > en.oran) en = { sehir: i, yapi, oran, bedel };
       }
@@ -125,6 +125,9 @@ export function devletKarari(d: DunyaDurumu, b: Baglam, on: DiplomasiOnHesap, de
   // Tehdit altında önce savunma; barışta önce kalkınma. Her karar adımında en çok birer iş.
   const sira = tehdit ? [asker, sur, () => arastir("askeri"), yatirim] : [() => arastir(null), yatirim, asker, ...(zengin ? [sur] : [])];
   for (const adim of sira) adim();
+  // TASK-0037: zengin AI (ör. Ming) ayda tek iş yaptığı için para biriktiriyordu; zenginlik sürdükçe birkaç iş daha yapar
+  const zenginEsik = DENGE.YZ_ZENGIN_AY * Math.max(DENGE.YZ_YEDEK_EN_AZ, gelirler[devlet]);
+  for (let i = 1; !tehdit && zengin && i < DENGE.YZ_ZENGIN_ADIM && para() > zenginEsik; i++) if (![yatirim, asker, sur].some((f) => f())) break;
 }
 
 /** Günlük sistem: o gün sırası gelen AI devletleri karar verir. */

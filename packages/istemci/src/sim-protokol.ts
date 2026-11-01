@@ -100,7 +100,7 @@ export interface Ozet {
   diplomatikTeklifler: { id: number; devlet: number; tur: "ittifak" | "ticaret" | "saldirmazlik" | "vasallik"; ay: number | null; gerekce: string; kalanGun: number; cevap: boolean | null }[]; // TASK-0020 (1/3), vasallik TASK-0021 (4/4)
   toplamaKurali: { bedelYuzde: number; gun: number }; // teknolojiyle değişir (Asker Kayıt Defterleri)
   askerSehirleri: { indeks: number; ad: string; insanGucu: number; uygun: boolean; ayaklanma: boolean }[];
-  toplamalar: { id: number | null; sehir: string; asker: number; birim: BirimTuru; kalanGun: number; bekliyor: boolean; emir: boolean }[]; // TASK-0019: birim
+  toplamalar: { idler: number[]; sehir: string; sehirSayisi: number; asker: number; birim: BirimTuru; kalanGun: number; bekliyor: boolean; emir: boolean }[]; // TASK-0037: ordu kurma parçaları tek satır // TASK-0019: birim
   planliKesinti: { tarih: string; neden: string }[];
   hash: string;
   ordular: OrduOzeti[];

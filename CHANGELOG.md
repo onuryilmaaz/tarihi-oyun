@@ -1,5 +1,10 @@
 # CHANGELOG
 
+## 2026-11-01 — TASK-0037: ordu kurma tek satır; zengin AI daha çok harcar (Claude)
+
+- Ordu kurma parçaları Ordu sekmesinde tek satır, tek İptal düğmesi.
+- Zengin AI eşiği 12 aylık gelir; birden çok yatırım/sur yapar. Ming hazinesi 10 yılda 215 bin → 138 bin.
+
 ## 2026-10-31 — TASK-0035/0036: AI harcıyor, teknoloji yavaş, tek emirle ordu kurma (Claude)
 
 - Zengin AI (hazine > 24 aylık gelir) daha büyük ordu tutar ve sur yapar; teknoloji bedel ve süreleri iki katı.

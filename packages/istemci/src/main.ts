@@ -436,7 +436,7 @@ async function baslat() {
       }).join("");
       if (onceBirim) birimSecim.value = onceBirim;
     }
-    $("toplamaListesi").innerHTML = ozet.toplamalar.map((t) => `<li>${kacis(t.sehir)} · ${t.asker.toLocaleString("tr-TR")} ${kacis(BIRIM_ADLARI[t.birim].toLowerCase())} · ${t.emir ? "Emir bekliyor" : t.bekliyor ? "Şehirde işler durduğu için bekliyor" : `${t.kalanGun} gün kaldı`}${t.id !== null ? `<button class="bag" data-toplama-iptal="${t.id}"${mesgul ? " disabled" : ""}>İptal</button>` : ""}</li>`).join("");
+    $("toplamaListesi").innerHTML = ozet.toplamalar.map((t) => `<li>${kacis(t.sehir)} · ${t.asker.toLocaleString("tr-TR")} ${kacis(BIRIM_ADLARI[t.birim].toLowerCase())} · ${t.emir ? "Emir bekliyor" : t.bekliyor ? "Şehirde işler durduğu için bekliyor" : `${t.kalanGun} gün kaldı`}${t.idler.length ? `<button class="bag" data-toplama-iptal="${t.idler.join(",")}"${mesgul ? " disabled" : ""}>İptal</button>` : ""}</li>`).join("");
     toplamaBilgisi();
   };
   const toplamaBilgisi = () => {
@@ -463,7 +463,9 @@ async function baslat() {
     "Ordu kurma emri verildi: asker yakın şehirlerde toplanacak, hazır olanlar bu şehirde birleşecek.");
   $("toplamaListesi").addEventListener("click", (e) => {
     const b = (e.target as HTMLElement).closest<HTMLElement>("[data-toplama-iptal]");
-    if (b) emirGonder({ tur: "toplamaIptal", id: Number(b.dataset.toplamaIptal) }, "Toplama iptal emri verildi; bedel bir sonraki turda iade edilir.");
+    if (b) void (async () => { // TASK-0037: ordu kurma satırı bütün parçalarını iptal eder
+      for (const id of b.dataset.toplamaIptal!.split(",").map(Number)) if (!await emirGonder({ tur: "toplamaIptal", id }, "Toplama iptal emri verildi; bedel bir sonraki turda iade edilir.")) break;
+    })();
   });
   const yuzde = (binde: number) => `%${Math.round(binde / 10)}`;
   const raporGoster = (r: MuharebeRaporu) => {

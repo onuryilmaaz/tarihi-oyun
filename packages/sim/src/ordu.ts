@@ -53,7 +53,8 @@ export function toplamalariIlerlet(d: DunyaDurumu, b: Baglam): void {
     const konum = b.sehirKonumlari?.[t.sehir] ?? n;
     const kompozisyon = tekTurKompozisyon(t.birim, t.asker);
     // Şehirde bekleyen kendi ordusu varsa yeni askerler ona katılır (yürüyüş, muharebe, geri çekilme ve kuşatma dışında)
-    const bekleyen = t.toplanma === undefined ? toplanmaOrdusu(d, t.devlet, s.dugum) : undefined;
+    // Toplanma şehrinin kendi parçası orada bekleyen orduya katılır; uzaktaki parçalar yürüyüp varınca katılır
+    const bekleyen = t.toplanma === undefined || t.toplanma === t.sehir ? toplanmaOrdusu(d, t.devlet, s.dugum) : undefined;
     if (bekleyen) {
       bekleyen.moral = Math.floor((bekleyen.moral * bekleyen.asker + DENGE.MORAL_EN_YUKSEK * t.asker) / (bekleyen.asker + t.asker));
       bekleyen.kompozisyon = kompozisyonTopla(bekleyen.kompozisyon, kompozisyon);
@@ -68,7 +69,7 @@ export function toplamalariIlerlet(d: DunyaDurumu, b: Baglam): void {
       moral: DENGE.MORAL_EN_YUKSEK, tutum: "dengeli", cekiliyor: false, muharebe: null };
     d.ordular.push(o);
     // TASK-0036: toplanma şehrine yürür; yol kapanmışsa burada yeni ordu olarak kalır
-    const h = t.toplanma !== undefined ? d.sehirler[t.toplanma] : undefined;
+    const h = t.toplanma !== undefined && t.toplanma !== t.sehir ? d.sehirler[t.toplanma] : undefined;
     const hn = h ? b.ag?.dugumler[h.dugum] : undefined;
     const r = h && hn && b.ag && h.devlet === t.devlet ? rotaBul(d, b.ag, o, { ...(b.sehirKonumlari?.[t.toplanma!] ?? hn), dugum: h.dugum }) : null;
     if (r?.gecerli && r.adimlar.length) {

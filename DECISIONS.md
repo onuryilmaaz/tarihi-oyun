@@ -833,6 +833,14 @@ Kaynak belge: `MASTER_SPEC.md` (v1.3). Orijinal keşif çıktısı:
   "İkisi birden, aynı kartta" (2026-10-30).
 - **Durum:** GEÇERLİ
 
+## DEC-0082 — TASK-0037: ordu kurma tek satır; zengin AI eşiği 12 ay, çoklu iş
+
+- **Tarih:** 2026-11-01
+- **Seçilen karar:** Ordu kurma parçaları listede tek satır ve tek iptal. Zengin AI eşiği 12 aylık gelir; zengin AI
+  120 ayda kendini ödeyen yatırımı da yapar, bir kararda en çok 8 iş yapar. Ordu hedefi değişmedi. [TASLAK]
+- **Onay kaydı:** Kullanıcı: "evet" (2026-11-01).
+- **Durum:** GEÇERLİ
+
 ## DEC-0081 — TASK-0036: tek emirle ordu kurma
 
 - **Tarih:** 2026-10-31

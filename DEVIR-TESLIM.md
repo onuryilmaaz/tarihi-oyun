@@ -10,8 +10,11 @@ Bağlayıcı kurallar: `AGENTS.md`, `MASTER_SPEC.md`, `DECISIONS.md`.
 
 ## 0. En son — BURADAN BAŞLA
 
-- **TASK-0035 (AI harcıyor, teknoloji ×2, DEC-0080) ve TASK-0036 (tek emirle ordu kurma, DEC-0081) uygulandı,
-  COMMIT EDİLMEDİ, kullanıcı testi bekliyor (2026-10-31).** Son commit `de19919e` (TASK-0032/0033/0034 dahil).
+- **TASK-0037 (ordu kurma tek satır, zengin AI çoklu iş, DEC-0082) uygulandı, COMMIT EDİLMEDİ, kullanıcı testi
+  bekliyor (2026-11-01).** Son commit `00c3bdce`.
+
+- **TASK-0035 (AI harcıyor, teknoloji ×2, DEC-0080) ve TASK-0036 (tek emirle ordu kurma, DEC-0081) commit+push
+  edildi (`00c3bdce`, 2026-10-31); kullanıcı testi bekliyor. Üsküdar Kocaeli sancağına elle bağlandı.**
   Açık: Ming hâlâ ~286 bin hazine biriktiriyor (ordu hedefi toprak sayısına bağlı); Le Havre bir sonraki senaryo
   üretiminde düşer; "Ordu kur" toplama listesinde her şehri ayrı satır gösteriyor (gruplama yapılabilir).
   Aynı oturumda İstanbul düzeltmesi: bütün dünya grubunda ızgara kaba olduğu için Konstantiniyye bölgesi boğazı

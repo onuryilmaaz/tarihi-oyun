@@ -282,7 +282,9 @@ export const DENGE = {
   GELISMISLIK_YATIRIM_ADIM: 3, // her bu kadar yatırım seviyesinde gelişmişlik +1
   YZ_YATIRIM_GERI_DONUS_AY: 60, // AI ve yerel yönetici kendini bu sürede ödemeyen yatırımı yapmaz
   // TASK-0035: AI fazla parayı harcar [TASLAK]
-  YZ_ZENGIN_AY: 24, // hazine bu kadar aylık geliri aşarsa "zengin"
+  YZ_ZENGIN_AY: 12, // hazine bu kadar aylık geliri aşarsa "zengin" (TASK-0037: 24 → 12)
+  YZ_ZENGIN_GERI_DONUS_AY: 120, // TASK-0037: zengin AI kendini bu sürede ödeyen yatırımı da yapar
   YZ_ZENGIN_ASKER_YUZDE: 150, // zengin AI'nın barış ordusu hedefi
+  YZ_ZENGIN_ADIM: 8, // TASK-0037: zengin AI bir kararda en çok bu kadar iş yapar (yatırım/asker/sur), zenginlik bitene dek
   YZ_ZENGIN_SUR_SEHIR: 3, // zengin AI başkent dışında en kalabalık bu kadar şehrine sur yapar
 };

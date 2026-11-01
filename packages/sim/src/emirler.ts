@@ -607,7 +607,7 @@ export function emirUygula(d: DunyaDurumu, e: Emir, b: Baglam = BOS_BAGLAM): voi
       d.devletler[s.devlet].hazine -= bedel;
       s.insanGucu -= e.asker;
       d.askerToplamalar.push({ id: d.sonrakiToplamaId++, sehir: e.sehir, devlet: s.devlet, asker: e.asker, birim, kalanGun: sure, bedel,
-        ...(e.toplanma !== undefined && e.toplanma !== e.sehir ? { toplanma: e.toplanma } : {}) });
+        ...(e.toplanma !== undefined ? { toplanma: e.toplanma } : {}) });
       olayEkle(d, { tur: "asker-toplama", devlet: s.devlet, metin: `${s.ad}: ${e.asker} ${BIRIM_ADLARI[birim].toLowerCase()} toplanıyor (${sure} gün). Bedel: −${bedel}.` });
       break;
     }

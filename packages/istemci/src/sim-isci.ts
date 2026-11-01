@@ -3,7 +3,7 @@
 
 import {
   agHazirla, baslangicDurumu, durumOzeti, emirVer, gorunurYabanciOrdular, kalanYol, kaydet, orduKonumu, orduRotasi,
-  tarihMetni, turSuresiAyarla, turuIlerlet, yukle, TUR_SURESI_ADLARI, type Baglam, type DunyaDurumu,
+  tarihMetni, turSuresiAyarla, turuIlerlet, yukle, TUR_SURESI_ADLARI, type Baglam, type BirimTuru, type DunyaDurumu,
   kompozisyonMaasi, devletMaasi, emirDogrula, ikmalDurumu, kullanilabilirHazine, kullanilabilirInsanGucu, DENGE,
   barisBedeli, barisDevirOzeti, barisDogrula, kusatmaGucu, orduKusatmasi, savasSkoru,
   butceOzeti, insaatMaliyeti, insaatSuresi, sehirYapiGeliri, yapiSeviyesi, yapiEnYuksek, YAPI_ADLARI, YAPI_TURLERI,
@@ -168,16 +168,7 @@ function ozet(durum: DunyaDurumu): Ozet {
       ayaklanma: s.istikrar.ayaklanma, uygun: !s.istikrar.ayaklanma && s.kontrol === s.devlet && !!baglam.ag?.dugumler[s.dugum]
         && durum.birimler[baglam.ag!.dugumler[s.dugum].b]?.kontrol === s.devlet,
     }]),
-    toplamalar: [
-      ...durum.askerToplamalar.filter((t) => t.devlet === durum.ayarlar.oyuncu).map((t) => {
-        const s = durum.sehirler[t.sehir];
-        const n = baglam.ag?.dugumler[s.dugum];
-        return { id: t.id, sehir: t.toplanma !== undefined ? `${s.ad} → ${durum.sehirler[t.toplanma].ad}` : s.ad, asker: t.asker, birim: t.birim, kalanGun: t.kalanGun,
-          bekliyor: s.istikrar.ayaklanma || !n || s.kontrol !== t.devlet || durum.birimler[n.b]?.kontrol !== t.devlet, emir: false };
-      }),
-      ...durum.emirKuyrugu.flatMap((e) => e.tur !== "askerTopla" ? [] : [{ id: null, sehir: e.toplanma !== undefined && e.toplanma !== e.sehir ? `${durum.sehirler[e.sehir].ad} → ${durum.sehirler[e.toplanma].ad}` : durum.sehirler[e.sehir].ad,
-        asker: e.asker, birim: e.birim ?? "piyade", kalanGun: toplamaSuresi(durum, durum.ayarlar.oyuncu), bekliyor: false, emir: true }]),
-    ],
+    toplamalar: toplamaSatirlari(durum),
     planliKesinti: durum.planliKesintiler.map((k) => ({ tarih: tarihMetni(k.gun), neden: k.neden })),
     hash: durumOzeti(durum),
     ordular: durum.ordular.filter((o) => o.devlet === durum.ayarlar.oyuncu).map((o) => {
@@ -326,3 +317,31 @@ self.onmessage = (e: MessageEvent<Istek>) => {
   }
   self.postMessage(y);
 };
+
+/** TASK-0037: aynı toplanma şehrine giden parçalar (ordu kurma) tek satırda; tek şehir toplaması kendi satırında. */
+function toplamaSatirlari(durum: DunyaDurumu): Ozet["toplamalar"] {
+  const oyuncu = durum.ayarlar.oyuncu;
+  const satirlar = new Map<string, Ozet["toplamalar"][number]>();
+  const ekle = (anahtar: string, sehir: number, toplanma: number | undefined, id: number | null, asker: number, birim: BirimTuru, kalanGun: number, bekliyor: boolean, emir: boolean) => {
+    const k = toplanma !== undefined ? `t${toplanma}|${birim}|${emir}` : anahtar;
+    const v = satirlar.get(k);
+    if (v) {
+      v.sehirSayisi++; v.asker += asker; v.kalanGun = Math.max(v.kalanGun, kalanGun); v.bekliyor ||= bekliyor;
+      if (id !== null) v.idler.push(id);
+      v.sehir = `${durum.sehirler[toplanma!].ad} Ordusu (${v.sehirSayisi} şehirden)`;
+      return;
+    }
+    satirlar.set(k, { idler: id !== null ? [id] : [], sehir: toplanma !== undefined && toplanma !== sehir ? `${durum.sehirler[sehir].ad} → ${durum.sehirler[toplanma].ad}` : durum.sehirler[sehir].ad,
+      sehirSayisi: 1, asker, birim, kalanGun, bekliyor, emir });
+  };
+  for (const t of durum.askerToplamalar) {
+    if (t.devlet !== oyuncu) continue;
+    const s = durum.sehirler[t.sehir], n = baglam.ag?.dugumler[s.dugum];
+    ekle(`i${t.id}`, t.sehir, t.toplanma, t.id, t.asker, t.birim, t.kalanGun,
+      s.istikrar.ayaklanma || !n || s.kontrol !== t.devlet || durum.birimler[n.b]?.kontrol !== t.devlet, false);
+  }
+  durum.emirKuyrugu.forEach((e, i) => {
+    if (e.tur === "askerTopla") ekle(`e${i}`, e.sehir, e.toplanma, null, e.asker, e.birim ?? "piyade", toplamaSuresi(durum, oyuncu), false, true);
+  });
+  return [...satirlar.values()];
+}
