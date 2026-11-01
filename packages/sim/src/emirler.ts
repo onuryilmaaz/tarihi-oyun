@@ -379,7 +379,7 @@ export function emirDogrula(d: DunyaDurumu, e: Emir, b: Baglam = BOS_BAGLAM, kuy
     }
     case "orduKur": {
       const p = orduKurPlani(d, e, b, kuyrukHaric);
-      return p.gecerli ? { gecerli: true } : p;
+      return p.gecerli ? { gecerli: true } : { gecerli: false, neden: p.neden };
     }
     case "toplamaIptal": {
       const t = d.askerToplamalar.find((x) => x.id === e.id);
@@ -504,7 +504,7 @@ export function emirVer(d: DunyaDurumu, e: Emir, b: Baglam = BOS_BAGLAM): Dogrul
   if (e.tur === "orduKur") { // kuyruğa ayrı ayrı askerTopla olarak girer: bedel, insan gücü ve iptal onlardan işler
     if (d.sehirler[e.sehir]?.devlet !== oyuncu) return { gecerli: false, neden: "Ordu yalnızca kendi şehrinizde kurulur." };
     const p = orduKurPlani(d, e, b);
-    if (!p.gecerli) return p;
+    if (!p.gecerli) return { gecerli: false, neden: p.neden };
     d.emirKuyrugu.push(...p.emirler);
     return { gecerli: true };
   }
@@ -516,7 +516,7 @@ export function emirVer(d: DunyaDurumu, e: Emir, b: Baglam = BOS_BAGLAM): Dogrul
 /** TASK-0036: toplanma şehrine yoldan en yakın kendi şehirlerinden (en çok ORDU_KUR_EN_COK_GUN günlük yürüyüş) askeri
  *  insan gücü sırasıyla bölüştürür. Her parça bir askerTopla emridir; hazır olan birlik toplanma şehrine yürür. */
 export function orduKurPlani(d: DunyaDurumu, e: Extract<Emir, { tur: "orduKur" }>, b: Baglam, kuyrukHaric = false):
-  { gecerli: true; emirler: Extract<Emir, { tur: "askerTopla" }>[]; bedel: number } | { gecerli: false; neden: string } {
+  { gecerli: true; emirler: Extract<Emir, { tur: "askerTopla" }>[]; bedel: number } | { gecerli: false; neden: string; toplanabilir?: number } {
   const hedef = d.sehirler[e.sehir], devlet = hedef?.devlet ?? -1, birim = e.birim ?? "piyade";
   if (!hedef) return { gecerli: false, neden: "Geçersiz şehir." };
   if (hedef.kontrol !== devlet || hedef.istikrar.ayaklanma) return { gecerli: false, neden: "Toplanma yeri kontrolünüzdeki, ayaklanmasız kendi şehriniz olmalı." };
@@ -539,7 +539,7 @@ export function orduKurPlani(d: DunyaDurumu, e: Extract<Emir, { tur: "orduKur" }
     bedel += toplamaMaliyeti(al, sehirToplamaYuzde(d, i, birim), birim);
     kalan -= al;
   }
-  if (kalan) return { gecerli: false, neden: `${DENGE.ORDU_KUR_EN_COK_GUN} günlük yol içindeki şehirlerinizde yalnızca ${sayiMetni(e.asker - kalan)} asker toplanabilir.` };
+  if (kalan) return { gecerli: false, neden: `${DENGE.ORDU_KUR_EN_COK_GUN} günlük yol içindeki şehirlerinizde yalnızca ${sayiMetni(e.asker - kalan)} asker toplanabilir.`, toplanabilir: e.asker - kalan };
   const para = kuyrukHaric ? d.devletler[devlet].hazine : kullanilabilirHazine(d, devlet);
   if (para < 0 || bedel > para) return { gecerli: false, neden: `Hazine yetersiz: ${para} kullanılabilir, ${bedel} gerekli. Borçlanma yoktur.` };
   return { gecerli: true, emirler, bedel };

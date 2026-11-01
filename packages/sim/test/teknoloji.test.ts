@@ -3,7 +3,7 @@ import { describe, expect, it } from "vitest";
 import {
   agHazirla, baslangicDurumu, butceOzeti, degismezler, DENGE, durumOzeti, emirleriUygula, emirVer, gunIlerlet, insaatMaliyeti, kaydet,
   kullanilabilirHazine, muharebeGunu, muharebeGucYuzde, toplamaMaliyeti, turSuresiAyarla, turuIlerlet, yukle, type DunyaDurumu,
-  yapiSeviyeGeliri, type SenaryoVerisi, type TeknolojiId,
+  insanGucuTavani, yapiSeviyeGeliri, type SenaryoVerisi, type TeknolojiId,
 } from "../src";
 import { yeniDurum } from "./yardimci";
 
@@ -85,7 +85,9 @@ describe("teknoloji ağacı (5c)", () => {
     while (e.arastirmalar.length) gunIlerlet(e);
     e.sehirler.forEach((s, i) => {
       const ek = s.devlet === 0 ? Math.floor(Math.floor(s.nufus * DENGE.INSAN_GUCU_YUZDE / 100) * DENGE.SAYIM_INSAN_GUCU_YUZDE / 100) : 0;
-      expect(s.insanGucu).toBe(havuz[i] + ek);
+      // TASK-0039: havuz aylık tavana doğru dolar; nüfus da büyüdüğü için en az sayım eki kadar artar, tavanı aşmaz
+      expect(s.insanGucu).toBeGreaterThanOrEqual(havuz[i] + ek);
+      expect(s.insanGucu).toBeLessThanOrEqual(insanGucuTavani(e, i));
     });
   });
 

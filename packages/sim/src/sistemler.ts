@@ -13,7 +13,7 @@ import { gundenTarih } from "./takvim";
 import { orduIlerlet } from "./hareket";
 import { moralToparla, muharebeGunleri, muharebeleriBaslat } from "./savas";
 import type { Baglam } from "./emirler";
-import { devletMaasi, ikmalVeMaasMorali, maaslariOde, toplamalariIlerlet, toplanmayaKatil } from "./ordu";
+import { devletMaasi, ikmalVeMaasMorali, insanGucuYenile, maaslariOde, toplamalariIlerlet, toplanmayaKatil } from "./ordu";
 import { prototipGelirleri } from "./ekonomi";
 import { DENGE } from "./denge";
 import { isgalleriIlerlet, kusatmalariIlerlet, varincaKusat } from "./kusatma";
@@ -106,6 +106,7 @@ export const SISTEMLER: Sistem[] = [
     },
   },
   { id: "ordu-maasi", siklik: "aylik", calistir: (d) => maaslariOde(d) },
+  { id: "insan-gucu", siklik: "aylik", calistir: (d) => insanGucuYenile(d) }, // TASK-0039
   { id: "vasal-vergi", siklik: "aylik", calistir: (d) => vasalVergisiAl(d, prototipGelirleri(d)) }, // TASK-0018 (2/3)
   {
     // TASK-0017: bütçe panelindeki hazine geçmişi; gelir ve maaş bu ay uygulandıktan sonraki net fark

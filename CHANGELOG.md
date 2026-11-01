@@ -1,5 +1,10 @@
 # CHANGELOG
 
+## 2026-11-01 — TASK-0039: insan gücü havuzu yenilenir (Claude)
+
+- Boşalan asker havuzu her ay tavanın 1/12'si kadar dolar (1 yılda tam). Havuz yetmeyince "Ordu kur" ile toplanabilecek
+  en çok asker gösterilir.
+
 ## 2026-11-01 — TASK-0038: tüm şehirleri tek düğmeyle geliştirme (Claude)
 
 - Şehir sekmesinde "Tüm şehirleri geliştir": her şehre bir seviye tarla/pazar, en kârlısı önce, üst sınırlı; onay

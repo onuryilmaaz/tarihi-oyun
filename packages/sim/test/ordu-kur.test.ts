@@ -1,6 +1,6 @@
 // TASK-0036: tek emirle ordu kurma — yakın şehirlerden toplanır, toplanma şehrinde tek orduda birleşir
 import { describe, expect, it } from "vitest";
-import { agHazirla, baslangicDurumu, degismezler, DENGE, durumOzeti, emirVer, gunIlerlet, kaydet, turuIlerlet, yukle, type SenaryoVerisi } from "../src";
+import { agHazirla, baslangicDurumu, degismezler, DENGE, durumOzeti, emirVer, gunIlerlet, insanGucuTavani, insanGucuYenile, kaydet, orduKurPlani, turuIlerlet, yukle, type SenaryoVerisi } from "../src";
 
 // Doğrusal dünya: A1 (0) … A4 (3), B1 (4); düğümler 10 km arayla
 const S: SenaryoVerisi = {
@@ -61,5 +61,28 @@ describe("tek emirle ordu kurma (TASK-0036)", () => {
     for (let i = 0; i < 20; i++) { gunIlerlet(e, B); gunIlerlet(f, B); }
     expect(durumOzeti(f)).toBe(durumOzeti(e));
     expect(degismezler(e)).toEqual([]);
+  });
+});
+
+describe("insan gücü yenilenmesi (TASK-0039)", () => {
+  it("boşalan havuz her ay tavanın 1/12'si kadar dolar, tavanı aşmaz; kayıt/yükleme sonucu değiştirmez", () => {
+    const d = yeni();
+    const tavan = insanGucuTavani(d, 1);
+    d.sehirler[1].insanGucu = 0;
+    insanGucuYenile(d);
+    expect(d.sehirler[1].insanGucu).toBe(Math.ceil(tavan / DENGE.INSAN_GUCU_YENILENME_AY));
+    for (let i = 0; i < DENGE.INSAN_GUCU_YENILENME_AY + 2; i++) insanGucuYenile(d);
+    expect(d.sehirler[1].insanGucu).toBe(tavan);
+    const e = yukle(kaydet(d), d.senaryo);
+    d.sehirler[2].insanGucu = e.sehirler[2].insanGucu = 0;
+    for (let i = 0; i < 70; i++) { gunIlerlet(d, B); gunIlerlet(e, B); }
+    expect(d.sehirler[2].insanGucu).toBeGreaterThan(0);
+    expect(durumOzeti(e)).toBe(durumOzeti(d));
+  });
+
+  it("ordu kurma yetmezse toplanabilecek en çok askeri bildirir", () => {
+    const d = yeni();
+    const toplam = d.sehirler.slice(0, 4).reduce((t, s) => t + s.insanGucu, 0);
+    expect(orduKurPlani(d, { tur: "orduKur", sehir: 1, asker: toplam + 1 }, B)).toMatchObject({ gecerli: false, toplanabilir: toplam });
   });
 });

@@ -105,6 +105,21 @@ export function toplanmayaKatil(d: DunyaDurumu, o: OrduDurumu): boolean {
   return true;
 }
 
+/** TASK-0039: insan gücü tavanı (nüfusun %5'i; Asker Sayımı ile %50 fazlası). */
+export function insanGucuTavani(d: DunyaDurumu, sehir: number): number {
+  const s = d.sehirler[sehir], taban = Math.floor((s.nufus * DENGE.INSAN_GUCU_YUZDE) / 100);
+  return d.devletler[s.devlet]?.teknolojiler.includes("sayim") ? taban + Math.floor((taban * DENGE.SAYIM_INSAN_GUCU_YUZDE) / 100) : taban;
+}
+
+/** TASK-0039: aylık; boşalan havuz tavanın 1/INSAN_GUCU_YENILENME_AY'ı kadar dolar, tavanı aşmaz. Bağlı şehirde havuz yok. */
+export function insanGucuYenile(d: DunyaDurumu): void {
+  d.sehirler.forEach((s, i) => {
+    if (s.bagli >= 0) return;
+    const tavan = insanGucuTavani(d, i);
+    if (s.insanGucu < tavan) s.insanGucu = Math.min(tavan, s.insanGucu + Math.ceil(tavan / DENGE.INSAN_GUCU_YENILENME_AY));
+  });
+}
+
 export function maaslariOde(d: DunyaDurumu): void {
   d.devletler.forEach((v, devlet) => {
     const maas = devletMaasi(d, devlet);

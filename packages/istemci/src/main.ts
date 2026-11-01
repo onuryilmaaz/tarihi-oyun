@@ -441,6 +441,7 @@ async function baslat() {
     $("toplamaListesi").innerHTML = ozet.toplamalar.map((t) => `<li>${kacis(t.sehir)} · ${t.asker.toLocaleString("tr-TR")} ${kacis(BIRIM_ADLARI[t.birim].toLowerCase())} · ${t.emir ? "Emir bekliyor" : t.bekliyor ? "Şehirde işler durduğu için bekliyor" : `${t.kalanGun} gün kaldı`}${t.idler.length ? `<button class="bag" data-toplama-iptal="${t.idler.join(",")}"${mesgul ? " disabled" : ""}>İptal</button>` : ""}</li>`).join("");
     toplamaBilgisi();
   };
+  let orduKurSorgu = 0; // TASK-0039: yalnızca son önizleme yanıtı yazılır
   const toplamaBilgisi = () => {
     const sehir = ozet.askerSehirleri.find((s) => s.indeks === Number($<HTMLSelectElement>("toplamaSehir").value));
     const birim = $<HTMLSelectElement>("toplamaBirim").value as BirimTuru;
@@ -453,6 +454,15 @@ async function baslat() {
       : "Asker toplanabilecek şehriniz yok.";
     $<HTMLButtonElement>("toplaBtn").disabled = mesgul || !sehir?.uygun || !sayiUygun || asker > sehir.insanGucu || ozet.kullanilabilirHazine < bedel;
     $<HTMLButtonElement>("orduKurBtn").disabled = mesgul || !sehir?.uygun || !sayiUygun; // TASK-0036: yeterlilik simde denetlenir
+    // TASK-0039: şehrin havuzu yetmiyorsa "Ordu kur" ile ne kadar toplanabileceği (yakın şehirler) simden sorulur
+    const istek = ++orduKurSorgu;
+    if (sehir?.uygun && sayiUygun && asker > sehir.insanGucu) void sim.gonder({ tip: "orduKurOnizle", sehir: sehir.indeks, asker, birim }).then((y) => {
+      const k = y.orduKur;
+      if (istek !== orduKurSorgu || !k) return;
+      $("toplamaBilgi").textContent += "neden" in k
+        ? (k.toplanabilir !== undefined ? ` Ordu kur ile en çok ${k.toplanabilir.toLocaleString("tr-TR")} asker toplanabilir.` : ` ${k.neden}`)
+        : ` Ordu kur: ${k.sehir} şehirden, bedel ${k.bedel.toLocaleString("tr-TR")}.`;
+    }).catch(() => {});
   };
   $("toplamaSehir").onchange = toplamaBilgisi;
   $("toplamaBirim").onchange = toplamaBilgisi;

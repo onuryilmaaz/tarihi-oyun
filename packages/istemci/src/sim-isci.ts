@@ -3,7 +3,7 @@
 
 import {
   agHazirla, baslangicDurumu, durumOzeti, emirVer, gorunurYabanciOrdular, kalanYol, kaydet, orduKonumu, orduRotasi,
-  tarihMetni, turSuresiAyarla, turuIlerlet, yukle, TUR_SURESI_ADLARI, topluGelistirmePlani, type Baglam, type BirimTuru, type DunyaDurumu,
+  tarihMetni, turSuresiAyarla, turuIlerlet, yukle, TUR_SURESI_ADLARI, orduKurPlani, topluGelistirmePlani, type Baglam, type BirimTuru, type DunyaDurumu,
   kompozisyonMaasi, devletMaasi, emirDogrula, ikmalDurumu, kullanilabilirHazine, kullanilabilirInsanGucu, DENGE,
   barisBedeli, barisDevirOzeti, barisDogrula, kusatmaGucu, orduKusatmasi, savasSkoru,
   butceOzeti, insaatMaliyeti, insaatSuresi, sehirYapiGeliri, yapiSeviyesi, yapiEnYuksek, YAPI_ADLARI, YAPI_TURLERI,
@@ -241,6 +241,11 @@ function isle(i: Istek): Yanit {
   if (i.tip === "yeniOyun" || i.tip === "yukle") bozuk = false;
   if (i.tip === "testSimHatasi") { bozuk = true; throw new Error("Test: simülasyon tur ortasında durdu (geliştirici denemesi)"); }
   switch (i.tip) {
+    case "orduKurOnizle": { // TASK-0039: asker sayısı kutusu için; dünyayı değiştirmez
+      if (!d) return { id: i.id, tamam: false, hata: "Oyun başlatılmadı." };
+      const p = orduKurPlani(d, { tur: "orduKur", sehir: i.sehir, asker: i.asker, birim: i.birim }, baglam);
+      return { id: i.id, tamam: true, ozet: ozet(d), orduKur: p.gecerli ? { sehir: p.emirler.length, bedel: p.bedel } : { neden: p.neden, toplanabilir: p.toplanabilir } };
+    }
     case "gelistirmeOnizle": { // TASK-0038: onay penceresi için plan özeti; dünyayı değiştirmez
       if (!d) return { id: i.id, tamam: false, hata: "Oyun başlatılmadı." };
       const p = topluGelistirmePlani(d, i.ustSinir, false, i.sur);

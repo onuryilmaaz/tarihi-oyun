@@ -833,6 +833,14 @@ Kaynak belge: `MASTER_SPEC.md` (v1.3). Orijinal keşif çıktısı:
   "İkisi birden, aynı kartta" (2026-10-30).
 - **Durum:** GEÇERLİ
 
+## DEC-0084 — TASK-0039: insan gücü havuzu yenilenir
+
+- **Tarih:** 2026-11-01
+- **Seçilen karar:** Havuz tavanı nüfusun %5'i (Sayım ile %50 fazlası); boşalan havuz ayda tavanın 1/12'si kadar dolar.
+  Asker sayısı kutusu "Ordu kur" ile toplanabilecek en çok askeri gösterir. [TASLAK]
+- **Onay kaydı:** Kullanıcı: "1- evet 2- evet" (2026-11-01).
+- **Durum:** GEÇERLİ
+
 ## DEC-0083 — TASK-0038: tüm şehirleri tek düğmeyle geliştirme
 
 - **Tarih:** 2026-11-01

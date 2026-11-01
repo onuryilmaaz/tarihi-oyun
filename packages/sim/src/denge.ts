@@ -56,7 +56,8 @@ export const DENGE = {
   BARIS_GECMISI_SINIRI: 20,
   BASLANGIC_HAZINE_BIRIM_BASINA: 100,
   TEST_GELIR_BIRIM_BASINA: 10,
-  INSAN_GUCU_YUZDE: 5, // şehir nüfusundan ek asker toplama havuzu; kendiliğinden yenilenmez
+  INSAN_GUCU_YUZDE: 5, // şehir nüfusundan asker toplama havuzu (tavan)
+  INSAN_GUCU_YENILENME_AY: 12, // TASK-0039: boşalan havuz her ay tavanın 1/12'si kadar dolar (1 yılda tam) [TASLAK]
   TOPLAMA_GUN: 30,
   ORDU_KUR_EN_COK_GUN: 30, // TASK-0036: tek emirle ordu kurmada toplanma şehrine en çok bu kadar günlük yürüyüşteki şehirler katılır [TASLAK]
   TOPLAMA_ASKER_BASINA_MALIYET_BINDE: 100, // 1000 asker → 100 hazine
