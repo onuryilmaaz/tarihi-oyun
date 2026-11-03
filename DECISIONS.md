@@ -1,5 +1,14 @@
 # DECISIONS — Karar Kayıtları
 
+## DEC-0091 — TASK-0053: başkent taşıma; toprak adları güncel şehir adını izler
+
+- **Tarih:** 2026-11-03
+- **Seçilen karar:** Oyuncu başkentini bedel (2000) ve 5 yıllık bekleme süresiyle kendi şehirlerinden birine taşıyabilir;
+  eski başkentin riski geçici artar. Toprak adları (üzerine gelme yazısı, kırıntı, muharebe adları) toprağın şehrinin
+  güncel adını gösterir. Şema 37. [TASLAK]
+- **Onay kaydı:** Kullanıcı: "başkent değiştirme olsun…" (2026-11-03).
+- **Durum:** GEÇERLİ
+
 ## DEC-0090 — TASK-0052: barışta serbest bırakma; ortak görsel dil; tarih animasyonu
 
 - **Tarih:** 2026-11-03

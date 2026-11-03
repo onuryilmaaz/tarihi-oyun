@@ -47,6 +47,7 @@ export interface DevletDurumu {
   vergiOrani: VergiOrani; // TASK-0017: arazi/yapı geliri ve istikrar riski üzerinde etkili (19)
   idare: Idare; // TASK-0049: merkezî/dengeli/yerel yönetim
   reform: { hedef: Idare; bitis: number } | null; // süren idare reformu
+  baskentTasima: number | null; // TASK-0053: son başkent taşıma günü
   danismanlar: DanismanTuru[]; // TASK-0049: en çok DANISMAN_EN_COK, aylık maaşlı
   hazineGecmisi: number[]; // son aylık net gelir-gider farkları, en eski başta; en çok 12 kayıt (19)
   kaynaklar: KaynakStogu;
@@ -347,7 +348,7 @@ export interface SenaryoVerisi {
 // 5: kuşatma, gerçek işgal ve barış (TASK-0007/4c); şema 3–4 için eklemeli dönüşüm var.
 // Şema geçmişi: 6 şehir yatırımları (5b), 7 teknoloji (5c), 8 diplomasi (6a), 9 AI ekonomi (6b), 10 AI savaş/barış (6c),
 // 11 hükümdar ve veraset (7a), 12 nüfus grupları ve iskân (7b), 13 istikrar (7c), 14 yerel yönetim (7d)
-export const SEMA_SURUMU = 36; // TASK-0050: haberler, güç ve sınır geçmişi; eski kayıt taşınmaz.
+export const SEMA_SURUMU = 37; // TASK-0053: başkent taşıma günü; eski kayıt taşınmaz.
 // 19 vergi oranı ve hazine geçmişi (TASK-0017), 18 arazi verimi (9b), 15 donanma ve deniz (8a), 16 ticaret ve ambargo (8b), 17 casusluk (8c)
 
 export function baslangicDurumu(s: SenaryoVerisi, secenek: { tohum: number; oyuncu?: string }): DunyaDurumu {
@@ -405,7 +406,7 @@ export function baslangicDurumu(s: SenaryoVerisi, secenek: { tohum: number; oyun
     din: s.nufus?.devletler[d.id]?.din ?? BILINMIYOR.din,
     kultur: s.nufus?.devletler[d.id]?.kultur ?? BILINMIYOR.kultur,
     vergiOrani: "orta" as VergiOrani,
-    idare: "dengeli" as Idare, reform: null, danismanlar: [] as DanismanTuru[],
+    idare: "dengeli" as Idare, reform: null, danismanlar: [] as DanismanTuru[], baskentTasima: null,
     hazineGecmisi: [],
     kaynaklar: { tahil: Math.max(1, birimSayisi[i]) * DENGE.KAYNAK_BASLANGIC, demir: DENGE.KAYNAK_BASLANGIC, kereste: DENGE.KAYNAK_BASLANGIC },
   }));
@@ -540,6 +541,7 @@ export function degismezler(d: DunyaDurumu): string[] {
       || v.danismanlar.length > DENGE.DANISMAN_EN_COK) h.push(`devlet ${i} idare/danışman geçersiz`); // TASK-0049
     if (!Array.isArray(v.hazineGecmisi) || v.hazineGecmisi.length > DENGE.HAZINE_GECMISI_EN_COK || !v.hazineGecmisi.every(tam))
       h.push(`devlet ${i} hazine geçmişi geçersiz`);
+    if (v.baskentTasima !== null && (!tam(v.baskentTasima) || v.baskentTasima > d.gun)) h.push(`devlet ${i} başkent taşıma günü geçersiz`);
   });
   d.birimler.forEach((b, i) => {
     if (!tam(b.sahip) || b.sahip < -1 || b.sahip >= n) h.push(`birim ${i} sahibi geçersiz`);

@@ -29,6 +29,24 @@ export function sehirAdiDegistir(d: DunyaDurumu, sehir: number, ad: string): Dog
   return { gecerli: true };
 }
 
+/** TASK-0053: bir sonraki başkent taşımaya kalan gün (0 = taşınabilir). */
+export function baskentTasimaKalan(d: DunyaDurumu, devlet: number): number {
+  const son = d.devletler[devlet]?.baskentTasima ?? null;
+  return son === null ? 0 : Math.max(0, son + DENGE.BASKENT_TASIMA_ARALIK_GUN - d.gun);
+}
+
+/** TASK-0053: başkenti taşır; bedel düşer, eski başkentin istikrar riskine geçici ek yazılır (aylık hesapta söner). */
+export function baskentTasi(d: DunyaDurumu, devlet: number, sehir: number): void {
+  const v = d.devletler[devlet], eski = v.baskent;
+  v.hazine -= DENGE.BASKENT_TASIMA_BEDEL;
+  v.baskent = sehir;
+  v.baskentTasima = d.gun;
+  d.sehirler.forEach((s, i) => { if (s.devlet === devlet) s.baskent = i === sehir; });
+  if (eski !== null) d.sehirler[eski].istikrar.risk = Math.min(100, d.sehirler[eski].istikrar.risk + DENGE.BASKENT_TASIMA_RISK);
+  olayEkle(d, { tur: "baskent-tasindi", devlet,
+    metin: `${v.ad} başkentini ${eski !== null ? `${d.sehirler[eski].ad} şehrinden ` : ""}${d.sehirler[sehir].ad} şehrine taşıdı.` });
+}
+
 // Birim komşuluğu hareket ağından bir kez çıkarılır (ağ değişmez)
 const komsulukOnbellegi = new WeakMap<HareketAgi, Map<number, Set<number>>>();
 function birimKomsulari(ag: HareketAgi): Map<number, Set<number>> {

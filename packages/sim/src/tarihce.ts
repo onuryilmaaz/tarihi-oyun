@@ -14,7 +14,7 @@ export const HABER_TURLERI: Record<string, HaberKategori> = {
   "savas-ilani": "savas", "savas-bitti": "savas", "sehir-dustu": "savas", "ortak-baris": "savas",
   "baris": "diplomasi", "ittifak": "diplomasi", "ittifak-cagri": "diplomasi", "dunya-diplomasi": "diplomasi", "ittifak-bozuldu": "diplomasi",
   "vasal-ilhak": "diplomasi", "vasal-serbest": "diplomasi", "vasal-isyan": "diplomasi", "vasal-savasa-katildi": "diplomasi",
-  "devlet-yikildi": "siyaset", "bagimsizlik": "siyaset", "hukumdar-oldu": "siyaset", "tahta-cikis": "siyaset", "ayaklanma": "siyaset",
+  "devlet-yikildi": "siyaset", "bagimsizlik": "siyaset", "hukumdar-oldu": "siyaset", "tahta-cikis": "siyaset", "baskent-tasindi": "siyaset", "ayaklanma": "siyaset",
 };
 export const HABER_SINIRI = 400;
 export const GUC_SATIR = 20;

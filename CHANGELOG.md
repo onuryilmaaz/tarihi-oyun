@@ -1,5 +1,10 @@
 # CHANGELOG
 
+## 2026-11-03 — TASK-0053: başkent taşıma, güncel toprak adları (Claude)
+
+- Şehir panelinde "★ Başkent yap" (2000 altın, 5 yılda bir). Şema 37.
+- Ad değişen ya da birleşen şehrin toprağında eski ad artık görünmez.
+
 ## 2026-11-03 — TASK-0052: ortak görsel dil, rehber/sözlük, barışta serbest bırakma, tarih animasyonu (Claude)
 
 - Bütün pencereler altın çerçeveli; danışman/görev/komutan kartları; uzakta küçük başkent işaretleri.

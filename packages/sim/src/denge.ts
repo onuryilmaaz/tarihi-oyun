@@ -350,6 +350,10 @@ export const DENGE = {
   SEHIR_BIRLESTIR_BEDEL: 500,
   SEHIR_BIRLESTIR_GUN: 30,
   SEHIR_BIRLESTIR_RISK: 10, // iki şehrin istikrar riskine eklenir (aylık hesapta söner)
+  // TASK-0053 başkent taşıma [TASLAK]
+  BASKENT_TASIMA_BEDEL: 2000,
+  BASKENT_TASIMA_ARALIK_GUN: 1825, // iki taşıma arası en az 5 yıl
+  BASKENT_TASIMA_RISK: 15, // eski başkentin istikrar riskine eklenir
   // TASK-0028 gelişmişlik ve gelir kaynağı [TASLAK]
   GELISMISLIK_VARSAYILAN: 5, // senaryoda yoksa (%100)
   GELISMISLIK_TABAN: 70, // gelir yüzdesi = taban + adım × gelişmişlik (1 → %76, 5 → %100, 10 → %130)

@@ -148,3 +148,12 @@ export function birimParcasiBul(h: Pick<Harita, "halkalar">, birim: number, x: n
 export function denizBul(h: Harita, x: number, y: number): number {
   return h.denizHalkalari.findIndex((polys) => polys.some((hs) => halkaIcinde(hs[0], x, y) && !hs.slice(1).some((d) => halkaIcinde(d, x, y))));
 }
+
+/** TASK-0053: toprağın görünen adı — üzerindeki (birleşmişse merkezdeki) şehrin güncel adı; şehirsizse paketteki ad. */
+export function birimGorunenAdi(h: Harita, bi: number): string {
+  for (const b of [bi, h.birimGrubu[bi]]) {
+    const si = h.birimSehirleri[b]?.find((i) => !h.paket.sehirler[i].gizli);
+    if (si !== undefined) return h.paket.sehirler[si].ad;
+  }
+  return h.paket.birimler[bi].ad;
+}

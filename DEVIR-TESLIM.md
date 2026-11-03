@@ -10,6 +10,9 @@ Bağlayıcı kurallar: `AGENTS.md`, `MASTER_SPEC.md`, `DECISIONS.md`.
 
 ## 0. En son — BURADAN BAŞLA
 
+- **2026-11-03, Claude — TASK-0053 uygulandı (başkent taşıma, güncel toprak adları), COMMIT EDİLMEDİ.** TASK-0052
+  `c97ea2ce` ile push edildi. 334 test, typecheck, build geçti. Sıradaki: kullanıcı testi; sonra Aşama 10c/10d.
+
 - **2026-11-03, Claude — TASK-0052 uygulandı (görsel bütünlük, rehber/sözlük, barışta serbest bırakma, tarih
   animasyonu), COMMIT EDİLMEDİ.** Son commit `80b2a95d` (TASK-0042, 0044–0051). 333 test, typecheck, build geçti.
   Kalan (ertelenmiş): düzenleyiciler, başka senaryolar/çok oyunculu; Aşama 10c/10d yayın hazırlığı.

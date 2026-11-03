@@ -27,7 +27,7 @@ import { BIRIM_ADLARI, birimTuruGecerli, kompozisyonCikar, kompozisyonHizi, komp
 import { biliyor, arastirmaEngeli, teknolojiBul, teknolojiGecerli, toplamaBedelYuzde, toplamaSuresi, type TeknolojiId } from "./teknoloji";
 import { VERGI_ADLARI, vergiOraniGecerli, type VergiOrani } from "./vergi";
 import { elciEngeli } from "./elci";
-import { bagimsiz, birlesmeBaslat, birlesmeEngeli, kaynakToplamaYuzde } from "./sehir";
+import { bagimsiz, baskentTasi, baskentTasimaKalan, birlesmeBaslat, birlesmeEngeli, kaynakToplamaYuzde } from "./sehir";
 import { askerTerhisEt, takviyeKompozisyonu, takviyeSehri, takviyeyiKapat, terhisEngeli } from "./askeri-yonetim";
 import { gecisDegerlendir, gecisIzni, gecisVer } from "./gecis";
 import { KAYNAKLAR, kaynakBedeliniOde, kaynakFiyati, kaynakMaliyetEngeli, kaynakSatinAl, kaynakTicaretEngeli, satilabilirKaynak, type Kaynak } from "./kaynak";
@@ -113,7 +113,9 @@ export type Emir =
   // Casusluk görevi (TASK-0011/8c); devlet: yalnızca AI
   | { tur: "casusluk"; hedef: number; gorev: GorevTuru; sehir: number | null; devlet?: number }
   // TASK-0026: iki komşu şehri birleştir (30 gün; küçük olan merkeze bağlanır)
-  | { tur: "sehirBirlestir"; sehir: number; katilan: number };
+  | { tur: "sehirBirlestir"; sehir: number; katilan: number }
+  // TASK-0053: başkenti kendi şehirlerinden birine taşı (bedelli, BASKENT_TASIMA_ARALIK_GUN'de bir)
+  | { tur: "baskentTasi"; sehir: number; devlet?: number };
 
 export type Dogrulama = { gecerli: true } | { gecerli: false; neden: string };
 
@@ -136,6 +138,7 @@ function bekleyenHarcama(d: DunyaDurumu, devlet: number): number {
     if (e.tur === "danismanAl" && (e.devlet ?? d.ayarlar.oyuncu) === devlet) s += DENGE.DANISMAN_ALIM;
     if (e.tur === "vasalIlhak" && (e.devlet ?? d.ayarlar.oyuncu) === devlet && d.devletler[e.hedef]) s += ilhakBedeli(d, e.hedef).bedel;
     if (e.tur === "sehirBirlestir" && d.ayarlar.oyuncu === devlet) s += DENGE.SEHIR_BIRLESTIR_BEDEL;
+    if (e.tur === "baskentTasi" && (e.devlet ?? d.ayarlar.oyuncu) === devlet) s += DENGE.BASKENT_TASIMA_BEDEL;
   }
   return s;
 }
@@ -227,6 +230,18 @@ export function emirDogrula(d: DunyaDurumu, e: Emir, b: Baglam = BOS_BAGLAM, kuy
         return { gecerli: false, neden: "Bu şehirler için birleştirme emri zaten bekliyor." };
       const para = kuyrukHaric ? d.devletler[d.ayarlar.oyuncu].hazine : kullanilabilirHazine(d, d.ayarlar.oyuncu);
       if (para < DENGE.SEHIR_BIRLESTIR_BEDEL) return { gecerli: false, neden: "Birleştirme için hazine yetersiz; borçlanma yoktur." };
+      return { gecerli: true };
+    }
+    case "baskentTasi": {
+      const devlet = e.devlet ?? d.ayarlar.oyuncu, v = d.devletler[devlet], c = d.sehirler[e.sehir];
+      if (!v || !c || c.devlet !== devlet || c.kontrol !== devlet || c.bagli >= 0) return { gecerli: false, neden: "Başkent yalnızca kontrolünüzdeki kendi şehrinize taşınır." };
+      if (v.baskent === e.sehir) return { gecerli: false, neden: "Bu şehir zaten başkent." };
+      if (c.istikrar.ayaklanma || d.kusatmalar.some((k) => k.sehir === e.sehir)) return { gecerli: false, neden: "Kuşatma veya ayaklanma altındaki şehre başkent taşınamaz." };
+      const kalan = baskentTasimaKalan(d, devlet);
+      if (kalan > 0) return { gecerli: false, neden: `Başkent yakın zamanda taşındı; ${kalan} gün sonra yeniden taşınabilir.` };
+      if (!kuyrukHaric && d.emirKuyrugu.some((x) => x.tur === "baskentTasi" && (x.devlet ?? d.ayarlar.oyuncu) === devlet)) return { gecerli: false, neden: "Başkent taşıma emri zaten bekliyor." };
+      const para = kuyrukHaric ? v.hazine : kullanilabilirHazine(d, devlet);
+      if (para < DENGE.BASKENT_TASIMA_BEDEL) return { gecerli: false, neden: `Başkent taşımak için ${DENGE.BASKENT_TASIMA_BEDEL} altın gerekir; borçlanma yoktur.` };
       return { gecerli: true };
     }
     case "bagis": {
@@ -754,6 +769,9 @@ export function emirUygula(d: DunyaDurumu, e: Emir, b: Baglam = BOS_BAGLAM): voi
     }
     case "sehirBirlestir":
       birlesmeBaslat(d, d.ayarlar.oyuncu, e.sehir, e.katilan);
+      break;
+    case "baskentTasi":
+      baskentTasi(d, e.devlet ?? d.ayarlar.oyuncu, e.sehir);
       break;
     case "bagis": {
       const c = d.sehirler[e.sehir];

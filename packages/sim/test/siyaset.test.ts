@@ -103,3 +103,24 @@ describe("barışta serbest bırakma (TASK-0052)", () => {
     expect(degismezler(d)).toEqual([]);
   });
 });
+
+describe("başkent taşıma (TASK-0053)", () => {
+  it("kendi şehrine bedelle taşınır; bekleme süresi ve şartlar emirde denetlenir", () => {
+    const d = yeniDurum();
+    const a2 = d.sehirler.findIndex((s) => s.ad === "A2"), b2 = d.sehirler.findIndex((s) => s.ad === "B2");
+    const eski = d.devletler[A].baskent!;
+    d.devletler[A].hazine = DENGE.BASKENT_TASIMA_BEDEL + 100;
+    expect(emirVer(d, { tur: "baskentTasi", sehir: b2 }).gecerli).toBe(false);
+    expect(emirVer(d, { tur: "baskentTasi", sehir: eski }).gecerli).toBe(false);
+    expect(emirVer(d, { tur: "baskentTasi", sehir: a2 }).gecerli).toBe(true);
+    emirleriUygula(d);
+    expect(d.devletler[A].baskent).toBe(a2);
+    expect([d.sehirler[a2].baskent, d.sehirler[eski].baskent]).toEqual([true, false]);
+    expect(d.devletler[A].hazine).toBe(100);
+    d.devletler[A].hazine = 100000;
+    expect(emirVer(d, { tur: "baskentTasi", sehir: eski })).toMatchObject({ gecerli: false, neden: expect.stringMatching(/gün sonra/) });
+    d.gun += DENGE.BASKENT_TASIMA_ARALIK_GUN;
+    expect(emirVer(d, { tur: "baskentTasi", sehir: eski }).gecerli).toBe(true);
+    expect(degismezler(d)).toEqual([]);
+  });
+});

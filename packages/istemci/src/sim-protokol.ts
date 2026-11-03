@@ -73,7 +73,7 @@ export interface Ozet {
   turNo: number;
   turSuresi: TurSuresi;
   turSuresiAdi: string;
-  oyuncu: { indeks: number; id: string; ad: string; hazine: number };
+  oyuncu: { indeks: number; id: string; ad: string; hazine: number; baskentTasimaKalan: number }; // TASK-0053
   gunluk: OlayKaydi[];
   bekleyenEmir: number;
   kullanilabilirHazine: number;

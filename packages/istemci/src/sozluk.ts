@@ -40,6 +40,7 @@ export const SOZLUK: [string, string][] = [
   ["Bağımsızlık", "Fethedilmiş şehirde bastırılamayan ayaklanma uzun sürerse şehrin 1453'teki sahibi yeniden kurulur ve isyancı ordu çıkar."],
   ["İdare", "Merkezî idare gelir getirir ama isyan riskini artırır; yerel yetki tersini yapar. Değiştirmek bedelli bir reformdur."],
   ["Danışman", "En çok iki tane, aylık maaşlı: maliye (gelir), harbiye (ucuz asker), kadı (düşük isyan riski)."],
+  ["Başkent", "Başkent ve komşu şehirleri istikrar indirimi alır. Şehir panelindeki \"Başkent yap\" ile bedel ödeyerek taşınır; iki taşıma arasında beş yıl geçmelidir."],
   ["Bütünleşme", "Fethedilen şehrin size alışması. Düşükken gelir azalır ve risk artar; hoşgörü ya da baskı politikası hızını değiştirir."],
   ["Görev", "İsteğe bağlı hedef (hazine, ittifak, sur, ordu, ticaret). Süresinde tamamlanırsa ödül ve meşruiyet; başarısızlıkta ceza yok."],
   ["Haber merkezi", "Günlük sekmesinde dünyadaki herkese açık olaylar. Güç tablosu ve geçmiş harita da buradadır; gizli ordu ve hazine bilgisi gösterilmez."],

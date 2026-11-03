@@ -19,7 +19,7 @@ import { rehberAcik, rehberGoruldu, rehberiBaslat } from "./rehber";
 import { SOZLUK } from "./sozluk";
 
 ozelSecimleriKur();
-import { birimParcasiBul, haritaYukle } from "./harita/veri";
+import { birimGorunenAdi, birimParcasiBul, haritaYukle } from "./harita/veri";
 import { kagitDokusu } from "./harita/harita";
 import { haritaGorunumuKur, kacis, KONUMLAR, type Katmanlar } from "./harita/gorunum";
 import { SimHatasi, SimIstemcisi, type Ozet, type RotaOnizleme } from "./sim-protokol";
@@ -522,7 +522,7 @@ async function baslat() {
         ${t.durum === "acik" || t.durum === "kapali" ? `${t.durum === "kapali" ? `<p class="durum">${kacis(durumMetni(t))}</p>` : ""}<button data-arastir="${t.id}"${t.uygun && !mesgul ? "" : " disabled"}>Araştır</button>`
           : `<p class="durum">${kacis(durumMetni(t))}</p>`}</div>`).join("")}</section>`).join("");
   };
-  const birimAdi = (b: number) => (b >= 0 ? h.paket.birimler[b].ad : "bilinmeyen yer");
+  const birimAdi = (b: number) => (b >= 0 ? birimGorunenAdi(h, b) : "bilinmeyen yer");
   const emirGonder = async (emir: Emir, mesaj: string) => {
     if (mesgul) return false;
     try {
@@ -736,7 +736,10 @@ async function baslat() {
       const birlesme = ozet.sehirBirlesmeleri.find((x) => x.merkez === s.id || x.katilan === s.id);
       const adaylar = ozet.birlesmeAdaylari[s.id] ?? [];
       const sehirYonetimi = sd.bagli >= 0 ? `<p class="not">Bu şehir ${adi(sd.bagli)} şehrine bağlıdır.</p>`
-        : sd.devlet !== ozet.oyuncu.indeks ? "" : `<h4>Şehir adı ve birleştirme</h4>
+        : sd.devlet !== ozet.oyuncu.indeks ? "" : `${sd.baskent ? "" : `<h4>Başkent</h4>
+        <div class="iskan-satir"><button data-eylem="baskentTasi" data-sehir="${s.id}" ${mesgul || ozet.oyuncu.baskentTasimaKalan > 0 ? "disabled" : ""}>★ Başkent yap</button></div>
+        <p class="not aciklama" tabindex="0">${ozet.oyuncu.baskentTasimaKalan > 0 ? `Başkent yakın zamanda taşındı; ${ozet.oyuncu.baskentTasimaKalan} gün sonra yeniden taşınabilir. ` : ""}Bedel ${DENGE.BASKENT_TASIMA_BEDEL} altın; ${Math.round(DENGE.BASKENT_TASIMA_ARALIK_GUN / 365)} yılda bir taşınabilir. Başkent ve komşu şehirleri istikrar indirimi alır; eski başkentin riski +${DENGE.BASKENT_TASIMA_RISK} artar (zamanla söner).</p>`}
+        <h4>Şehir adı ve birleştirme</h4>
         ${sd.eskiAd ? `<p class="not">Eski adı: ${kacis(sd.eskiAd)}</p>` : ""}
         <div class="iskan-satir"><input id="sehirYeniAd" type="text" maxlength="${DENGE.SEHIR_ADI_EN_UZUN}" value="${kacis(sd.ad)}" aria-label="Yeni ad" />
           <button data-eylem="sehirAdi" data-sehir="${s.id}">Adını değiştir</button></div>
@@ -955,6 +958,12 @@ async function baslat() {
       const y = await sim.gonder({ tip: "sehirAdi", sehir: Number(adB.dataset.sehir), ad: $<HTMLInputElement>("sehirYeniAd").value });
       ozet = y.ozet; arayuzuGuncelle(); gorunum.istek();
       if (y.dogrulama && !y.dogrulama.gecerli) bildir(y.dogrulama.neden, "uyari"); else bildir("Şehrin adı değişti.");
+      return;
+    }
+    const basB = (e.target as HTMLElement).closest<HTMLElement>('[data-eylem="baskentTasi"]');
+    if (basB) {
+      const sehir = Number(basB.dataset.sehir);
+      await emirGonder({ tur: "baskentTasi", sehir }, `Başkentin ${senaryo.sehirler[sehir].ad} şehrine taşınması emri verildi (bir sonraki tur).`);
       return;
     }
     const birB = (e.target as HTMLElement).closest<HTMLElement>('[data-eylem="sehirBirlestir"]');

@@ -7,7 +7,7 @@ import { LineSegments2 } from "three/addons/lines/LineSegments2.js";
 import { LineSegmentsGeometry } from "three/addons/lines/LineSegmentsGeometry.js";
 import { tarihMetni, type YabanciOrdu } from "@tarihi/sim";
 import type { OrduOzeti } from "../sim-protokol";
-import { birimBul, denizBul, type Harita } from "./veri";
+import { birimBul, birimGorunenAdi, denizBul, type Harita } from "./veri";
 import { TEMALAR } from "./temalar";
 import { katmanlariKur, temaUygula, boyutAyarla, secimiCiz, devletRengi, kagitDokusu, isgalKatmani, mulkiyetKatmanlariniGuncelle, sancakSinirlariniCiz, type Secim } from "./harita";
 import { Etiketler, ESIK } from "./etiketler";
@@ -277,7 +277,7 @@ export function haritaGorunumuKur(h: Harita,
       const s = p.sehirler[secim.id];
       const bi = birimBul(h, s.x, s.y);
       yol.push(devletYolu(s.d));
-      if (bi >= 0) yol.push(`<button class="yol" data-secim="birim:${bi}">${kacis(p.birimler[bi].ad)}</button>`);
+      if (bi >= 0) yol.push(`<button class="yol" data-secim="birim:${bi}">${kacis(birimGorunenAdi(h, bi))}</button>`);
       yol.push(`<span class="yol-sabit">${kacis(s.ad)}</span>`);
       govde = `<h3>${s.b ? "★ " : ""}${kacis(s.ad)}</h3><dl>
         <dt>Devlet</dt><dd>${kacis(p.devletler[s.d].ad)}</dd>
@@ -377,7 +377,7 @@ export function haritaGorunumuKur(h: Harita,
       const bi = birimBul(h, x, y);
       if (bi >= 0) {
         const b = h.paket.birimler[bi];
-        metin = `${b.d >= 0 ? h.paket.devletler[b.d].ad : "Devlet yok"} — ${b.ad}`;
+        metin = `${b.d >= 0 ? h.paket.devletler[b.d].ad : "Devlet yok"} — ${birimGorunenAdi(h, bi)}`;
       } else {
         const z = denizBul(h, x, y);
         if (z >= 0) metin = h.paket.denizAlanlari![z].ad;
