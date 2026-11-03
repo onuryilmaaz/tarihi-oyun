@@ -116,12 +116,12 @@ describe("AI vasallık teklifi (TASK-0021 4/4)", () => {
 
   it("oyuncu zaten birinin vasalıysa ya da teklif eden kendisi vasalsa vasallık teklif edilmez (başka tür gelebilir)", () => {
     const d1 = yeniV();
-    d1.vasalliklar.push({ efendi: C, vasal: A, baslangic: 0 }); // A zaten C'nin vasalı
+    d1.vasalliklar.push({ efendi: C, vasal: A, baslangic: 0, sadakat: 60, ilhakBitis: null }); // A zaten C'nin vasalı
     for (let g = 0; g < 400 && !d1.diplomatikTeklifler.length; g++) { d1.gun = g; diplomatikTeklifKarari(d1, diplomasiOnHesap(d1, VB.ag), Bd); }
     if (d1.diplomatikTeklifler.length) expect(d1.diplomatikTeklifler[0].tur).not.toBe("vasallik");
 
     const d2 = yeniV();
-    d2.vasalliklar.push({ efendi: C, vasal: Bd, baslangic: 0 }); // B'nin kendisi başka birinin vasalı
+    d2.vasalliklar.push({ efendi: C, vasal: Bd, baslangic: 0, sadakat: 60, ilhakBitis: null }); // B'nin kendisi başka birinin vasalı
     for (let g = 0; g < 400 && !d2.diplomatikTeklifler.length; g++) { d2.gun = g; diplomatikTeklifKarari(d2, diplomasiOnHesap(d2, VB.ag), Bd); }
     if (d2.diplomatikTeklifler.length) expect(d2.diplomatikTeklifler[0].tur).not.toBe("vasallik");
   });
@@ -132,7 +132,7 @@ describe("AI vasallık teklifi (TASK-0021 4/4)", () => {
     const e = { tur: "diplomatikTeklifCevap" as const, teklif: 1, kabul: true };
     expect(emirDogrula(d, e, VB, true).gecerli).toBe(true);
     emirUygula(d, e, VB);
-    expect(d.vasalliklar).toEqual([{ efendi: Bd, vasal: A, baslangic: d.gun }]);
+    expect(d.vasalliklar).toEqual([{ efendi: Bd, vasal: A, baslangic: d.gun, sadakat: 60, ilhakBitis: null }]);
     expect(degismezler(d)).toEqual([]);
 
     const d2 = yeniV();

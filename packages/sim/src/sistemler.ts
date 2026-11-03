@@ -6,6 +6,10 @@
 
 import { olayEkle, type DunyaDurumu } from "./durum";
 import { istikrarAyi } from "./istikrar";
+import { bagimsizlikAyi, vasalSadakatAyi } from "./siyaset";
+import { reformAyi } from "./idare";
+import { tarihceAyi } from "./tarihce";
+import { yzCikarmalari, yzGemiInsalari } from "./yz-deniz";
 import { yerelYoneticiler } from "./yonetim";
 import { casusGorevleriIlerlet } from "./casusluk";
 import { denizMuharebeleri, donanmaHareketi, gemiInsalariIlerlet, yzDonanmalari } from "./deniz";
@@ -30,6 +34,8 @@ import { iskanlariIlerlet, nufusArtisi, savasGocu } from "./nufus";
 import { bagliSehirleriEsitle, sehirBirlesmeleriIlerlet, sehirToprakEsitle } from "./sehir";
 import { sancakBakimi } from "./sancaklar";
 import { otomatikTakviyeler } from "./askeri-yonetim";
+import { gecisleriDenetle } from "./gecis";
+import { kaynakAyi } from "./kaynak";
 
 export type Siklik = "gunluk" | "aylik" | "yillik";
 
@@ -40,6 +46,8 @@ export interface Sistem {
 }
 
 export const SISTEMLER: Sistem[] = [
+  { id: "kaynak-uretimi", siklik: "aylik", calistir: kaynakAyi },
+  { id: "askeri-erisim", siklik: "gunluk", calistir: gecisleriDenetle },
   { id: "asker-toplama", siklik: "gunluk", calistir: (d, b) => toplamalariIlerlet(d, b) },
   {
     // Ordu hareketi (TASK-0006): her gün hız kadar rota tüketilir
@@ -82,6 +90,7 @@ export const SISTEMLER: Sistem[] = [
   { id: "donanma-hareketi", siklik: "gunluk", calistir: donanmaHareketi },
   { id: "deniz-muharebesi", siklik: "gunluk", calistir: denizMuharebeleri },
   { id: "yz-donanma", siklik: "gunluk", calistir: yzDonanmalari },
+  { id: "yz-cikarma", siklik: "gunluk", calistir: yzCikarmalari }, // TASK-0051
   { id: "casusluk", siklik: "gunluk", calistir: casusGorevleriIlerlet }, // 8c
   { id: "arastirma", siklik: "gunluk", calistir: arastirmalariIlerlet },
   // AI devletleri (TASK-0009/6b): her devlet 30 günde bir, kendi gününde
@@ -95,6 +104,11 @@ export const SISTEMLER: Sistem[] = [
   // 7b: yoldaki iskânlar; aylık savaş kaybı/göçü; yıllık doğal artış (test amaçlı günlük rastgele artış kaldırıldı, DEC-0045)
   { id: "iskan", siklik: "gunluk", calistir: iskanlariIlerlet },
   { id: "istikrar", siklik: "aylik", calistir: istikrarAyi },
+  { id: "bagimsizlik", siklik: "aylik", calistir: bagimsizlikAyi }, // TASK-0048
+  { id: "vasal-sadakat", siklik: "aylik", calistir: vasalSadakatAyi },
+  { id: "reform", siklik: "aylik", calistir: (d) => reformAyi(d) }, // TASK-0049
+  { id: "tarihce", siklik: "aylik", calistir: (d) => tarihceAyi(d) }, // TASK-0050
+  { id: "yz-gemi", siklik: "aylik", calistir: yzGemiInsalari }, // TASK-0051
   // 7d: oyuncunun yerel yöneticileri, güncel istikrar riskine göre (istikrar hesabından sonra)
   { id: "yerel-yonetim", siklik: "aylik", calistir: yerelYoneticiler },
   {

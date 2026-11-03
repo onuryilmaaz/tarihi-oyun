@@ -7,12 +7,38 @@
 
 import { olayEkle, type DunyaDurumu } from "./durum";
 import { DENGE } from "./denge";
-import { iliski, komsuMu, muttefik, muttefikleri, saldirmazlikVar, ticaretAnlasmasiVar, type DiplomasiOnHesap } from "./diplomasi";
+import { iliski, ittifakDegerlendir, ittifakKur, komsuMu, muttefik, muttefikleri, saldirmazlikDegerlendir, saldirmazlikKur, saldirmazlikVar, ticaretAnlasmasiKur, ticaretAnlasmasiVar, ticaretDegerlendir, type DiplomasiOnHesap } from "./diplomasi";
+import { gecisDegerlendir, gecisIzni, gecisVer } from "./gecis";
 import { savasta } from "./savas";
 import { aralik } from "./rastgele";
 import { efendisi, vasalMi } from "./vasallik";
 
 const TUR_ADI = { ittifak: "savunma ittifakı", ticaret: "ticaret anlaşması", saldirmazlik: "saldırmazlık paktı", vasallik: "vasallık" } as const;
+
+/** AI çiftleri de karşılıklı kabul sınırlarını kullanır; oyuncu adına anlaşma kurulmaz. */
+export function yzDiplomatikBaglar(d: DunyaDurumu, on: DiplomasiOnHesap, devlet: number): void {
+  if ((d.gun + devlet) % DENGE.YZ_BAG_ARALIGI !== 0 || devlet === d.ayarlar.oyuncu || !on.arazi[devlet]) return;
+  const adaylar = d.devletler.flatMap((_, i) => i !== devlet && i !== d.ayarlar.oyuncu && on.arazi[i]
+    && komsuMu(on, devlet, i) && !savasta(d, devlet, i) ? [i] : [])
+    .sort((a, b) => iliski(d, on, devlet, b) - iliski(d, on, devlet, a) || a - b);
+  for (const hedef of adaylar) {
+    let ad = "", kur: (() => void) | null = null;
+    if (!muttefik(d, devlet, hedef) && ittifakDegerlendir(d, on, devlet, hedef).kabul && ittifakDegerlendir(d, on, hedef, devlet).kabul) {
+      ad = "savunma ittifakı"; kur = () => ittifakKur(d, devlet, hedef);
+    } else if (!ticaretAnlasmasiVar(d, devlet, hedef) && ticaretDegerlendir(d, on, devlet, hedef).kabul && ticaretDegerlendir(d, on, hedef, devlet).kabul) {
+      ad = "ticaret anlaşması"; kur = () => ticaretAnlasmasiKur(d, devlet, hedef);
+    } else if (!saldirmazlikVar(d, devlet, hedef) && saldirmazlikDegerlendir(d, on, devlet, hedef).kabul && saldirmazlikDegerlendir(d, on, hedef, devlet).kabul) {
+      ad = "saldırmazlık paktı"; kur = () => saldirmazlikKur(d, devlet, hedef, DENGE.SALDIRMAZLIK_VARSAYILAN_AY);
+    } else if (muttefik(d, devlet, hedef) && !gecisIzni(d, hedef, devlet) && gecisDegerlendir(d, on, devlet, hedef).kabul) {
+      ad = "askerî geçiş anlaşması"; kur = () => gecisVer(d, hedef, devlet, DENGE.SALDIRMAZLIK_VARSAYILAN_AY);
+    }
+    if (!kur) continue;
+    if (aralik(d, 100) >= DENGE.YZ_BAG_OLASILIK) return;
+    kur();
+    olayEkle(d, { tur: "dunya-diplomasi", devlet: null, metin: `${d.devletler[devlet].ad} ve ${d.devletler[hedef].ad} arasında ${ad} kuruldu.` });
+    return;
+  }
+}
 
 /** Bir AI devletinin oyuncuya diplomatik teklif sunma kararı (ayda bir, YZ_KARAR_ARALIGI ritmiyle). */
 export function diplomatikTeklifKarari(d: DunyaDurumu, on: DiplomasiOnHesap, devlet: number): void {

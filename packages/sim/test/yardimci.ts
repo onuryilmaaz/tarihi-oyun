@@ -23,7 +23,7 @@ export const yeniDurum = (tohum = 1453): DunyaDurumu => baslangicDurumu(TEST_SEN
 /** TASK-0019: testlerde ordu.asker'i doğrudan değiştirirken kompozisyonu (hepsi piyade) tutarlı tutar. */
 export const askerAyarla = (o: OrduDurumu, asker: number): void => {
   o.asker = asker;
-  o.kompozisyon = { piyade: asker, okcu: 0, suvari: 0 };
+  o.kompozisyon = { piyade: asker, okcu: 0, suvari: 0, topcu: 0 };
 };
 
 /** Tur sayacı, oyuncu ayarı ve olay günlüğü hariç dünya özeti: farklı tur süreleriyle aynı noktaya

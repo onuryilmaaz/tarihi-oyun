@@ -26,7 +26,7 @@ const yeni = () => {
 describe("TASK-0019 (1/4): birim çeşitliliği — veri modeli ve asker toplama", () => {
   it("senaryo/garnizon orduları tamamen piyade olarak başlar", () => {
     const d = yeni();
-    expect(d.ordular[0].kompozisyon).toEqual({ piyade: 1000, okcu: 0, suvari: 0 });
+    expect(d.ordular[0].kompozisyon).toEqual({ piyade: 1000, okcu: 0, suvari: 0, topcu: 0 });
     expect(degismezler(d)).toEqual([]);
   });
 
@@ -47,14 +47,14 @@ describe("TASK-0019 (1/4): birim çeşitliliği — veri modeli ve asker toplama
     turSuresiAyarla(d, "hafta");
     for (let i = 0; i < 5; i++) turuIlerlet(d, B);
     const yeniOrdu = d.ordular[0];
-    expect(yeniOrdu?.kompozisyon).toEqual({ piyade: 0, okcu: 0, suvari: 1000 });
+    expect(yeniOrdu?.kompozisyon).toEqual({ piyade: 0, okcu: 0, suvari: 1000, topcu: 0 });
     expect(devletMaasi(d, 0)).toBeGreaterThan(oncekiMaas);
     expect(degismezler(d)).toEqual([]);
   });
 
   it("ordu bölme türleri oransal ayırır; birleştirme toplar; toplam her zaman asker'e eşit kalır", () => {
     const d = yeni(), o = d.ordular[0];
-    o.asker = 1000; o.kompozisyon = { piyade: 600, okcu: 300, suvari: 100 };
+    o.asker = 1000; o.kompozisyon = { piyade: 600, okcu: 300, suvari: 100, topcu: 0 };
     expect(emirVer(d, { tur: "orduBol", ordu: o.id, asker: 250 }, B).gecerli).toBe(true);
     emirleriUygula(d, B);
     const a = d.ordular.find((x) => x.id !== o.id)!;
@@ -66,13 +66,13 @@ describe("TASK-0019 (1/4): birim çeşitliliği — veri modeli ve asker toplama
     expect(emirVer(d, { tur: "orduBirlestir", ordu: o.id, diger: a.id }, B).gecerli).toBe(true);
     emirleriUygula(d, B);
     expect(o.asker).toBe(1000);
-    expect(o.kompozisyon).toEqual({ piyade: 600, okcu: 300, suvari: 100 });
+    expect(o.kompozisyon).toEqual({ piyade: 600, okcu: 300, suvari: 100, topcu: 0 });
     expect(degismezler(d)).toEqual([]);
   });
 
   it("ikmalsizlik ve muharebe kayıpları kompozisyonu asker sayısıyla tutarlı tutar", () => {
     const d = yeni(), o = d.ordular[0];
-    o.asker = 1000; o.kompozisyon = { piyade: 500, okcu: 300, suvari: 200 };
+    o.asker = 1000; o.kompozisyon = { piyade: 500, okcu: 300, suvari: 200, topcu: 0 };
     d.savaslar.push({ id: d.sonrakiSavasId++, saldiran: 0, savunan: 1, baslangic: d.gun });
     o.dugum = 2; // düşman toprağı (B'nin başkenti)
     for (let i = 0; i < 10; i++) { turuIlerlet(d, B); if (o.asker === 0) break; }
@@ -89,7 +89,7 @@ describe("TASK-0019 (2/4): muharebe gücü ve kayıp dağılımı", () => {
     o.dugum = 2; o.x = 20000; o.y = 0;
     d.savaslar.push({ id: d.sonrakiSavasId++, saldiran: 0, savunan: 1, baslangic: d.gun });
     const bOrdusu = { ...structuredClone(o), id: d.sonrakiOrduId++, devlet: 1,
-      asker: 1000, kompozisyon: { piyade: 1000, okcu: 0, suvari: 0 } };
+      asker: 1000, kompozisyon: { piyade: 1000, okcu: 0, suvari: 0, topcu: 0 } };
     d.ordular.push(bOrdusu);
     return { d, a: o, b: bOrdusu };
   };
@@ -105,7 +105,7 @@ describe("TASK-0019 (2/4): muharebe gücü ve kayıp dağılımı", () => {
     const kayipEsit = ilkGun(esit.d);
 
     const suvarili = saldiranA();
-    suvarili.a.kompozisyon = { piyade: 0, okcu: 0, suvari: 1000 };
+    suvarili.a.kompozisyon = { piyade: 0, okcu: 0, suvari: 1000, topcu: 0 };
     const kayipSuvari = ilkGun(suvarili.d);
 
     expect(kayipSuvari[suvarili.b.id]).toBeGreaterThan(kayipEsit[esit.b.id]); // B'nin (savunan) kaybı arttı
@@ -118,7 +118,7 @@ describe("TASK-0019 (2/4): muharebe gücü ve kayıp dağılımı", () => {
     const kayipEsit = ilkGun(esit.d);
 
     const okculu = saldiranA();
-    okculu.b.kompozisyon = { piyade: 0, okcu: 1000, suvari: 0 };
+    okculu.b.kompozisyon = { piyade: 0, okcu: 1000, suvari: 0, topcu: 0 };
     const kayipOkcu = ilkGun(okculu.d);
 
     expect(kayipOkcu[okculu.a.id]).toBeGreaterThan(kayipEsit[esit.a.id]); // A'nın (saldıran) kaybı arttı
@@ -149,7 +149,7 @@ describe("TASK-0019 (3/4): hareket hızı kompozisyona göre değişir", () => {
 
   it("bölme/birleştirme sonrası hız yeni kompozisyona göre yeniden hesaplanır", () => {
     const d = yeni(), o = d.ordular[0];
-    o.asker = 1000; o.kompozisyon = { piyade: 0, okcu: 0, suvari: 1000 };
+    o.asker = 1000; o.kompozisyon = { piyade: 0, okcu: 0, suvari: 1000, topcu: 0 };
     o.hiz = Math.round((HAREKET.TEMEL_HIZ * DENGE.BIRIM.suvari.hizYuzde) / 100);
     expect(emirVer(d, { tur: "orduBol", ordu: o.id, asker: 400 }, B).gecerli).toBe(true);
     emirleriUygula(d, B);
@@ -167,14 +167,14 @@ describe("TASK-0019 (3/4): hareket hızı kompozisyona göre değişir", () => {
 describe("TASK-0019 (4/4): kuşatma gücü kompozisyona göre değişir", () => {
   it("süvari ağırlıklı kuşatan, eşit sayıda piyadeye göre daha yüksek kuşatma gücü üretir", () => {
     const d = yeni(), o = d.ordular[0];
-    o.asker = 1000; o.kompozisyon = { piyade: 1000, okcu: 0, suvari: 0 };
+    o.asker = 1000; o.kompozisyon = { piyade: 1000, okcu: 0, suvari: 0, topcu: 0 };
     const k = { sehir: 2, devlet: 0, savunan: 1, ordular: [o.id], yontem: "abluka" as const, baslangic: d.gun, gun: 0, erzak: 1000 };
     const piyadeGuc = kusatmaGucu(d, k).guc;
 
-    o.kompozisyon = { piyade: 0, okcu: 0, suvari: 1000 };
+    o.kompozisyon = { piyade: 0, okcu: 0, suvari: 1000, topcu: 0 };
     const suvariGuc = kusatmaGucu(d, k).guc;
 
-    o.kompozisyon = { piyade: 0, okcu: 1000, suvari: 0 };
+    o.kompozisyon = { piyade: 0, okcu: 1000, suvari: 0, topcu: 0 };
     const okcuGuc = kusatmaGucu(d, k).guc;
 
     expect(suvariGuc).toBeGreaterThan(piyadeGuc);

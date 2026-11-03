@@ -2,11 +2,13 @@
 import { olayEkle, type DunyaDurumu, type OrduDurumu } from "./durum";
 import { aylikBakim } from "./deniz";
 import { DENGE } from "./denge";
+import { deneyimBirlestir, orduKomutani } from "./komutan";
 import { HAREKET, rotaBul, type HareketAgi } from "./hareket";
 import { savasta, sayiMetni } from "./savas";
 import type { Baglam } from "./emirler";
 import { BIRIM_TURLERI, kompozisyonCikar, kompozisyonHizi, kompozisyonTopla, kompozisyonOransalAl, toplamaMaliyetiYuzde, aylikMaasYuzde, tekTurKompozisyon, type BirimTuru, type Kompozisyon } from "./birim";
 import { sehirMenzilinde } from "./kusatma";
+import { biliyor } from "./teknoloji";
 
 // yuzde: teknoloji indirimi (Asker Kayıt Defterleri, 5c); varsayılan indirimsiz. birim: TASK-0019, varsayılan piyade
 // (piyadenin maliyetYuzde'si 100 olduğu için eski çağrılar aynı sonucu verir).
@@ -26,7 +28,7 @@ export function toplamAskerSayisi(d: DunyaDurumu, devlet: number): number {
 export function devletMaasi(d: DunyaDurumu, devlet: number): number {
   const karaMaas = d.ordular.filter((o) => o.devlet === devlet).reduce((s, o) => s + kompozisyonMaasi(o.kompozisyon), 0);
   const gemiMaas = d.donanmalar.filter((f) => f.devlet === devlet && f.yuk).reduce((s, f) => s + kompozisyonMaasi(f.yuk!.kompozisyon), 0);
-  return karaMaas + gemiMaas + aylikBakim(d, devlet);
+  return karaMaas + gemiMaas + aylikBakim(d, devlet) + (d.devletler[devlet]?.danismanlar.length ?? 0) * DENGE.DANISMAN_MAAS; // TASK-0049: danışman maaşı
 }
 
 export function ikmalDurumu(d: DunyaDurumu, ag: HareketAgi | null, o: OrduDurumu): { deger: number; neden: string; dusmanda: boolean } {
@@ -63,6 +65,7 @@ export function toplamalariIlerlet(d: DunyaDurumu, b: Baglam): void {
     const bekleyen = takviyeHedefi ?? (t.toplanma === undefined || t.toplanma === t.sehir ? toplanmaOrdusu(d, t.devlet, s.dugum) : undefined);
     if (bekleyen) {
       bekleyen.moral = Math.floor((bekleyen.moral * bekleyen.asker + DENGE.MORAL_EN_YUKSEK * t.asker) / (bekleyen.asker + t.asker));
+      deneyimBirlestir(bekleyen, t.asker); // TASK-0047: acemi askerler kıdemi seyreltir
       bekleyen.kompozisyon = kompozisyonTopla(bekleyen.kompozisyon, kompozisyon);
       bekleyen.asker += t.asker;
       bekleyen.hiz = kompozisyonHizi(bekleyen.kompozisyon, HAREKET.TEMEL_HIZ);
@@ -72,7 +75,7 @@ export function toplamalariIlerlet(d: DunyaDurumu, b: Baglam): void {
     const o: OrduDurumu = { id: d.sonrakiOrduId++, ad: `${s.ad} Ordusu`, devlet: t.devlet, asker: t.asker,
       kompozisyon,
       dugum: s.dugum, x: konum.x, y: konum.y, hiz: kompozisyonHizi(kompozisyon, HAREKET.TEMEL_HIZ), rota: [], ilerleme: 0, hedef: null, // TASK-0019 (3/4)
-      moral: DENGE.MORAL_EN_YUKSEK, tutum: "dengeli", cekiliyor: false, muharebe: null };
+      moral: DENGE.MORAL_EN_YUKSEK, tutum: "dengeli", cekiliyor: false, muharebe: null, deneyim: 0, komutan: null };
     d.ordular.push(o);
     // TASK-0036: toplanma şehrine yürür; yol kapanmışsa burada yeni ordu olarak kalır
     const h = t.toplanma !== undefined && t.toplanma !== t.sehir ? d.sehirler[t.toplanma] : undefined;
@@ -103,6 +106,8 @@ export function toplanmayaKatil(d: DunyaDurumu, o: OrduDurumu): boolean {
   const a = toplanmaOrdusu(d, o.devlet, o.dugum, o.id);
   if (!a) { o.ad = `${d.sehirler[sehir].ad} Ordusu`; return false; }
   a.moral = Math.floor((a.moral * a.asker + o.moral * o.asker) / (a.asker + o.asker));
+  deneyimBirlestir(a, o.asker, o.deneyim); // TASK-0047
+  if (a.komutan === null) a.komutan = o.komutan; // gelen birliğin komutanı boştaysa devralır; değilse havuza döner
   a.kompozisyon = kompozisyonTopla(a.kompozisyon, o.kompozisyon);
   a.asker += o.asker;
   a.hiz = kompozisyonHizi(a.kompozisyon, HAREKET.TEMEL_HIZ);
@@ -114,7 +119,8 @@ export function toplanmayaKatil(d: DunyaDurumu, o: OrduDurumu): boolean {
 /** TASK-0039: insan gücü tavanı (nüfusun %5'i; Asker Sayımı ile %50 fazlası). */
 export function insanGucuTavani(d: DunyaDurumu, sehir: number): number {
   const s = d.sehirler[sehir], taban = Math.floor((s.nufus * DENGE.INSAN_GUCU_YUZDE) / 100);
-  return d.devletler[s.devlet]?.teknolojiler.includes("sayim") ? taban + Math.floor((taban * DENGE.SAYIM_INSAN_GUCU_YUZDE) / 100) : taban;
+  const sayim = d.devletler[s.devlet]?.teknolojiler.includes("sayim") ? DENGE.SAYIM_INSAN_GUCU_YUZDE : 0;
+  return Math.floor(taban * (100 + sayim + s.ekYapilar.kisla * DENGE.KISLA_INSAN_GUCU_YUZDE) / 100);
 }
 
 /** TASK-0039: aylık; boşalan havuz tavanın 1/INSAN_GUCU_YENILENME_AY'ı kadar dolar, tavanı aşmaz. Bağlı şehirde havuz yok. */
@@ -122,7 +128,7 @@ export function insanGucuYenile(d: DunyaDurumu): void {
   d.sehirler.forEach((s, i) => {
     if (s.bagli >= 0) return;
     const tavan = insanGucuTavani(d, i);
-    if (s.insanGucu < tavan) s.insanGucu = Math.min(tavan, s.insanGucu + Math.ceil(tavan / DENGE.INSAN_GUCU_YENILENME_AY));
+    if (s.insanGucu < tavan) s.insanGucu = Math.min(tavan, s.insanGucu + Math.ceil(tavan * (biliyor(d, s.devlet, "idare") ? DENGE.IDARE_YENILENME_YUZDE : 100) / (100 * DENGE.INSAN_GUCU_YENILENME_AY)));
   });
 }
 
@@ -139,7 +145,9 @@ export function ikmalVeMaasMorali(d: DunyaDurumu, ag: HareketAgi | null): void {
   for (const o of d.ordular) {
     if (ikmalDurumu(d, ag, o).dusmanda) {
       // İlk sürümde her ordu ayrı aşınır; küçük birlik en az bir asker kaybeder.
-      const kayip = Math.min(o.asker, Math.ceil(o.asker * DENGE.IKMALSIZ_KAYIP_BINDE / 1000));
+      // TASK-0047: ikmal uzmanı komutan aşınmayı ayrıca azaltır
+      const ikmalci = orduKomutani(d, o)?.uzmanlik === "ikmal" ? DENGE.KOMUTAN_IKMAL_KAYIP_YUZDE : 100;
+      const kayip = Math.min(o.asker, Math.ceil(o.asker * DENGE.IKMALSIZ_KAYIP_BINDE * (biliyor(d, o.devlet, "lojistik") ? DENGE.LOJISTIK_ASINMA_YUZDE : 100) * ikmalci / 10000000));
       o.asker -= kayip;
       o.kompozisyon = kompozisyonCikar(o.kompozisyon, kompozisyonOransalAl(o.kompozisyon, kayip)); // TASK-0019
       o.moral = Math.max(0, o.moral - DENGE.IKMALSIZ_MORAL);

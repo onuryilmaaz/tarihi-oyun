@@ -6,6 +6,7 @@
 import { olayEkle, type DunyaDurumu } from "./durum";
 import { DENGE } from "./denge";
 import { hukumdarGucYuzde } from "./hanedan";
+import type { YapiTuru } from "./yatirim";
 
 export type Alan = "ekonomik" | "askeri" | "idari";
 export type TeknolojiId = keyof typeof DENGE.TEKNOLOJI;
@@ -31,6 +32,14 @@ export const TEKNOLOJILER: Teknoloji[] = [
   { id: "yargi", ad: "Yargı Teşkilatı", alan: "idari", onKosul: [], etki: "Yeni inşaatlar %20 daha kısa sürer." },
   { id: "sayim", ad: "Nüfus ve Vergi Sayımı", alan: "idari", onKosul: [], etki: "Şehirlerin insan gücü havuzu bir defaya mahsus +%50." },
   { id: "bayindirlik", ad: "Bayındırlık Teşkilatı", alan: "idari", onKosul: ["yargi"], etki: "Sur 6. seviyeye çıkabilir; sur inşaatı %25 ucuz." },
+  { id: "matbaa", ad: "Matbaa ve Eğitim", alan: "idari", onKosul: ["yargi"], etki: "Okul 3. seviye; araştırma hızı +%15." },
+  { id: "tarimDonusumu", ad: "Tarım Dönüşümü", alan: "ekonomik", onKosul: ["sulama", "vergi"], etki: "Tahıl üretimi +%25." },
+  { id: "metalurji", ad: "Gelişmiş Metalurji", alan: "ekonomik", onKosul: ["vergi"], etki: "Demir/kereste üretimi +%25; atölye 3. seviye." },
+  { id: "manufaktur", ad: "Manüfaktür", alan: "ekonomik", onKosul: ["metalurji"], etki: "Atölye geliri +%25." },
+  { id: "muhendislik", ad: "Sahra Mühendisliği", alan: "askeri", onKosul: ["top", "daimiOrdu"], etki: "Sahra topçusunu açar; surlara saldırı ek %20 güçlenir." },
+  { id: "lojistik", ad: "Sefer Lojistiği", alan: "askeri", onKosul: ["kayit"], etki: "Düşman toprağındaki asker aşınması yarıya iner." },
+  { id: "diplomasi", ad: "Daimî Elçilikler", alan: "idari", onKosul: ["sayim", "yargi"], etki: "Diğer devletlerin bakışına +5; diplomatik bütünleşme kapasitesi." },
+  { id: "idare", ad: "Taşra İdaresi", alan: "idari", onKosul: ["bayindirlik", "matbaa"], etki: "Kışla 3. seviye; insan gücü yenilenmesi +%25." },
 ];
 
 export const teknolojiBul = (id: TeknolojiId) => TEKNOLOJILER.find((t) => t.id === id)!;
@@ -40,6 +49,7 @@ export interface Arastirma {
   devlet: number;
   teknoloji: TeknolojiId;
   kalanGun: number;
+  ilerleme?: number; // okul/matbaa hızının yüzdelik gün bakiyesi
 }
 
 export const biliyor = (d: DunyaDurumu, devlet: number, id: TeknolojiId) =>
@@ -54,17 +64,26 @@ export const pazarGeliriSeviyeBasina = (d: DunyaDurumu, devlet: number) =>
 /** Teknoloji (Daimî Ordu) ve hükümdarın askerliği (7a) birlikte. */
 export const muharebeGucYuzde = (d: DunyaDurumu, devlet: number) =>
   Math.floor(((biliyor(d, devlet, "daimiOrdu") ? DENGE.DAIMI_ORDU_GUC_YUZDE : 100) * hukumdarGucYuzde(d, devlet)) / 100);
-export const kusatmaSaldiriYuzde = (d: DunyaDurumu, devlet: number) => (biliyor(d, devlet, "top") ? DENGE.TOP_SALDIRI_YUZDE : 100);
-export const toplamaBedelYuzde = (d: DunyaDurumu, devlet: number) => (biliyor(d, devlet, "kayit") ? DENGE.KAYIT_TOPLAMA_BEDEL_YUZDE : 100);
-export const toplamaSuresi = (d: DunyaDurumu, devlet: number) => (biliyor(d, devlet, "kayit") ? DENGE.KAYIT_TOPLAMA_GUN : DENGE.TOPLAMA_GUN);
+export const kusatmaSaldiriYuzde = (d: DunyaDurumu, devlet: number) => (biliyor(d, devlet, "top") ? DENGE.TOP_SALDIRI_YUZDE : 100) + (biliyor(d, devlet, "muhendislik") ? DENGE.MUHENDISLIK_KUSATMA_EK : 0);
+export const toplamaBedelYuzde = (d: DunyaDurumu, devlet: number) => Math.floor(((biliyor(d, devlet, "kayit") ? DENGE.KAYIT_TOPLAMA_BEDEL_YUZDE : 100)
+  * (100 - (d.devletler[devlet]?.danismanlar.includes("harbiye") ? DENGE.DANISMAN_HARBIYE_INDIRIM : 0))) / 100); // TASK-0049: harbiye
+export const toplamaSuresi = (d: DunyaDurumu, devlet: number, sehir = -1) => Math.max(1, Math.ceil((biliyor(d, devlet, "kayit") ? DENGE.KAYIT_TOPLAMA_GUN : DENGE.TOPLAMA_GUN)
+  * (100 - (d.sehirler[sehir]?.ekYapilar.kisla ?? 0) * DENGE.KISLA_SURE_INDIRIM) / 100));
 export const insaatSureYuzde = (d: DunyaDurumu, devlet: number) => (biliyor(d, devlet, "yargi") ? DENGE.YARGI_INSAAT_SURE_YUZDE : 100);
 export const surBedelYuzde = (d: DunyaDurumu, devlet: number) => (biliyor(d, devlet, "bayindirlik") ? DENGE.BAYINDIRLIK_SUR_BEDEL_YUZDE : 100);
-export function yapiEnYuksek(d: DunyaDurumu, devlet: number, yapi: "tarla" | "pazar" | "sur"): number {
-  const acan = { tarla: "sulama", pazar: "kervan", sur: "bayindirlik" } as const;
+export function yapiEnYuksek(d: DunyaDurumu, devlet: number, yapi: YapiTuru): number {
+  const acan = { tarla: "sulama", pazar: "kervan", sur: "bayindirlik", okul: "matbaa", atolye: "metalurji", kisla: "idare" } as const;
   return biliyor(d, devlet, acan[yapi]) ? DENGE.YAPI_EN_YUKSEK_TEKNOLOJIYLE[yapi] : DENGE.YAPI_EN_YUKSEK[yapi];
 }
 
 // --- Doğrulama ve ilerleme -----------------------------------------------------------------------
+
+export function arastirmaHizlari(d: DunyaDurumu): number[] {
+  const okul = d.devletler.map(() => 0);
+  for (const s of d.sehirler) if (s.bagli < 0 && s.devlet === s.kontrol && !s.istikrar.ayaklanma) okul[s.devlet] += s.ekYapilar.okul;
+  return okul.map((n, i) => 100 + Math.min(DENGE.OKUL_ARASTIRMA_EN_COK, n * DENGE.OKUL_ARASTIRMA_YUZDE)
+    + (biliyor(d, i, "matbaa") ? DENGE.MATBAA_ARASTIRMA_YUZDE : 0));
+}
 
 /** Araştırma başlatılabilir mi? (kuyruk: emir kuyruğundaki araştırmalar da sayılır) */
 export function arastirmaEngeli(d: DunyaDurumu, devlet: number, id: TeknolojiId, kuyrukHaric: boolean): string | null {
@@ -83,8 +102,11 @@ export function arastirmaEngeli(d: DunyaDurumu, devlet: number, id: TeknolojiId,
 
 /** Günlük ilerleme; biten teknoloji devlete eklenir ve tek seferlik etkiler uygulanır. */
 export function arastirmalariIlerlet(d: DunyaDurumu): void {
+  if (!d.arastirmalar.length) return;
+  const hiz = arastirmaHizlari(d);
   for (const a of [...d.arastirmalar]) {
-    a.kalanGun--;
+    const ilerleme = (a.ilerleme ?? 0) + hiz[a.devlet];
+    a.kalanGun -= Math.floor(ilerleme / 100); a.ilerleme = ilerleme % 100;
     if (a.kalanGun > 0) continue;
     d.arastirmalar = d.arastirmalar.filter((x) => x !== a);
     const v = d.devletler[a.devlet];

@@ -24,7 +24,7 @@ function yeni() {
   const d = baslangicDurumu(senaryo, { tohum: 23 });
   d.ordular = d.ordular.filter((o) => o.devlet === 0);
   d.devletler.forEach((v) => { v.hazine = 10000; });
-  d.ordular[0].kompozisyon = { piyade: 400, okcu: 300, suvari: 300 };
+  d.ordular[0].kompozisyon = { piyade: 400, okcu: 300, suvari: 300, topcu: 0 };
   return d;
 }
 function ac(d: ReturnType<typeof yeni>, hedef = 1500, aylikButce = 1000) {
@@ -41,7 +41,7 @@ describe("TASK-0043: terhis", () => {
     expect(emirVer(d, { tur: "orduBol", ordu: o.id, asker: 100 }, b).gecerli).toBe(false);
     emirleriUygula(d, b);
     expect(o.asker).toBe(750);
-    expect(o.kompozisyon).toEqual({ piyade: 300, okcu: 225, suvari: 225 });
+    expect(o.kompozisyon).toEqual({ piyade: 300, okcu: 225, suvari: 225, topcu: 0 });
     expect(devletMaasi(d, 0)).toBeLessThan(ilkMaas);
     expect(d.sehirler[0].insanGucu).toBe(insanGucuTavani(d, 0));
     expect(d.devletler[0].hazine).toBe(para);
@@ -77,7 +77,7 @@ describe("TASK-0043: otomatik takviye", () => {
   it("tür oranları, bedel, insan gücü ve toplama süresi korunur; aynı ay tekrar para harcamaz", () => {
     const d = yeni(), o = d.ordular[0], ilkPara = d.devletler[0].hazine;
     ac(d); otomatikTakviyeler(d, b);
-    expect(o.takviye!.hedef).toEqual({ piyade: 600, okcu: 450, suvari: 450 });
+    expect(o.takviye!.hedef).toEqual({ piyade: 600, okcu: 450, suvari: 450, topcu: 0 });
     expect(o.asker).toBe(1000);
     expect(d.askerToplamalar.reduce((n, t) => n + t.asker, 0)).toBe(500);
     expect(d.sehirler[0].insanGucu).toBe(500);

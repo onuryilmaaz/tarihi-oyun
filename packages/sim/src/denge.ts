@@ -8,6 +8,64 @@ export const HAREKET = {
 };
 
 export const DENGE = {
+  // TASK-0049: idare, danışman, bütünleşme, görev [TASLAK]
+  IDARE_GELIR_FARK: 10, IDARE_RISK_FARK: 5, REFORM_BEDEL: 1500, REFORM_GUN: 180,
+  DANISMAN_EN_COK: 2, DANISMAN_MAAS: 40, DANISMAN_ALIM: 300,
+  DANISMAN_MALIYE_GELIR: 5, DANISMAN_HARBIYE_INDIRIM: 10, DANISMAN_KADI_RISK: 5,
+  POLITIKA_RISK: { olagan: 0, hosgoru: -5, baski: 10 } as Record<"olagan" | "hosgoru" | "baski", number>,
+  POLITIKA_GELIR_INDIRIM: { olagan: 0, hosgoru: 10, baski: 0 } as Record<"olagan" | "hosgoru" | "baski", number>,
+  BUTUNLESME_AYLIK: { olagan: 3, hosgoru: 5, baski: 6 } as Record<"olagan" | "hosgoru" | "baski", number>,
+  IST_BUTUNLESME_EN_COK: 10,
+  GOREV_TEKLIF_SAYISI: 3, GOREV_HAZINE_ARTIS: 2000, GOREV_GUN: 720, GOREV_MESRUIYET: 3,
+  GOREV_ODUL: { hazine: 400, ittifak: 600, sur: 500, ordu: 600, ticaret: 500 } as Record<"hazine" | "ittifak" | "sur" | "ordu" | "ticaret", number>,
+  KOMUTAN_BEDEL: 400,
+  KOMUTAN_EN_COK: 8, // TASK-0047: devlet başına komutan havuzu sınırı [TASLAK]
+  KOMUTAN_SEVIYE_EN_COK: 3,
+  KOMUTAN_SEVIYE_DENEYIM: 400,
+  KOMUTAN_GUC_SEVIYE: 3,
+  KOMUTAN_UZMANLIK_GUC: 10,
+  DENEYIM_EN_COK: 1000,
+  DENEYIM_GUC_EN_COK: 20,
+  DENEYIM_SAVAS_GUN: 10,
+  KOMUTAN_SAVAS_GUN: 20,
+  KOMUTAN_IKMAL_KAYIP_YUZDE: 50,
+  TOPCU_KUSATMA_EK_YUZDE: 200,
+  YZ_TOPCU_HEDEF_YUZDE: 10,
+  GECIS_ILISKI_ESIGI: 15,
+  GECIS_AYLARI: [12, 24, 36] as const,
+  GECIS_AY_GUN: 30,
+  YZ_BAG_ARALIGI: 180,
+  YZ_BAG_OLASILIK: 25,
+  // TASK-0046: kaynak/yapı/teknoloji sayıları oyun dengesi tahminidir.
+  KAYNAK_BASLANGIC: 100,
+  KAYNAK_TAVAN: 1000000,
+  KAYNAK_URETIM: 20,
+  KAYNAK_NUFUS_ADIM: 10000,
+  KAYNAK_TARLA_EK: 10,
+  KAYNAK_ATOLYE_YUZDE: 25,
+  KAYNAK_TEKNOLOJI_YUZDE: 125,
+  TAHIL_ASKER_ADIM: 1000,
+  TAHIL_EKSIK_MORAL: 50,
+  KAYNAK_FIYAT: { tahil: 2, demir: 5, kereste: 3 },
+  KAYNAK_SATIS_YEDEK: 50,
+  KAYNAK_ALIM_EN_COK: 10000,
+  KAYNAK_YAPI_BEDELI: { okul: { demir: 0, kereste: 20 }, atolye: { demir: 10, kereste: 20 }, kisla: { demir: 10, kereste: 10 } },
+  KAYNAK_GEMI_BEDELI: { kadirga: { demir: 0, kereste: 2 }, kalyon: { demir: 3, kereste: 6 } },
+  TOPCU_DEMIR_ADIM: 20,
+  TOPCU_KERESTE_ADIM: 40,
+  YZ_KAYNAK_HEDEF: 100,
+  YZ_EK_YAPI_YEDEK_AY: 6,
+  OKUL_ARASTIRMA_YUZDE: 5,
+  OKUL_ARASTIRMA_EN_COK: 30,
+  MATBAA_ARASTIRMA_YUZDE: 15,
+  KISLA_INSAN_GUCU_YUZDE: 20,
+  KISLA_SURE_INDIRIM: 10,
+  ATOLYE_GELIR: 12,
+  MANUFAKTUR_GELIR_YUZDE: 125,
+  LOJISTIK_ASINMA_YUZDE: 50,
+  DIPLOMASI_TEKNOLOJI_PUAN: 5,
+  MUHENDISLIK_KUSATMA_EK: 20,
+  IDARE_YENILENME_YUZDE: 125,
   // 7c — DEC-0047: prototip risk ağırlıkları, tarihî ölçüm değildir.
   IST_MESRUIYET_EN_COK: 40,
   IST_FETIH_RISK: 30,
@@ -92,10 +150,10 @@ export const DENGE = {
   // Görünürlük (DEC-0027/2)
   GORUS_DUGUM: 2,
   // 5b — şehir yatırımları (DEC-0033); tarihî veri değildir, ilk oynanışla ayarlanacak
-  YAPI_EN_YUKSEK: { tarla: 3, pazar: 3, sur: 5 },
+  YAPI_EN_YUKSEK: { tarla: 3, pazar: 3, sur: 5, okul: 2, atolye: 2, kisla: 2 },
   // Hedef seviyeye göre bedel: indeks = hedef seviye − 1 (sur 1. seviyeden başlar, 0. indeks kullanılmaz)
-  YAPI_MALIYET: { tarla: [300, 600, 1200, 2000], pazar: [400, 800, 1600, 2600], sur: [0, 800, 1200, 1800, 2500, 3500] }, // son basamak teknolojiyle açılır (5c)
-  YAPI_SURE_GUN: { tarla: 60, pazar: 90, sur: 120 },
+  YAPI_MALIYET: { tarla: [300, 600, 1200, 2000], pazar: [400, 800, 1600, 2600], sur: [0, 800, 1200, 1800, 2500, 3500], okul: [500, 1000, 1800], atolye: [450, 900, 1700], kisla: [400, 800, 1500] },
+  YAPI_SURE_GUN: { tarla: 60, pazar: 90, sur: 120, okul: 120, atolye: 90, kisla: 90 },
   YAPI_AYLIK_GELIR: { tarla: 8, pazar: 10 }, // seviye başına, 20.000 nüfusta (TASK-0032: 15/20'den indi; 2.152 şehirli dünyada yatırım araziyi katbekat geçiyordu)
   // 5c — teknoloji ağacı (DEC-0035); bedel hazine, süre takvim günü
   ARASTIRMA_YUVASI: 2,
@@ -110,8 +168,16 @@ export const DENGE = {
     sayim: { bedel: 1800, sure: 360 },
     bayindirlik: { bedel: 2800, sure: 480 },
     kalyon: { bedel: 3200, sure: 600 }, // 8a, DEC-0052
+    matbaa: { bedel: 4000, sure: 720 },
+    tarimDonusumu: { bedel: 4200, sure: 900 },
+    metalurji: { bedel: 4600, sure: 900 },
+    manufaktur: { bedel: 6500, sure: 1080 },
+    muhendislik: { bedel: 5000, sure: 900 },
+    lojistik: { bedel: 4800, sure: 900 },
+    diplomasi: { bedel: 4200, sure: 720 },
+    idare: { bedel: 5000, sure: 900 },
   },
-  YAPI_EN_YUKSEK_TEKNOLOJIYLE: { tarla: 4, pazar: 4, sur: 6 }, // sulama / kervan / bayındırlık
+  YAPI_EN_YUKSEK_TEKNOLOJIYLE: { tarla: 4, pazar: 4, sur: 6, okul: 3, atolye: 3, kisla: 3 },
   KERVAN_PAZAR_EK_GELIR: 5,
   VERGI_ARAZI_GELIRI: 11,
   TOP_SALDIRI_YUZDE: 150,
@@ -163,6 +229,9 @@ export const DENGE = {
   YZ_SAVAS_OLASILIK: 25, // koşullar uygunsa bir ayda ilan etme olasılığı (%)
   YZ_SALDIRGANLIK_SINIRI: 20, // saldırganlığı bu düzeydeyken yeni savaş açmaz
   ATESKES_GUN: 1825, // barıştan sonra AI aynı devlete 5 yıl savaş açmaz
+  YZ_FILO_LIMAN_GUC: 30, // TASK-0051: liman başına hedef donanma gücü (kadırga 10) [TASLAK]
+  YZ_FILO_EN_COK_GUC: 600,
+  YZ_CIKARMA_EN_AZ_ASKER: 2000,
   YZ_SEFER_ARALIGI: 5, // gün; savaştaki AI ordularına bu aralıkla yeni emir
   YZ_SEFER_MORAL: 500, // bu moralin altındaki ordu sefere çıkmaz
   YZ_SALDIRI_GUC_KATI: 2, // gereken kuşatma gücünün bu katı varsa surlara saldırır, yoksa abluka
@@ -245,6 +314,16 @@ export const DENGE = {
   SALDIRMAZLIK_AYLARI: [12, 24, 36] as const,
   SALDIRMAZLIK_VARSAYILAN_AY: 24,
   // TASK-0018 (2/3) — vasallık; hepsi [TASLAK]
+  VASAL_BASLANGIC_SADAKAT: 60, // TASK-0048 [TASLAK]
+  VASAL_SADAKAT_ADIM: 5, // ayda hedefe en çok bu kadar yaklaşır
+  VASAL_ISYAN_SADAKAT: 20, // altına inerse vasal bağımsızlık savaşı açar
+  VASAL_ILHAK_SADAKAT: 50, // ilhak için en az; süreçte altına inerse ilhak düşer
+  VASAL_ILHAK_EN_AZ_GUN: 365, // ilhak için en az vasallık süresi
+  VASAL_ILHAK_SEHIR_BEDEL: 150, // vasalın şehri başına bedel
+  VASAL_ILHAK_TABAN_GUN: 90, VASAL_ILHAK_SEHIR_GUN: 15,
+  ORTAK_SAVAS_KATILMA_ILISKI: 30, // TASK-0048: AI müttefik saldırı savaşına bu ilişkiyle katılır
+  BAGIMSIZLIK_AYAKLANMA_AY: 6, // TASK-0048: fethedilmiş şehirde bu kadar süren ayaklanma eski sahibine bağımsızlık getirir
+  BAGIMSIZLIK_HAZINE: 500, BAGIMSIZLIK_ASKER_YUZDE: 3, BAGIMSIZLIK_ASKER_EN_AZ: 1000,
   VASAL_VERGI_YUZDE: 15, // vasalın aylık gelirinden efendiye aktarılan pay
   VASAL_SERBEST_ILISKI: 15, // serbest bırakılınca vasalın efendiye bakışı iyileşir
   VASAL_TEKLIF_ARAZI_KATI: 3, // TASK-0021 (4/4): AI, arazisi bu kattan büyükse ve komşuysa vasallık teklif edebilir
@@ -253,6 +332,7 @@ export const DENGE = {
     piyade: { ad: "Piyade", maliyetYuzde: 100, maasYuzde: 100, saldiriYuzde: 100, savunmaYuzde: 100, hizYuzde: 100 },
     okcu: { ad: "Okçu", maliyetYuzde: 80, maasYuzde: 90, saldiriYuzde: 80, savunmaYuzde: 130, hizYuzde: 100 },
     suvari: { ad: "Süvari", maliyetYuzde: 180, maasYuzde: 160, saldiriYuzde: 140, savunmaYuzde: 70, hizYuzde: 150 },
+    topcu: { ad: "Topçu", maliyetYuzde: 300, maasYuzde: 250, saldiriYuzde: 180, savunmaYuzde: 50, hizYuzde: 60 },
   },
   // TASK-0020 (1/3, DEC-0069) — AI'dan oyuncuya diplomatik teklifler; hepsi [TASLAK]
   YZ_DIPLOMASI_TEKLIF_OLASILIK: 1, // AI'nın aylık kararında, ilişki uygunsa teklif sunma olasılığı (%)

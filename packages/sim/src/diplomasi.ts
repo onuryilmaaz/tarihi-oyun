@@ -83,6 +83,7 @@ export function iliskiBilesenleri(d: DunyaDurumu, o: DiplomasiOnHesap, a: number
   if (ortak) r.push({ ad: "Ortak düşman", deger: DENGE.ILISKI_ORTAK_DUSMAN });
   const dip = hukumdarDiplomasiPuani(d, b);
   if (dip) r.push({ ad: "Hükümdarının diplomasisi", deger: dip });
+  if (d.devletler[b].teknolojiler.includes("diplomasi")) r.push({ ad: "Daimî elçilikler", deger: DENGE.DIPLOMASI_TEKNOLOJI_PUAN });
   if (d.ambargolar?.some((x) => x.devlet === b && x.hedef === a)) r.push({ ad: "Ambargo uyguluyor", deger: DENGE.AMBARGO_ILISKI });
   const din = dinBileseni(d, a, b);
   if (din) r.push({ ad: din > 0 ? "Aynı din" : "Farklı din", deger: din });
@@ -145,7 +146,7 @@ export function savasIlaniSonuclari(d: DunyaDurumu, ag: HareketAgi | null, saldi
     }
     const p = iliski(d, o, m, savunan);
     if (m === d.ayarlar.oyuncu || p >= DENGE.CAGRI_ESIGI) {
-      d.savaslar.push({ id: d.sonrakiSavasId++, saldiran, savunan: m, baslangic: d.gun });
+      d.savaslar.push({ id: d.sonrakiSavasId++, saldiran, savunan: m, baslangic: d.gun, lider: savunan }); // TASK-0048
       const metin = `${ad}, müttefiki ${savunanAd}'nın çağrısına uyarak ${saldiranAd} ile savaşa girdi.`;
       olayEkle(d, { tur: "ittifak-cagri", devlet: [m, saldiran].includes(d.ayarlar.oyuncu) ? d.ayarlar.oyuncu : null, metin });
       if ([m, saldiran].includes(d.ayarlar.oyuncu) && !d.aktifKesinti) d.aktifKesinti = { gun: d.gun, neden: metin };

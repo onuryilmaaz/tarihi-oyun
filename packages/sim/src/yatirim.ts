@@ -5,12 +5,13 @@
 import { olayEkle, type DunyaDurumu, type SehirDurumu } from "./durum";
 import { sehirGelirYuzde } from "./istikrar";
 import { DENGE } from "./denge";
-import { insaatSureYuzde, pazarGeliriSeviyeBasina, surBedelYuzde, yapiEnYuksek } from "./teknoloji";
+import { biliyor, insaatSureYuzde, pazarGeliriSeviyeBasina, surBedelYuzde, yapiEnYuksek } from "./teknoloji";
 import { gelismislikDegistir, gelismislikYuzde, kaynakYapiYuzde } from "./sehir";
 
-export type YapiTuru = "tarla" | "pazar" | "sur";
-export const YAPI_TURLERI: YapiTuru[] = ["tarla", "pazar", "sur"];
-export const YAPI_ADLARI: Record<YapiTuru, string> = { tarla: "Tarla", pazar: "Pazar", sur: "Sur" };
+export type YapiTuru = "tarla" | "pazar" | "sur" | "okul" | "atolye" | "kisla";
+export const YAPI_TURLERI: YapiTuru[] = ["tarla", "pazar", "sur", "okul", "atolye", "kisla"];
+export const YAPI_ADLARI: Record<YapiTuru, string> = { tarla: "Tarla", pazar: "Pazar", sur: "Sur", okul: "Okul", atolye: "Atölye", kisla: "Kışla" };
+export const YAPI_ETKILERI: Record<YapiTuru, string> = { tarla: "Tahıl üretimi ve gelir", pazar: "Şehir geliri", sur: "Kuşatma direnci", okul: "Araştırma hızı seviye başına +%5 (devlet toplamında en çok %30)", atolye: "Üretim seviye başına +%25 ve gelir", kisla: "İnsan gücü tavanı seviye başına +%20; toplama süresi −%10" };
 
 export interface Insaat {
   sehir: number;
@@ -20,7 +21,7 @@ export interface Insaat {
   kalanGun: number;
 }
 
-export const yapiSeviyesi = (s: SehirDurumu, yapi: YapiTuru) => (yapi === "sur" ? s.sur : s.yapilar[yapi]);
+export const yapiSeviyesi = (s: SehirDurumu, yapi: YapiTuru) => yapi === "sur" ? s.sur : yapi === "tarla" || yapi === "pazar" ? s.yapilar[yapi] : s.ekYapilar[yapi];
 
 /** Sahibinin teknolojilerine göre bir sonraki seviyenin bedeli; en yüksek seviyedeyse null. */
 export function insaatMaliyeti(d: DunyaDurumu, s: SehirDurumu, yapi: YapiTuru): number | null {
@@ -40,7 +41,9 @@ export const yapiNufusYuzde = (s: SehirDurumu): number => Math.max(DENGE.YAPI_NU
   Math.min(DENGE.YAPI_NUFUS_EN_COK_YUZDE, Math.floor((s.nufus * 100) / DENGE.YAPI_REFERANS_NUFUS)));
 
 /** Bir yapı seviyesinin aylık geliri (gelişmişlik ve istikrar hariç): taban × gelir kaynağı × nüfus. */
-export function yapiSeviyeGeliri(d: DunyaDurumu, s: SehirDurumu, yapi: "tarla" | "pazar"): number {
+export function yapiSeviyeGeliri(d: DunyaDurumu, s: SehirDurumu, yapi: YapiTuru): number {
+  if (yapi === "okul" || yapi === "kisla" || yapi === "sur") return 0;
+  if (yapi === "atolye") return Math.floor(DENGE.ATOLYE_GELIR * yapiNufusYuzde(s) * (biliyor(d, s.devlet, "manufaktur") ? DENGE.MANUFAKTUR_GELIR_YUZDE : 100) / 10000);
   const taban = yapi === "tarla" ? DENGE.YAPI_AYLIK_GELIR.tarla : pazarGeliriSeviyeBasina(d, s.devlet);
   return Math.floor((taban * kaynakYapiYuzde(s, yapi) * yapiNufusYuzde(s)) / 10000);
 }
@@ -48,7 +51,7 @@ export function yapiSeviyeGeliri(d: DunyaDurumu, s: SehirDurumu, yapi: "tarla" |
 export function sehirYapiGeliri(d: DunyaDurumu, s: SehirDurumu): number {
   if (s.kontrol !== s.devlet) return 0;
   // TASK-0028: gelir kaynağı yapının, gelişmişlik bütün şehrin gelirini çarpar; TASK-0032: nüfus ölçeği
-  const ham = s.yapilar.tarla * yapiSeviyeGeliri(d, s, "tarla") + s.yapilar.pazar * yapiSeviyeGeliri(d, s, "pazar");
+  const ham = s.yapilar.tarla * yapiSeviyeGeliri(d, s, "tarla") + s.yapilar.pazar * yapiSeviyeGeliri(d, s, "pazar") + s.ekYapilar.atolye * yapiSeviyeGeliri(d, s, "atolye");
   return Math.floor((Math.floor((ham * gelismislikYuzde(s)) / 100) * sehirGelirYuzde(s)) / 100);
 }
 
@@ -72,10 +75,10 @@ export function insaatlariIlerlet(d: DunyaDurumu): void {
     i.kalanGun--;
     if (i.kalanGun > 0) continue;
     if (i.yapi === "sur") s.sur = i.hedef;
-    else {
+    else if (i.yapi === "tarla" || i.yapi === "pazar") {
       s.yapilar[i.yapi] = i.hedef;
       if ((s.yapilar.tarla + s.yapilar.pazar) % DENGE.GELISMISLIK_YATIRIM_ADIM === 0) gelismislikDegistir(s, 1); // TASK-0028/0032
-    }
+    } else s.ekYapilar[i.yapi] = i.hedef;
     sil();
     olayEkle(d, { tur: "insaat-bitti", devlet: i.devlet, metin: `${s.ad}: ${YAPI_ADLARI[i.yapi]} ${i.hedef}. seviyeye yükseldi.` });
   }

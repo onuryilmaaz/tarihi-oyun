@@ -1,4 +1,4 @@
-import type { Istikrar, BarisDevirOzeti, GelirKaynagi, SancakOzeti } from "@tarihi/sim";
+import type { Istikrar, BarisDevirOzeti, GelirKaynagi, SancakOzeti, Kaynak, KaynakStogu } from "@tarihi/sim";
 // Ana iş parçacığı ↔ simülasyon Worker'ı mesaj protokolü.
 
 import type { Alan, Degerlendirme, IliskiBileseni, TeknolojiId, YapiTuru, BarisKaydi, BarisTalebi, ButceOzeti, Dogrulama, Emir, KusatmaYontemi, MuharebeRaporu, OlayKaydi, RotaKirilimi, SenaryoVerisi, Tutum, TurSonucu, TurSuresi, YabanciOrdu, BirimTuru, Kompozisyon } from "@tarihi/sim";
@@ -10,6 +10,8 @@ export type Istek = { id: number } & (
   // Yerel yönetim ayarı (7d): tur süresi gibi anında uygulanır, harcama yapmaz
   | { tip: "yonetim"; sehir?: number; acik?: boolean; butce?: number; altSinir?: number }
   | { tip: "sehirAdi"; sehir: number; ad: string } // TASK-0026
+  | { tip: "haberOkundu"; haber: number } // TASK-0050
+  | { tip: "sinirGoruntusu"; indeks: number }
   | { tip: "sancakYonetim"; sancak: number; acik: boolean } // TASK-0029
   | { tip: "emir"; emir: Emir }
   | { tip: "turuIlerlet" }
@@ -42,6 +44,9 @@ export interface OrduOzeti {
   maas: number;
   maasAksiyor: boolean;
   bolunebilir: boolean;
+  deneyim: number; // TASK-0047: 0–1000
+  deneyimGuc: number; // kıdem + komutan güç yüzdesi (taarruz)
+  komutan: { id: number; ad: string; uzmanlik: string; seviye: number } | null;
   terhisUygun: boolean;
   terhisNedeni: string | null;
   takviye: { hedef: number; aylikButce: number; bekleyenAsker: number; sehir: string | null } | null;
@@ -62,6 +67,7 @@ export interface RotaOnizleme {
 }
 
 export interface Ozet {
+  kaynaklar: { stok: KaynakStogu; kullanilabilir: KaynakStogu; uretim: KaynakStogu; tahilTuketimi: number; arastirmaHizi: number };
   gun: number;
   tarih: string;
   turNo: number;
@@ -79,7 +85,7 @@ export interface Ozet {
   verasetSecimi: { onceki: string; veraset: string; adaylar: (HukumdarOzeti & { tarihi: boolean; gelenek: boolean })[] } | null;
   veraset: string; tarihiHalef: string | null;
   din: string; kultur: string; // oyuncu devletinin resmî dini ve baskın kültürü (7b)
-  istikrar: (Istikrar & { asayis: number; gerekenAsker: number; bagisUygun: boolean; bagisNedeni: string | null })[];
+  istikrar: (Istikrar & { asayis: number; gerekenAsker: number; bagisUygun: boolean; bagisNedeni: string | null; bagimsizlik: { devlet: string; kalanAy: number } | null })[];
   sehirNufuslari: { nufus: number; gruplar: [string, string, number][] }[]; // şehir başına din × kültür
   devletDinleri: string[]; // harita modu için
   yerelYonetim: { butce: number; altSinir: number; harcanan: number }; // 7d
@@ -105,16 +111,23 @@ export interface Ozet {
   barisTeklifleri: { id: number; devlet: number; gerekce: string; size: boolean; birimler: number[]; sehirler: number[]; kalanGun: number; cevap: boolean | null }[]; // 6c
   diplomatikTeklifler: { id: number; devlet: number; tur: "ittifak" | "ticaret" | "saldirmazlik" | "vasallik"; ay: number | null; gerekce: string; kalanGun: number; cevap: boolean | null }[]; // TASK-0020 (1/3), vasallik TASK-0021 (4/4)
   toplamaKurali: { bedelYuzde: number; gun: number }; // teknolojiyle değişir (Asker Kayıt Defterleri)
-  askerSehirleri: { indeks: number; ad: string; insanGucu: number; uygun: boolean; ayaklanma: boolean }[];
+  askerSehirleri: { indeks: number; ad: string; insanGucu: number; uygun: boolean; ayaklanma: boolean; gun: number }[];
   toplamalar: { idler: number[]; sehir: string; sehirSayisi: number; asker: number; birim: BirimTuru; kalanGun: number; bekliyor: boolean; emir: boolean }[]; // TASK-0037: ordu kurma parçaları tek satır // TASK-0019: birim
   planliKesinti: { tarih: string; neden: string }[];
   hash: string;
   ordular: OrduOzeti[];
+  haberler: { id: number; tarih: string; kategori: "savas" | "diplomasi" | "siyaset"; metin: string }[]; // TASK-0050 (yeniden eskiye)
+  haberOkunan: number;
+  gucTablosu: { tarih: string; satirlar: { devlet: number; sehir: number; nufus: number; degisim: number | null }[] } | null;
+  sinirTarihleri: string[];
+  idare: { mevcut: string; reform: { hedef: string; bitis: string } | null; danismanlar: string[] }; // TASK-0049
+  gorevler: { no: number; ad: string; odul: number; durum: "teklif" | "aktif"; bitis: string | null; olcum: number; hedef: number }[];
+  komutanlar: { id: number; ad: string; uzmanlik: string; seviye: number; deneyim: number; ordu: string | null }[]; // TASK-0047: kendi havuzunuz
   yabanciOrdular: YabanciOrdu[]; // yalnızca görünenler; kesin asker sayısı yok (AT-013)
-  savaslar: { id: number; karsi: number; baslangic: string; saldiran: boolean; skor: number; alinan: number; kaybedilen: number; toplam: number; birimler: number[]; sehirler: number[] }[];
+  savaslar: { id: number; karsi: number; baslangic: string; saldiran: boolean; lider: string | null; skor: number; alinan: number; kaybedilen: number; toplam: number; birimler: number[]; sehirler: number[] }[];
   kusatmalar: { sehir: number; devlet: number; savunan: number; yontem: KusatmaYontemi; gun: number; erzak: number; gucYeterli: boolean | null }[];
   sehirDurumlari: { devlet: number; kontrol: number; baskent: boolean; sur: number; garnizon: number; garnizonTahmin: boolean;
-    ad: string; eskiAd: string | null; bagli: number; birim: number; gelismislik: number; gelirKaynagi: GelirKaynagi | null }[]; // TASK-0026: ad değişebilir, bağlı şehir gizlenir
+    ad: string; eskiAd: string | null; bagli: number; birim: number; gelismislik: number; gelirKaynagi: GelirKaynagi | null; butunlesme: number; politika: string }[]; // TASK-0026: ad değişebilir, bağlı şehir gizlenir
   /** Oyuncunun kendi şehirleri için birleştirilebilecek komşu şehirler ve süren birleşmeler (TASK-0026) */
   birlesmeAdaylari: Record<number, number[]>;
   sehirBirlesmeleri: { merkez: number; katilan: number; kalanGun: number }[];
@@ -133,7 +146,7 @@ export interface Ozet {
 }
 
 export type Yanit =
-  | { id: number; tamam: true; ozet: Ozet; sonuc?: TurSonucu; sureMs?: number; metin?: string; dogrulama?: Dogrulama; rota?: RotaOnizleme; baris?: { puan: number; skor: number; dogrulama: Dogrulama; devir: BarisDevirOzeti | null }; gelistirme?: { sehir: number; bedel: number; dolu: number; kalan: number } | { neden: string }; orduKur?: { sehir: number; bedel: number } | { neden: string; toplanabilir?: number } }
+  | { id: number; tamam: true; ozet: Ozet; sonuc?: TurSonucu; sureMs?: number; metin?: string; dogrulama?: Dogrulama; rota?: RotaOnizleme; baris?: { puan: number; skor: number; dogrulama: Dogrulama; devir: BarisDevirOzeti | null }; gelistirme?: { sehir: number; bedel: number; dolu: number; kalan: number } | { neden: string }; orduKur?: { sehir: number; bedel: number } | { neden: string; toplanabilir?: number }; sinir?: { birimler: number[]; sehirler: number[] } }
   | { id: number; tamam: false; hata: string; yigin?: string; bozuk?: boolean };
 
 type IstekGovdesi = Istek extends infer T ? (T extends { id: number } ? Omit<T, "id"> : never) : never;
@@ -189,6 +202,8 @@ export class SimIstemcisi {
 }
 
 export interface YatirimSecenegi {
+  etki: string;
+  kaynakBedeli: KaynakStogu;
   yapi: YapiTuru;
   ad: string;
   seviye: number;
@@ -203,6 +218,8 @@ export interface YatirimSecenegi {
 export interface HukumdarOzeti { ad: string; hanedan: string; yas: number; yonetim: number; askerlik: number; diplomasi: number; mesruiyet: number; kurgusal: boolean }
 
 export interface DiplomasiKarti {
+  kaynakTicaret: { neden: string | null; urunler: { kaynak: Kaynak; fiyat: number; mevcut: number }[] };
+  gecis: { alinanBitis: number | null; verilenBitis: number | null; degerlendirme: Degerlendirme };
   hukumdar: HukumdarOzeti | null;
   bakisi: number; // onun size bakışı
   bakisimiz: number; // sizin ona bakışınız
@@ -219,9 +236,10 @@ export interface DiplomasiKarti {
   saldirmazlikVar: boolean;
   saldirmazlik: Degerlendirme;
   vasalim: boolean; // TASK-0018 (2/3): bu devlet benim vasalım mı
+  vasalDurumu: { sadakat: number; ilhakBitis: string | null; ilhakUygun: boolean; ilhakNedeni: string | null; bedel: number; gun: number } | null; // TASK-0048
   onunEfendisi: number | null; // bu devletin efendisi varsa indeksi (ben de olabilirim, başkası da)
   elciYolda: number | null; // TASK-0020 (2/3): yoldaki elçinin kalan günü (yoksa null)
-  bekleyen: "ittifakTeklif" | "ittifakBoz" | "ticaretTeklif" | "ticaretBoz" | "saldirmazlikTeklif" | "vasalSerbestBirak" | "elciGonder" | null;
+  bekleyen: "ittifakTeklif" | "ittifakBoz" | "ticaretTeklif" | "ticaretBoz" | "saldirmazlikTeklif" | "vasalSerbestBirak" | "elciGonder" | "gecisIzin" | null;
 }
 
 export interface TeknolojiKarti {
@@ -245,6 +263,8 @@ export interface TeknolojiOzeti {
 }
 
 export interface SehirYatirimi {
+  anaKaynak: Kaynak;
+  uretim: KaynakStogu;
   indeks: number;
   ad: string;
   aylikGelir: number;

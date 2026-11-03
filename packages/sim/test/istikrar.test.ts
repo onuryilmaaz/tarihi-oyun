@@ -16,9 +16,9 @@ function yeni() {
 }
 function ordu(d: DunyaDurumu, sehir = 1, devlet = 0) {
   const s = d.sehirler[sehir];
-  const o = { id: d.sonrakiOrduId++, ad: "Asayiş", devlet, asker: gerekenAsayis(s), kompozisyon: { piyade: gerekenAsayis(s), okcu: 0, suvari: 0 },
+  const o = { id: d.sonrakiOrduId++, ad: "Asayiş", devlet, asker: gerekenAsayis(s), kompozisyon: { piyade: gerekenAsayis(s), okcu: 0, suvari: 0, topcu: 0 },
     dugum: s.dugum, x: sehir * 10000, y: 0,
-    hiz: 20000, rota: [], ilerleme: 0, hedef: null, moral: 1000, tutum: "dengeli" as const, cekiliyor: false, muharebe: null };
+    hiz: 20000, rota: [], ilerleme: 0, hedef: null, moral: 1000, tutum: "dengeli" as const, cekiliyor: false, muharebe: null, deneyim: 0, komutan: null };
   d.ordular.push(o); return o;
 }
 function kriz() {

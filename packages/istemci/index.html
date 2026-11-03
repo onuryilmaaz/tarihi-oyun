@@ -400,6 +400,49 @@
       #tarihKutu { margin: 0; }
       #bilgi { width: min(300px, calc(100vw - var(--yan-genislik) - 48px)); }
     }
+
+    /* TASK-0042: yan paneller üst çubukla aynı koyu renkte; oyunsu çerçeve (çift altın çizgi), süslü başlıklar. Renk
+       değişkenleri genel koyu temadan gelir; yalnızca zemin, çerçeve ve başlıklar burada. */
+    #yan, #bilgi {
+      backdrop-filter: blur(8px); border-radius: 4px; border: 1px solid rgba(226, 179, 86, .45);
+      background: radial-gradient(ellipse at 50% 30%, rgba(255, 240, 210, .035), transparent 70%), var(--panel);
+      box-shadow: inset 0 0 0 3px rgba(28, 24, 20, .9), inset 0 0 0 4px rgba(226, 179, 86, .22), 0 10px 28px rgba(0, 0, 0, .45);
+    }
+    #yan h2, #bilgi h2, #bilgi h4 { font-family: "Cinzel", serif; font-weight: 600; color: var(--vurgu); letter-spacing: .08em;
+      display: flex; align-items: center; gap: 8px; font-size: 11.5px; text-transform: uppercase; margin: 16px 0 6px; }
+    #yan h2::after, #bilgi h2::after, #bilgi h4::after { content: ""; flex: 1; height: 1px;
+      background: linear-gradient(90deg, rgba(226, 179, 86, .4), transparent); }
+    #yan h2::before, #bilgi h4::before { content: "❧"; font-size: 13px; color: rgba(226, 179, 86, .7); letter-spacing: 0; }
+    #bilgi h3 { font-family: "Cinzel", serif; }
+    #devletBaslik { background: linear-gradient(rgba(226, 179, 86, .07), transparent); }
+    #sekmeler { border-bottom: 3px double rgba(226, 179, 86, .3); }
+    #sekmeler button[aria-selected="true"] { background: rgba(226, 179, 86, .08); }
+    /* Açıklamalar ipucunda (TASK-0042): metin gizli, "ⓘ Nasıl işler?" rozeti; üzerine gelince #panelIpucu gösterir */
+    .aciklama { display: inline-block; font-size: 0 !important; line-height: 0; margin: 6px 0 2px; cursor: help; }
+    .aciklama::before { content: "ⓘ Nasıl işler?"; font-size: 11px; line-height: 1.6; color: var(--soluk); border: 1px solid var(--cizgi);
+      border-radius: 10px; padding: 0 8px; display: inline-block; }
+    .aciklama:hover::before, .aciklama:focus::before { color: var(--vurgu); border-color: var(--vurgu); }
+    #haberListesi li { font-size: 12px; border-left: 2px solid var(--cizgi); padding: 2px 0 2px 8px; }
+    #haberListesi li.yeni { border-left-color: var(--vurgu); }
+    #haberListesi time { display: block; color: var(--soluk); font-size: 10.5px; }
+    #gecmisHarita { width: 100%; }
+    /* Kart listeleri (danışman, görev, komutan, dünya güçleri): simge + metin + sağda düğme */
+    .kart-liste { list-style: none; margin: 6px 0 8px; padding: 0; display: grid; gap: 6px; }
+    .kart-liste li { display: flex; align-items: center; gap: 10px; padding: 8px 10px; border-radius: 6px;
+      border: 1px solid rgba(239, 230, 212, .1); background: linear-gradient(180deg, rgba(239, 230, 212, .05), rgba(239, 230, 212, .02)); }
+    .kart-liste li.aktif { border-color: rgba(226, 179, 86, .55); background: linear-gradient(180deg, rgba(226, 179, 86, .12), rgba(226, 179, 86, .04)); }
+    .kart-liste li > span { flex: 1; min-width: 0; }
+    .kart-liste li b { display: block; font-size: 13px; line-height: 1.3; }
+    .kart-liste li small { display: block; color: var(--soluk); font-size: 11px; line-height: 1.4; }
+    .kart-liste li > button { flex: none; width: auto; padding: 5px 10px; font-size: 12px; white-space: nowrap; }
+    .kart-simge { flex: none; width: 30px; height: 30px; display: grid; place-items: center; font-style: normal; font-size: 15px;
+      border-radius: 50%; border: 1px solid rgba(226, 179, 86, .4); background: radial-gradient(circle at 35% 30%, rgba(226, 179, 86, .25), rgba(28, 24, 20, .6)); }
+    .kart-sira { flex: none; width: 22px; font-style: normal; font-family: "Cinzel", serif; color: var(--vurgu); text-align: center; }
+    .kart-cubuk { display: block; height: 3px; margin-top: 5px; border-radius: 2px;
+      background: linear-gradient(90deg, var(--vurgu) var(--oran), rgba(239, 230, 212, .12) var(--oran)); }
+    #panelIpucu { position: fixed; z-index: 70; max-width: 300px; padding: 8px 11px; font-size: 12px; line-height: 1.5; pointer-events: none;
+      color: var(--metin); background: #221c17; border: 1px solid rgba(226, 179, 86, .55); border-radius: 4px;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, .45); }
   </style>
 </head>
 <body>
@@ -444,7 +487,7 @@
       <button role="tab" data-sekme="deniz" title="Donanmalar"><i>⚓</i>Deniz</button>
       <button role="tab" data-sekme="sehir" title="Şehir yatırımları, inşaat, iskân, tersane"><i>🏰</i>Şehir</button>
       <button role="tab" data-sekme="savas" title="Savaşlar, barış, muharebe raporları"><i>🏳</i>Savaş<span class="rozet-sayi" id="savasRozet" hidden></span></button>
-      <button role="tab" data-sekme="gunluk" title="Olay günlüğü"><i>📜</i>Günlük</button>
+      <button role="tab" data-sekme="gunluk" title="Haberler, dünya güçleri, geçmiş harita ve olay günlüğü"><i>📜</i>Günlük<span class="rozet-sayi" id="haberRozet" hidden></span></button>
       <button role="tab" data-sekme="ayar" title="Katmanlar, git, geliştirici"><i>⚙</i>Ayar</button>
     </nav>
     <div id="sekmeIcerik">
@@ -460,7 +503,7 @@
           </div>
           <dl id="butceKalemleri"></dl>
           <p id="orduGideri" class="not"></p>
-          <p class="not">Aylık fark, mevcut arazi ve ordular korunursa geçerlidir; toplama ve tazminat gibi tek seferlik işlemler bu farka dahil değildir.</p>
+          <p class="not aciklama" tabindex="0">Aylık fark, mevcut arazi ve ordular korunursa geçerlidir; toplama ve tazminat gibi tek seferlik işlemler bu farka dahil değildir.</p>
           <details id="butceDokum">
             <summary>Şehir bazlı gelir ve hazine geçmişi</summary>
             <dl id="butceSehirleri"></dl>
@@ -469,6 +512,10 @@
         </details>
         <h2>Araştırmalar</h2>
         <ul id="arastirmaListesi"></ul>
+        <h2>İdare ve danışmanlar</h2>
+        <div id="idarePaneli"></div>
+        <h2>Görevler</h2>
+        <div id="gorevPaneli"></div>
         <h2>Yerel yönetim</h2>
         <div id="yerelYonetim">
           <label for="yonetimButce">Aylık bütçe tavanı <input id="yonetimButce" type="number" min="0" step="50" value="0" /></label>
@@ -486,6 +533,8 @@
         <h2>Ordular</h2>
         <ul id="orduListesi"></ul>
         <div id="orduDetay" hidden></div>
+        <h2>Komutanlar</h2>
+        <div id="komutanPaneli"></div>
         <h2>Kuşatma</h2>
         <div id="kusatmaPaneli"></div>
         <ul id="kusatmaListesi"></ul>
@@ -499,7 +548,7 @@
           <p id="toplamaBilgi" class="not"></p>
           <button id="toplaBtn" style="margin-top:6px">Asker topla</button>
           <button id="orduKurBtn" style="margin-top:6px" title="Askeri bu şehre en yakın kendi şehirlerinizden bölüşerek toplar; hazır olan birlikler bu şehre yürür ve tek orduda birleşir.">Ordu kur (yakın şehirlerden)</button>
-          <p class="not">İnsan gücü şehrin nüfusunun %5'idir (Asker Sayımı ile %50 fazlası). Boşalan havuz her ay biraz dolar; tamamen dolması 1 yıl sürer.</p>
+          <p class="not aciklama" tabindex="0">İnsan gücü şehrin nüfusunun %5'idir (Asker Sayımı ile %50 fazlası). Boşalan havuz her ay biraz dolar; tamamen dolması 1 yıl sürer.</p>
           <ul id="toplamaListesi"></ul>
         </div>
       </section>
@@ -507,16 +556,18 @@
         <h2>Donanmalar</h2>
         <ul id="donanmaListesi"></ul>
         <div id="donanmaPaneli" hidden></div>
-        <p class="not">Haritadaki ⚓ işaretine tıklayarak da donanma seçebilirsiniz. Gemi yapmak için liman şehrinizin panelindeki Tersane bölümünü kullanın.</p>
+        <p class="not aciklama" tabindex="0">Haritadaki ⚓ işaretine tıklayarak da donanma seçebilirsiniz. Gemi yapmak için liman şehrinizin panelindeki Tersane bölümünü kullanın.</p>
       </section>
       <section data-sekme="sehir" hidden>
+        <h2>Üretim ve kaynaklar</h2>
+        <div id="kaynakPaneli"></div>
         <h2>Şehir yatırımları</h2>
         <div class="satir"><select id="yatirimSehir" aria-label="Yatırım yapılacak şehir"></select><button id="yatirimAc">Şehri aç</button></div>
         <ul id="insaatListesi"></ul>
         <h2>Tüm şehirleri geliştir</h2>
         <label for="gelistirSinir">Harcanacak en çok <input id="gelistirSinir" type="number" min="1" step="100" /></label>
         <div class="satir"><button id="gelistirBtn" style="margin-top:6px">Tüm şehirleri geliştir</button><button id="surGelistirBtn" style="margin-top:6px">Tüm surları güçlendir</button></div>
-        <p class="not">İnşaatı olmayan her şehrinize bir seviye: geliştirmede tarla ya da pazar (en kârlısı önce), surda başkent önce sonra en kalabalık şehirler. Dolu şehirler atlanır.</p>
+        <p class="not aciklama" tabindex="0">İnşaatı olmayan her şehrinize bir seviye: geliştirmede tarla ya da pazar (en kârlısı önce), surda başkent önce sonra en kalabalık şehirler. Dolu şehirler atlanır.</p>
       </section>
       <section data-sekme="savas" hidden>
         <h2>Savaşlar</h2>
@@ -528,6 +579,16 @@
         <ul id="raporListesi"></ul>
       </section>
       <section data-sekme="gunluk" hidden>
+        <h2>Haberler</h2>
+        <div id="haberFiltre" class="tutumlar" role="group" aria-label="Haber türü"><button data-haber-filtre="hepsi" class="etkin">Tümü</button><button data-haber-filtre="savas">Savaş</button><button data-haber-filtre="diplomasi">Diplomasi</button><button data-haber-filtre="siyaset">Siyaset</button></div>
+        <ul id="haberListesi" class="secim-listesi"></ul>
+        <button id="haberOkundu" style="margin-top:6px">Tümünü okundu say</button>
+        <h2>Dünya güçleri</h2>
+        <div id="gucTablosu"></div>
+        <h2>Geçmiş harita</h2>
+        <label for="gecmisHarita">Sınırlar <input id="gecmisHarita" type="range" min="0" max="0" value="0" /></label>
+        <p class="not" id="gecmisTarih"></p>
+        <button id="gecmisKapat" hidden>Bugüne dön</button>
         <h2>Olay günlüğü</h2>
         <ul id="gunluk"></ul>
         <p class="not" id="bekleyen"></p>
@@ -536,9 +597,9 @@
       <section data-sekme="ayar" hidden>
         <h2>Görünüm</h2>
         <label for="arayuzOlcek">Arayüz boyutu <select id="arayuzOlcek"><option value="0.9">%90</option><option value="1" selected>%100</option><option value="1.15">%115</option><option value="1.3">%130</option></select></label>
-        <p class="not">Paneller, menüler ve pencereler büyür; harita etkilenmez. Klavye: Tab ile gezin, sekmelerde ← →, Esc ile kapatın, Boşluk ile turu ilerletin.</p>
+        <p class="not aciklama" tabindex="0">Paneller, menüler ve pencereler büyür; harita etkilenmez. Klavye: Tab ile gezin, sekmelerde ← →, Esc ile kapatın, Boşluk ile turu ilerletin.</p>
         <label for="otoKayitSiklik">Otomatik kayıt <select id="otoKayitSiklik"><option value="tur">Her tur sonunda</option><option value="ay">Oyunda ayda bir</option><option value="yil">Oyunda yılda bir</option><option value="kapali">Kapalı</option></select></label>
-        <p class="not">Son üç otomatik kayıt tutulur. Kapalıysa yalnızca sizin aldığınız kayıtlar kalır.</p>
+        <p class="not aciklama" tabindex="0">Son üç otomatik kayıt tutulur. Kapalıysa yalnızca sizin aldığınız kayıtlar kalır.</p>
         <h2>Katmanlar</h2>
         <label><input type="checkbox" id="kEtiket" checked /> Devlet adları</label>
         <label><input type="checkbox" id="kSehir" checked /> Şehirler</label>
@@ -559,7 +620,7 @@
           <button id="testHata">Test hatası</button>
           <button id="testSimHata">Simülasyon hatası testi</button>
         </div>
-        <p class="not">Aşama 2 altyapısını sınamak içindir; gerçek oyun mekaniği değildir. Gelir ve nüfus değerleri test değeridir.</p>
+        <p class="not aciklama" tabindex="0">Aşama 2 altyapısını sınamak içindir; gerçek oyun mekaniği değildir. Gelir ve nüfus değerleri test değeridir.</p>
         <p class="not"><span id="sonTur"></span><br />Durum özeti: <span id="ozetHash"></span></p>
       </section>
     </div>
@@ -717,6 +778,7 @@
     </div>
   </div>
 
+  <div id="panelIpucu" hidden></div>
   <div id="ipucu" hidden></div>
   <div id="yukleniyor">Dünya hazırlanıyor…</div>
   <script type="module" src="/src/main.ts"></script>

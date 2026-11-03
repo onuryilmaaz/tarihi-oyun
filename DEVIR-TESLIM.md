@@ -10,6 +10,30 @@ Bağlayıcı kurallar: `AGENTS.md`, `MASTER_SPEC.md`, `DECISIONS.md`.
 
 ## 0. En son — BURADAN BAŞLA
 
+- **2026-11-03, Claude — TASK-0047…0051 TAMAMLANDI.** Kullanıcı: "hepsini tek tek yapma bitir öyle gel bana".
+  0048 `siyaset.ts`, 0049 `idare.ts` (Vite önbelleği yüzünden `reform.ts` adı kullanılamadı), 0050 `tarihce.ts`,
+  0051 `yz-deniz.ts`. Şema 36. 332 test, typecheck, build geçti; 5173'te komutan, reform/danışman/görev ve haber/geçmiş
+  harita akışları denendi. **Hiçbiri commit edilmedi (TASK-0042, 0044–0051); commit/push onayı kullanıcıdan bekleniyor.**
+  Sıradaki: kullanıcı testi/geri bildirimi.
+
+- **2026-11-03, Claude — TASK-0047 tamamlandı (komutan/deneyim/topçu).** Önceki agent'ın yarım bıraktığı TASK-0047
+  (13 test kırık, 4 tip hatası) tamamlandı: 314 test, typecheck, build geçti; 5173'te yetiştir→ata→güç ve topçu reddi
+  doğrulandı. Kullanıcı talimatı: "eksikleri yapmaya başla… önerilerin varsa onları da yapalım… Age of History benzeri…
+  haritadaki bilgiler için birden fazla kaynak karmaşasına girme" → DEC-0089 (harita tek kaynak hattı). **Sıradaki:
+  TASK-0048** (ortak savaş/barış payı, vasal sadakati/bütünleştirme, siyasi isyan→yeni devlet), sonra 0049–0051.
+  **Commit edilmemiş çok iş var (TASK-0042, 0044–0047); commit/push için kullanıcıya soruldu.**
+
+- **2026-11-02, Codex — ONAYLI BÜYÜK İŞ DEVAM EDİYOR, 2/7 TESLİM:** Son kullanıcı talimatları **“hepsini yap”** ve **“devamm”**. DEC-0088 / TASK-0045–0051 kapsamının tamamı yetkilidir; yeniden izin isteme. Oturumun goal aracı `usageLimited` durumunu bildirdi; kalan işi tamamlanmış saymadan devir bırakılıyor. **TASK-0045 ve TASK-0046 uygulandı; TASK-0047–0051 henüz yapılmadı.** Güncel tablo ve test kanıtları: `docs/qa/EKSIKLER-UYGULAMA.md`.
+  - **TASK-0046 son teslim:** okul/atölye/kışla, gerçek tahıl/demir/kereste üretim-stok-tüketim ve kaynak ticareti; AI yeni yapı ve ürün alımı; 8 devam teknolojisi (toplam 18). Mühendisliğin kuşatma etkisi var, **topçu birliği henüz yok**; TASK-0047'ye ait. Şema **32**; senaryo sürümü `0f04ae997f` aynı. Eski kayıt taşınmaz.
+  - **Son kontroller:** 40 dosya / 308 test başarılı (61,4 sn, gerçek kampanya dahil); typecheck/build geçti; diff kontrolü temiz. 5173 ayrı Chrome profilinde okul emri→120 gün→araştırma hızı %105, 18 teknoloji kartı, Eflak'tan 10 demir/50 bedel; AI'nın 20 kereste alımı da görüldü. UI test betiği başta tamamlanmayan turlara hızlı tekrar tıklıyordu; tur bitişini bekleme düzeltildi, test geçti. Ürün hatası diye kaydetme.
+  - **Sıradaki somut iş TASK-0047:** komutan atama/ayırma ve havuz; ordu deneyimi (yeni askerle seyrelme, savaşla kazanım); Mühendislik ile topçu. Kompozisyon türünü genişletirken `birim.ts`, tüm kompozisyon oluşturucuları/hesapları, `durum` değişmezleri, bölme/birleştirme/takviye/toplama iptali (kaynak iadesi dahil), savaş/kuşatma ve main/protokol/işçi güncellenmeli. Mevcut kompozisyonlar 3 alanlı; 4. alan eklenirse tip/test verileri yeni şemaya uygun güncellenir. Hükümdar etkisi ve ordunun moral/tutum kuralları korunur. Ardından TASK-0048 ortak savaş/vasal/isyan, 0049 reform/bütünleşme/görev, 0050 geçmiş/haber, 0051 AI deniz.
+  - **Çalışma ağacı:** devralınan TASK-0042 panelleri ve TASK-0044 erişim/fetih düzeltmeleri korunuyor. Bunlara TASK-0045/0046 sim/istemci/test ve belgeleri eklendi; yeni `gecis.ts`, `kaynak.ts`, `gecis.test.ts`, `kaynak-yapi.test.ts`, `tasks/TASK-0045..0051.md`, `docs/qa/EKSIKLER-UYGULAMA.md` var. Güncel liste için git status. **Commit/push/yayın yapılmadı ve yetki yok.** 5173 kullanıcı sunucusu açık bırakıldı. Geçici test Chrome 9236 / `/tmp/tarihi-task0045-chrome` kullanıcı profilinden ayrıdır; temizlenebilir. Betikler `/tmp/tarihi-task0044-browser.mjs`, `/tmp/tarihi-task0045-gecis.js`, `/tmp/tarihi-task0046-ui.js`. Şu anda yarım/kırık üretim kodu yok; sonraki görev henüz kodlanmadı.
+
+- **Aktif büyük iş — DEC-0088 / TASK-0045–0051 (2026-11-02):** Kullanıcı önceki eksik listesinin tamamı için “hepsini yap” dedi. Görev kartları onaylı kapsamı somutlaştırdı; yeni izin sorulmadan sırasıyla tamamlanacak. TASK-0045 askerî geçiş + AI diplomatik bağları uygulandı: şema 31, 302 test/typecheck/build geçti, 5173 izin iste/kabul/iptal akışı doğrulandı. **TASK-0046–0051 henüz yapılmadı; aktif iş devam ediyor.** Tek durum tablosu `docs/qa/EKSIKLER-UYGULAMA.md`; bütün iş bitmiş sayılmamalı. Görev 0043'ün “sırada” notu düzeltildi: kodu/arayüzü/testi zaten mevcut. Commit/push/yayın izni yok. Önceden bekleyen TASK-0042/0044 değişiklikleri korundu. Geçici test Chrome'u 9236 / `/tmp/tarihi-task0045-chrome`; kullanıcının 5173 sunucusu kapatılmaz.
+
+- **TASK-0044 / DEC-0087 (2026-11-02, Codex):** Kullanıcının şehir erişimi ve devletsiz toprak isteği uygulandı; kullanıcı kabulü bekleniyor, commit/push izni yok. Çok parçalı hedef artık nokta-poligon eşleşmesiyle doğru düğümü seçer; şehir paneli/şehir işaretine sağ tık şehir düğümünü kullanır. Venedik–Udine arasında süre maliyetli lagün oyun geçidi eklendi. Seçili donanmayla şehir panelinden çıkarma; kapasite/konum/savaş gerekçeleri. Şehirsiz devletsiz arazi, mevcut 3 günlük işgal hazırlığıyla kalıcı alınır. Gerçek şehirlerde kara/deniz/kuşatma ve devletsiz kayıt/çekişme testleri: 13 yeni, toplam 297 test; typecheck/build geçti. 5173'te Nantes yürüyüşü, Venedik çıkarması ve El Cufra sahipliği gerçek düğmelerle ayrı profilde doğrulandı. QA: `docs/qa/SEHIR-ERISIM-DEVLETSIZ-TEST.md`.
+  **Senaryo sürümü `0f04ae997f`; yeni oyun gerekir (DEC-0075).** Yalnız hareket ağı yeniden üretildi; düğüm listesi aynı, 1 geçit kenarı eklendi; harita/geom değişmedi. Genel geometri denetiminde 10 eski hata var; HEAD'de de aynı oldukları doğrulandı (QA'da liste). Yeni görev üretmeden bunları bu işte çözülmüş sayma. Devralınan TASK-0042 panel/zoom değişiklikleri korundu. Bu görev dosyaları + sim kuşatma/hareket, istemci main/veri/gorunum, ag-uret ve senaryo değişiklikleri commit edilmedi. Yarım kod yok. 5173 kapatılmadı; geçici tarayıcı profili `/tmp/tarihi-task0044-chrome` ve test betikleri `/tmp/tarihi-task0044-*` kullanıcı profilinden ayrıdır.
+
 - **TASK-0041 / DEC-0085 — Age of History karşılaştırması (2026-11-01, Codex):** Kullanıcı araştırma ve eksik
   listesi istedi. II/III/Definitive Edition resmî kaynakları güncel kodla karşılaştırıldı; rapor
   `docs/qa/AGE-OF-HISTORY-KARSILASTIRMA.md`. 15 eksik/sınırlı alan + AI diplomasisi/deniz stratejisi/bütçe/
@@ -21,8 +45,8 @@ Bağlayıcı kurallar: `AGENTS.md`, `MASTER_SPEC.md`, `DECISIONS.md`.
   ve yeni `araclar/devlet-butunle.mjs` korundu; bu araştırmanın parçası değil. Kullanıcının başka bir sonraki
   işi seçmesi beklenir; bu rapor yeni aşama veya üretim kodu yetkisi vermez.
 
-- **TASK-0041 (harita geometrisi temizliği, DEC-0085) uygulandı, COMMIT EDİLMEDİ (2026-11-01).** TASK-0040
-  commit+push edildi (`e0125683`). Senaryo yeniden üretildi, `veri/geom` yeniden ayrıldı. Terhis önerisi kullanıcı
+- **TASK-0042 (yakınlığa göre ayrıntı + koyu/altın paneller, DEC-0086) uygulandı, COMMIT EDİLMEDİ (2026-11-01).**
+  TASK-0041 commit+push edildi (`4e33b356`). TASK-0040 commit+push edildi (`e0125683`). Senaryo yeniden üretildi, `veri/geom` yeniden ayrıldı. Terhis önerisi kullanıcı
   tarafından reddedildi ("kalsın"); küçük AI'ların eksi hazinesi açık konu.
 
 - **TASK-0035 (AI harcıyor, teknoloji ×2, DEC-0080) ve TASK-0036 (tek emirle ordu kurma, DEC-0081) commit+push

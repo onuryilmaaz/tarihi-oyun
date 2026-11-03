@@ -12,7 +12,7 @@ export const vasallari = (d: DunyaDurumu, efendi: number) => d.vasalliklar.filte
 
 export function vasalKur(d: DunyaDurumu, efendi: number, vasal: number): void {
   d.vasalliklar = d.vasalliklar.filter((v) => v.vasal !== vasal);
-  d.vasalliklar.push({ efendi, vasal, baslangic: d.gun });
+  d.vasalliklar.push({ efendi, vasal, baslangic: d.gun, sadakat: DENGE.VASAL_BASLANGIC_SADAKAT, ilhakBitis: null });
 }
 
 export function vasalSerbestBirak(d: DunyaDurumu, efendi: number, vasal: number): void {

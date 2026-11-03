@@ -27,6 +27,7 @@ export function yikilanDevletleriTemizle(d: DunyaDurumu): void {
       metin: `${d.devletler[olu].ad} yıkıldığı için ${d.devletler[diger].ad} ile savaşı sona erdi.` });
   }
   d.ittifaklar = d.ittifaklar.filter((a) => yasayan.has(a.a) && yasayan.has(a.b));
+  d.gecisIzinleri = d.gecisIzinleri.filter((g) => yasayan.has(g.veren) && yasayan.has(g.alan));
   d.vasalliklar = d.vasalliklar.filter((v) => yasayan.has(v.efendi) && yasayan.has(v.vasal)); // TASK-0018
   const dagilanAsker = new Map<number, number>();
   d.ordular = d.ordular.filter((o) => {

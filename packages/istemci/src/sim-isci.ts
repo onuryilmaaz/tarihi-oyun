@@ -3,7 +3,7 @@
 
 import {
   agHazirla, baslangicDurumu, durumOzeti, emirVer, gorunurYabanciOrdular, kalanYol, kaydet, orduKonumu, orduRotasi,
-  tarihMetni, turSuresiAyarla, turuIlerlet, yukle, TUR_SURESI_ADLARI, orduKurPlani, topluGelistirmePlani, type Baglam, type BirimTuru, type DunyaDurumu,
+  tarihMetni, turSuresiAyarla, turuIlerlet, yukle, TUR_SURESI_ADLARI, sinirGoruntusu, HEDEF_ADLARI, gorevOlcumu, bagimsizlikBeklentisi, ilhakBedeli, orduKurPlani, orduDeneyimGucu, orduKomutani, komutanSeviyesi, tumOrdular, UZMANLIK_ADLARI, topluGelistirmePlani, type Baglam, type BirimTuru, type DunyaDurumu,
   kompozisyonMaasi, devletMaasi, emirDogrula, ikmalDurumu, kullanilabilirHazine, kullanilabilirInsanGucu, DENGE,
   barisBedeli, barisDevirOzeti, barisDogrula, kusatmaGucu, orduKusatmasi, savasSkoru,
   butceOzeti, insaatMaliyeti, insaatSuresi, sehirYapiGeliri, yapiSeviyesi, yapiEnYuksek, YAPI_ADLARI, YAPI_TURLERI,
@@ -13,7 +13,8 @@ import {
   hukumdarYasi, VERASET_ADLARI, yerelYonetimAyarla, sehirAdiDegistir, birlesmeAdaylari, sehirliBirimler,
   sancakOzetleri, sancakYonetimiAyarla, sehirSancaklari, idariTerim, yapiSeviyeGeliri, gelismislikYuzde, bolgeKontrolu, gorunurDonanmalar, kapasite, cikarmaEngeli, denizYolu, sehirMenzilinde, sehirTicareti, type Hukumdar,
   ALAN_ADLARI, TEKNOLOJILER, teknolojiBul, biliyor, toplamaBedelYuzde, toplamaSuresi, etkiCarpani,
-  takviyeSehri, kompozisyonToplami,
+  takviyeSehri, kompozisyonToplami, gecisIzni, gecisDegerlendir, kaynakUretimleri, kullanilabilirKaynak, tahilTuketimleri, arastirmaHizlari,
+  kaynakTicaretEngeli, KAYNAKLAR, kaynakFiyati, satilabilirKaynak, sehirKaynagi, sehirUretimi, YAPI_ETKILERI, kaynakMaliyeti,
 } from "@tarihi/sim";
 import type { Istek, Ozet, Yanit } from "./sim-protokol";
 
@@ -26,8 +27,11 @@ const hukumdarOzeti = (durum: DunyaDurumu, h: Omit<Hukumdar, "tahtaCikis"> | nul
 
 function ozet(durum: DunyaDurumu): Ozet {
   const o = durum.devletler[durum.ayarlar.oyuncu];
+  const arastirmaHizi = arastirmaHizlari(durum)[durum.ayarlar.oyuncu];
   return {
     gun: durum.gun,
+    kaynaklar: { stok: o.kaynaklar, kullanilabilir: kullanilabilirKaynak(durum, durum.ayarlar.oyuncu), uretim: kaynakUretimleri(durum, baglam)[durum.ayarlar.oyuncu],
+      tahilTuketimi: tahilTuketimleri(durum)[durum.ayarlar.oyuncu], arastirmaHizi },
     tarih: tarihMetni(durum.gun),
     turNo: durum.turNo,
     turSuresi: durum.ayarlar.turSuresi,
@@ -49,11 +53,12 @@ function ozet(durum: DunyaDurumu): Ozet {
           ? { yapi: emir.yapi, ad: YAPI_ADLARI[emir.yapi], hedef: yapiSeviyesi(s, emir.yapi) + 1, kalanGun: insaatSuresi(durum, s.devlet, emir.yapi), emir: true, durdu: false }
           : null;
       return [{
-        indeks, ad: s.ad, aylikGelir: sehirYapiGeliri(durum, s), yonetici: s.yonetici, insaat,
+        indeks, ad: s.ad, aylikGelir: sehirYapiGeliri(durum, s), yonetici: s.yonetici, insaat, anaKaynak: sehirKaynagi(s, baglam), uretim: sehirUretimi(durum, indeks, baglam),
         secenekler: YAPI_TURLERI.map((yapi) => {
           const dog = emirDogrula(durum, { tur: "insaat", sehir: indeks, yapi }, baglam);
           return {
             yapi, ad: YAPI_ADLARI[yapi], seviye: yapiSeviyesi(s, yapi), enYuksek: yapiEnYuksek(durum, s.devlet, yapi),
+            etki: YAPI_ETKILERI[yapi], kaynakBedeli: kaynakMaliyeti({ tur: "insaat", sehir: indeks, yapi }),
             maliyet: insaatMaliyeti(durum, s, yapi), sure: insaatSuresi(durum, s.devlet, yapi),
             gelirArtisi: yapi === "sur" ? 0 : Math.floor((yapiSeviyeGeliri(durum, s, yapi) * gelismislikYuzde(s)) / 100), // TASK-0032
             uygun: dog.gecerli, neden: dog.gecerli ? null : dog.neden,
@@ -70,7 +75,8 @@ function ozet(durum: DunyaDurumu): Ozet {
       const kendi = s.devlet === durum.ayarlar.oyuncu;
       const dog = kendi ? emirDogrula(durum, { tur: "bagis", sehir }, baglam) : { gecerli: false as const, neden: "Yabancı şehir." };
       return { ...s.istikrar, asayis: kendi ? asayisAskeri(durum, sehir) : 0, gerekenAsker: gerekenAsayis(s),
-        bagisUygun: dog.gecerli, bagisNedeni: dog.gecerli ? null : dog.neden };
+        bagisUygun: dog.gecerli, bagisNedeni: dog.gecerli ? null : dog.neden,
+        bagimsizlik: (() => { const b = bagimsizlikBeklentisi(durum, sehir); return b ? { devlet: durum.devletler[b.devlet].ad, kalanAy: b.kalanAy } : null; })() };
     }),
     sehirNufuslari: durum.sehirler.map((s) => ({ nufus: s.nufus, gruplar: s.gruplar.map((g) => [g.din, g.kultur, g.nufus] as [string, string, number]) })),
     devletDinleri: durum.devletler.map((v) => v.din),
@@ -126,8 +132,8 @@ function ozet(durum: DunyaDurumu): Ozet {
         const dog = emirDogrula(durum, { tur: "arastir", teknoloji: t.id }, baglam);
         const durumu = biliyor(durum, oyuncu, t.id) ? "biliniyor" : suren ? "suruyor" : emir ? "emir" : dog.gecerli ? "acik" : "kapali";
         return { id: t.id, ad: t.ad, alan: t.alan, alanAdi: ALAN_ADLARI[t.alan], onKosul: t.onKosul.map((k) => teknolojiBul(k).ad),
-          etki: t.etki, bedel: DENGE.TEKNOLOJI[t.id].bedel, sure: DENGE.TEKNOLOJI[t.id].sure, durum: durumu,
-          kalanGun: suren ? suren.kalanGun : emir ? DENGE.TEKNOLOJI[t.id].sure : null,
+          etki: t.etki, bedel: DENGE.TEKNOLOJI[t.id].bedel, sure: Math.ceil(DENGE.TEKNOLOJI[t.id].sure * 100 / arastirmaHizi), durum: durumu,
+          kalanGun: suren ? Math.ceil((suren.kalanGun * 100 - (suren.ilerleme ?? 0)) / arastirmaHizi) : emir ? Math.ceil(DENGE.TEKNOLOJI[t.id].sure * 100 / arastirmaHizi) : null,
           uygun: dog.gecerli, neden: dog.gecerli ? null : dog.neden } as const;
       }),
     },
@@ -135,9 +141,11 @@ function ozet(durum: DunyaDurumu): Ozet {
       const on = diplomasiOnHesap(durum, baglam.ag), p = durum.ayarlar.oyuncu;
       return durum.devletler.map((_, i) => {
         if (i === p) return null;
-        const bekleyenTurler = ["ittifakTeklif", "ittifakBoz", "ticaretTeklif", "ticaretBoz", "saldirmazlikTeklif", "vasalSerbestBirak", "elciGonder"] as const;
+        const bekleyenTurler = ["ittifakTeklif", "ittifakBoz", "ticaretTeklif", "ticaretBoz", "saldirmazlikTeklif", "vasalSerbestBirak", "elciGonder", "gecisIzin"] as const;
         const bekleyen = durum.emirKuyrugu.find((e) => (bekleyenTurler as readonly string[]).includes(e.tur) && "hedef" in e && e.hedef === i);
         return {
+          gecis: { alinanBitis: gecisIzni(durum, i, p)?.bitis ?? null, verilenBitis: gecisIzni(durum, p, i)?.bitis ?? null, degerlendirme: gecisDegerlendir(durum, on, p, i) },
+          kaynakTicaret: (() => { const neden = kaynakTicaretEngeli(durum, baglam, p, i); return { neden, urunler: neden ? [] : KAYNAKLAR.map((kaynak) => ({ kaynak, fiyat: kaynakFiyati(durum, i, kaynak), mevcut: satilabilirKaynak(durum, i, kaynak) })) }; })(),
           hukumdar: hukumdarOzeti(durum, durum.devletler[i].hukumdar),
           bakisi: iliski(durum, on, i, p), bakisimiz: iliski(durum, on, p, i), bilesenler: iliskiBilesenleri(durum, on, i, p),
           muttefik: muttefik(durum, p, i), muttefikleri: muttefikleri(durum, i), savasta: savasta(durum, p, i), komsu: komsuMu(on, p, i),
@@ -146,6 +154,12 @@ function ozet(durum: DunyaDurumu): Ozet {
           ticaretVar: ticaretAnlasmasiVar(durum, p, i), ticaret: ticaretDegerlendir(durum, on, p, i),
           saldirmazlikVar: saldirmazlikVar(durum, p, i), saldirmazlik: saldirmazlikDegerlendir(durum, on, p, i),
           vasalim: efendisi(durum, i) === p, onunEfendisi: efendisi(durum, i),
+          vasalDurumu: (() => {
+            const v = durum.vasalliklar.find((x) => x.efendi === p && x.vasal === i);
+            if (!v) return null;
+            const dog = emirDogrula(durum, { tur: "vasalIlhak", hedef: i }, baglam), ib = ilhakBedeli(durum, i);
+            return { sadakat: v.sadakat, ilhakBitis: v.ilhakBitis === null ? null : tarihMetni(v.ilhakBitis), ilhakUygun: dog.gecerli, ilhakNedeni: dog.gecerli ? null : dog.neden, bedel: ib.bedel, gun: ib.gun };
+          })(),
           elciYolda: durum.elciler.find((e) => e.hedef === i)?.kalanGun ?? null,
           bekleyen: bekleyen && (bekleyenTurler as readonly string[]).includes(bekleyen.tur) ? (bekleyen.tur as typeof bekleyenTurler[number]) : null,
         };
@@ -166,13 +180,28 @@ function ozet(durum: DunyaDurumu): Ozet {
     }),
     toplamaKurali: { bedelYuzde: toplamaBedelYuzde(durum, durum.ayarlar.oyuncu), gun: toplamaSuresi(durum, durum.ayarlar.oyuncu) },
     askerSehirleri: durum.sehirler.flatMap((s, indeks) => s.devlet !== durum.ayarlar.oyuncu ? [] : [{
-      indeks, ad: s.ad, insanGucu: kullanilabilirInsanGucu(durum, indeks),
+      indeks, ad: s.ad, insanGucu: kullanilabilirInsanGucu(durum, indeks), gun: toplamaSuresi(durum, s.devlet, indeks),
       ayaklanma: s.istikrar.ayaklanma, uygun: !s.istikrar.ayaklanma && s.kontrol === s.devlet && !!baglam.ag?.dugumler[s.dugum]
         && durum.birimler[baglam.ag!.dugumler[s.dugum].b]?.kontrol === s.devlet,
     }]),
     toplamalar: toplamaSatirlari(durum),
     planliKesinti: durum.planliKesintiler.map((k) => ({ tarih: tarihMetni(k.gun), neden: k.neden })),
     hash: durumOzeti(durum),
+    idare: (() => { const v = durum.devletler[durum.ayarlar.oyuncu]; return { mevcut: v.idare, reform: v.reform ? { hedef: v.reform.hedef, bitis: tarihMetni(v.reform.bitis) } : null, danismanlar: [...v.danismanlar] }; })(),
+    gorevler: durum.gorevler.filter((g) => g.devlet === durum.ayarlar.oyuncu).map((g) => ({ no: g.no, ad: HEDEF_ADLARI[g.tur](g.hedef), odul: g.odul, durum: g.durum,
+      bitis: g.bitis === null ? null : tarihMetni(g.bitis), olcum: gorevOlcumu(durum, g.devlet, g.tur), hedef: g.hedef })),
+    haberler: durum.haberler.slice(-150).reverse().map((h) => ({ id: h.id, tarih: tarihMetni(h.gun), kategori: h.kategori, metin: h.metin })),
+    haberOkunan: durum.haberOkunan,
+    gucTablosu: (() => {
+      const g = durum.gucGecmisi, son = g[g.length - 1], once = g[g.length - 2];
+      return son ? { tarih: tarihMetni(son.gun), satirlar: son.satirlar.map((r) => {
+        const o = once?.satirlar.find((x) => x.devlet === r.devlet);
+        return { ...r, degisim: o ? r.sehir - o.sehir : null };
+      }) } : null;
+    })(),
+    sinirTarihleri: durum.sinirGecmisi.map((x) => tarihMetni(x.gun)),
+    komutanlar: durum.komutanlar.filter((k) => k.devlet === durum.ayarlar.oyuncu).map((k) => ({ id: k.id, ad: k.ad,
+      uzmanlik: UZMANLIK_ADLARI[k.uzmanlik], seviye: komutanSeviyesi(k), deneyim: k.deneyim, ordu: tumOrdular(durum).find((o) => o.komutan === k.id)?.ad ?? null })),
     ordular: durum.ordular.filter((o) => o.devlet === durum.ayarlar.oyuncu).map((o) => {
       const k = orduKonumu(o);
       const kalan = kalanYol(o);
@@ -186,6 +215,8 @@ function ozet(durum: DunyaDurumu): Ozet {
         moral: o.moral, tutum: o.tutum, muharebede: o.muharebe !== null, cekiliyor: o.cekiliyor,
         ikmal: ikmal.deger, ikmalNedeni: ikmal.neden, maas: kompozisyonMaasi(o.kompozisyon), maasAksiyor: durum.devletler[o.devlet].hazine < 0,
         bolunebilir: emirDogrula(durum, { tur: "orduBol", ordu: o.id, asker: 1 }, baglam).gecerli,
+        deneyim: o.deneyim, deneyimGuc: orduDeneyimGucu(durum, o, "taarruz"),
+        komutan: (() => { const k = orduKomutani(durum, o); return k ? { id: k.id, ad: k.ad, uzmanlik: UZMANLIK_ADLARI[k.uzmanlik], seviye: komutanSeviyesi(k) } : null; })(),
         terhisUygun: emirDogrula(durum, { tur: "orduTerhis", ordu: o.id, asker: 1 }, baglam).gecerli,
         terhisNedeni: (() => { const r = emirDogrula(durum, { tur: "orduTerhis", ordu: o.id, asker: 1 }, baglam); return r.gecerli ? null : r.neden; })(),
         duzenlemeBekliyor: durum.emirKuyrugu.some((e) => "ordu" in e && e.ordu === o.id && (e.tur === "orduTerhis" || e.tur === "orduTakviye")),
@@ -206,7 +237,7 @@ function ozet(durum: DunyaDurumu): Ozet {
     savaslar: durum.savaslar.filter((s) => s.saldiran === durum.ayarlar.oyuncu || s.savunan === durum.ayarlar.oyuncu)
       .map((s) => {
         const oyuncu = durum.ayarlar.oyuncu, karsi = s.saldiran === oyuncu ? s.savunan : s.saldiran, sehirli = sehirliBirimler(durum);
-        return { id: s.id, karsi, baslangic: tarihMetni(s.baslangic), saldiran: s.saldiran === oyuncu,
+        return { id: s.id, karsi, baslangic: tarihMetni(s.baslangic), saldiran: s.saldiran === oyuncu, lider: s.lider !== undefined && s.lider !== oyuncu ? durum.devletler[s.lider].ad : null,
           ...savasSkoru(durum, oyuncu, karsi),
           birimler: durum.birimler.flatMap((b, i) => b.sahip === karsi && b.kontrol === oyuncu && !sehirli.has(i) ? [i] : []), // şehirli toprak şehriyle gider
           sehirler: durum.sehirler.flatMap((c, i) => c.devlet === karsi && c.kontrol === oyuncu && c.bagli < 0 ? [i] : []),
@@ -220,7 +251,7 @@ function ozet(durum: DunyaDurumu): Ozet {
     sehirDurumlari: durum.sehirler.map((s) => ({ devlet: s.devlet, kontrol: s.kontrol, baskent: s.baskent, sur: s.sur,
       garnizon: s.kontrol === durum.ayarlar.oyuncu ? s.garnizon : Math.ceil(s.garnizon / 1000) * 1000,
       garnizonTahmin: s.kontrol !== durum.ayarlar.oyuncu, ad: s.ad, eskiAd: s.eskiAd, bagli: s.bagli, birim: s.birim,
-      gelismislik: s.gelismislik, gelirKaynagi: s.gelirKaynagi })),
+      gelismislik: s.gelismislik, gelirKaynagi: s.gelirKaynagi, butunlesme: s.butunlesme, politika: s.politika })),
     birlesmeAdaylari: Object.fromEntries(durum.sehirler.flatMap((s, i) =>
       s.devlet === durum.ayarlar.oyuncu && s.bagli < 0 ? [[i, birlesmeAdaylari(durum, baglam, i)]] : [])),
     sancaklar: sancakOzetleri(durum, durum.ayarlar.oyuncu),
@@ -294,6 +325,15 @@ function isle(i: Istek): Yanit {
     case "sancakYonetim": {
       const dogrulama = sancakYonetimiAyarla(d, i.sancak, i.acik);
       return { id: i.id, tamam: true, ozet: ozet(d), dogrulama };
+    }
+    case "haberOkundu": { // TASK-0050: arayüz durumu; oyun kurallarını etkilemez
+      if (!d) return { id: i.id, tamam: false, hata: "Oyun başlatılmadı." };
+      d.haberOkunan = Math.max(d.haberOkunan, i.haber);
+      return { id: i.id, tamam: true, ozet: ozet(d) };
+    }
+    case "sinirGoruntusu": {
+      if (!d) return { id: i.id, tamam: false, hata: "Oyun başlatılmadı." };
+      return { id: i.id, tamam: true, ozet: ozet(d), sinir: sinirGoruntusu(d, i.indeks) };
     }
     case "sehirAdi": {
       const dogrulama = sehirAdiDegistir(d, i.sehir, i.ad);

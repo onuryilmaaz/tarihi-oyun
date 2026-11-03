@@ -52,7 +52,7 @@ export interface HaritaGorunumu {
   olaylar: {
     orduSec?: (id: number) => void;
     donanmaSec?: (id: number) => void;
-    hedef?: (x: number, y: number, birim: number) => void; // Miller derece
+    hedef?: (x: number, y: number, birim: number, sehir?: number) => void; // Miller derece
     /** Ordu seçili değilken sağ tık: şehir/toprak için bağlam menüsü (ekran koordinatı) */
     baglamMenusu?: (px: number, py: number, sehir: number, birim: number) => void;
     /** Bilgi panelinin altına eklenecek HTML (ör. savaş ilanı düğmesi) */
@@ -186,7 +186,7 @@ export function haritaGorunumuKur(h: Harita,
 
     const katman = katmanAyarlari();
     const lm = (l: { material: unknown }) => l.material as LineMaterial;
-    const arazi = yumusak(g.z, 9, 20) * (katman.arazi ? 1 : 0);
+    const arazi = yumusak(g.z, ESIK.sehir * 0.6, ESIK.sehir) * (katman.arazi ? 1 : 0); // TASK-0042: şehirlerle birlikte belirir
     lm(k.araziSiniri).opacity = tema.araziSinir.opak * arazi;
     k.araziSiniri.visible = arazi > 0;
     const sancak = yumusak(g.z, 4, 8) * (katman.sancak ? 1 : 0); // TASK-0029
@@ -402,6 +402,12 @@ export function haritaGorunumuKur(h: Harita,
     const [x, y] = ekrandanDunyaya(e.clientX, e.clientY);
     if (seciliOrdu === null) { olaylar.baglamMenusu?.(e.clientX, e.clientY, sehirBul(e.clientX, e.clientY), birimBul(h, x, y)); return; }
     if (!olaylar.hedef) return;
+    const si = sehirBul(e.clientX, e.clientY);
+    if (si >= 0) {
+      const s = h.paket.sehirler[si];
+      olaylar.hedef(s.x, s.y, birimBul(h, s.x, s.y), si);
+      return;
+    }
     olaylar.hedef(x, y, birimBul(h, x, y));
   });
   tuval.addEventListener("wheel", (e) => {
@@ -440,9 +446,15 @@ export function haritaGorunumuKur(h: Harita,
     etiketler.guncelle({ cx: g.cx, cy: g.cy, z: g.z, w: W, h: H });
     // Ordu işaretleri; aynı yerdeki ordular üst üste binmesin diye alt alta dizilir
     const yerlesen: [number, number][] = [];
+    // TASK-0042: uzaktan yalnızca kendi ordu/donanmalarınız ve muharebedekiler; yabancılar yakınlaşınca görünür
+    const goster = (el: HTMLElement) => {
+      const acik = g.z >= ESIK.ordu || !el.classList.contains("yabanci") || el.classList.contains("muharebede");
+      el.style.display = acik ? "" : "none";
+      return acik;
+    };
     for (const o of orduListesi) {
       const el = orduOgeleri.get(o.id);
-      if (!el) continue;
+      if (!el || !goster(el)) continue;
       const [sx, x0] = dunyadanEkrana(o.x / 10000, o.y / 10000);
       let sy = x0;
       while (yerlesen.some(([ax, ay]) => Math.abs(ax - sx) < 46 && Math.abs(ay - sy) < 20)) sy += 21;
@@ -451,7 +463,7 @@ export function haritaGorunumuKur(h: Harita,
     }
     for (const o of denizListesi) {
       const el = denizOgeleri.get(o.anahtar);
-      if (!el) continue;
+      if (!el || !goster(el)) continue;
       const [sx, x0] = dunyadanEkrana(o.x / 10000, o.y / 10000);
       let sy = x0;
       while (yerlesen.some(([ax, ay]) => Math.abs(ax - sx) < 46 && Math.abs(ay - sy) < 20)) sy += 21;
@@ -546,12 +558,12 @@ export function haritaGorunumuKur(h: Harita,
         : s?.tur === "devlet" ? h.paket.sehirler.find((x) => x.d === s.id && x.b) ?? h.paket.sehirler.find((x) => x.d === s.id)
         : s?.tur === "deniz" ? denizMerkezi(s.id) : undefined;
       if (c) {
-        g.cx = c.x; g.cy = c.y; g.z = Math.max(g.z, s?.tur === "sehir" ? 40 : 20);
+        g.cx = c.x; g.cy = c.y; g.z = Math.max(g.z, s?.tur === "sehir" ? 60 : 20); // TASK-0042: şehir eşiğinin (ESIK.sehir) üstü
         istek();
       }
     },
     orduyaOdaklan(o) {
-      g.cx = o.x / 1e4; g.cy = o.y / 1e4; g.z = Math.max(g.z, 40);
+      g.cx = o.x / 1e4; g.cy = o.y / 1e4; g.z = Math.max(g.z, 60);
       istek();
     },
     donanmalariGoster(liste) {

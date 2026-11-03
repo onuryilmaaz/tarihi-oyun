@@ -10,14 +10,16 @@ import { prototipGelirleri } from "./ekonomi";
 import { devletMaasi, toplamaMaliyeti, toplamAskerSayisi } from "./ordu";
 import { aralik } from "./rastgele";
 import { diplomasiOnHesap, iliski, komsuMu, type DiplomasiOnHesap } from "./diplomasi";
-import { arastirmaEngeli, TEKNOLOJILER, yapiEnYuksek, type Alan } from "./teknoloji";
+import { arastirmaEngeli, biliyor, TEKNOLOJILER, yapiEnYuksek, type Alan } from "./teknoloji";
+import { tumOrdular, UZMANLIKLAR } from "./komutan";
 import { insaatMaliyeti, sehirdeInsaatVar } from "./yatirim";
 import { gundenTarih } from "./takvim";
 import { barisKararlari, savasKarari } from "./yz-savas";
-import { diplomatikTeklifKarari } from "./yz-diplomasi";
+import { diplomatikTeklifKarari, yzDiplomatikBaglar } from "./yz-diplomasi";
 import { aylikMaasYuzde, toplamaMaliyetiYuzde, type BirimTuru } from "./birim";
 import { yapiSeviyeGeliri } from "./yatirim";
 import { yzButceToparla } from "./askeri-yonetim";
+import { KAYNAKLAR, kaynakFiyati, satilabilirKaynak } from "./kaynak";
 
 /** Tehdit nedeni (herkesin bildiği bilgilerden) ya da null. */
 export function tehditNedeni(d: DunyaDurumu, on: DiplomasiOnHesap, devlet: number): string | null {
@@ -43,10 +45,21 @@ export function devletKarari(d: DunyaDurumu, b: Baglam, on: DiplomasiOnHesap, de
     emirUygula(d, e, b);
     return true;
   };
+  // Kaynak kıtlığında yalnız anlaşmalı, açık yoldan ve gerçek bütçeyle alım; kaynak yaratılmaz.
+  for (const kaynak of KAYNAKLAR) {
+    const eksik = DENGE.YZ_KAYNAK_HEDEF - d.devletler[devlet].kaynaklar[kaynak];
+    if (eksik <= 0 || para() <= 0) continue;
+    for (let hedef = 0; hedef < d.devletler.length; hedef++) {
+      if (hedef === devlet) continue;
+      const miktar = Math.min(eksik, satilabilirKaynak(d, hedef, kaynak), Math.floor(para() / kaynakFiyati(d, hedef, kaynak)));
+      if (miktar > 0 && dene({ tur: "kaynakAl", devlet, hedef, kaynak, miktar })) break;
+    }
+  }
   // 6c: önce süren savaşların barışı, sonra yeni savaş kararı (tehdit hesabı ilanı da görür)
   barisKararlari(d, b, devlet);
   savasKarari(d, b, on, devlet);
   diplomatikTeklifKarari(d, on, devlet); // TASK-0020 (1/3): oyuncuya ittifak/ticaret/saldırmazlık teklifi
+  yzDiplomatikBaglar(d, on, devlet);
   // 8c: savaştaki AI ara sıra düşmanına askerî istihbarat görevi açar (aynı kurallar, aynı bedel)
   const dusmanSavasi = d.savaslar.find((s) => s.saldiran === devlet || s.savunan === devlet);
   if (dusmanSavasi && DENGE.CASUS.askeri.bedel <= para() && aralik(d, 100) < DENGE.YZ_CASUS_OLASILIK) {
@@ -71,7 +84,11 @@ export function devletKarari(d: DunyaDurumu, b: Baglam, on: DiplomasiOnHesap, de
     if (sehir === undefined) return false;
     const maasPayi = Math.max(0, butce.aylikNet) * (tehdit || zengin ? 100 : DENGE.YZ_MAAS_NET_YUZDE) / 100;
     // TASK-0021 (3/4): tehdit altında süvari ağırlıklı, barışta ucuz okçu ağırlıklı, aksi halde piyade.
-    const birim: BirimTuru = tehdit ? "suvari" : aralik(d, 10) < DENGE.YZ_OKCU_OLASILIK ? "okcu" : "piyade";
+    // TASK-0047: Sahra Mühendisliği bilinip topçu payı hedefin altındaysa topçu (demir/kereste kaynak doğrulamasından geçer)
+    const benimOrdular = d.ordular.filter((o) => o.devlet === devlet);
+    const topcu = benimOrdular.reduce((t, o) => t + o.kompozisyon.topcu, 0);
+    const topcuEksik = biliyor(d, devlet, "muhendislik") && topcu * 100 < butce.askerSayisi * DENGE.YZ_TOPCU_HEDEF_YUZDE;
+    const birim: BirimTuru = topcuEksik ? "topcu" : tehdit ? "suvari" : aralik(d, 10) < DENGE.YZ_OKCU_OLASILIK ? "okcu" : "piyade";
     const maasSiniri = Math.floor((maasPayi * 100000) / (DENGE.AYLIK_ASKER_MAASI_BINDE * aylikMaasYuzde(birim)));
     const yuzde = sehirToplamaYuzde(d, sehir, birim); // TASK-0028: şehrin gelir kaynağı
     const paraSiniri = Math.floor((Math.max(0, para()) * 10000000) / (DENGE.TOPLAMA_ASKER_BASINA_MALIYET_BINDE * yuzde * toplamaMaliyetiYuzde(birim)));
@@ -107,12 +124,13 @@ export function devletKarari(d: DunyaDurumu, b: Baglam, on: DiplomasiOnHesap, de
   };
   const yatirim = () => {
     // Bedel başına en çok gelir getiren tarla/pazar (eşitlikte küçük şehir indeksi)
-    let en: { sehir: number; yapi: "tarla" | "pazar"; oran: number; bedel: number } | null = null;
+    let en: { sehir: number; yapi: "tarla" | "pazar" | "atolye"; oran: number; bedel: number } | null = null;
     for (const i of sehirler) {
       if (sehirdeInsaatVar(d, i, true)) continue;
-      for (const yapi of ["tarla", "pazar"] as const) {
+      for (const yapi of ["tarla", "pazar", "atolye"] as const) {
         const bedel = insaatMaliyeti(d, d.sehirler[i], yapi);
         if (bedel === null || bedel > para()) continue;
+        if (!emirDogrula(d, { tur: "insaat", sehir: i, yapi, devlet }, b, true).gecerli) continue;
         const gelir = yapiSeviyeGeliri(d, d.sehirler[i], yapi); // TASK-0032: gerçek (nüfusa ölçekli) getiri
         if (gelir * (zengin ? DENGE.YZ_ZENGIN_GERI_DONUS_AY : DENGE.YZ_YATIRIM_GERI_DONUS_AY) < bedel) continue; // kendini geç ödeyen yatırım yapılmaz
         const oran = Math.floor((gelir * 100000) / bedel);
@@ -125,8 +143,45 @@ export function devletKarari(d: DunyaDurumu, b: Baglam, on: DiplomasiOnHesap, de
   };
 
   // Tehdit altında önce savunma; barışta önce kalkınma. Her karar adımında en çok birer iş.
-  const sira = tehdit ? [asker, sur, () => arastir("askeri"), yatirim] : [() => arastir(null), yatirim, asker, ...(zengin ? [sur] : [])];
+  // TASK-0049: zengin AI maliye danışmanı tutar; riskli ve bütünleşmemiş fetih şehrine hoşgörü, sakinleşince olağan
+  const idare = () => {
+    let yapti = false;
+    for (const i of sehirler) {
+      const c = d.sehirler[i];
+      if (c.butunlesme >= 100) continue;
+      const istenen = c.istikrar.risk >= DENGE.IST_HUZURSUZLUK ? "hosgoru" : "olagan";
+      if (c.politika !== istenen && dene({ tur: "sehirPolitika", sehir: i, politika: istenen, devlet })) yapti = true;
+    }
+    if (zengin && !d.devletler[devlet].danismanlar.includes("maliye")) yapti = dene({ tur: "danismanAl", danisman: "maliye", devlet }) || yapti;
+    return yapti;
+  };
+  // TASK-0048: zengin efendi, ilhak koşullarını sağlayan en sadık vasalını diplomatik yolla katar (aynı emir doğrulaması)
+  const ilhak = () => {
+    if (!zengin) return false;
+    const v = d.vasalliklar.filter((x) => x.efendi === devlet && x.ilhakBitis === null && x.sadakat >= DENGE.VASAL_ILHAK_SADAKAT + 10)
+      .sort((a, c) => c.sadakat - a.sadakat || a.vasal - c.vasal)[0];
+    return v ? dene({ tur: "vasalIlhak", hedef: v.vasal, devlet }) : false;
+  };
+  // TASK-0047: tehdit altında ya da zenginken komutan yetiştirir; boştaki komutanı en büyük komutansız orduya atar
+  const komutanlik = () => {
+    const ordular = d.ordular.filter((o) => o.devlet === devlet && o.komutan === null && o.muharebe === null).sort((a, c) => c.asker - a.asker || a.id - c.id);
+    if (!ordular.length) return false;
+    const atanmis = new Set(tumOrdular(d).flatMap((o) => (o.komutan === null ? [] : [o.komutan])));
+    const bos = d.komutanlar.find((k) => k.devlet === devlet && !atanmis.has(k.id));
+    if (bos) return dene({ tur: "komutanAta", ordu: ordular[0].id, komutan: bos.id });
+    if (!(tehdit || zengin) || DENGE.KOMUTAN_BEDEL * 3 > para()) return false;
+    const uzmanlik = tehdit ? "savunma" : d.savaslar.some((s) => s.saldiran === devlet) ? "taarruz" : UZMANLIKLAR[aralik(d, UZMANLIKLAR.length)];
+    return dene({ tur: "komutanYetistir", uzmanlik, devlet });
+  };
+  const sira = tehdit ? [asker, komutanlik, sur, () => arastir("askeri"), yatirim] : [() => arastir(null), yatirim, asker, komutanlik, ilhak, idare, ...(zengin ? [sur] : [])];
   for (const adim of sira) adim();
+  if (para() > Math.max(DENGE.YZ_YEDEK_EN_AZ, aylikMaas * DENGE.YZ_EK_YAPI_YEDEK_AY)) {
+    const merkez = d.devletler[devlet].baskent;
+    if (merkez !== null && sehirler.includes(merkez) && !sehirdeInsaatVar(d, merkez, true)) {
+      const yapi = tehdit ? "kisla" : "okul";
+      if (d.sehirler[merkez].ekYapilar[yapi] < yapiEnYuksek(d, devlet, yapi)) dene({ tur: "insaat", sehir: merkez, yapi, devlet });
+    }
+  }
   // TASK-0037: zengin AI (ör. Ming) ayda tek iş yaptığı için para biriktiriyordu; zenginlik sürdükçe birkaç iş daha yapar
   const zenginEsik = DENGE.YZ_ZENGIN_AY * Math.max(DENGE.YZ_YEDEK_EN_AZ, gelirler[devlet]);
   for (let i = 1; !tehdit && zengin && i < DENGE.YZ_ZENGIN_ADIM && para() > zenginEsik; i++) if (![yatirim, asker, sur].some((f) => f())) break;

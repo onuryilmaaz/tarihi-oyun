@@ -224,7 +224,7 @@ describe("barış ve sahiplik", () => {
     expect(d.birimler[1].sahip).toBe(1); // toprak hâlâ B'de
     expect(d.sehirler[1].devlet).toBe(1);
     expect(d.devletler[1].baskent).not.toBeNull(); // devlet yıkılmadı
-    expect(d.vasalliklar).toEqual([{ efendi: 0, vasal: 1, baslangic: d.gun }]);
+    expect(d.vasalliklar).toEqual([{ efendi: 0, vasal: 1, baslangic: d.gun, sadakat: DENGE.VASAL_BASLANGIC_SADAKAT, ilhakBitis: null }]);
     expect(degismezler(d)).toEqual([]);
   });
 
@@ -281,7 +281,7 @@ describe("barış ve sahiplik", () => {
 
   it("süren muharebe barışla durur; başka savaşa ait kuşatma ve işgal korunur", () => {
     const d = yeni(); const o = d.ordular[0]; o.dugum = 1; o.x = 10000;
-    const dusman = { ...structuredClone(o), id: d.sonrakiOrduId++, devlet: 1, asker: 3000, kompozisyon: { piyade: 3000, okcu: 0, suvari: 0 } }; d.ordular.push(dusman);
+    const dusman = { ...structuredClone(o), id: d.sonrakiOrduId++, devlet: 1, asker: 3000, kompozisyon: { piyade: 3000, okcu: 0, suvari: 0, topcu: 0 } }; d.ordular.push(dusman);
     muharebeleriBaslat(d); expect(d.muharebeler).toHaveLength(1);
     d.savaslar.push({ id: d.sonrakiSavasId++, saldiran: 0, savunan: 2, baslangic: d.gun });
     const diger = { ...structuredClone(o), id: d.sonrakiOrduId++, dugum: 3, x: 30000, muharebe: null }; d.ordular.push(diger);

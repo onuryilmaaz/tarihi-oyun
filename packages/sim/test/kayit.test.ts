@@ -14,8 +14,8 @@ describe("kayıt / yükleme", () => {
 
   it("değişmezler bitmiş savaşı yakalar; böyle bir kayıt yüklenmez (T-02)", () => {
     const d = yeniDurum();
-    const ordu = { id: 1, ad: "B Ordusu", devlet: 1, asker: 10000, kompozisyon: { piyade: 10000, okcu: 0, suvari: 0 }, dugum: 0, x: 0, y: 0, hiz: 1000,
-      rota: [], ilerleme: 0, hedef: null, moral: 1000, tutum: "dengeli" as const, cekiliyor: false, muharebe: null };
+    const ordu = { id: 1, ad: "B Ordusu", devlet: 1, asker: 10000, kompozisyon: { piyade: 10000, okcu: 0, suvari: 0, topcu: 0 }, dugum: 0, x: 0, y: 0, hiz: 1000,
+      rota: [], ilerleme: 0, hedef: null, moral: 1000, tutum: "dengeli" as const, cekiliyor: false, muharebe: null, deneyim: 0, komutan: null };
     d.ordular = [ordu, { ...ordu, id: 2, ad: "C Ordusu", devlet: 2 }];
     d.sonrakiOrduId = 3;
     d.savaslar.push({ id: d.sonrakiSavasId++, saldiran: 1, savunan: 2, baslangic: d.gun });

@@ -1,6 +1,7 @@
 // TASK-0010/7c — açıklanabilir, deterministik aylık risk; rastgele isyan yoktur.
 import { olayEkle, type DunyaDurumu, type SehirDurumu } from "./durum";
 import { DENGE } from "./denge";
+import { butunlesmeGelirYuzde, butunlesmeRiski, idareRiskPuani } from "./idare";
 import type { Baglam } from "./emirler";
 import { savasta } from "./savas";
 import { disDestek } from "./casusluk";
@@ -10,16 +11,16 @@ import { gelismislikDegistir } from "./sehir";
 export interface RiskBileseni { id: string; ad: string; puan: number }
 export interface Istikrar {
   risk: number; oncekiRisk: number; bilesenler: RiskBileseni[]; degisim: RiskBileseni[];
-  yuksekAy: number; ayaklanma: boolean; asayisAy: number;
+  yuksekAy: number; ayaklanma: boolean; asayisAy: number; ayaklanmaAy: number; // TASK-0048: süren ayaklanmanın ayı
   bagis: number; fetihGun: number | null; hesapGun: number | null;
 }
 export const bosIstikrar = (): Istikrar => ({ risk: 0, oncekiRisk: 0, bilesenler: [], degisim: [],
-  yuksekAy: 0, ayaklanma: false, asayisAy: 0, bagis: 0, fetihGun: null, hesapGun: null });
+  yuksekAy: 0, ayaklanma: false, asayisAy: 0, ayaklanmaAy: 0, bagis: 0, fetihGun: null, hesapGun: null });
 // TASK-0018 (3/3): huzursuzluk ile ayaklanma arasında bir "direniş" ara kademesi; ek küçük gelir kaybı, henüz tam ayaklanma değil.
 export const istikrarAsamasi = (s: SehirDurumu): string => s.istikrar.ayaklanma ? "Ayaklanma"
   : s.istikrar.risk >= DENGE.IST_DIRENIS ? "Direniş" : s.istikrar.risk >= DENGE.IST_HUZURSUZLUK ? "Huzursuzluk" : "Sakin";
-export const sehirGelirYuzde = (s: SehirDurumu): number => s.istikrar.ayaklanma ? 0
-  : s.istikrar.risk >= DENGE.IST_DIRENIS ? 25 : s.istikrar.risk >= DENGE.IST_HUZURSUZLUK ? 50 : 100;
+export const sehirGelirYuzde = (s: SehirDurumu): number => Math.floor(((s.istikrar.ayaklanma ? 0
+  : s.istikrar.risk >= DENGE.IST_DIRENIS ? 25 : s.istikrar.risk >= DENGE.IST_HUZURSUZLUK ? 50 : 100) * butunlesmeGelirYuzde(s)) / 100); // TASK-0049: bütünleşme
 /** Bir arazide birden çok şehir varsa en ağır etki uygulanır; ceza birikmez. */
 export function birimGelirYuzdeleri(d: DunyaDurumu): number[] {
   const sonuc = d.birimler.map(() => 100);
@@ -58,6 +59,8 @@ export function riskBilesenleri(d: DunyaDurumu, sehir: number, b: Baglam): RiskB
     { id: "bagis", ad: "Bağış / imar yardımı", puan: -s.istikrar.bagis },
     { id: "vergi", ad: "Vergi oranı", puan: vergiRiskPuani(d, s.devlet) },
     { id: "disdestek", ad: "Yabancı kışkırtma (casusluk)", puan: disDestek(d, sehir) },
+    { id: "butunlesme", ad: "Bütünleşmemiş fetih", puan: butunlesmeRiski(s) }, // TASK-0049
+    { id: "idare", ad: "İdare, kadı ve şehir politikası", puan: idareRiskPuani(d, s) },
   ];
 }
 
@@ -74,6 +77,7 @@ export function istikrarAyi(d: DunyaDurumu, b: Baglam): void {
     const asayis = s.kontrol === s.devlet && !d.kusatmalar.some((k) => k.sehir === sehir)
       && asayisAskeri(d, sehir) >= gerekenAsayis(s);
     i.asayisAy = ayak && asayis ? i.asayisAy + 1 : 0;
+    i.ayaklanmaAy = ayak ? i.ayaklanmaAy + 1 : 0;
     if (ayak && (i.risk < DENGE.IST_HUZURSUZLUK || i.asayisAy >= DENGE.IST_BASTIRMA_AY)) {
       i.ayaklanma = false; i.yuksekAy = 0; i.asayisAy = 0;
       olayEkle(d, { tur: "ayaklanma-bitti", devlet: s.devlet, metin: `${s.ad}: ayaklanma ${i.risk < DENGE.IST_HUZURSUZLUK ? "risk düştüğü" : "ordu asayişi sağladığı"} için sona erdi.` });

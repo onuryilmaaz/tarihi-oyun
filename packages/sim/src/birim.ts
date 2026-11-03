@@ -5,12 +5,12 @@
 import { DENGE } from "./denge";
 
 export type BirimTuru = keyof typeof DENGE.BIRIM;
-export const BIRIM_TURLERI: BirimTuru[] = ["piyade", "okcu", "suvari"];
+export const BIRIM_TURLERI: BirimTuru[] = ["piyade", "okcu", "suvari", "topcu"];
 export const BIRIM_ADLARI: Record<BirimTuru, string> = Object.fromEntries(BIRIM_TURLERI.map((t) => [t, DENGE.BIRIM[t].ad])) as Record<BirimTuru, string>;
 export const birimTuruGecerli = (x: unknown): x is BirimTuru => BIRIM_TURLERI.includes(x as BirimTuru);
 
 export type Kompozisyon = Record<BirimTuru, number>;
-export const bosKompozisyon = (): Kompozisyon => ({ piyade: 0, okcu: 0, suvari: 0 });
+export const bosKompozisyon = (): Kompozisyon => ({ piyade: 0, okcu: 0, suvari: 0, topcu: 0 });
 export const kompozisyonToplami = (k: Kompozisyon): number => BIRIM_TURLERI.reduce((s, t) => s + k[t], 0);
 export const tekTurKompozisyon = (birim: BirimTuru, asker: number): Kompozisyon => ({ ...bosKompozisyon(), [birim]: asker });
 

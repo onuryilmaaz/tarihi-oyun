@@ -1,4 +1,5 @@
 // TASK-0007/4c — DEC-0027/1: AI gelene kadar işgal skoru talebi karşılıyorsa barış kabul edilir.
+import { ortakBarisPayi } from "./siyaset";
 import { olayEkle, type BarisTalebi, type DunyaDurumu } from "./durum";
 import { DENGE } from "./denge";
 import type { Baglam, Dogrulama } from "./emirler";
@@ -73,7 +74,7 @@ export function barisDogrula(d: DunyaDurumu, t: BarisTalebi, devlet = d.ayarlar.
   return { gecerli: true };
 }
 
-function baskentleriGuncelle(d: DunyaDurumu): void {
+export function baskentleriGuncelle(d: DunyaDurumu): void {
   d.devletler.forEach((v, devlet) => {
     if (v.baskent !== null && d.sehirler[v.baskent]?.devlet === devlet) return;
     const aday = d.sehirler.map((s, i) => ({ s, i })).filter(({ s }) => s.devlet === devlet && s.bagli < 0)
@@ -99,6 +100,7 @@ export function barisiUygula(d: DunyaDurumu, b: Baglam, t: BarisTalebi, devlet =
     }
   }
   savasiSonlandir(d, s);
+  ortakBarisPayi(d, devlet, karsi); // TASK-0048: liderin barışı müttefiklerinin savaşını da bitirir
   sehirToprakEsitle(d); // TASK-0027: verilen şehrin toprağı da gider; kalan işgaller sahibine döner
   // Turun ilk günlük muharebe adımından önce üçüncü devletlerle biten savaşlar da temizlenir.
   yikilanDevletleriTemizle(d);

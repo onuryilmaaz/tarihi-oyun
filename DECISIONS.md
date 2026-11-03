@@ -1,5 +1,32 @@
 # DECISIONS — Karar Kayıtları
 
+## DEC-0089 — Harita bilgisi tek kaynak hattından; yeni kaynak eklenmez
+
+- **Tarih:** 2026-11-03
+- **Seçilen karar:** Hedef Age of History benzeri harita üzerinde strateji oyunu. Harita bilgisi (sınırlar, şehirler, adlar)
+  için mevcut üretim hattı (prototip dünya haritası + Wikidata şehir adayları) tek kaynak kabul edilir; yeni dış kaynak
+  eklenmez, kaynaklar arası uzlaştırma işine girilmez. Sorunlar oynanabilirlik kurallarıyla (birleştirme, bütünleme) çözülür.
+- **Onay kaydı:** Kullanıcı: "benim istediğim age of history benzeri bir harita üzeride strateji oyunu. haritadaki bilgiler için
+  birden fazla kaynak karmaşasına girme." (2026-11-03).
+- **Durum:** GEÇERLİ
+
+## DEC-0088 — Önceki yanıtta sıralanan eksiklerin tamamını uygulama
+
+- **Tarih:** 2026-11-02
+- **Onay kaydı:** Kullanıcı, tamamlananlar ve bekleyenler açıkça listelendikten sonra “hepsini yap” dedi.
+- **Seçilen karar:** TASK-0045–0051 sırasıyla askerî geçiş/AI diplomasisi; yapı-kaynak-teknoloji; komutan-deneyim-topçu; ortak savaş/barış-vasal bütünleşmesi-siyasi isyan; reform/bütünleşme/görevler; kampanya geçmişi/bildirim merkezi; AI gemi/çıkarma tamamlanır. Önceki askerî yönetim kodu korunup görev durumu düzeltilir. Uygulama ve denge ayrıntıları kartlarda somutlaştırılır; bu kapsam için tekrar izin gerekmez. Kabul edilmiş ilk sürümün bilinçli kapsam dışı alanları (borç, çok oyunculu, yeni senaryo, mobil, düzenleyiciler) eklenmez. Commit/push/yayın ayrı onaya tabidir.
+- **Gerekçe:** Kullanıcının listedeki bütün bekleyen özelliklerin yapılmasını açıkça istemesi.
+- **Etkilenen modüller:** Simülasyon ve istemci, kayıt, AI, testler ve görev/QA/devir belgeleri.
+- **Durum:** GEÇERLİ; iş başladı, tamamlanmış/kabul edilmiş değildir.
+
+## DEC-0087 — TASK-0044: şehir erişimi ve devletsiz toprakların alınması
+
+- **Tarih:** 2026-11-02
+- **Seçilen karar:** Şehir/parça hedefi düzeltilir; Venedik lagünü mevcut süre maliyetli geçit altyapısıyla anakaraya bağlanır (oynanış yaklaşımı). Mevcut çıkarma emri şehir panelinden de verilir; savaş, liman ve kapasite kuralları korunur. Şehirsiz devletsiz arazi, tek bir devletin hareketsiz ve muharebe dışındaki ordusunun mevcut 3 günlük bekleyişinden sonra kalıcı olarak alınır; başka devletin sahip olduğu arazide işgal/barış kuralı devam eder.
+- **Gerekçe / onay kaydı:** Kullanıcı şehir erişimi sorununu görsellerle bildirdi ve “ayrıca devletsiz toprakları da alabilmem lazım”, ardından “tekrar denesene” dedi. Bu kayıt yalnız bu talebin kapsamını somutlaştırır; commit/push ve yayın yetkisi yoktur.
+- **Etkilenen modüller:** Harita hedef seçimi, hareket ağı, çıkarma arayüzü, arazi işgali, testler.
+- **Durum:** GEÇERLİ; kullanıcı kabul testi bekleniyor.
+
 ## DEC-0086 — Geometri ve karşılaştırma önerilerini uygulamaya başlama
 
 - **Tarih:** 2026-11-01
@@ -855,6 +882,15 @@ Kaynak belge: `MASTER_SPEC.md` (v1.3). Orijinal keşif çıktısı:
   ayrıca planlanacak. Her alt teslim ayrı test/onay/commit adımı olarak ilerler.
 - **Onay kaydı:** Kullanıcı: "Ayrı, sonraki büyük görev olsun" / "Dağılır" / "Yalnızca barışta 'vasal yap' seçeneği" /
   "İkisi birden, aynı kartta" (2026-10-30).
+- **Durum:** GEÇERLİ
+
+## DEC-0086 — TASK-0042: yakınlığa göre ayrıntı; parşömen yan paneller
+
+- **Tarih:** 2026-11-01
+- **Seçilen karar:** Uzakta yalnızca devlet adları, başkentler ve oyuncunun orduları; şehirler, iç sınırlar ve yabancı
+  ordular bölge ölçeğinde. Sol/sağ paneller üst çubukla aynı koyu renkte, altın çerçeve ve süslü başlıklarla; sabit
+  açıklamalar ipucunda. [TASLAK]
+- **Onay kaydı:** Kullanıcı: "Parşömen kâğıt", "İpucuna taşı", ardından "parşömen üst bar gibi olsun renk olarak" (2026-11-01).
 - **Durum:** GEÇERLİ
 
 ## DEC-0085 — TASK-0041: başlangıçta karaya kapalı kopuk devlet parçası yok; küçük delikler kapanır

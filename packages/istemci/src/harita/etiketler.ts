@@ -17,7 +17,9 @@ interface Etiket {
   gorunur: boolean;
 }
 
-export const ESIK = { baskent: 6, sehir: 14 }; // px/derece; WebGL noktalarıyla aynı eşikler
+// px/derece; WebGL noktalarıyla aynı eşikler. TASK-0042: uzakta yalnızca devlet adları ve başkentler; şehirler ve yabancı
+// ordular bölge ölçeğinde (≈ Anadolu ekrana sığınca) görünür
+export const ESIK = { baskent: 6, sehir: 45, ordu: 45 };
 
 function ikiSatir(ad: string): string[] {
   const k = ad.split(" ");

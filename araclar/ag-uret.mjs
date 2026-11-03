@@ -28,6 +28,8 @@ export const BOGAZLAR = [
   ["Kerç Boğazı", [36.55, 45.30], [36.70, 45.25]],
   ["Öresund", [12.62, 56.03], [12.70, 56.05]],
   ["Cebelitarık Boğazı", [-5.60, 36.02], [-5.60, 35.85]],
+  // TASK-0044: sadeleştirilmiş lagündeki şehir adasına süre maliyetli oyun geçidi (tarihî köprü iddiası yok).
+  ["Venedik Lagünü", [12.34, 45.44], [12.24, 45.47]],
 ];
 
 function halkalar(harita) {

@@ -60,7 +60,7 @@ describe("ordu hareketi", () => {
     const rumeli = ordu(d, "Rumeli Ordusu");
     const buda = emirVer(d, { tur: "orduHedef", ordu: rumeli.id, ...hedef(d, "Buda") }, B);
     expect(buda.gecerli).toBe(false);
-    if (!buda.gecerli) expect(buda.neden).toMatch(/Macaristan Krallığı toprağına girmek için savaş ilan etmek gerekir/);
+    if (!buda.gecerli) expect(buda.neden).toMatch(/Macaristan Krallığı toprağına girmek için askerî geçiş izni veya savaş ilanı gerekir/);
     // Devletsiz ama kara yolu olmayan hedef: Avustralya (deniz taşıması Aşama 8)
     const avustralya = ag.dugumler.findIndex((n) => d.birimler[n.b].sahip === -1 && n.x > 1300000 && n.y < -200000);
     expect(avustralya).toBeGreaterThanOrEqual(0);

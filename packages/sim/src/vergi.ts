@@ -4,6 +4,7 @@
 
 import type { DunyaDurumu } from "./durum";
 import { DENGE } from "./denge";
+import { idareGelirYuzde } from "./idare";
 
 export type VergiOrani = "dusuk" | "orta" | "yuksek";
 export const VERGI_ORANLARI: VergiOrani[] = ["dusuk", "orta", "yuksek"];
@@ -12,8 +13,8 @@ export const VERGI_ADLARI: Record<VergiOrani, string> = { dusuk: "Düşük", ort
 export const vergiOraniGecerli = (x: unknown): x is VergiOrani => VERGI_ORANLARI.includes(x as VergiOrani);
 
 /** Arazi + yapı gelirine uygulanan yüzde (100 = etkisiz). */
-export const vergiGelirYuzde = (d: DunyaDurumu, devlet: number): number =>
-  DENGE.VERGI_ORANI_GELIR_YUZDE[d.devletler[devlet]?.vergiOrani ?? "orta"];
+export const vergiGelirYuzde = (d: DunyaDurumu, devlet: number): number => // TASK-0049: × idare ve maliye danışmanı
+  Math.floor((DENGE.VERGI_ORANI_GELIR_YUZDE[d.devletler[devlet]?.vergiOrani ?? "orta"] * idareGelirYuzde(d, devlet)) / 100);
 
 /** İstikrar risk bileşenine eklenen puan (düşük vergi küçük bir indirim verir). */
 export const vergiRiskPuani = (d: DunyaDurumu, devlet: number): number =>

@@ -108,10 +108,12 @@ function birlestir(d: DunyaDurumu, a: number, c: number): void {
   for (const y of ["tarla", "pazar"] as const) {
     merkez.yapilar[y] = Math.min(yapiEnYuksek(d, merkez.devlet, y), merkez.yapilar[y] + katilan.yapilar[y]);
   }
+  for (const y of ["okul", "atolye", "kisla"] as const) merkez.ekYapilar[y] = Math.min(yapiEnYuksek(d, merkez.devlet, y), merkez.ekYapilar[y] + katilan.ekYapilar[y]);
   merkez.sur = Math.max(merkez.sur, katilan.sur);
   merkez.gelismislik = Math.max(merkez.gelismislik, katilan.gelismislik); // TASK-0028
   merkez.istikrar.risk = Math.min(100, merkez.istikrar.risk + DENGE.SEHIR_BIRLESTIR_RISK);
   Object.assign(katilan, { insanGucu: 0, garnizon: 0, yapilar: { tarla: 0, pazar: 0 }, yonetici: false, bagli: m });
+  katilan.ekYapilar = { okul: 0, atolye: 0, kisla: 0 };
   katilan.istikrar.risk = Math.min(100, katilan.istikrar.risk + DENGE.SEHIR_BIRLESTIR_RISK);
   // Katılan şehre bağlı işler kapanır (inşaat, iskân, toplama)
   d.insaatlar = d.insaatlar.filter((i) => i.sehir !== k);

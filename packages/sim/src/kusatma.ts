@@ -1,6 +1,7 @@
 // TASK-0007/4c — arazi işgali ile şehir kuşatması birbirinden bağımsızdır (AT-007/009).
 import { olayEkle, type DunyaDurumu, type IsgalHazirligi, type Kusatma, type OrduDurumu } from "./durum";
 import { DENGE } from "./denge";
+import { orduDeneyimGucu } from "./komutan";
 import { emirDogrula, emirUygula, type Baglam } from "./emirler";
 import { savasta } from "./savas";
 import { kusatmaSaldiriYuzde } from "./teknoloji";
@@ -26,7 +27,9 @@ export function kusatmaGucu(d: DunyaDurumu, k: Kusatma): { guc: number; gereken:
     const o = d.ordular.find((a) => a.id === id);
     if (!o) return s;
     const birimYuzde = kompozisyonMuharebeYuzde(o.kompozisyon, false);
-    return s + Math.floor((o.asker * o.moral * birimYuzde) / (DENGE.MORAL_EN_YUKSEK * 100));
+    // TASK-0047: topçu surlara karşı ek güç; kuşatma uzmanı komutan ve kıdem çarpan
+    const etkin = o.asker + Math.floor((o.kompozisyon.topcu * DENGE.TOPCU_KUSATMA_EK_YUZDE) / 100);
+    return s + Math.floor((etkin * o.moral * birimYuzde * orduDeneyimGucu(d, o, "kusatma")) / (DENGE.MORAL_EN_YUKSEK * 10000));
   }, 0);
   const gereken = Math.max(1, d.sehirler[k.sehir].garnizon) * (d.sehirler[k.sehir].sur + 1);
   return { guc, gereken, yeterli: guc >= gereken };
@@ -57,18 +60,22 @@ export function isgalleriIlerlet(d: DunyaDurumu, b: Baglam): void {
   for (const [birim, devletler] of adaylar) {
     const t = d.birimler[birim];
     if (sehirli.has(birim)) continue;
-    if (!t || t.sahip < 0 || devletler.size !== 1) continue; // çekişmeli veya devletsiz arazi alınmaz
+    if (!t || devletler.size !== 1) continue; // çekişmeli arazide kontrol kurulmaz
     const devlet = [...devletler][0];
-    if (t.kontrol === devlet || !savasta(d, devlet, t.kontrol)) continue;
+    const devletsiz = t.sahip === -1;
+    if (t.kontrol === devlet || (!devletsiz && !savasta(d, devlet, t.kontrol))) continue;
     // Düğümde süren muharebe varsa arazideki başka bir ordu işgali bitiremez.
     if (d.muharebeler.some((m) => b.ag!.dugumler[m.dugum]?.b === birim)) continue;
     const gun = (d.isgalHazirliklari.find((p) => p.birim === birim && p.devlet === devlet)?.gun ?? 0) + 1;
     if (gun < DENGE.ISGAL_GUN) { yeni.push({ birim, devlet, gun }); continue; }
     const onceki = t.kontrol;
+    if (devletsiz) t.sahip = devlet; // TASK-0044: antlaşma yapılacak devlet yok; bekleyiş sonunda kalıcı sahiplik
     t.kontrol = devlet;
     t.isgalBaslangic = t.sahip === devlet ? null : d.gun;
     olayEkle(d, { tur: "arazi-isgal", devlet: d.ayarlar.oyuncu === onceki ? onceki : devlet,
-      metin: `${d.devletler[devlet].ad}, arazi ${birim} üzerinde ${DENGE.ISGAL_GUN} günlük bekleyiş sonunda askerî kontrolü aldı. Yasal sahip değişmedi.` });
+      metin: devletsiz
+        ? `${d.devletler[devlet].ad}, devletsiz arazi ${birim} üzerinde ${DENGE.ISGAL_GUN} günlük bekleyiş sonunda sahiplik ve kontrol kazandı.`
+        : `${d.devletler[devlet].ad}, arazi ${birim} üzerinde ${DENGE.ISGAL_GUN} günlük bekleyiş sonunda askerî kontrolü aldı. Yasal sahip değişmedi.` });
   }
   d.isgalHazirliklari = yeni;
 }
@@ -131,8 +138,8 @@ export function kusatmalariIlerlet(d: DunyaDurumu, b: Baglam): void {
 
 /** TASK-0027: oyuncunun ordusu savaşta olduğu devletin şehrinin önüne varınca kuşatma kendiliğinden (abluka) başlar.
  *  Yalnızca varış anında denenir; oyuncu kuşatmadan ayrılırsa aynı yerde yeniden başlamaz. AI kendi kararını verir. */
-export function varincaKusat(d: DunyaDurumu, b: Baglam, o: OrduDurumu): void {
-  if (o.devlet !== d.ayarlar.oyuncu) return;
+export function varincaKusat(d: DunyaDurumu, b: Baglam, o: OrduDurumu, herkes = false): void { // herkes: TASK-0051 AI çıkarması
+  if (!herkes && o.devlet !== d.ayarlar.oyuncu) return;
   for (let i = 0; i < d.sehirler.length; i++) {
     const s = d.sehirler[i];
     if (s.bagli >= 0 || s.kontrol < 0 || s.kontrol === o.devlet || !savasta(d, o.devlet, s.kontrol) || !sehirMenzilinde(d, b, o, i)) continue;

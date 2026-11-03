@@ -138,6 +138,12 @@ export function birimBul(h: Harita, x: number, y: number): number {
   return -1;
 }
 
+/** TASK-0044: noktanın gerçek kara parçası; en yakın merkez başka bir ada olabilir. */
+export function birimParcasiBul(h: Pick<Harita, "halkalar">, birim: number, x: number, y: number): number {
+  return h.halkalar[birim]?.findIndex((hs) => halkaIcinde(hs[0], x, y)
+    && !hs.slice(1).some((delik) => halkaIcinde(delik, x, y))) ?? -1;
+}
+
 /** Noktanın bulunduğu deniz bölgesi (alan geometrisi karanın altına taştığı için önce birimBul denenmeli). */
 export function denizBul(h: Harita, x: number, y: number): number {
   return h.denizHalkalari.findIndex((polys) => polys.some((hs) => halkaIcinde(hs[0], x, y) && !hs.slice(1).some((d) => halkaIcinde(d, x, y))));

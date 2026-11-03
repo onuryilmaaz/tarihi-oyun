@@ -1,5 +1,39 @@
 # CHANGELOG
 
+## 2026-11-03 — TASK-0047–0051: komutan/topçu, ortak savaş ve isyan, idare ve görevler, haber merkezi, AI donanması (Claude)
+
+- Komutan havuzu (uzmanlık, seviye), ordu kıdemi, topçu (Sahra Mühendisliği); AI da kullanır.
+- Ortak savaş lideri ve barış payı; vasal sadakati, bağımsızlık savaşı ve diplomatik ilhak; fethedilmiş şehirde uzun
+  ayaklanma 1453 sahibini yeniden kurar.
+- İdare reformu (merkezî/yerel), danışmanlar, fetih bütünleşmesi ve şehir politikası, isteğe bağlı görevler.
+- Haber merkezi (filtre, okundu), yıllık güç tablosu, geçmiş harita kaydırıcısı.
+- AI gemi yapar ve kara yolu olmayan düşmana çıkarma yapar. Şema 36; eski kayıt yüklenmez.
+
+## 2026-11-02 — TASK-0046: yeni yapılar, kaynaklar ve teknoloji devamı
+
+- Okul/atölye/kışla; araştırma hızı, gerçek üretim/gelir ve toplama/havuz etkileri. Yeni yapı seviyeleri teknolojiyle açılır.
+- Tahıl/demir/kereste üretim-stok-tüketim; yeni yapı/gemi kaynak bedeli, kıtlık/moral ve anlaşma/güzergâh/bütçe denetimli ürün ticareti. AI de yeni yapıları ve kaynak alımını kullanır.
+- Teknoloji ağacı 10→18; somut eğitim/üretim/gelir/kuşatma/diplomasi/ikmal etkileri. Topçu birliğinin kendisi sonraki TASK-0047'de; bu teslimde uygulanmadı.
+- Şema 32; 308 test, typecheck/build ve 5173 okul tamamlanması/kaynak alımı/teknoloji listesi denemesi başarılı. TASK-0047–0051 sürüyor.
+
+## 2026-11-02 — TASK-0045: askerî geçiş ve AI anlaşmaları
+
+- Süreli/yönlü geçiş izinleri diplomasi panelinden istenir, verilir ve iptal edilir; rota gerçek erişime göre yürür ve izin bitince konum korunarak durur.
+- AI komşuları karşılıklı kabul koşullarıyla yeni ittifak/ticaret/saldırmazlık ve müttefik geçişi kurar; kamuya açık dünya haberine yazılır.
+- Şema 31; 302 test, typecheck/build ve 5173 izin kabul/iptal testi. Diğer onaylı eksikler TASK-0046–0051 ile sürüyor; tamamlandı sayılmadı.
+
+## 2026-11-02 — TASK-0044: şehir erişimi ve devletsiz toprak fethi (Codex)
+
+- Çok parçalı arazide gerçek hedef poligonu seçilir; şehir işaretine sağ tık ve şehir paneli gerçek şehir düğümünü kullanır. Venedik lagününe süre maliyetli kısa oyun geçidi eklendi.
+- Seçili donanmayla şehir panelinden çıkarma; konum/kapasite/savaş engelleri açıklanır. Eski rota hata metinleri güncellendi.
+- Şehirsiz devletsiz arazi, ordunun 3 günlük bekleyişiyle kalıcı olarak alınabilir; yabancı topraklarda savaş/barış kuralları sürer.
+- 13 yeni davranış testi; QA: `docs/qa/SEHIR-ERISIM-DEVLETSIZ-TEST.md`. Ağ değişimi nedeniyle yeni oyun gerekir (DEC-0075).
+
+## 2026-11-01 — TASK-0042: yakınlığa göre harita ayrıntısı; oyunsu paneller (Claude)
+
+- Uzaktan yalnızca devlet adları, başkentler ve kendi ordularınız; şehirler, iç sınırlar ve yabancı ordular yakınlaşınca.
+- Sol ve sağ paneller üst çubuk renginde, altın çerçeveli ve süslü başlıklı; kural açıklamaları "ⓘ Nasıl işler?" ipucunda.
+
 ## 2026-11-01 — TASK-0041: Age of History karşılaştırması (Codex)
 
 - II, III ve Definitive Edition için resmî kaynaklar güncel kodla karşılaştırıldı; 15 eksik/sınırlı alan,

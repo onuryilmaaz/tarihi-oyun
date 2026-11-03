@@ -22,8 +22,8 @@ function suvariPiyadeMuharebesi() {
   const d = yeniDurum();
   const a = devlet(d, "a"), b = devlet(d, "b");
   const ao = d.ordular.find((o) => o.devlet === a)!, bo = d.ordular.find((o) => o.devlet === b)!;
-  ao.asker = 20000; ao.kompozisyon = { piyade: 0, okcu: 0, suvari: 20000 };
-  bo.asker = 20000; bo.kompozisyon = { piyade: 20000, okcu: 0, suvari: 0 };
+  ao.asker = 20000; ao.kompozisyon = { piyade: 0, okcu: 0, suvari: 20000, topcu: 0 };
+  bo.asker = 20000; bo.kompozisyon = { piyade: 20000, okcu: 0, suvari: 0, topcu: 0 };
   bo.dugum = ao.dugum; bo.x = ao.x; bo.y = ao.y;
   d.savaslar.push({ id: d.sonrakiSavasId++, saldiran: a, savunan: b, baslangic: d.gun });
   muharebeleriBaslat(d);

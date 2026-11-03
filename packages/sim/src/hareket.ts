@@ -51,6 +51,8 @@ const zorlu = (m: number, z: number) => Math.round((m * z) / 100);
 export function gecilebilir(d: DunyaDurumu, ag: HareketAgi, dugum: number, devlet: number): boolean {
   const sahip = d.birimler[ag.dugumler[dugum].b]?.sahip ?? -1;
   if (sahip === devlet || sahip === -1) return true;
+  if (d.gecisIzinleri.some((g) => g.veren === sahip && g.alan === devlet && g.bitis > d.gun)) return true;
+  if (d.vasalliklar.some((v) => (v.efendi === sahip && v.vasal === devlet) || (v.efendi === devlet && v.vasal === sahip))) return true;
   return d.savaslar.some((s) => (s.saldiran === devlet && s.savunan === sahip) || (s.saldiran === sahip && s.savunan === devlet));
 }
 
@@ -115,7 +117,7 @@ export function rotaBul(d: DunyaDurumu, ag: HareketAgi, ordu: OrduDurumu, hedef:
   if (!Number.isSafeInteger(hedef.dugum) || hedef.dugum < 0 || hedef.dugum >= N) return { gecerli: false, neden: "Hedef karada değil." };
   if (!gecilebilir(d, ag, hedef.dugum, ordu.devlet)) {
     const sahip = d.birimler[ag.dugumler[hedef.dugum].b].sahip;
-    return { gecerli: false, neden: `${d.devletler[sahip].ad} toprağına girmek için savaş ilan etmek gerekir (geçiş izni diplomasiyle Aşama 6'da).` };
+    return { gecerli: false, neden: `${d.devletler[sahip].ad} toprağına girmek için askerî geçiş izni veya savaş ilanı gerekir.` };
   }
   const bas = ordu.dugum;
   const maliyet = new Float64Array(N).fill(Infinity);
@@ -138,7 +140,7 @@ export function rotaBul(d: DunyaDurumu, ag: HareketAgi, ordu: OrduDurumu, hedef:
     }
   }
   if (maliyet[hedef.dugum] === Infinity) {
-    return { gecerli: false, neden: "Ulaşılamıyor: kendi ya da devletsiz topraklardan geçen bir kara yolu yok (deniz taşıması donanmayla gelecek)." };
+    return { gecerli: false, neden: "Ulaşılamıyor: geçişe açık bir kara yolu yok. Deniz aşırı hedefler için ordunuzu kendi limanınızdan donanmayla taşıyın." };
   }
   // Kenar zincirini geri izle
   const zincir: number[] = [];

@@ -7,6 +7,7 @@ import { rotaBul, type HareketAgi } from "./hareket";
 import { aralik } from "./rastgele";
 import { etkiCarpani, istihbaratEtkisi, istihbaratVar } from "./casusluk";
 import { muharebeGucYuzde } from "./teknoloji";
+import { orduDeneyimGucu, savasDeneyimiKazan } from "./komutan";
 import { bosKompozisyon, kompozisyonCikar, kompozisyonMuharebeYuzde, kompozisyonOransalAl, kompozisyonTopla } from "./birim";
 
 /** Binlik ayırıcılı sayı (ortamdan bağımsız; toLocaleString simülasyonda yasak) */
@@ -209,7 +210,7 @@ function muharebeyiBitir(d: DunyaDurumu, ag: HareketAgi | null, m: Muharebe, kay
     if (o.asker * 100 < baslangic * DENGE.DAGILMA_ORANI || o.moral <= 0 || !rota || !rota.gecerli) {
       dagilan.push(o.ad);
       o.asker = 0;
-      o.kompozisyon = { piyade: 0, okcu: 0, suvari: 0 }; // TASK-0019
+      o.kompozisyon = { piyade: 0, okcu: 0, suvari: 0, topcu: 0 }; // TASK-0019
       continue;
     }
     o.rota = rota.adimlar;
@@ -261,7 +262,11 @@ export function muharebeGunleri(d: DunyaDurumu, ag: HareketAgi | null): void {
     const kontrol = n ? d.birimler[n.b]?.kontrol ?? -1 : -1;
     const savunan = m.taraflar.findIndex((t) => t.devlet === kontrol);
     const sans = [0, 1].map(() => DENGE.SANS_ALT + aralik(d, DENGE.SANS_UST - DENGE.SANS_ALT + 1)) as [number, number];
-    const gucYuzde = m.taraflar.map((t) => muharebeGucYuzde(d, t.devlet)) as [number, number]; // Daimî Ordu (5c)
+    // Daimî Ordu (5c) × TASK-0047: komutan ve kıdem (tarafın ordularının asker ağırlıklı ortalaması)
+    const gucYuzde = m.taraflar.map((t, i) => {
+      const dy = Math.floor(os[i].reduce((s, o) => s + o.asker * orduDeneyimGucu(d, o, i === savunan ? "savunma" : "taarruz"), 0) / Math.max(1, asker[i]));
+      return Math.floor((muharebeGucYuzde(d, t.devlet) * dy) / 100);
+    }) as [number, number];
     // TASK-0019 (2/4): tarafın birleşik kompozisyonuna göre saldırı/savunma çarpanı
     const birimYuzde = [0, 1].map((i) => kompozisyonMuharebeYuzde(
       os[i].reduce((k, o) => kompozisyonTopla(k, o.kompozisyon), bosKompozisyon()), i === savunan)) as [number, number];
@@ -275,6 +280,7 @@ export function muharebeGunleri(d: DunyaDurumu, ag: HareketAgi | null): void {
       const kayipBinde = Math.round((g.kayip[i] * DENGE.MORAL_KAYIP_CARPANI) / Math.max(1, asker[i]));
       for (const o of os[i]) o.moral = Math.max(0, o.moral - kayipBinde - DENGE.MORAL_YORGUNLUK);
     }
+    for (const o of [...os[0], ...os[1]]) savasDeneyimiKazan(d, o); // TASK-0047: her muharebe günü kıdem kazandırır
     // Sonuç: moral eşiği (tutum) aşılan ya da asker kalmayan taraf çekilir; eşitlikte daha düşük moralli
     const yeniMoral = os.map(ortalamaMoral);
     const esik = os.map((ordular) => Math.max(...ordular.map((o) => DENGE.GERI_CEKILME_ESIGI[o.tutum])));
