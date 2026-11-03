@@ -251,7 +251,7 @@ function ozet(durum: DunyaDurumu): Ozet {
     sehirDurumlari: durum.sehirler.map((s) => ({ devlet: s.devlet, kontrol: s.kontrol, baskent: s.baskent, sur: s.sur,
       garnizon: s.kontrol === durum.ayarlar.oyuncu ? s.garnizon : Math.ceil(s.garnizon / 1000) * 1000,
       garnizonTahmin: s.kontrol !== durum.ayarlar.oyuncu, ad: s.ad, eskiAd: s.eskiAd, bagli: s.bagli, birim: s.birim,
-      gelismislik: s.gelismislik, gelirKaynagi: s.gelirKaynagi, butunlesme: s.butunlesme, politika: s.politika })),
+      gelismislik: s.gelismislik, gelirKaynagi: s.gelirKaynagi, butunlesme: s.butunlesme, politika: s.politika, asil: s.asil })),
     birlesmeAdaylari: Object.fromEntries(durum.sehirler.flatMap((s, i) =>
       s.devlet === durum.ayarlar.oyuncu && s.bagli < 0 ? [[i, birlesmeAdaylari(durum, baglam, i)]] : [])),
     sancaklar: sancakOzetleri(durum, durum.ayarlar.oyuncu),

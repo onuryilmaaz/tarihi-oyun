@@ -108,7 +108,7 @@ export interface Kusatma {
 export interface IsgalHazirligi { birim: number; devlet: number; gun: number }
 export type SehirTuru = "kasaba" | "sehir" | "buyuksehir";
 export type GelirKaynagi = "tarim" | "hayvancilik" | "ticaret" | "zanaat";
-export interface BarisTalebi { savas: number; birimler: number[]; sehirler: number[]; tazminat: number; vasalYap?: boolean } // TASK-0018
+export interface BarisTalebi { savas: number; birimler: number[]; sehirler: number[]; tazminat: number; vasalYap?: boolean; serbestBirak?: boolean } // TASK-0018; serbestBirak: TASK-0052
 export interface BarisKaydi extends BarisTalebi { gun: number; devlet: number; karsi: number }
 /** AI'dan oyuncuya barış teklifi (TASK-0009/6c); alan: talep edilen yerleri alacak taraf */
 export interface BarisTeklifi { id: number; savas: number; teklifEden: number; alan: number; talep: BarisTalebi; gun: number; gerekce: string }

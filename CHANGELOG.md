@@ -1,5 +1,11 @@
 # CHANGELOG
 
+## 2026-11-03 — TASK-0052: ortak görsel dil, rehber/sözlük, barışta serbest bırakma, tarih animasyonu (Claude)
+
+- Bütün pencereler altın çerçeveli; danışman/görev/komutan kartları; uzakta küçük başkent işaretleri.
+- Sözlükte 15 yeni terim, rehberde yeni adımlar.
+- Barışta şehirleri 1453 sahiplerine bağımsız verme (yeni devlet vasal olur); "Tarihi oynat" animasyonu.
+
 ## 2026-11-03 — TASK-0047–0051: komutan/topçu, ortak savaş ve isyan, idare ve görevler, haber merkezi, AI donanması (Claude)
 
 - Komutan havuzu (uzmanlık, seviye), ordu kıdemi, topçu (Sahra Mühendisliği); AI da kullanır.

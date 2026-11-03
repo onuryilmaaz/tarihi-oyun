@@ -209,6 +209,8 @@ export function haritaGorunumuKur(h: Harita,
       m.gapSize = 6 / g.z;
     }
     k.baskentler.visible = katman.sehir && g.z >= ESIK.baskent;
+    // TASK-0052: uzakta başkent işaretleri küçük; şehirlerin göründüğü yakınlıkta tam boy
+    (k.baskentler.material as THREE.PointsMaterial).size = (8 + 6 * yumusak(g.z, ESIK.baskent * 2, ESIK.sehir)) * oran;
     k.sehirler.visible = katman.sehir && g.z >= ESIK.sehir;
     etiketler.sehirlerAcik = katman.sehir;
     etiketler.etiketlerAcik = katman.etiket;

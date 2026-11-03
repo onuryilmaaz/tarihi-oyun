@@ -2,6 +2,7 @@
 import { ortakBarisPayi } from "./siyaset";
 import { olayEkle, type BarisTalebi, type DunyaDurumu } from "./durum";
 import { DENGE } from "./denge";
+import { savasta } from "./savas";
 import type { Baglam, Dogrulama } from "./emirler";
 import { gecilebilir, orduKonumu, rotaBul } from "./hareket";
 import { savasiSonlandir, yikilanDevletleriTemizle } from "./savas-sonu";
@@ -64,6 +65,12 @@ export function barisDogrula(d: DunyaDurumu, t: BarisTalebi, devlet = d.ayarlar.
     return { gecerli: false, neden: "Şehri olan toprak şehriyle birlikte gider; şehri talep edin." };
   }
   if (t.tazminat > Math.max(0, d.devletler[karsi].hazine)) return { gecerli: false, neden: "Karşı taraf bu tazminatı peşin ödeyemiyor. Borçlanma yoktur; tazminatı azaltın." };
+  if (t.serbestBirak) { // TASK-0052: talep edilen şehirler 1453 sahiplerine bağımsız (talep edenin vasalı olarak) döner
+    if (t.vasalYap) return { gecerli: false, neden: "Serbest bırakma ve vasal yapma aynı barışta birlikte istenemez." };
+    const asillar = serbestBirakilacaklar(d, devlet, karsi, t);
+    if (!asillar.size) return { gecerli: false, neden: "Talep ettiğiniz şehirlerin hiçbirinin 1453'teki sahibi üçüncü bir devlet değil; serbest bırakılacak devlet yok." };
+    for (const a of asillar.keys()) if (savasta(d, devlet, a)) return { gecerli: false, neden: `${d.devletler[a].ad} ile savaştasınız; onu serbest bırakamazsınız.` };
+  }
   const skor = savasSkoru(d, devlet, karsi).skor, bedel = barisBedeli(d, devlet, karsi, t);
   if (bedel > skor) return { gecerli: false, neden: `Talep ${bedel} puan; savaş skorunuz ${skor}. Daha az talep edin veya işgali genişletin.` };
   if (t.vasalYap) {
@@ -72,6 +79,17 @@ export function barisDogrula(d: DunyaDurumu, t: BarisTalebi, devlet = d.ayarlar.
     if (vasalMi(d, devlet) && efendisi(d, devlet) === karsi) return { gecerli: false, neden: "Kendi efendinizi vasal yapamazsınız." };
   }
   return { gecerli: true };
+}
+
+/** Serbest bırakmada şehirleri geri alacak devletler: 1453 sahibi (asil) taraflardan biri olmayan talep edilen şehirler. */
+export function serbestBirakilacaklar(d: DunyaDurumu, devlet: number, karsi: number, t: BarisTalebi): Map<number, number[]> {
+  const m = new Map<number, number[]>();
+  for (const i of t.sehirler) {
+    const a = d.sehirler[i]?.asil ?? -1;
+    if (a < 0 || a === devlet || a === karsi) continue;
+    (m.get(a) ?? m.set(a, []).get(a)!).push(i);
+  }
+  return m;
 }
 
 export function baskentleriGuncelle(d: DunyaDurumu): void {
@@ -93,10 +111,20 @@ export function barisiUygula(d: DunyaDurumu, b: Baglam, t: BarisTalebi, devlet =
     vasalKur(d, devlet, karsi);
   } else {
     for (const i of t.birimler) d.birimler[i].sahip = devlet;
+    const serbest = t.serbestBirak ? serbestBirakilacaklar(d, devlet, karsi, t) : new Map<number, number[]>();
+    const alan = new Map([...serbest].flatMap(([a, l]) => l.map((i) => [i, a] as [number, number])));
     for (const i of t.sehirler) {
-      d.sehirler[i].devlet = devlet;
-      d.sehirler[i].istikrar.fetihGun = d.gun;
+      const yeni = alan.get(i) ?? devlet;
+      d.sehirler[i].devlet = yeni;
+      if (yeni !== devlet) d.sehirler[i].kontrol = yeni;
+      d.sehirler[i].istikrar.fetihGun = yeni === devlet ? d.gun : null;
       d.sehirler[i].istikrar.bagis = 0;
+    }
+    for (const [a, l] of serbest) {
+      d.devletler[a].hazine = Math.max(d.devletler[a].hazine, DENGE.BAGIMSIZLIK_HAZINE);
+      if (!vasalMi(d, a)) vasalKur(d, devlet, a);
+      olayEkle(d, { tur: "bagimsizlik", devlet: [devlet, karsi].includes(d.ayarlar.oyuncu) ? d.ayarlar.oyuncu : null,
+        metin: `${d.devletler[devlet].ad} barışla ${l.map((i) => d.sehirler[i].ad).join(", ")} şehirlerini ${d.devletler[a].ad} olarak serbest bıraktı${efendisi(d, a) === devlet ? "; yeni devlet vasalı oldu" : ""}.` });
     }
   }
   savasiSonlandir(d, s);

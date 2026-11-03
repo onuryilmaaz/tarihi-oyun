@@ -1,5 +1,13 @@
 # DECISIONS — Karar Kayıtları
 
+## DEC-0090 — TASK-0052: barışta serbest bırakma; ortak görsel dil; tarih animasyonu
+
+- **Tarih:** 2026-11-03
+- **Seçilen karar:** Barışta işgal edilen şehirler 1453 sahiplerine bağımsız verilebilir; yeniden kurulan devlet talep
+  edenin vasalı olur. Bütün pencereler panellerle aynı altın çerçeve dilini kullanır. Geçmiş harita oynatılabilir. [TASLAK]
+- **Onay kaydı:** Kullanıcı: "sırayla yap" (2026-11-03).
+- **Durum:** GEÇERLİ
+
 ## DEC-0089 — Harita bilgisi tek kaynak hattından; yeni kaynak eklenmez
 
 - **Tarih:** 2026-11-03

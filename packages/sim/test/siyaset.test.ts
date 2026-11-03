@@ -1,7 +1,7 @@
 // TASK-0048: ortak barış payı, vasal sadakati/ilhakı, ayaklanmadan bağımsızlık
 import { describe, expect, it } from "vitest";
 import {
-  bagimsizlikAyi, bagimsizlikBeklentisi, degismezler, DENGE, emirleriUygula, emirVer, ilhakBedeli, ortakBarisPayi, vasalKur,
+  bagimsizlikAyi, bagimsizlikBeklentisi, barisDogrula, barisiUygula, degismezler, DENGE, emirleriUygula, emirVer, ilhakBedeli, ortakBarisPayi, vasalKur,
   vasalSadakatAyi,
 } from "../src";
 import { yeniDurum } from "./yardimci";
@@ -80,6 +80,26 @@ describe("ayaklanmadan bağımsızlık (TASK-0048)", () => {
     expect([d.sehirler[b2].devlet, d.sehirler[b2].istikrar.ayaklanma]).toEqual([Bd, false]);
     expect(d.sehirler[a2].devlet).toBe(A);
     expect(d.savaslar.some((w) => w.saldiran === Bd && w.savunan === A)).toBe(true);
+    expect(degismezler(d)).toEqual([]);
+  });
+});
+
+describe("barışta serbest bırakma (TASK-0052)", () => {
+  it("işgal edilen şehir 1453 sahibine döner ve o devlet talep edenin vasalı olur; uygunsuz talep reddedilir", () => {
+    const d = yeniDurum();
+    d.savaslar.push({ id: d.sonrakiSavasId++, saldiran: A, savunan: Bd, baslangic: 0 });
+    const b2 = d.sehirler.findIndex((s) => s.ad === "B2");
+    d.sehirler[b2].kontrol = A;
+    for (const c of d.sehirler) if (c.devlet === Bd) c.kontrol = A; // puan yetsin: B'nin bütün şehirleri işgalde
+    const savas = d.savaslar[0].id;
+    expect(barisDogrula(d, { savas, birimler: [], sehirler: [b2], tazminat: 0, serbestBirak: true }, A))
+      .toMatchObject({ gecerli: false, neden: expect.stringMatching(/serbest bırakılacak devlet yok/) });
+    d.sehirler[b2].asil = C; // bu şehrin 1453 sahibi C olsun
+    const t = { savas, birimler: [], sehirler: [b2], tazminat: 0, serbestBirak: true };
+    expect(barisDogrula(d, t, A).gecerli).toBe(true);
+    barisiUygula(d, { ag: null }, t, A);
+    expect([d.sehirler[b2].devlet, d.sehirler[b2].kontrol]).toEqual([C, C]);
+    expect(d.vasalliklar.some((v) => v.efendi === A && v.vasal === C)).toBe(true);
     expect(degismezler(d)).toEqual([]);
   });
 });

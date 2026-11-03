@@ -403,7 +403,7 @@
 
     /* TASK-0042: yan paneller üst çubukla aynı koyu renkte; oyunsu çerçeve (çift altın çizgi), süslü başlıklar. Renk
        değişkenleri genel koyu temadan gelir; yalnızca zemin, çerçeve ve başlıklar burada. */
-    #yan, #bilgi {
+    .panel, #yan, #bilgi {
       backdrop-filter: blur(8px); border-radius: 4px; border: 1px solid rgba(226, 179, 86, .45);
       background: radial-gradient(ellipse at 50% 30%, rgba(255, 240, 210, .035), transparent 70%), var(--panel);
       box-shadow: inset 0 0 0 3px rgba(28, 24, 20, .9), inset 0 0 0 4px rgba(226, 179, 86, .22), 0 10px 28px rgba(0, 0, 0, .45);
@@ -426,6 +426,28 @@
     #haberListesi li.yeni { border-left-color: var(--vurgu); }
     #haberListesi time { display: block; color: var(--soluk); font-size: 10.5px; }
     #gecmisHarita { width: 100%; }
+    /* TASK-0052: üst çubuk ve pencereler panellerle aynı dilde: altın çerçeve, süslü başlık, ince ayraç */
+    #ust { border-radius: 4px; }
+    #ust::after { content: ""; position: absolute; left: 18px; right: 18px; bottom: -1px; height: 1px; pointer-events: none;
+      background: linear-gradient(90deg, transparent, rgba(226, 179, 86, .55), transparent); }
+    #tarih { color: #f3e3bd; text-shadow: 0 1px 0 rgba(0, 0, 0, .5); }
+    .panel h3 { font-family: "Cinzel", serif; letter-spacing: .04em; }
+    #baris .panel h3, #teknoloji .panel h3, #onay .panel h3, #rapor .panel h3, #kesinti .panel h3, #barisTeklifi .panel h3,
+    #dipTeklifi .panel h3, #verasetPencere .panel h3, .menu-h { display: flex; align-items: center; gap: 10px; }
+    #baris .panel h3::before, #teknoloji .panel h3::before, #onay .panel h3::before, #rapor .panel h3::before, #barisTeklifi .panel h3::before,
+    #dipTeklifi .panel h3::before, #verasetPencere .panel h3::before { content: "❧"; color: rgba(226, 179, 86, .8); font-size: .9em; }
+    #baris .panel, #teknoloji .panel, #onay .panel, #rapor .panel, #kesinti .panel, #barisTeklifi .panel, #dipTeklifi .panel,
+    #verasetPencere .panel, #hataPenceresi .panel, .menu-kart { padding-top: 26px; position: relative; }
+    #baris .panel::before, #teknoloji .panel::before, #onay .panel::before, #rapor .panel::before, #kesinti .panel::before,
+    #barisTeklifi .panel::before, #dipTeklifi .panel::before, #verasetPencere .panel::before, .menu-kart::before {
+      content: "◆"; position: absolute; top: -9px; left: 50%; transform: translateX(-50%); color: var(--vurgu); font-size: 13px;
+      background: #221c17; padding: 0 8px; line-height: 16px; }
+    .tek-kart { border-radius: 6px; background: linear-gradient(180deg, rgba(239, 230, 212, .05), rgba(239, 230, 212, .015)); }
+    .tek-kart.biliniyor { background: linear-gradient(180deg, rgba(159, 207, 122, .1), rgba(159, 207, 122, .02)); }
+    .tek-kart.suruyor, .tek-kart.emir { background: linear-gradient(180deg, rgba(226, 179, 86, .12), rgba(226, 179, 86, .03)); }
+    button.birincil, #ilerleBtn { background: linear-gradient(180deg, #f0c66a, #d39f3f); box-shadow: inset 0 1px 0 rgba(255, 255, 255, .35), 0 2px 6px rgba(0, 0, 0, .3); }
+    #ilerleBtn:hover:not(:disabled), button.birincil:hover:not(:disabled) { background: linear-gradient(180deg, #f5d27f, #dcaa4b); }
+    #bildirim { border-color: rgba(226, 179, 86, .55); }
     /* Kart listeleri (danışman, görev, komutan, dünya güçleri): simge + metin + sağda düğme */
     .kart-liste { list-style: none; margin: 6px 0 8px; padding: 0; display: grid; gap: 6px; }
     .kart-liste li { display: flex; align-items: center; gap: 10px; padding: 8px 10px; border-radius: 6px;
@@ -588,7 +610,7 @@
         <h2>Geçmiş harita</h2>
         <label for="gecmisHarita">Sınırlar <input id="gecmisHarita" type="range" min="0" max="0" value="0" /></label>
         <p class="not" id="gecmisTarih"></p>
-        <button id="gecmisKapat" hidden>Bugüne dön</button>
+        <div class="satir"><button id="gecmisOynat">▶ Tarihi oynat</button><button id="gecmisKapat" hidden>Bugüne dön</button></div>
         <h2>Olay günlüğü</h2>
         <ul id="gunluk"></ul>
         <p class="not" id="bekleyen"></p>
@@ -773,6 +795,7 @@
       <label for="barisTazminat">Peşin tazminat <input id="barisTazminat" type="number" min="0" step="1" value="0" /></label>
       <p class="not">Yalnızca işgal ettiğiniz yerleri talep edebilirsiniz. Seçilmeyen işgaller yasal sahibine döner. Tazminat karşı tarafın mevcut parasını aşamaz.</p>
       <label id="barisVasalEtiket" hidden><input id="barisVasal" type="checkbox" /> Tam ilhak yerine vasal yap — toprağını bıraksın, aylık vergi ödesin, savaşlarınıza zorunlu katılsın</label>
+      <label id="barisSerbestEtiket"><input id="barisSerbest" type="checkbox" /> Seçtiğim şehirlerden 1453'te başka bir devlete ait olanları o devlete bağımsız ver — yeniden kurulan devlet vasalınız olur</label>
       <p id="barisSonuc" role="status"></p>
       <div class="satir"><button id="barisKapat">Vazgeç</button><button id="barisGonder" disabled>Barış teklif et</button></div>
     </div>

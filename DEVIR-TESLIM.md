@@ -10,6 +10,10 @@ Bağlayıcı kurallar: `AGENTS.md`, `MASTER_SPEC.md`, `DECISIONS.md`.
 
 ## 0. En son — BURADAN BAŞLA
 
+- **2026-11-03, Claude — TASK-0052 uygulandı (görsel bütünlük, rehber/sözlük, barışta serbest bırakma, tarih
+  animasyonu), COMMIT EDİLMEDİ.** Son commit `80b2a95d` (TASK-0042, 0044–0051). 333 test, typecheck, build geçti.
+  Kalan (ertelenmiş): düzenleyiciler, başka senaryolar/çok oyunculu; Aşama 10c/10d yayın hazırlığı.
+
 - **2026-11-03, Claude — TASK-0047…0051 TAMAMLANDI.** Kullanıcı: "hepsini tek tek yapma bitir öyle gel bana".
   0048 `siyaset.ts`, 0049 `idare.ts` (Vite önbelleği yüzünden `reform.ts` adı kullanılamadı), 0050 `tarihce.ts`,
   0051 `yz-deniz.ts`. Şema 36. 332 test, typecheck, build geçti; 5173'te komutan, reform/danışman/görev ve haber/geçmiş

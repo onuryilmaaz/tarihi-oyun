@@ -328,7 +328,22 @@ async function baslat() {
     haberGoster();
   };
   $("gecmisHarita").oninput = () => void gecmisCiz();
-  $("gecmisKapat").onclick = () => { $<HTMLInputElement>("gecmisHarita").value = String(ozet.sinirTarihleri.length); void gecmisCiz(); };
+  // TASK-0052: tarih animasyonu — başlangıçtan bugüne her sınır görüntüsünü sırayla gösterir
+  let oynatma: number | null = null;
+  const oynatDur = () => { if (oynatma !== null) clearInterval(oynatma); oynatma = null; $("gecmisOynat").textContent = "▶ Tarihi oynat"; };
+  $("gecmisOynat").onclick = () => {
+    if (oynatma !== null) return oynatDur();
+    const k = $<HTMLInputElement>("gecmisHarita"), n = ozet.sinirTarihleri.length;
+    if (!n) return;
+    k.value = "0"; void gecmisCiz();
+    $("gecmisOynat").textContent = "■ Durdur";
+    oynatma = window.setInterval(() => {
+      const v = Number(k.value) + 1;
+      k.value = String(Math.min(v, n)); void gecmisCiz();
+      if (v >= n) oynatDur();
+    }, 900);
+  };
+  $("gecmisKapat").onclick = () => { oynatDur(); $<HTMLInputElement>("gecmisHarita").value = String(ozet.sinirTarihleri.length); void gecmisCiz(); };
   // TASK-0049: idare reformu, danışmanlar ve görevler (Devlet sekmesi)
   const idareGoster = () => {
     const IDARE: Record<string, string> = { merkezi: "Merkezî idare", dengeli: "Dengeli idare", yerel: "Yerel yetki" };
