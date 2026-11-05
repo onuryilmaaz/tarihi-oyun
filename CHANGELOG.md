@@ -1,5 +1,13 @@
 # CHANGELOG
 
+## 2026-11-03 — Barış penceresinde "Hepsini seç" (Claude)
+
+- Arazi ve şehir listelerinde birden fazla seçenek varsa başlıkta tümünü seçen/bırakan kutu.
+- Hata: yolu silinen (geçiş izni biten, çekilme hedefi bulunduğu yer olan) geri çekilen ordu sonsuza dek emir
+  alamıyordu; artık gün sonunda serbest kalır. Yürüyüş reddi muharebe ile geri çekilmeyi ayrı ve ordu adıyla söyler.
+- Hata: geçiş hakkı olmayan yabancı topraktaki (ör. barışla sahibine dönen Venedik) ordunun rotası her gün
+  "askerî erişim değişti" diye siliniyordu; ordu bulunduğu yerden artık çıkabilir. Şema 36 kayıtları yüklenir.
+
 ## 2026-11-03 — TASK-0053: başkent taşıma, güncel toprak adları (Claude)
 
 - Şehir panelinde "★ Başkent yap" (2000 altın, 5 yılda bir). Şema 37.

@@ -34,9 +34,9 @@ export function gecisleriDenetle(d: DunyaDurumu, b: Baglam): void {
   d.gecisIzinleri = d.gecisIzinleri.filter((g) => g.bitis > d.gun && !savasta(d, g.veren, g.alan));
   if (!b.ag) return;
   for (const o of d.ordular) {
-    if (!o.rota.some((a) => !gecilebilir(d, b.ag!, a.d, o.devlet))) continue;
+    if (!o.rota.some((a) => a.d !== o.dugum && !gecilebilir(d, b.ag!, a.d, o.devlet))) continue; // bulunduğu yerden çıkmak serbest
     const p = orduKonumu(o); o.x = p.x; o.y = p.y;
-    o.rota = []; o.ilerleme = 0; o.hedef = null;
+    o.rota = []; o.ilerleme = 0; o.hedef = null; o.cekiliyor = false;
     olayEkle(d, { tur: "rota-durdu", devlet: o.devlet, metin: `${o.ad}: güzergâhtaki askerî erişim değişti; yürüyüş bulunduğu konumda durdu.` });
   }
 }

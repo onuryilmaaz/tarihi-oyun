@@ -78,6 +78,13 @@ describe("gerçek işgal ve kuşatma", () => {
     expect(d.birimler[4]).toMatchObject({ sahip: 0, kontrol: 0, isgalBaslangic: null });
   });
 
+  it("TASK-0054: yolu silinmiş geri çekilen ordu ertesi gün yeniden emir alabilir", () => {
+    const d = yeni(), o = d.ordular[0];
+    o.cekiliyor = true; o.rota = [];
+    gunIlerlet(d, B);
+    expect(o.cekiliyor).toBe(false);
+  });
+
   it("AT-007/009: kuşatma emir ve zaman ister; şehir toprağıyla düşer, yasal sahiplik ve komşu topraklar değişmez", () => {
     const d = kusat("saldiri"); const bas = d.gun;
     expect(d.sehirler[1].kontrol).toBe(1);
@@ -314,7 +321,7 @@ describe("4c kayıt ve determinizm", () => {
   it("bozuk kuşatma ve eski şemalı kayıt reddedilir", () => {
     const q = JSON.parse(kaydet(kusat())); q.durum.kusatmalar[0].ordular = [999];
     expect(() => yukle(JSON.stringify(q))).toThrow(/tutarsız/);
-    const p = JSON.parse(kaydet(yeni())); p.sema = p.durum.sema = SEMA_SURUMU - 1;
+    const p = JSON.parse(kaydet(yeni())); p.sema = p.durum.sema = 35;
     expect(() => yukle(JSON.stringify(p))).toThrow(/eski bir geliştirme sürümüne/);
   });
 

@@ -36,7 +36,7 @@ export function yukle(metin: string, beklenenSenaryo?: string): DunyaDurumu {
   if (paket.sema > SEMA_SURUMU) {
     throw new KayitHatasi(`Kayıt daha yeni bir oyun sürümüyle yapılmış (şema ${paket.sema} > ${SEMA_SURUMU}).`);
   }
-  if (paket.sema !== SEMA_SURUMU) {
+  if (paket.sema !== SEMA_SURUMU && paket.sema !== 36) { // 36 → 37 yalnızca alan ekler (TASK-0053)
     // Geliştirme aşamasında eski kayıtlar taşınmaz (kullanıcı kararı, 2026-10-31)
     throw new KayitHatasi(`Bu kayıt oyunun eski bir geliştirme sürümüne ait (şema ${paket.sema}); yüklenemez. Yeni oyun başlatın.`);
   }
@@ -53,6 +53,10 @@ export function yukle(metin: string, beklenenSenaryo?: string): DunyaDurumu {
   if (!Array.isArray(d.ordular) || !Array.isArray(d.savaslar) || !Array.isArray(d.muharebeler)
     || !Array.isArray(d.emirKuyrugu) || !Array.isArray(d.gunluk)) throw new KayitHatasi("Kayıt eksik: ordu veya emir listeleri yok.");
   if (d.sema !== paket.sema) throw new KayitHatasi("Kayıt tutarsız: paket ve dünya şema sürümleri uyuşmuyor.");
+  if (d.sema === 36) { // TASK-0053: başkent taşıma günü eklendi
+    for (const v of d.devletler) v.baskentTasima ??= null;
+    d.sema = SEMA_SURUMU;
+  }
   const hatalar = degismezler(d);
   if (hatalar.length) throw new KayitHatasi(`Kayıt tutarsız: ${hatalar.slice(0, 3).join("; ")}`);
   if (ozetUyusmuyor) throw new KayitHatasi("Kayıt bozulmuş ya da elle değiştirilmiş (içerik özeti tutmuyor). Önceki bir otomatik kaydı deneyin.");

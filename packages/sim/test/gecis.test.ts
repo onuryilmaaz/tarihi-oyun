@@ -34,6 +34,11 @@ describe("askerî geçiş",()=>{
   d.gun=d.gecisIzinleri[0].bitis;gecisleriDenetle(d,B);expect(o.x).toBe(2500);expect(o.rota).toEqual([]);
   gecisVer(d,1,0,12);d.savaslar=[{id:1,saldiran:0,savunan:1,baslangic:d.gun}];gecisleriDenetle(d,B);expect(d.gecisIzinleri).toEqual([]);
  });
+ it("TASK-0054: izinsiz yabancı toprakta kalan ordu bulunduğu yerden kendi toprağına çıkabilir",()=>{
+  const d=yeni(),o=d.ordular[0];o.dugum=1;o.x=12000;o.y=0;
+  const r=rotaBul(d,B.ag,o,{dugum:0,x:0,y:0});expect(r.gecerli).toBe(true);
+  o.rota=r.gecerli?r.adimlar:[];gecisleriDenetle(d,B);expect(o.rota.length).toBeGreaterThan(0);
+ });
  it("AI çiftleri oyuncu adına anlaşma kurmaz; kabul koşullarıyla gerçek yeni bağ kurar",()=>{
   let kuruldu=false;
   for(let seed=1;seed<=100&&!kuruldu;seed++){

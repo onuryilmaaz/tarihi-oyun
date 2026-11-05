@@ -150,6 +150,13 @@ export const SISTEMLER: Sistem[] = [
       olayEkle(d, { tur: "yillik-ozet", devlet: d.ayarlar.oyuncu, metin: `${gundenTarih(d.gun).yil} yılı başladı. Hazine: ${o.hazine}` });
     },
   },
+  // TASK-0054: yolu silinen (geçiş izni bitti, çekilme hedefi bulunduğu yer) çekilen ordu takılı kalmasın
+  { id: "cekilme-temizle", siklik: "gunluk", calistir: (d) => {
+    for (const o of d.ordular) if (o.cekiliyor && !o.rota.length && o.muharebe === null) {
+      o.cekiliyor = false;
+      olayEkle(d, { tur: "ordu-vardi", devlet: o.devlet, metin: `${o.ad} geri çekilmeyi bitirdi; yeniden emir alabilir.` });
+    }
+  } },
 ];
 
 export function gununSistemleri(d: DunyaDurumu, b: Baglam): void {

@@ -10,6 +10,8 @@ Bağlayıcı kurallar: `AGENTS.md`, `MASTER_SPEC.md`, `DECISIONS.md`.
 
 ## 0. En son — BURADAN BAŞLA
 
+- **2026-11-03, Claude — barış penceresine "Hepsini seç" eklendi, COMMIT EDİLMEDİ.** TASK-0053 `24c43b77` ile push edildi.
+
 - **2026-11-03, Claude — TASK-0053 uygulandı (başkent taşıma, güncel toprak adları), COMMIT EDİLMEDİ.** TASK-0052
   `c97ea2ce` ile push edildi. 334 test, typecheck, build geçti. Sıradaki: kullanıcı testi; sonra Aşama 10c/10d.
 

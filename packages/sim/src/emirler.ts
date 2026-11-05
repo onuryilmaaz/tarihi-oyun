@@ -599,7 +599,8 @@ export function emirDogrula(d: DunyaDurumu, e: Emir, b: Baglam = BOS_BAGLAM, kuy
     case "orduHedef": {
       const o = orduBul(d, e.ordu);
       if (!o) return { gecerli: false, neden: "Ordu bulunamadı." };
-      if (o.muharebe !== null || o.cekiliyor) return { gecerli: false, neden: "Muharebedeki veya geri çekilen orduya yürüyüş emri verilemez." };
+      if (o.muharebe !== null) return { gecerli: false, neden: `${o.ad} şu an muharebede; muharebe bitince (en çok ${DENGE.MUHAREBE_EN_UZUN_GUN} gün) yeni emir verebilirsiniz.` };
+      if (o.cekiliyor) return { gecerli: false, neden: `${o.ad} kaybettiği muharebeden geri çekiliyor; çekilme bitince yeni emir verebilirsiniz.` };
       if (!b.ag) return { gecerli: false, neden: "Hareket ağı yüklenmedi." };
       if (![e.x, e.y, e.dugum].every(Number.isSafeInteger)) return { gecerli: false, neden: "Hedef koordinatı geçersiz." };
       const r = orduRotasi(d, b.ag, o, e, !kuyrukHaric);

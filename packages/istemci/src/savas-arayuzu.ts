@@ -52,7 +52,16 @@ export function savasArayuzuKur(a: {
       $<HTMLButtonElement>("barisGonder").disabled = !r.dogrulama.gecerli;
     } catch (e) { if (no === onizlemeNo) $("barisSonuc").textContent = (e as Error).message; }
   }
-  $("barisKosullari").onchange = onizle;
+  $("barisKosullari").onchange = (e) => {
+    const t = e.target as HTMLInputElement;
+    if (t.dataset.barisHepsi) { // TASK-0054: bölümdeki bütün kutuları seç/bırak
+      for (const k of t.closest("fieldset")!.querySelectorAll<HTMLInputElement>(`[data-baris-${t.dataset.barisHepsi}]`)) k.checked = t.checked;
+    } else {
+      const f = t.closest("fieldset"), h = f?.querySelector<HTMLInputElement>("[data-baris-hepsi]");
+      if (h) h.checked = [...f!.querySelectorAll<HTMLInputElement>("input:not([data-baris-hepsi])")].every((k) => k.checked);
+    }
+    void onizle();
+  };
   $("barisTazminat").oninput = onizle;
   $("barisVasal").onchange = onizle;
   $("barisSerbest").onchange = onizle;
@@ -78,7 +87,7 @@ export function savasArayuzuKur(a: {
     $("barisBaslik").textContent = `${a.devletAdi(s.karsi)} ile barış`;
     $("barisSkor").textContent = `Savaş skoru ${s.skor}: alınan işgal değeri ${s.alinan}, kaybedilen ${s.kaybedilen}, düşmanın toplam varlık değeri ${s.toplam}. Başkent tek başına savaşı bitirmez.`;
     const kutu = (baslik: string, liste: number[], tur: "birim" | "sehir", ad: (i: number) => string) =>
-      `<fieldset><legend>${baslik}</legend>${liste.map((i) => `<label><input type="checkbox" data-baris-${tur}="${i}" /> ${kacis(ad(i))}</label>`).join("") || '<span class="not">Talep edilebilir işgal yok.</span>'}</fieldset>`;
+      `<fieldset><legend>${baslik}${liste.length > 1 ? ` <label class="hepsi"><input type="checkbox" data-baris-hepsi="${tur}" /> Hepsini seç</label>` : ""}</legend>${liste.map((i) => `<label><input type="checkbox" data-baris-${tur}="${i}" /> ${kacis(ad(i))}</label>`).join("") || '<span class="not">Talep edilebilir işgal yok.</span>'}</fieldset>`;
     const sehirEtiketi = (i: number) => { // TASK-0052: 1453 sahibi farklıysa yazılır (serbest bırakılabilir)
       const asil = a.ozet().sehirDurumlari[i]?.asil ?? -1;
       return asil >= 0 && asil !== s.karsi && asil !== a.ozet().oyuncu.indeks ? `${a.sehirAdi(i)} · 1453: ${a.devletAdi(asil)}` : a.sehirAdi(i);

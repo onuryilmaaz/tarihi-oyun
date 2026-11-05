@@ -146,7 +146,7 @@ export function barisiUygula(d: DunyaDurumu, b: Baglam, t: BarisTalebi, devlet =
       const birim = ag.dugumler[o.dugum]?.b;
       if (birim === undefined) continue;
       const disarida = taraflar.includes(d.birimler[birim].sahip) && d.birimler[birim].sahip !== o.devlet;
-      const rotaYasak = o.rota.some((a) => !gecilebilir(d, ag, a.d, o.devlet));
+      const rotaYasak = o.rota.some((a) => a.d !== o.dugum && !gecilebilir(d, ag, a.d, o.devlet));
       if (!disarida && !rotaYasak) continue;
       const konum = orduKonumu(o);
       o.x = konum.x; o.y = konum.y; o.rota = []; o.ilerleme = 0; o.hedef = null; o.cekiliyor = false;

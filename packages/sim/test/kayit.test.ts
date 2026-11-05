@@ -40,6 +40,16 @@ describe("kayıt / yükleme", () => {
     expect(durumOzeti(b)).toBe(durumOzeti(a));
   });
 
+  it("şema 36 kaydı başkent taşıma alanıyla yüklenir (TASK-0053)", () => {
+    const p = JSON.parse(kaydet(yeniDurum()));
+    p.sema = p.durum.sema = 36;
+    for (const v of p.durum.devletler) delete v.baskentTasima;
+    p.ozet = durumOzeti(p.durum);
+    const d = yukle(JSON.stringify(p));
+    expect([d.sema, d.devletler[0].baskentTasima]).toEqual([SEMA_SURUMU, null]);
+    expect(degismezler(d)).toEqual([]);
+  });
+
   it("bozuk kayıtlar güvenli hata verir", () => {
     const iyi = kaydet(yeniDurum());
     expect(() => yukle("{bozuk")).toThrow(KayitHatasi);
